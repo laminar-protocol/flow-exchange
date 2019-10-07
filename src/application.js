@@ -1,6 +1,6 @@
 import React from 'react';
 
-function App() {
+function Application() {
   return (
     <div>
       Flow
@@ -8,4 +8,4 @@ function App() {
   );
 }
 
-export default App;
+export default Application;

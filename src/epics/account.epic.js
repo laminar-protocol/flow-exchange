@@ -4,7 +4,7 @@ import { ofType } from 'redux-observable';
 
 import types from 'types';
 
-const epic = (action$, store$) => action$.pipe(
+const epic = (action$) => action$.pipe(
   ofType(types.token.requested),
   mergeMap((action) => of({
     type: types.token.completed,
