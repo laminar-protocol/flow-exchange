@@ -1,0 +1,20 @@
+image: nikolaik/python-nodejs
+
+pipelines:
+  default:
+    - step:
+        name: Static Build
+        deployment: production
+        caches:
+          - node
+        script:
+          - npm install
+          - npm run build
+          - pip install awscli --upgrade --ignore-installed six
+          - aws s3 sync ./build s3://$S3_BUCKET
+          - aws s3 cp --cache-control max-age=0 ./build/service-worker.js s3://$S3_BUCKET/
+          - pipe: docker://rudijs/aws-cloudfront-create-invalidation:1.0.2
+            variables:
+              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+              DISTRIBUTION_ID: $DISTRIBUTION_ID
