@@ -8,8 +8,20 @@ const {
 } = getActionTypeCreators(ACTION_TYPES_NAME_SPACE);
 
 const actionTypes = {
-  token: apiActionTypes('token'),
-  web3Init: changedActionTypes('token'),
+  // Application
+  applicationInit: changedActionTypes('application_init'),
+
+  // Theme
+  theme: changedActionTypes('theme'),
+
+  // Ethereum
+  ethereumModalOpen: changedActionTypes('ethereum_modal_open'),
+  ethereumModalClose: changedActionTypes('ethereum_modal_close'),
+  ethereumEnable: apiActionTypes('ethereum_enable'),
+  ethereumNetwork: apiActionTypes('ethereum_nework'),
+
+  // DAI
+  daiBalance: apiActionTypes('dai_balance'),
 };
 
 export default actionTypes;

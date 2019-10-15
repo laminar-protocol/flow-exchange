@@ -2,15 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'rxjs';
 
+import store, { history } from 'store';
 
-import Application from './application';
-import * as serviceWorker from './serviceWorker';
-
-import store, { history } from './store';
+import Application from 'app/application/application.connect';
+import * as serviceWorker from 'serviceWorker';
 
 import 'antd/dist/antd.css';
+
+library.add(fas);
 
 const Root = () => (
   <Provider store={store}>
@@ -21,8 +24,4 @@ const Root = () => (
 );
 
 ReactDOM.render(<Root />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

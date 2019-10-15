@@ -5,13 +5,8 @@ import { ofType } from 'redux-observable';
 import types from 'types';
 
 const epic = (action$) => action$.pipe(
-  ofType(types.token.requested),
-  mergeMap((action) => of({
-    type: types.token.completed,
-    payload: {
-      token: action.payload.accessToken,
-    },
-  })),
+  ofType(types.applicationInit.changed),
+  mergeMap(() => of({ type: types.ethereumEnable.requested })),
 );
 
 export default epic;
