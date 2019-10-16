@@ -16,8 +16,12 @@ const StatusText = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   & > :nth-child(2) {
-    margin-top: 0.1rem;
+    margin-top: 0.25rem;
   }
+`;
+
+const NetworkName = styled.div`
+  text-transform: capitalize;
 `;
 
 const indicatorStatus = (ethereum) => {
@@ -53,19 +57,19 @@ const networkName = (ethereum) => {
   switch (network) {
     case 'main':
       return 'Mainnet';
-    case 'kovan':
-      return 'Kovan';
     default:
-      return 'Unknown';
+      return network;
   }
 };
+
+const renderNetworkName = (name) => <NetworkName><Text size="s" light>{name}</Text></NetworkName>;
 
 const Component = ({ ethereum }) => (
   <Container>
     <Indicator size={10} color={indicatorStatus(ethereum)} />
     <StatusText>
       <div><Text>{networkStatus(ethereum)}</Text></div>
-      {ethereum.isConnected && <div><Text size="s" light>{networkName(ethereum)}</Text></div>}
+      {ethereum.isConnected && renderNetworkName(networkName(ethereum))}
     </StatusText>
   </Container>
 );

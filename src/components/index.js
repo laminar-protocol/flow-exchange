@@ -7,6 +7,7 @@ export { default as Separator } from './separator';
 export { default as Text } from './text';
 export { default as Indicator } from './indicator';
 export { default as Modal } from './modal';
+export { default as Panel } from './panel';
 export { default as TextCell } from './textCell';
 export { default as Spinner } from './spinner';
 export { default as NumberFormat } from './numberFormat';

@@ -8,9 +8,8 @@ const epic = (action$, state$) => action$.pipe(
   ofType(types.daiAuthorization.requested),
   mergeMap(async () => {
     try {
-      const { value: { ethereum: { account } } } = state$;
-      const { addresses: { flow } } = ethereum;
-      const amount = await ethereum.daiContract.methods.allowance(account, flow).call();
+      const { value: { ethereum: { account, flowContract } } } = state$;
+      const amount = await ethereum.daiContract.methods.allowance(account, flowContract).call();
       return { type: types.daiAuthorization.completed, payload: amount };
     } catch {
       return { type: types.daiAuthorization.failed };

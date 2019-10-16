@@ -14,6 +14,9 @@ const actionTypes = {
   // Theme
   theme: changedActionTypes('theme'),
 
+  // Symbols
+  symbols: changedActionTypes('symbols'),
+
   // Ethereum
   ethereumModalOpen: changedActionTypes('ethereum_modal_open'),
   ethereumModalClose: changedActionTypes('ethereum_modal_close'),
@@ -24,6 +27,23 @@ const actionTypes = {
   daiBalance: apiActionTypes('dai_balance'),
   daiAuthorization: apiActionTypes('dai_authorization'),
   daiGrant: apiActionTypes('dai_grant'),
+
+  // EUR
+  eurBalance: apiActionTypes('eur_balance'),
+  eurAuthorization: apiActionTypes('eur_authorization'),
+  eurGrant: apiActionTypes('eur_grant'),
+
+  // JPY
+  jpyBalance: apiActionTypes('jpy_balance'),
+  jpyAuthorization: apiActionTypes('jpy_authorization'),
+  jpyGrant: apiActionTypes('jpy_grant'),
+
+  // Swap
+  swapFromSymbol: changedActionTypes('swap_from_symbol'),
+  swapToSymbol: changedActionTypes('swap_to_symbol'),
+  swapFromAmount: changedActionTypes('swap_from_amount'),
+  swapToAmount: changedActionTypes('swap_to_amount'),
+  swap: apiActionTypes('swap'),
 };
 
 export default actionTypes;
