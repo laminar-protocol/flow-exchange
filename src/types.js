@@ -22,6 +22,8 @@ const actionTypes = {
 
   // DAI
   daiBalance: apiActionTypes('dai_balance'),
+  daiAuthorization: apiActionTypes('dai_authorization'),
+  daiGrant: apiActionTypes('dai_grant'),
 };
 
 export default actionTypes;

@@ -11,8 +11,10 @@ const Container = styled.div`
   background-color: ${theme.lightBackgroundColor};
 `;
 
-const Component = ({ radius, padding, children }) => (
-  <Container radius={radius} padding={padding}>
+const Component = ({
+  className, radius, padding, children,
+}) => (
+  <Container className={className} radius={radius} padding={padding}>
     { children }
   </Container>
 );

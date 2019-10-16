@@ -44,14 +44,20 @@ export const keyColorRed = theme('mode', {
 
 // Text colors
 export const foregroundColor = theme('mode', {
-  light: '#3c3d64',
+  light: '#3c3d61',
   dark: 'rgba(255, 255, 255, 0.85)',
 });
 
 export const lightForegroundColor = theme('mode', {
-  light: '#586e97',
+  light: '#797a93',
   dark: 'rgba(255, 255, 255, 0.65)',
 });
+
+export const fadeForegroundColor = theme('mode', {
+  light: '#e6e6eb',
+  dark: 'rgba(255, 255, 255, 0.35)',
+});
+
 
 export const whiteForegroundColor = theme('mode', {
   light: '#fff',

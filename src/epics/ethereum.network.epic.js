@@ -9,7 +9,8 @@ const epic = (action$, state$) => action$.pipe(
   filter(() => state$.value.ethereum.isConnected === true),
   mergeMap(async () => {
     try {
-      const networkType = await ethereum.provider.eth.net.getNetworkType();
+      const networkType = await ethereum.ethProvider.eth.net.getNetworkType();
+      ethereum.prepareContract(networkType);
       return { type: types.ethereumNetwork.completed, payload: networkType };
     } catch {
       return { type: types.ethereumNetwork.failed };
