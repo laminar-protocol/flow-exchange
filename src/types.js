@@ -27,20 +27,10 @@ const actionTypes = {
   flowMoneyMarket: apiActionTypes('flow_money_market'),
   flowOracle: apiActionTypes('flow_oracle'),
 
-  // DAI
-  daiBalance: apiActionTypes('dai_balance'),
-  daiAuthorization: apiActionTypes('dai_authorization'),
-  daiGrant: apiActionTypes('dai_grant'),
-
-  // EUR
-  eurBalance: apiActionTypes('eur_balance'),
-  eurAuthorization: apiActionTypes('eur_authorization'),
-  eurGrant: apiActionTypes('eur_grant'),
-
-  // JPY
-  jpyBalance: apiActionTypes('jpy_balance'),
-  jpyAuthorization: apiActionTypes('jpy_authorization'),
-  jpyGrant: apiActionTypes('jpy_grant'),
+  // Token
+  tokenBalance: apiActionTypes('token_balance'),
+  tokenAuthorization: apiActionTypes('token_authorization'),
+  tokenGrant: apiActionTypes('token_grant'),
 
   // Swap
   swapFromSymbol: changedActionTypes('swap_from_symbol'),
@@ -48,6 +38,9 @@ const actionTypes = {
   swapFromAmount: changedActionTypes('swap_from_amount'),
   swapToAmount: changedActionTypes('swap_to_amount'),
   swap: apiActionTypes('swap'),
+
+  // Spot exchange rate
+  spotRate: apiActionTypes('spot_rate'),
 };
 
 export default actionTypes;

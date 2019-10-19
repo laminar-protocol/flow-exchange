@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+
 import {
   TextCell, Switch, Text,
 } from 'components';
 import { fromWei } from 'helpers/unitHelper';
+import {
+  getAuthorization,
+  getIsQueryingAuthorization,
+  getIsGranting,
+} from 'reducers/token.reducer';
 
 const Grant = styled.div`
   display: flex;
@@ -17,19 +23,18 @@ const GrantHeader = styled.div`
 `;
 
 const Component = ({
-  dai, onDaiAuthorizationQuery, onDaiGrant,
+  token, onAuthorizationQuery, onGrant,
 }) => {
-  const {
-    authorizationAmount,
-    isQueryingAuthorization,
-    isGranting,
-  } = dai;
+  const symbol = 'dai';
+  const authorization = getAuthorization(symbol, token);
+  const isGranting = getIsGranting(symbol, token);
+  const isQueryingAuthorization = getIsQueryingAuthorization(symbol, token);
 
-  const granted = (fromWei(authorizationAmount) > 0);
+  const granted = (fromWei(authorization) > 0);
 
   useEffect(() => {
-    onDaiAuthorizationQuery();
-  }, [onDaiAuthorizationQuery]);
+    onAuthorizationQuery(symbol);
+  }, [onAuthorizationQuery]);
 
   return (
     <TextCell accessory={granted ? 'lock-open' : 'lock'} loading={isQueryingAuthorization || isGranting}>
@@ -45,7 +50,7 @@ const Component = ({
         <Switch
           checked={granted}
           disabled={isQueryingAuthorization || isGranting}
-          onClick={() => { onDaiGrant(!granted); }}
+          onClick={() => { onGrant(symbol, !granted); }}
         />
       </Grant>
     </TextCell>

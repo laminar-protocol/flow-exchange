@@ -13,8 +13,8 @@ const SpinIcon = styled(Spin)`
 `;
 
 
-const Component = () => (
-  <SpinIcon indicator={LoadingIcon} />
+const Component = ({ className }) => (
+  <SpinIcon indicator={LoadingIcon} className={className} />
 );
 
 export default Component;

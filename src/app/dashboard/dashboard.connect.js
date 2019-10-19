@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import Component from './dashboard';
 
-const mapStateToProps = ({ dai }) => ({
-  dai,
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = () => ({

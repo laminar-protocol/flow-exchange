@@ -4,6 +4,7 @@ import ERC20_ABI from 'abi/erc20.json';
 import FLOW_ABI from 'abi/flow.json';
 import ORACLE_ABI from 'abi/oracle.json';
 import MONEY_MARKET_ABI from 'abi/moneyMarket.json';
+import POOL_ABI from 'abi/lp.json';
 
 class Ethereum {
   constructor() {
@@ -14,11 +15,25 @@ class Ethereum {
   prepareContract(addresses) {
     this.addresses = addresses;
     if (this.addresses !== null) {
-      this.daiContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.dai);
       this.flowContract = new this.ethProvider.eth.Contract(FLOW_ABI, this.addresses.flow);
+      this.poolContract = new this.ethProvider.eth.Contract(POOL_ABI, this.addresses.fallbackPool);
+
+      this.daiContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.dai);
+      this.eurContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.eur);
+      this.jpyContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.jpy);
+
+      this.tokenContracts = {
+        dai: this.daiContract,
+        eur: this.eurContract,
+        jpy: this.jpyContract,
+      };
     } else {
       this.daiContract = null;
       this.flowContract = null;
+      this.eurContract = null;
+      this.jpyContract = null;
+      this.poolContract = null;
+      this.tokenContracts = null;
     }
   }
 

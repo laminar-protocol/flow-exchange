@@ -3,13 +3,13 @@ import types from 'types';
 
 import Component from './balance';
 
-const mapStateToProps = ({ dai }) => ({
-  dai,
+const mapStateToProps = ({ token }) => ({
+  token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onDaiBalanceQuery: () => {
-    dispatch({ type: types.daiBalance.requested });
+  onBalanceQuery: (symbol) => {
+    dispatch({ type: types.tokenBalance.requested, payload: { symbol } });
   },
 });
 

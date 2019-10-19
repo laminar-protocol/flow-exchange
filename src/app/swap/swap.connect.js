@@ -3,10 +3,9 @@ import types from 'types';
 
 import Component from './swap';
 
-const mapStateToProps = ({ market, swap }) => ({
-  market,
-  swap,
-});
+const mapStateToProps = ({
+  market, swap, token,
+}) => ({ token, market, swap });
 
 const mapDispatchToProps = (dispatch) => ({
   onFromSymbolChange: (symbol) => {

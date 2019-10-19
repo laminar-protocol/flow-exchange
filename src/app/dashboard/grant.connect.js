@@ -3,20 +3,20 @@ import types from 'types';
 import { UINT256_MAX, UINT256_MIN } from 'helpers/unitHelper';
 import Component from './grant';
 
-const mapStateToProps = ({ dai }) => ({
-  dai,
+const mapStateToProps = ({ token }) => ({
+  token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onDaiAuthorizationQuery: () => {
-    dispatch({ type: types.daiAuthorization.requested });
+  onAuthorizationQuery: (symbol) => {
+    dispatch({ type: types.tokenAuthorization.requested, payload: { symbol } });
   },
 
-  onDaiGrant: (granted) => {
+  onGrant: (symbol, granted) => {
     if (granted) {
-      dispatch({ type: types.daiGrant.requested, payload: UINT256_MAX });
+      dispatch({ type: types.tokenGrant.requested, payload: { symbol, balance: UINT256_MIN } });
     } else {
-      dispatch({ type: types.daiGrant.requested, payload: UINT256_MIN });
+      dispatch({ type: types.tokenGrant.requested, payload: { symbol, balance: UINT256_MAX } });
     }
   },
 });

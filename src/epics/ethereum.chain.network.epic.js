@@ -12,6 +12,11 @@ const epic = (action$, state$) => action$.pipe(
 
     const networkSymbols = symbols[network];
 
+    const tokenRequests = networkSymbols.flatMap((s) => [
+      { type: types.tokenBalance.requested, payload: { symbol: s.symbol } },
+      { type: types.tokenAuthorization.requested, payload: { symbol: s.symbol } },
+    ]);
+
     return of(
       { type: types.marketSymbols.changed, payload: networkSymbols },
 
@@ -19,9 +24,8 @@ const epic = (action$, state$) => action$.pipe(
       { type: types.flowOracle.requested },
       { type: types.flowMoneyMarket.requested },
 
-      // DAI
-      { type: types.daiBalance.requested },
-      { type: types.daiAuthorization.requested },
+      // Token
+      ...tokenRequests,
     );
   }),
 );

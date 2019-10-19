@@ -77,6 +77,7 @@ export const errorForegroundColor = theme('mode', {
 export const sideBarWidth = 300;
 
 // Font weight
+export const lightWeight = 150;
 export const normalWeight = 300;
 export const boldWeight = 600;
 export const blackWeight = 900;

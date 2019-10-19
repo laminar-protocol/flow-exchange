@@ -6,6 +6,7 @@ import {
   Text, Separator, Panel, PrimaryButton,
 } from 'components';
 import * as theme from 'theme';
+import { fromWei } from 'helpers/unitHelper';
 
 import CurrencyInput from './currencyInput';
 
@@ -84,7 +85,7 @@ const ExchangeIcon = styled.div`
 `;
 
 const Component = ({
-  market, swap, onFromSymbolChange, onToSymbolChange, onFromAmountChange, onSwap,
+  token, market, swap, onFromSymbolChange, onToSymbolChange, onFromAmountChange, onSwap,
 }) => {
   const availableSymbols = market.symbols.map((s) => s.symbol);
 
@@ -105,6 +106,7 @@ const Component = ({
               onCurrencyChange={(e) => { onFromSymbolChange(e); }}
               onAmountChange={(e) => { onFromAmountChange(e.target.value); }}
               disabled={swap.isSwapping}
+              requireAuthorization
             />
             <Validation>
               <ValidationText size="s">&nbsp;</ValidationText>

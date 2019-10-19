@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
+
 import {
   Text, TextCell, NumberFormat,
 } from 'components';
 import { fromWei } from 'helpers/unitHelper';
+import { getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
-const Component = ({ dai, onDaiBalanceQuery }) => {
-  const {
-    balance,
-    isQueryingBalance,
-  } = dai;
+const Component = ({ token, onBalanceQuery }) => {
+  const balance = getBalance('dai', token);
+  const isQueryingBalance = getIsQueryingBalance('dai', token);
 
   useEffect(() => {
-    onDaiBalanceQuery();
-  }, [onDaiBalanceQuery]);
+    onBalanceQuery('dai');
+  }, [onBalanceQuery]);
 
   return (
     <TextCell header="Balance" accessory="dollar-sign" loading={isQueryingBalance}>
