@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 
 const reducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
-    case types.symbols.changed:
+    case types.marketSymbols.changed:
       return {
         ...state,
         symbols: payload,

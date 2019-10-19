@@ -13,7 +13,13 @@ const epic = (action$, state$) => action$.pipe(
     const networkSymbols = symbols[network];
 
     return of(
-      { type: types.symbols.changed, payload: networkSymbols },
+      { type: types.marketSymbols.changed, payload: networkSymbols },
+
+      // Flow
+      { type: types.flowOracle.requested },
+      { type: types.flowMoneyMarket.requested },
+
+      // DAI
       { type: types.daiBalance.requested },
       { type: types.daiAuthorization.requested },
     );

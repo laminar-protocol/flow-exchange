@@ -15,13 +15,17 @@ const actionTypes = {
   theme: changedActionTypes('theme'),
 
   // Symbols
-  symbols: changedActionTypes('symbols'),
+  marketSymbols: changedActionTypes('market_symbols'),
 
   // Ethereum
   ethereumModalOpen: changedActionTypes('ethereum_modal_open'),
   ethereumModalClose: changedActionTypes('ethereum_modal_close'),
   ethereumEnable: apiActionTypes('ethereum_enable'),
   ethereumNetwork: apiActionTypes('ethereum_nework'),
+
+  // Flow
+  flowMoneyMarket: apiActionTypes('flow_money_market'),
+  flowOracle: apiActionTypes('flow_oracle'),
 
   // DAI
   daiBalance: apiActionTypes('dai_balance'),

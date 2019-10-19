@@ -21,6 +21,11 @@ export const sideBarColor = theme('mode', {
 });
 
 // Border colors
+export const darkBorderColor = theme('mode', {
+  light: '#c6c6cb',
+  dark: 'rgba(255, 255, 255, 0.20)',
+});
+
 export const borderColor = theme('mode', {
   light: '#e6e6eb',
   dark: 'rgba(255, 255, 255, 0.10)',
@@ -58,12 +63,15 @@ export const fadeForegroundColor = theme('mode', {
   dark: 'rgba(255, 255, 255, 0.35)',
 });
 
-
 export const whiteForegroundColor = theme('mode', {
   light: '#fff',
-  dark: '#fff',
+  dark: 'rgba(255, 255, 255, 0.05)',
 });
 
+export const errorForegroundColor = theme('mode', {
+  light: '#c00',
+  dark: 'rgba(255, 0, 0, 1)',
+});
 
 // Side bar
 export const sideBarWidth = 300;

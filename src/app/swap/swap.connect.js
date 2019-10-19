@@ -3,8 +3,8 @@ import types from 'types';
 
 import Component from './swap';
 
-const mapStateToProps = ({ symbols, swap }) => ({
-  symbols,
+const mapStateToProps = ({ market, swap }) => ({
+  market,
   swap,
 });
 

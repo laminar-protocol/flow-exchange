@@ -7,7 +7,7 @@ import { contractAddress } from 'config';
 
 const epic = (action$, state$) => action$.pipe(
   ofType(types.ethereumNetwork.requested),
-  filter(() => state$.value.ethereum.isConnected === true),
+  filter(() => state$.value.ethereum.isEnabled === true),
   mergeMap(async () => {
     try {
       const network = await ethereum.ethProvider.eth.net.getNetworkType();

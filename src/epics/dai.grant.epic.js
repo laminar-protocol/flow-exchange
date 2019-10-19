@@ -8,9 +8,13 @@ const epic = (action$, state$) => action$.pipe(
   ofType(types.daiGrant.requested),
   mergeMap(async (action) => {
     try {
-      const { value: { ethereum: { account, flowContract } } } = state$;
+      const {
+        value: {
+          ethereum: { account, contracts: { flow } },
+        },
+      } = state$;
       const amount = action.payload;
-      const success = await ethereum.daiContract.methods.approve(flowContract, amount).send({ from: account });
+      const success = await ethereum.daiContract.methods.approve(flow, amount).send({ from: account });
 
       return { type: types.daiGrant.completed, payload: success };
     } catch {

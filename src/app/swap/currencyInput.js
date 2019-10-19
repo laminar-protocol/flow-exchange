@@ -1,58 +1,54 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Input, Select } from 'antd';
+
+import { CurrencySelect, Input } from 'components';
 
 const InputGroup = Input.Group;
-const { Option } = Select;
 
 const Container = styled.div`
-  margin-top: 0.5rem;
 `;
 
 const AmountInput = styled(Input)`
   &.ant-input {
-    width: 70% !important;
-    font-size: 2rem;
+    font-variant-numeric: tabular-nums;
+    width: 60% !important;
+    font-size: 1.75rem !important;
     height: 3.5rem !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
   }
 `;
 
-const CurrencySelect = styled(Select)`
-  &.ant-select {
-    width: 30%;
-    height: 3.5rem !important;
-  }
-
-  .ant-select-selection--single {
-    height: 3.5rem !important;
-  }
-
-  .ant-select-selection__rendered {
-    line-height: 3.5rem !important;
+const SymbolSelect = styled(CurrencySelect)`
+  display: block;
+  width: 40%;
+  .react-select__control {
+    height: 3.5rem;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 `;
 
-const options = (symbols) => {
-  if (symbols === null) {
-    return [];
+const options = (symbols, selected) => {
+  if (symbols) {
+    return symbols.map((symbol) => ({ symbol, isDisabled: symbol === selected }));
   }
-
-  return symbols.map((item) => (
-    <Select.Option key={item.value} value={item.value}>
-      {item.name}
-    </Select.Option>
-  ));
+  return [];
 };
 
 const Component = ({
-  className, disabled, symbols, selected, onCurrencyChange, onAmountChange,
+  className, disabled, symbols, disabledSymbol, selectedSymbol, onCurrencyChange, onAmountChange,
 }) => (
   <Container className={className}>
     <InputGroup compact>
       <AmountInput onChange={onAmountChange} disabled={disabled} />
-      <CurrencySelect onChange={onCurrencyChange} value={selected} disabled={disabled}>
-        { options(symbols) }
-      </CurrencySelect>
+      <SymbolSelect
+        options={options(symbols, disabledSymbol)}
+        onChange={(event) => { onCurrencyChange(event.symbol); }}
+        value={{ symbol: selectedSymbol }}
+        isDisabled={disabled}
+        isSearchable={false}
+      />
     </InputGroup>
   </Container>
 );

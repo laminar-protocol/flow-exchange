@@ -28,13 +28,17 @@ const indicatorStatus = (ethereum) => {
   const {
     isConnected,
     isConnecting,
+    isEnabling,
   } = ethereum;
-  if (isConnecting) {
+
+  if (isConnecting || isEnabling) {
     return 'yellow';
   }
+
   if (isConnected) {
     return 'green';
   }
+
   return 'gray';
 };
 
@@ -42,8 +46,9 @@ const networkStatus = (ethereum) => {
   const {
     isConnected,
     isConnecting,
+    isEnabling,
   } = ethereum;
-  if (isConnecting) {
+  if (isConnecting || isEnabling) {
     return 'Connecting';
   }
   if (isConnected) {

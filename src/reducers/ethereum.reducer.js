@@ -6,27 +6,20 @@ const INITIAL_STATE = {
 
   contracts: {},
 
-  daiContract: null,
-  flowContract: null,
-  eurContract: null,
-  jpyContract: null,
-  poolContract: null,
-
   isTestnet: false,
 
+  isEnabling: false,
   isConnecting: false,
+
+  isEnabled: false,
   isConnected: false,
+
   isConnectModalActive: false,
 };
 
 const parseNetwork = (payload) => ({
   network: payload.network,
   isTestnet: (payload.network !== 'main'),
-  daiContract: payload.addresses.dai,
-  flowContract: payload.addresses.flow,
-  eurContract: payload.addresses.eur,
-  jpyContract: payload.addresses.jpy,
-  poolContract: payload.addresses.fallbackPool,
   contracts: {
     dai: payload.addresses.dai,
     flow: payload.addresses.flow,
@@ -48,30 +41,45 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         isConnectModalActive: false,
       };
+
     case types.ethereumEnable.requested:
       return {
         ...state,
-        isConnecting: true,
+        isEnabling: true,
       };
     case types.ethereumEnable.failed:
       return {
         ...state,
-        isConnecting: false,
-        isConnected: false,
+        isEnabling: false,
+        isEnabled: false,
         account: null,
       };
     case types.ethereumEnable.completed:
       return {
         ...state,
-        isConnecting: false,
-        isConnected: true,
+        isEnabling: false,
+        isEnabled: true,
         account: payload,
+      };
+
+    case types.ethereumNetwork.requested:
+      return {
+        ...state,
+        isConnecting: true,
+      };
+    case types.ethereumNetwork.failed:
+      return {
+        ...state,
+        isConnecting: false,
+        isConnected: false,
       };
 
     case types.ethereumNetwork.completed:
       return {
         ...state,
         ...parseNetwork(payload),
+        isConnecting: false,
+        isConnected: true,
       };
     default:
       return state;
