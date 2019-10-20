@@ -22,8 +22,16 @@ const mapDispatchToProps = (dispatch) => ({
   onToAmountChange: (amount) => {
     dispatch({ type: types.swapToAmount.changed, payload: amount });
   },
-  onSwap: () => {
-    dispatch({ type: types.swap.requested });
+  onSwapSymbol: (fromSymbol, toSymbol) => {
+    dispatch({ type: types.swapFromSymbol.changed, payload: toSymbol });
+    dispatch({ type: types.swapToSymbol.changed, payload: fromSymbol });
+  },
+  onSwap: (isRedeem) => {
+    if (isRedeem) {
+      dispatch({ type: types.swapRedeem.requested });
+    } else {
+      dispatch({ type: types.swapMint.requested });
+    }
   },
 });
 

@@ -108,6 +108,7 @@ const Component = ({
   onFromAmountChange,
   onToAmountChange,
   onSwap,
+  onSwapSymbol,
 }) => {
   // Attributes
   const availableSymbols = getSymbols(market.symbols).map((s) => s.symbol);
@@ -169,7 +170,7 @@ const Component = ({
             </Validation>
           </Currency>
           <Divider>
-            <ExchangeIcon>
+            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol); }}>
               <FontAwesomeIcon icon="chevron-right" className="normalIcon" />
               <FontAwesomeIcon icon="exchange-alt" className="swapIcon" />
             </ExchangeIcon>
@@ -202,7 +203,7 @@ const Component = ({
           <PrimaryButton
             size="large"
             loading={isSwapping}
-            onClick={() => { onSwap(); }}
+            onClick={() => { onSwap(isRedeem); }}
             disabled={!swapEnabled}
           >
             Exchange

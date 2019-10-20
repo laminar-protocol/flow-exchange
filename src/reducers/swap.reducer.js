@@ -1,9 +1,10 @@
 import types from 'types';
 import validate from 'validate.js';
+import { isEmpty, pathOr } from 'ramda';
+
 import { parseRate } from 'reducers/spotRate.reducer';
 import { fromWei } from 'helpers/unitHelper';
 
-import { isEmpty } from 'ramda';
 
 const INITIAL_STATE = {
   fromSymbol: 'dai',
@@ -36,6 +37,14 @@ const parseExchangeRate = (rate, fromSymbol, toSymbol) => {
     return parseRate(rate);
   }
   return {};
+};
+
+const parseRedeem = (symbols, fromToken) => {
+  const isBase = pathOr(false, [fromToken, 'isBase'], symbols);
+  if (isBase) {
+    return false;
+  }
+  return true;
 };
 
 const valdiationResult = (state) => {
@@ -79,6 +88,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
       return {
         ...state,
         rate: {},
+        isRedeem: parseRedeem(state.symbols, payload),
         fromSymbol: payload,
       };
     case types.swapToSymbol.changed:
@@ -98,17 +108,22 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
         toAmount: payload,
       };
 
-    case types.swap.requested:
+    case types.swapMint.requested:
+    case types.swapRedeem.requested:
       return {
         ...state,
         isSwapping: true,
       };
-    case types.swap.failed:
+
+    case types.swapMint.failed:
+    case types.swapRedeem.failed:
       return {
         ...state,
         isSwapping: false,
       };
-    case types.swap.completed:
+
+    case types.swapMint.completed:
+    case types.swapRedeem.completed:
       return {
         ...state,
         isSwapping: false,

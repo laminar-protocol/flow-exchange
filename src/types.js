@@ -38,7 +38,8 @@ const actionTypes = {
   swapFromAmount: changedActionTypes('swap_from_amount'),
   swapToAmount: changedActionTypes('swap_to_amount'),
   swapValidation: changedActionTypes('swap_validation'),
-  swap: apiActionTypes('swap'),
+  swapMint: apiActionTypes('swap_mint'),
+  swapRedeem: apiActionTypes('swap_redeem'),
 
   // Spot exchange rate
   spotRate: apiActionTypes('spot_rate'),
