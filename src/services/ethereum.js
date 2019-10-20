@@ -12,15 +12,21 @@ class Ethereum {
     this.ethProvider = new Web3(window.ethereum);
   }
 
-  prepareContract(addresses) {
-    this.addresses = addresses;
-    if (this.addresses !== null) {
-      this.flowContract = new this.ethProvider.eth.Contract(FLOW_ABI, this.addresses.flow);
-      this.poolContract = new this.ethProvider.eth.Contract(POOL_ABI, this.addresses.fallbackPool);
+  prepareBaseContract(addresses) {
+    if (addresses !== null) {
+      this.flowContract = new this.ethProvider.eth.Contract(FLOW_ABI, addresses.flow);
+      this.poolContract = new this.ethProvider.eth.Contract(POOL_ABI, addresses.fallbackPool);
+    } else {
+      this.flowContract = null;
+      this.poolContract = null;
+    }
+  }
 
-      this.daiContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.dai);
-      this.eurContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.eur);
-      this.jpyContract = new this.ethProvider.eth.Contract(ERC20_ABI, this.addresses.jpy);
+  prepareTokenContract(addresses) {
+    if (addresses !== null) {
+      this.daiContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.dai.contract);
+      this.eurContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.eur.contract);
+      this.jpyContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.jpy.contract);
 
       this.tokenContracts = {
         dai: this.daiContract,
@@ -29,10 +35,8 @@ class Ethereum {
       };
     } else {
       this.daiContract = null;
-      this.flowContract = null;
       this.eurContract = null;
       this.jpyContract = null;
-      this.poolContract = null;
       this.tokenContracts = null;
     }
   }

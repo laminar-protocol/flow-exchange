@@ -1,11 +1,60 @@
 import types from 'types';
+import validate from 'validate.js';
 
 const INITIAL_STATE = {
   fromSymbol: 'dai',
   toSymbol: 'eur',
   fromAmount: 0,
   toAmount: 0,
+
+  rate: {},
+
   isSwapping: false,
+  isValid: true,
+  validationErrors: {},
+};
+
+const parseRate = (rate, fromSymbol, toSymbol) => {
+  const { symbol } = rate;
+  if ((fromSymbol === symbol) || (toSymbol === symbol)) {
+    return { rate };
+  }
+  return null;
+};
+
+const valdiationResult = (state) => {
+  const {
+    fromAmount,
+    toAmount,
+  } = state;
+  const attributes = { fromAmount, toAmount };
+  const constraints = {
+    fromAmount: {
+      presence: true,
+      numericality: {
+        greaterThan: 0,
+      },
+    },
+    toAmount: {
+      presence: {
+        allowEmpty: true,
+      },
+      numericality: {
+        greaterThanOrEqualTo: 0,
+      },
+    },
+  };
+  const result = validate(attributes, constraints);
+  if (result) {
+    return {
+      isValid: false,
+      validationErrors: result,
+    };
+  }
+  return {
+    isValid: true,
+    validationErrors: {},
+  };
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -46,6 +95,19 @@ const reducer = (state = INITIAL_STATE, { type, payload }) => {
         ...state,
         isSwapping: false,
       };
+
+    case types.swapValidation.changed:
+      return {
+        ...state,
+        ...valdiationResult(state),
+      };
+
+    case types.spotRate.completed:
+      return {
+        ...state,
+        ...parseRate(payload, state.fromSymbol, state.toSymbol),
+      };
+
     default:
       return state;
   }

@@ -10,18 +10,22 @@ const epic = (action$, state$) => action$.pipe(
     try {
       const {
         value: {
-          ethereum: {
-            contracts,
+          market: {
+            symbols,
           },
         },
       } = state$;
 
       const symbol = action.payload;
-      const token = contracts[action.payload];
+      const token = symbols[symbol];
 
-      const price = await ethereum.oracleContract.methods.getPrice(token).call();
-      const bidSpread = await ethereum.poolContract.methods.getBidSpread(token).call();
-      const askSpread = await ethereum.poolContract.methods.getAskSpread(token).call();
+      if (token && token.isBase) {
+        return { type: types.spotRate.failed };
+      }
+
+      const price = await ethereum.oracleContract.methods.getPrice(token.contract).call();
+      const bidSpread = await ethereum.poolContract.methods.getBidSpread(token.contract).call();
+      const askSpread = await ethereum.poolContract.methods.getAskSpread(token.contract).call();
 
       return {
         type: types.spotRate.completed,

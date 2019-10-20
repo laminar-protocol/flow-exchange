@@ -26,6 +26,7 @@
     "styled-media-query": "^2.1.2",
     "styled-theming": "^2.2.0",
     "truncate-middle": "^1.0.6",
+    "validate.js": "^0.13.1",
     "web3": "^1.2.1"
   },
   "scripts": {

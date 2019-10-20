@@ -3,7 +3,7 @@ import { ofType } from 'redux-observable';
 
 import ethereum from 'services/ethereum';
 import types from 'types';
-import { contractAddress } from 'config';
+import { contracts, symbols } from 'config';
 
 const epic = (action$, state$) => action$.pipe(
   ofType(types.ethereumNetwork.requested),
@@ -11,10 +11,15 @@ const epic = (action$, state$) => action$.pipe(
   mergeMap(async () => {
     try {
       const network = await ethereum.ethProvider.eth.net.getNetworkType();
-      const addresses = contractAddress[network];
-      if (addresses !== null) {
-        ethereum.prepareContract(addresses);
-        return { type: types.ethereumNetwork.completed, payload: { network, addresses } };
+      const contractAddresses = contracts[network];
+      const symbolAddresses = symbols[network];
+      if (contractAddresses !== null && symbolAddresses != null) {
+        ethereum.prepareBaseContract(contractAddresses);
+        ethereum.prepareTokenContract(symbolAddresses);
+        return {
+          type: types.ethereumNetwork.completed,
+          payload: { network, addresses: contractAddresses },
+        };
       }
       return { type: types.ethereumNetwork.failed };
     } catch {

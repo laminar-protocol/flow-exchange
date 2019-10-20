@@ -11,16 +11,21 @@ const epic = (action$, state$) => action$.pipe(
     try {
       const {
         value: {
-          ethereum: { account, contracts },
-          swap: { fromSymbol, fromAmount, toSymbol },
+          ethereum: {
+            account,
+            contracts: {
+              pool,
+            },
+          },
+          market: { symbols },
+          swap: { fromAmount, toSymbol },
         },
       } = state$;
 
-      const toContract = contracts[toSymbol];
-      const { pool } = contracts;
+      const to = symbols[toSymbol];
       const fromAmountWei = toWei(fromAmount);
 
-      const success = await ethereum.flowContract.methods.mint(toContract, pool, fromAmountWei).send({ from: account });
+      const success = await ethereum.flowContract.methods.mint(to.contract, pool, fromAmountWei).send({ from: account });
 
       return { type: types.swap.completed, payload: success };
     } catch {

@@ -4,8 +4,10 @@ import types from 'types';
 import Component from './swap';
 
 const mapStateToProps = ({
-  market, swap, token,
-}) => ({ token, market, swap });
+  market, swap, spotRate,
+}) => ({
+  market, swap, spotRate,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   onFromSymbolChange: (symbol) => {
@@ -16,6 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onFromAmountChange: (amount) => {
     dispatch({ type: types.swapFromAmount.changed, payload: amount });
+  },
+  onToAmountChange: (amount) => {
+    dispatch({ type: types.swapToAmount.changed, payload: amount });
   },
   onSwap: () => {
     dispatch({ type: types.swap.requested });

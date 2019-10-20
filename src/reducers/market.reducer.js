@@ -1,7 +1,17 @@
 import types from 'types';
 
 const INITIAL_STATE = {
-  symbols: [],
+  symbols: {},
+};
+
+export const getSymbols = (symbols) => {
+  if (!symbols) {
+    return [];
+  }
+  return Object.keys(symbols).map((key) => ({
+    symbol: key,
+    ...symbols[key],
+  }));
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload }) => {

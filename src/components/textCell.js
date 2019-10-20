@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Spinner } from 'components';
 import * as theme from 'theme';
 
 import Text from './text';
 import Panel from './panel';
+import Spinner from './spinner';
 
 
 const Header = styled.div`
@@ -28,6 +28,12 @@ const Accessory = styled.div`
   margin-right: 1rem;
 `;
 
+const AccessorySpinner = styled(Spinner)`
+  &.ant-spin {
+    color: ${theme.fadeForegroundColor};
+  }
+`;
+
 const AccessoryIcon = styled(FontAwesomeIcon)`
   color: ${theme.fadeForegroundColor};
 `;
@@ -42,14 +48,13 @@ const Container = styled(Panel)`
   }
 `;
 
-
 const Component = ({
   radius, padding, header, accessory, loading, children,
 }) => (
   <Container radius={radius} padding={padding}>
     <Accessory>
       {(accessory && !loading) && <AccessoryIcon icon={accessory} size="2x" />}
-      { loading && <Spinner /> }
+      { loading && <AccessorySpinner /> }
     </Accessory>
 
     <Content>

@@ -10,15 +10,16 @@ const epic = (action$, state$) => action$.pipe(
   mergeMap(() => {
     const { value: { ethereum: { network } } } = state$;
 
-    const networkSymbols = symbols[network];
+    const availableSymbols = symbols[network];
+    const keys = Object.keys(availableSymbols);
 
-    const tokenRequests = networkSymbols.flatMap((s) => [
-      { type: types.tokenBalance.requested, payload: { symbol: s.symbol } },
-      { type: types.tokenAuthorization.requested, payload: { symbol: s.symbol } },
+    const tokenRequests = keys.flatMap((key) => [
+      { type: types.tokenBalance.requested, payload: { symbol: key } },
+      { type: types.tokenAuthorization.requested, payload: { symbol: key } },
     ]);
 
     return of(
-      { type: types.marketSymbols.changed, payload: networkSymbols },
+      { type: types.marketSymbols.changed, payload: availableSymbols },
 
       // Flow
       { type: types.flowOracle.requested },

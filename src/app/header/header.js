@@ -42,7 +42,7 @@ const LoogText = styled.div`
   background-clip: text;
 `;
 
-const Component = ({ setting, onChangeTheme }) => (
+const Component = () => (
   <Header>
     <LogoContainer>
       <Logo src={LaminarLogo} />

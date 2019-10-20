@@ -8,13 +8,12 @@ import * as theme from 'theme';
 const LoadingIcon = <Icon type="loading" spin />;
 const SpinIcon = styled(Spin)`
   &.ant-spin {
-    color: ${theme.fadeForegroundColor};
+    color: ${theme.foregroundColor};
   }
 `;
 
-
-const Component = ({ className }) => (
-  <SpinIcon indicator={LoadingIcon} className={className} />
+const Component = ({ className, loading }) => (
+  <SpinIcon indicator={LoadingIcon} className={className} spinning={loading} />
 );
 
 export default Component;

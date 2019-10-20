@@ -5,11 +5,10 @@ import { ofType } from 'redux-observable';
 import types from 'types';
 
 const epic = (action$) => action$.pipe(
-  ofType(types.tokenGrant.completed),
-  mergeMap((action) => of({
-    type: types.tokenAuthorization.requested,
-    payload: { symbol: action.sybmol },
-  })),
+  ofType(types.swapFromAmount.changed, types.swapToAmount.changed),
+  mergeMap(() => of(
+    { type: types.swapValidation.changed },
+  )),
 );
 
 export default epic;

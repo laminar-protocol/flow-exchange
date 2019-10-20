@@ -18,7 +18,7 @@ const accountName = (ethereum) => {
 const Component = ({
   ethereum, onWalletConnect,
 }) => (
-  <MenuItem icon="wallet" noRoute onClick={() => onWalletConnect(ethereum)}>
+  <MenuItem icon="wallet" noRoute onClick={() => onWalletConnect()}>
     <div>Wallet</div>
     <div>
       <Text size="s" light>

@@ -37,6 +37,7 @@ const actionTypes = {
   swapToSymbol: changedActionTypes('swap_to_symbol'),
   swapFromAmount: changedActionTypes('swap_from_amount'),
   swapToAmount: changedActionTypes('swap_to_amount'),
+  swapValidation: changedActionTypes('swap_validation'),
   swap: apiActionTypes('swap'),
 
   // Spot exchange rate

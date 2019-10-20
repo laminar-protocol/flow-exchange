@@ -14,6 +14,13 @@ const Component = styled(Button)`
     border: 0;
     font-weight: ${theme.boldWeight};
   }
+
+  &.ant-btn[disabled],
+  &.ant-btn[disabled]:hover
+  {
+    opacity: 0.75;
+    color: #fff;
+  }
 `;
 
 export default Component;
