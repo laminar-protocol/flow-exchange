@@ -66,7 +66,7 @@ const Component = ({
   }
 
   return (
-    <Container className={className} onClick={() => { onGrant(symbol, !granted); }}>
+    <Container className={className} onClick={() => { onGrant(symbol, granted); }}>
       { loading ? <LockSpinner /> : <LockIcon icon="lock" /> }
       { !isQueryingAuthorization && <LockText light>Enable Trading</LockText> }
     </Container>

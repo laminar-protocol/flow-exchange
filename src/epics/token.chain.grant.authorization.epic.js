@@ -8,7 +8,7 @@ const epic = (action$) => action$.pipe(
   ofType(types.tokenGrant.completed),
   mergeMap((action) => of({
     type: types.tokenAuthorization.requested,
-    payload: { symbol: action.sybmol },
+    payload: { symbol: action.payload.symbol },
   })),
 );
 

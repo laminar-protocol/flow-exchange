@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { pathOr } from 'ramda';
+import { isEmpty } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
-  Text, Separator, Panel, PrimaryButton, Spinner,
+  Text, Separator, Panel, PrimaryButton, Spinner, NumberFormat,
 } from 'components';
 import * as theme from 'theme';
-import { fromWei } from 'helpers/unitHelper';
 import { getSymbols } from 'reducers/market.reducer';
+import { caculateRate } from 'reducers/swap.reducer';
 
 import CurrencyInput from './currencyInput';
 
@@ -96,6 +96,7 @@ const Detail = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  text-transform: uppercase;
 `;
 
 const Component = ({
@@ -114,6 +115,9 @@ const Component = ({
     fromSymbol,
     toSymbol,
     isValid,
+    rate,
+    isRedeem,
+    isSwapping,
     validationErrors,
   } = swap;
   const { isQuerying } = spotRate;
@@ -122,14 +126,21 @@ const Component = ({
 
   // Function
   const renderExchangeRate = () => {
-    return null;
-    // if (!fromToken || !toToken) {
-    //   return;
-    // }
+    if (isEmpty(rate)) {
+      return null;
+    }
 
-    // return (
-    //   <Text light>1{fromToken.symbol}=</Text>
-    // );
+    const exchangeRate = caculateRate(rate, isRedeem);
+
+    return (
+      <Text light>
+        <strong>1</strong>
+        {fromSymbol}
+        &nbsp;=&nbsp;
+        <strong><NumberFormat value={exchangeRate} noPrefix /></strong>
+        {toSymbol}
+      </Text>
+    );
   };
 
   return (
@@ -144,11 +155,11 @@ const Component = ({
             </Label>
             <CurrencyInput
               symbols={availableSymbols}
-              selectedSymbol={swap.fromSymbol}
-              disabledSymbol={swap.toSymbol}
+              selectedSymbol={fromSymbol}
+              disabledSymbol={toSymbol}
               onCurrencyChange={(e) => { onFromSymbolChange(e); }}
               onAmountChange={(e) => { onFromAmountChange(e.target.value); }}
-              disabled={swap.isSwapping}
+              disabled={isSwapping}
               requireAuthorization
             />
             <Validation>
@@ -169,11 +180,11 @@ const Component = ({
             </Label>
             <CurrencyInput
               symbols={availableSymbols}
-              selectedSymbol={swap.toSymbol}
-              disabledSymbol={swap.fromSymbol}
+              selectedSymbol={toSymbol}
+              disabledSymbol={fromSymbol}
               onCurrencyChange={(e) => { onToSymbolChange(e); }}
               onAmountChange={(e) => { onToAmountChange(e.target.value); }}
-              disabled={swap.isSwapping}
+              disabled={isSwapping}
             />
             <Validation>
               <ValidationText size="s">
@@ -185,12 +196,12 @@ const Component = ({
         <Separator />
         <ActionBar>
           <Detail>
-            <Spinner loading={isLoading} />
+            {isLoading && <Spinner loading={isLoading} /> }
             {!isLoading && renderExchangeRate() }
           </Detail>
           <PrimaryButton
             size="large"
-            loading={swap.isSwapping}
+            loading={isSwapping}
             onClick={() => { onSwap(); }}
             disabled={!swapEnabled}
           >

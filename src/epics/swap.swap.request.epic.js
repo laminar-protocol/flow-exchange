@@ -25,7 +25,8 @@ const epic = (action$, state$) => action$.pipe(
       const to = symbols[toSymbol];
       const fromAmountWei = toWei(fromAmount);
 
-      const success = await ethereum.flowContract.methods.mint(to.contract, pool, fromAmountWei).send({ from: account });
+      const method = ethereum.flowContract.methods.mint(to.contract, pool, fromAmountWei);
+      const success = await method.send({ from: account });
 
       return { type: types.swap.completed, payload: success };
     } catch {

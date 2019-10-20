@@ -1,8 +1,17 @@
 import React from 'react';
 import NumberFormat from 'react-number-format';
 
-const Component = ({ value, children }) => (
-  <NumberFormat value={value} displayType="text" thousandSeparator prefix="$" decimalScale={2} fixedDecimalScale>
+const Component = ({
+  value, noPrefix, prefix, children,
+}) => (
+  <NumberFormat
+    value={value}
+    displayType="text"
+    thousandSeparator
+    prefix={noPrefix ? null : (prefix || '$')}
+    decimalScale={2}
+    fixedDecimalScale
+  >
     { children }
   </NumberFormat>
 );

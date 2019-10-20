@@ -50,7 +50,7 @@ const Component = ({
         <Switch
           checked={granted}
           disabled={isQueryingAuthorization || isGranting}
-          onClick={() => { onGrant(symbol, !granted); }}
+          onClick={() => { onGrant(symbol, granted); }}
         />
       </Grant>
     </TextCell>

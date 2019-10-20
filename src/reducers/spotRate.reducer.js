@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   isQuerying: false,
 };
 
-const parseRate = (rate) => {
+export const parseRate = (rate) => {
   const price = toBN(rate.price);
   const askSpread = toBN(rate.askSpread);
   const bidSpread = toBN(rate.bidSpread);
