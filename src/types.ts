@@ -1,3 +1,4 @@
+import { Dispatch } from 'redux';
 import getActionTypeCreators from 'helpers/typeCreator';
 
 const ACTION_TYPES_NAME_SPACE = 'LF_EXCHANGE';

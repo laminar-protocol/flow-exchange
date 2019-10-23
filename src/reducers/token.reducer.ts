@@ -1,21 +1,24 @@
+import { DeepReadonly } from 'utility-types';
+
 import types from 'types';
 
 const INITIAL_STATE = {
-  balances: {},
-  authorizations: {},
-  isQueryingBalance: {},
-  isQueryingAuthorization: {},
-  isGranting: {},
+  balances: {} as any,
+  authorizations: {} as any,
+  isQueryingBalance: {} as any,
+  isQueryingAuthorization: {} as any,
+  isGranting: {} as any,
 };
 
-export const getAuthorization = (symbol, state) => state.authorizations[symbol];
-export const getBalance = (symbol, state) => state.balances[symbol];
-export const getIsQueryingBalance = (symbol, state) => state.isQueryingBalance[symbol];
-export const getIsQueryingAuthorization = (symbol, state) => state.isQueryingAuthorization[symbol];
-export const getIsGranting = (symbol, state) => state.isGranting[symbol];
+export type State = DeepReadonly<typeof INITIAL_STATE>;
 
+export const getAuthorization = (symbol: string, state: State) => state.authorizations[symbol];
+export const getBalance = (symbol: string, state: State) => state.balances[symbol];
+export const getIsQueryingBalance = (symbol: string, state: State) => state.isQueryingBalance[symbol];
+export const getIsQueryingAuthorization = (symbol: string, state: State) => state.isQueryingAuthorization[symbol];
+export const getIsGranting = (symbol: string, state: State) => state.isGranting[symbol];
 
-const reducer = (state = INITIAL_STATE, { type, payload }) => {
+const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
     case types.tokenBalance.requested:
       return {

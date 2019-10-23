@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import * as theme from 'theme';
 
-const Component = styled.span`
+interface Props {
+  size?: 's' | 'l' | 't' | 'h';
+  weight?: 'bold' | 'black';
+  light?: boolean;
+}
+
+const Text = styled.span<Props>`
   font-size: ${(props) => {
     switch (props.size) {
       case 's':
@@ -29,4 +35,4 @@ const Component = styled.span`
   color: ${(props) => (props.light ? theme.lightForegroundColor : theme.foregroundColor)};
 `;
 
-export default Component;
+export default Text;

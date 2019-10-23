@@ -41,6 +41,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
   },
   settings: {

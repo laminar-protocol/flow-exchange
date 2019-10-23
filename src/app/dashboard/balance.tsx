@@ -4,9 +4,14 @@ import {
   Text, TextCell, NumberFormat,
 } from 'components';
 import { fromWei } from 'helpers/unitHelper';
-import { getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
+import { State, getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
-const Component = ({ token, onBalanceQuery }) => {
+interface Props {
+  token: State;
+  onBalanceQuery: (symbol: string) => void;
+}
+
+const Balance: React.FC<Props> = ({ token, onBalanceQuery }) => {
   const balance = getBalance('DAI', token);
   const isQueryingBalance = getIsQueryingBalance('DAI', token);
 
@@ -23,4 +28,4 @@ const Component = ({ token, onBalanceQuery }) => {
   );
 };
 
-export default Component;
+export default Balance;
