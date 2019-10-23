@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-import { abi, symbols } from 'config';
+import { abi } from 'config';
 
 class Ethereum {
   constructor() {
@@ -54,7 +54,7 @@ class Ethereum {
   }
 
   getTokenContract(symbol) {
-    return this.tokenContracts[symbol] || this.tokenContracts[symbols[symbol]];
+    return this.tokenContracts[symbol];
   }
 }
 
