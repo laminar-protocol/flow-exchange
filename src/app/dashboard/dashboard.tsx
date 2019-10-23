@@ -24,14 +24,14 @@ const Component = () => (
     <Text size="h">Dashboard</Text>
     <Separator />
     <TokenStatus>
-      <Balance symbol="DAI"/>
+      <Balance symbol="DAI" />
       <Grant />
     </TokenStatus>
     <TokenStatus>
-      <Balance symbol="EUR"/>
+      <Balance symbol="EUR" />
     </TokenStatus>
     <TokenStatus>
-      <Balance symbol="JPY"/>
+      <Balance symbol="JPY" />
     </TokenStatus>
   </Container>
 );
