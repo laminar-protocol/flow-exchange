@@ -70,11 +70,11 @@ const Option = ({ innerProps, data }) => (
 // Custom Symbol Display
 const symbolIcon = (symbol) => {
   switch (symbol) {
-    case 'dai':
+    case 'DAI':
       return 'dollar-sign';
-    case 'eur':
+    case 'EUR':
       return 'euro-sign';
-    case 'jpy':
+    case 'JPY':
       return 'yen-sign';
     default:
       return 'money-bill';
@@ -83,11 +83,11 @@ const symbolIcon = (symbol) => {
 
 const symbolName = (symbol) => {
   switch (symbol) {
-    case 'dai':
+    case 'DAI':
       return 'DAI';
-    case 'eur':
+    case 'EUR':
       return 'Euro';
-    case 'jpy':
+    case 'JPY':
       return 'Yen';
     default:
       return symbol;

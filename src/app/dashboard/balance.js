@@ -7,11 +7,11 @@ import { fromWei } from 'helpers/unitHelper';
 import { getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
 const Component = ({ token, onBalanceQuery }) => {
-  const balance = getBalance('dai', token);
-  const isQueryingBalance = getIsQueryingBalance('dai', token);
+  const balance = getBalance('DAI', token);
+  const isQueryingBalance = getIsQueryingBalance('DAI', token);
 
   useEffect(() => {
-    onBalanceQuery('dai');
+    onBalanceQuery('DAI');
   }, [onBalanceQuery]);
 
   return (

@@ -14,11 +14,12 @@ const epic = (action$, state$) => action$.pipe(
           ethereum: { account, contracts: { flow } },
         },
       } = state$;
-      const contract = ethereum.tokenContracts[symbol];
+      const contract = ethereum.getTokenContract(symbol);
       await contract.methods.approve(flow, balance).send({ from: account });
 
       return { type: types.tokenGrant.completed, payload: { symbol } };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return { type: types.tokenGrant.failed, payload: { symbol } };
     }
   }),

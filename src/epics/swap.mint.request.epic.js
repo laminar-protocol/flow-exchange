@@ -17,19 +17,19 @@ const epic = (action$, state$) => action$.pipe(
               pool,
             },
           },
-          market: { symbols },
           swap: { fromAmount, toSymbol },
         },
       } = state$;
 
-      const to = symbols[toSymbol];
+      const to = ethereum.getTokenContract(toSymbol);
       const fromAmountWei = toWei(fromAmount);
 
-      const method = ethereum.flowContract.methods.mint(to.contract, pool, fromAmountWei);
+      const method = ethereum.flowContract.methods.mint(to.options.address, pool, fromAmountWei);
       const success = await method.send({ from: account });
 
       return { type: types.swapMint.completed, payload: success };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return { type: types.swapMint.failed };
     }
   }),

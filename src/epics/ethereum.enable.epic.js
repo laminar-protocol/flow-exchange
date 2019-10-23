@@ -10,7 +10,8 @@ const epic = (action$) => action$.pipe(
     try {
       const accounts = await ethereum.ethWeb3.enable();
       return { type: types.ethereumEnable.completed, payload: accounts[0] };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return { type: types.ethereumEnable.failed };
     }
   }),

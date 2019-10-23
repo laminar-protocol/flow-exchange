@@ -1,25 +1,22 @@
 import { of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-import { symbols } from 'config';
+import { tokens } from 'config';
 
 import types from 'types';
 
-const epic = (action$, state$) => action$.pipe(
+const epic = (action$) => action$.pipe(
   ofType(types.ethereumNetwork.completed),
   mergeMap(() => {
-    const { value: { ethereum: { network } } } = state$;
+    const values = Object.values(tokens);
 
-    const availableSymbols = symbols[network];
-    const keys = Object.keys(availableSymbols);
-
-    const tokenRequests = keys.flatMap((key) => [
+    const tokenRequests = values.flatMap(({ symbol: key }) => [
       { type: types.tokenBalance.requested, payload: { symbol: key } },
       { type: types.tokenAuthorization.requested, payload: { symbol: key } },
     ]);
 
     return of(
-      { type: types.marketSymbols.changed, payload: availableSymbols },
+      { type: types.marketSymbols.changed, payload: tokens },
 
       // Flow
       { type: types.flowOracle.requested },

@@ -25,7 +25,7 @@ const GrantHeader = styled.div`
 const Component = ({
   token, onAuthorizationQuery, onGrant,
 }) => {
-  const symbol = 'dai';
+  const symbol = 'DAI';
   const authorization = getAuthorization(symbol, token);
   const isGranting = getIsGranting(symbol, token);
   const isQueryingAuthorization = getIsQueryingAuthorization(symbol, token);
