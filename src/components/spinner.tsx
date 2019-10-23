@@ -17,7 +17,7 @@ interface Props {
   loading?: boolean;
 }
 
-const Spinner = ({ className, loading }: Props) => (
+const Spinner: React.FC<Props> = ({ className, loading }) => (
   <SpinIcon indicator={LoadingIcon} className={className} spinning={loading} />
 );
 

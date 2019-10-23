@@ -58,9 +58,9 @@ interface Props {
   className?: string;
 }
 
-const TextCell = ({
+const TextCell: React.FC<Props> = ({
   radius, padding, header, accessory, loading, children, className,
-}: Props) => (
+}) => (
   <Container radius={radius} padding={padding} className={className}>
     <Accessory>
       {(accessory && !loading) && <AccessoryIcon icon={accessory} size="2x" />}

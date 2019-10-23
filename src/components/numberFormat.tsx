@@ -8,9 +8,9 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const NumberFormat = ({
+const NumberFormat: React.FC<Props> = ({
   value, noPrefix, prefix, children,
-}: Props) => (
+}) => (
   <NumberFormatComp
     value={value}
     displayType="text"

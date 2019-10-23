@@ -6,21 +6,25 @@ import {
 import { fromWei } from 'helpers/unitHelper';
 import { State, getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
-interface Props {
+interface OwnProps {
+  symbol: string;
+}
+
+interface Props extends OwnProps {
   token: State;
   onBalanceQuery: (symbol: string) => void;
 }
 
-const Balance: React.FC<Props> = ({ token, onBalanceQuery }) => {
-  const balance = getBalance('DAI', token);
-  const isQueryingBalance = getIsQueryingBalance('DAI', token);
+const Balance: React.FC<Props> = ({ symbol, token, onBalanceQuery }) => {
+  const balance = getBalance(symbol, token);
+  const isQueryingBalance = getIsQueryingBalance(symbol, token);
 
   useEffect(() => {
-    onBalanceQuery('DAI');
-  }, [onBalanceQuery]);
+    onBalanceQuery(symbol);
+  }, [onBalanceQuery, symbol]);
 
   return (
-    <TextCell header="Balance" accessory="dollar-sign" loading={isQueryingBalance}>
+    <TextCell header={`${symbol} Balance`} accessory="dollar-sign" loading={isQueryingBalance}>
       <Text weight="bold" size="l">
         <NumberFormat value={fromWei(balance)} />
       </Text>

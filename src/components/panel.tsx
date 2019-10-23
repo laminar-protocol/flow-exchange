@@ -21,9 +21,9 @@ interface Props extends ContainerProps {
   children?: React.ReactNode;
 }
 
-const Panel = ({
+const Panel: React.FC<Props> = ({
   className, radius, padding, children,
-}: Props) => (
+}) => (
   <Container className={className} radius={radius} padding={padding}>
     { children }
   </Container>
