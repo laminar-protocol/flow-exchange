@@ -6,32 +6,49 @@ module.exports = {
   },
   extends: [
     'airbnb',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:import/typescript',
   ],
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018,
-    sourceType: 'module',
+    project: [
+      './tsconfig.json',
+    ]
   },
   plugins: [
     'react',
+    '@typescript-eslint',
+    'import',
+    'react-hooks',
   ],
   rules: {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/prop-types": [0],
-    "react/jsx-props-no-spreading": [0],
+    '@typescript-eslint/indent': ['error', 2],
+    indent: 'off', // required as 'off' by @typescript-eslint/indent
+    'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx', '.tsx'] }],
+    'react/prop-types': [0],
+    'react/jsx-props-no-spreading': [0],
     'max-len': ['error', { code: 150 }],
+    'spaced-comment': ['error', 'always', {
+      'markers': ['/'],
+    }],
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
   },
   settings: {
-    "import/resolver": {
-      "node": {
-        "paths": ["src"]
+    'import/resolver': {
+      node: {
+        paths: ['src']
+      },
+      typescript: {
+        directory: './tsconfig.json'
       }
     }
   },

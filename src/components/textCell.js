@@ -60,9 +60,9 @@ const Component = ({
     <Content>
       {
         header && (
-        <Header>
-          <Text size="s" light weight="bold">{header}</Text>
-        </Header>
+          <Header>
+            <Text size="s" light weight="bold">{header}</Text>
+          </Header>
         )
       }
       <Main>
