@@ -72,9 +72,9 @@ const symbolIcon = (symbol) => {
   switch (symbol) {
     case 'DAI':
       return 'dollar-sign';
-    case 'EUR':
+    case 'fEUR':
       return 'euro-sign';
-    case 'JPY':
+    case 'fJPY':
       return 'yen-sign';
     default:
       return 'money-bill';
@@ -85,9 +85,9 @@ const symbolName = (symbol) => {
   switch (symbol) {
     case 'DAI':
       return 'DAI';
-    case 'EUR':
+    case 'fEUR':
       return 'Euro';
-    case 'JPY':
+    case 'fJPY':
       return 'Yen';
     default:
       return symbol;
