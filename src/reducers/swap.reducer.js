@@ -7,8 +7,8 @@ import { fromWei } from 'helpers/unitHelper';
 
 
 const INITIAL_STATE = {
-  fromSymbol: 'dai',
-  toSymbol: 'eur',
+  fromSymbol: 'DAI',
+  toSymbol: 'EUR',
   fromAmount: 0,
   toAmount: 0,
 

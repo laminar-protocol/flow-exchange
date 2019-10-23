@@ -2,30 +2,25 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
+import { symbols, tokens } from 'config';
 import types from 'types';
 
-const epic = (action$, state$) => action$.pipe(
+const epic = (action$) => action$.pipe(
   ofType(types.spotRate.requested),
   mergeMap(async (action) => {
     try {
-      const {
-        value: {
-          market: {
-            symbols,
-          },
-        },
-      } = state$;
-
       const symbol = action.payload;
       const token = symbols[symbol];
 
-      if (token && token.isBase) {
+      if (token === tokens.baseToken.symbol) {
         return { type: types.spotRate.failed };
       }
 
-      const price = await ethereum.oracleContract.methods.getPrice(token.contract).call();
-      const bidSpread = await ethereum.poolContract.methods.getBidSpread(token.contract).call();
-      const askSpread = await ethereum.poolContract.methods.getAskSpread(token.contract).call();
+      const contract = ethereum.getTokenContract(token);
+
+      const price = await ethereum.oracleContract.methods.getPrice(contract.options.address).call();
+      const bidSpread = await ethereum.poolContract.methods.getBidSpread(contract.options.address).call();
+      const askSpread = await ethereum.poolContract.methods.getAskSpread(contract.options.address).call();
 
       return {
         type: types.spotRate.completed,
@@ -33,7 +28,8 @@ const epic = (action$, state$) => action$.pipe(
           symbol, price, bidSpread, askSpread,
         },
       };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return { type: types.spotRate.failed };
     }
   }),

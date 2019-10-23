@@ -17,19 +17,19 @@ const epic = (action$, state$) => action$.pipe(
               pool,
             },
           },
-          market: { symbols },
           swap: { fromAmount, fromSymbol },
         },
       } = state$;
 
-      const to = symbols[fromSymbol];
+      const from = ethereum.getTokenContract(fromSymbol);
       const fromAmountWei = toWei(fromAmount);
 
-      const method = ethereum.flowContract.methods.redeem(to.contract, pool, fromAmountWei);
+      const method = ethereum.flowContract.methods.redeem(from.options.address, pool, fromAmountWei);
       const success = await method.send({ from: account });
 
       return { type: types.swapRedeem.completed, payload: success };
-    } catch {
+    } catch (error) {
+      console.error(error);
       return { type: types.swapRedeem.failed };
     }
   }),

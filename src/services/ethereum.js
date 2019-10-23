@@ -1,10 +1,6 @@
 import Web3 from 'web3';
 
-import ERC20_ABI from 'abi/erc20.json';
-import FLOW_ABI from 'abi/flow.json';
-import ORACLE_ABI from 'abi/oracle.json';
-import MONEY_MARKET_ABI from 'abi/moneyMarket.json';
-import POOL_ABI from 'abi/lp.json';
+import { abi, symbols } from 'config';
 
 class Ethereum {
   constructor() {
@@ -14,8 +10,8 @@ class Ethereum {
 
   prepareBaseContract(addresses) {
     if (addresses !== null) {
-      this.flowContract = new this.ethProvider.eth.Contract(FLOW_ABI, addresses.flow);
-      this.poolContract = new this.ethProvider.eth.Contract(POOL_ABI, addresses.fallbackPool);
+      this.flowContract = new this.ethProvider.eth.Contract(abi.FlowProtocol, addresses.protocol);
+      this.poolContract = new this.ethProvider.eth.Contract(abi.LiquidityPoolInterface, addresses.pool);
     } else {
       this.flowContract = null;
       this.poolContract = null;
@@ -24,14 +20,14 @@ class Ethereum {
 
   prepareTokenContract(addresses) {
     if (addresses !== null) {
-      this.daiContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.dai.contract);
-      this.eurContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.eur.contract);
-      this.jpyContract = new this.ethProvider.eth.Contract(ERC20_ABI, addresses.jpy.contract);
+      this.daiContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.baseToken);
+      this.eurContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.fEUR);
+      this.jpyContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.fJPY);
 
       this.tokenContracts = {
-        dai: this.daiContract,
-        eur: this.eurContract,
-        jpy: this.jpyContract,
+        DAI: this.daiContract,
+        fEUR: this.eurContract,
+        fJPY: this.jpyContract,
       };
     } else {
       this.daiContract = null;
@@ -43,7 +39,7 @@ class Ethereum {
 
   prepareOracleContract(address) {
     if (address) {
-      this.oracleContract = new this.ethProvider.eth.Contract(ORACLE_ABI, address);
+      this.oracleContract = new this.ethProvider.eth.Contract(abi.PriceOracleInterface, address);
     } else {
       this.oracleContract = null;
     }
@@ -51,10 +47,14 @@ class Ethereum {
 
   prepareMoneyMarketContract(address) {
     if (address) {
-      this.moneyMarketContract = new this.ethProvider.eth.Contract(MONEY_MARKET_ABI, address);
+      this.moneyMarketContract = new this.ethProvider.eth.Contract(abi.MoneyMarket, address);
     } else {
       this.moneyMarketContract = null;
     }
+  }
+
+  getTokenContract(symbol) {
+    return this.tokenContracts[symbol] || this.tokenContracts[symbols[symbol]];
   }
 }
 

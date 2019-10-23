@@ -1,26 +1,42 @@
-export const contracts = {
-  kovan: {
-    flow: '0x4Ed3f56009d7b65d7f2a3e83a83DB02b7Ed8C687',
-    fallbackPool: '0x3f9cC98f612611E83Ae9977c3f8024D762722E66',
+import ERC20Detailed from 'flow-protocol/artifacts/abi/ERC20Detailed.json';
+import FlowProtocol from 'flow-protocol/artifacts/abi/FlowProtocol.json';
+import LiquidityPoolInterface from 'flow-protocol/artifacts/abi/LiquidityPoolInterface.json';
+import MoneyMarket from 'flow-protocol/artifacts/abi/MoneyMarket.json';
+import FlowMarginProtocol from 'flow-protocol/artifacts/abi/FlowMarginProtocol.json';
+import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
+import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
+import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
+
+export { default as deployment } from 'flow-protocol/artifacts/deployment';
+
+export const tokens = {
+  baseToken: {
+    symbol: 'DAI',
+    name: 'Dai Stablecoin',
+  },
+  fEUR: {
+    symbol: 'fEUR',
+    name: 'Flow Euro',
+  },
+  fJPY: {
+    symbol: 'fJPY',
+    name: 'Flow Japanese Yen',
   },
 };
 
 export const symbols = {
-  kovan: {
-    dai: {
-      name: 'dai',
-      isBase: true,
-      contract: '0xbf7a7169562078c96f0ec1a8afd6ae50f12e5a99',
-    },
-    eur: {
-      name: 'eur',
-      isBase: false,
-      contract: '0xa52676717b3df67bFC1d885FE89bB91D589aBc10',
-    },
-    jpy: {
-      name: 'jpy',
-      isBase: false,
-      contract: '0x4344452774d1d9b9088527E3B79398A4a28Eb69D',
-    },
-  },
+  DAI: 'DAI',
+  EUR: 'fEUR',
+  JPY: 'fJPY',
+};
+
+export const abi = {
+  ERC20: ERC20Detailed,
+  FlowProtocol,
+  LiquidityPoolInterface,
+  MoneyMarket,
+  FlowMarginProtocol,
+  FlowToken,
+  MarginTradingPair,
+  PriceOracleInterface,
 };

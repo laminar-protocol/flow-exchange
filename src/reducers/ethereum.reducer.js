@@ -21,11 +21,11 @@ const parseNetwork = (payload) => ({
   network: payload.network,
   isTestnet: (payload.network !== 'main'),
   contracts: {
-    dai: payload.addresses.dai,
-    flow: payload.addresses.flow,
-    eur: payload.addresses.eur,
-    jpy: payload.addresses.jpy,
-    pool: payload.addresses.fallbackPool,
+    dai: payload.addresses.baseToken,
+    flow: payload.addresses.protocol,
+    eur: payload.addresses.fEUR,
+    jpy: payload.addresses.fJPY,
+    pool: payload.addresses.pool,
   },
 });
 
