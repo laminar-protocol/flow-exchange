@@ -9,6 +9,7 @@
     "@types/history": "^4.7.3",
     "@types/jest": "^24.0.19",
     "@types/node": "^12.11.5",
+    "@types/ramda": "^0.26.33",
     "@types/react": "^16.9.9",
     "@types/react-dom": "^16.9.2",
     "@types/react-redux": "^7.1.5",
@@ -16,7 +17,6 @@
     "connected-react-router": "^6.5.2",
     "flow-protocol": "laminar-protocol/flow-protocol-ethereum",
     "history": "^4.10.1",
-    "lodash": "^4.17.15",
     "ramda": "^0.26.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
@@ -43,7 +43,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx . && tsc --noEmit --pretty"
   },
   "eslintConfig": {
     "extends": "react-app"
