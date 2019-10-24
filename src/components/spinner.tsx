@@ -12,8 +12,13 @@ const SpinIcon = styled(Spin)`
   }
 `;
 
-const Component = ({ className, loading }) => (
+interface Props {
+  className?: string;
+  loading?: boolean;
+}
+
+const Spinner: React.FC<Props> = ({ className, loading }) => (
   <SpinIcon indicator={LoadingIcon} className={className} spinning={loading} />
 );
 
-export default Component;
+export default Spinner;

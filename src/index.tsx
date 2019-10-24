@@ -6,10 +6,10 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import 'rxjs';
 
-import store, { history } from 'store';
-
 import Application from 'app/application/application.connect';
 import * as serviceWorker from 'serviceWorker';
+
+import store, { history } from './store';
 
 import 'antd/dist/antd.css';
 

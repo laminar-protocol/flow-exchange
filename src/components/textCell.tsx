@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import * as theme from 'theme';
 
 import Text from './text';
 import Panel from './panel';
 import Spinner from './spinner';
-
 
 const Header = styled.div`
   text-transform: uppercase;
@@ -48,10 +48,20 @@ const Container = styled(Panel)`
   }
 `;
 
-const Component = ({
-  radius, padding, header, accessory, loading, children,
+interface Props {
+  radius?: number;
+  padding?: number;
+  header?: string;
+  accessory?: IconProp;
+  loading?: boolean;
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const TextCell: React.FC<Props> = ({
+  radius, padding, header, accessory, loading, children, className,
 }) => (
-  <Container radius={radius} padding={padding}>
+  <Container radius={radius} padding={padding} className={className}>
     <Accessory>
       {(accessory && !loading) && <AccessoryIcon icon={accessory} size="2x" />}
       { loading && <AccessorySpinner /> }
@@ -60,9 +70,9 @@ const Component = ({
     <Content>
       {
         header && (
-        <Header>
-          <Text size="s" light weight="bold">{header}</Text>
-        </Header>
+          <Header>
+            <Text size="s" light weight="bold">{header}</Text>
+          </Header>
         )
       }
       <Main>
@@ -72,4 +82,4 @@ const Component = ({
   </Container>
 );
 
-export default Component;
+export default TextCell;

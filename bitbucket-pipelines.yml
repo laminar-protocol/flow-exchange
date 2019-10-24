@@ -8,9 +8,10 @@ pipelines:
         caches:
           - node
         script:
-          - npm install
+          - yarn
           - unset CI
-          - npm run build
+          - yarn lint
+          - yarn build
           - pip install awscli --upgrade --ignore-installed six
           - aws s3 sync ./build s3://$S3_BUCKET
           - aws s3 cp --cache-control max-age=0 ./build/service-worker.js s3://$S3_BUCKET/

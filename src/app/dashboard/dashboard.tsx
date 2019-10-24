@@ -10,8 +10,9 @@ import Grant from './grant.connect';
 const Container = styled.div`
 `;
 
-const DaiStatus = styled.div`
+const TokenStatus = styled.div`
   display: flex;
+  margin-bottom: 1rem;
   & > div {
     margin-right: 1rem;
     width: 20rem;
@@ -22,10 +23,16 @@ const Component = () => (
   <Container>
     <Text size="h">Dashboard</Text>
     <Separator />
-    <DaiStatus>
-      <Balance />
+    <TokenStatus>
+      <Balance symbol="DAI" />
       <Grant />
-    </DaiStatus>
+    </TokenStatus>
+    <TokenStatus>
+      <Balance symbol="EUR" />
+    </TokenStatus>
+    <TokenStatus>
+      <Balance symbol="JPY" />
+    </TokenStatus>
   </Container>
 );
 

@@ -7,7 +7,7 @@ import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
 import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
 import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
 
-export { default as deployment } from 'flow-protocol/artifacts/deployment';
+export { default as deployment } from 'flow-protocol/artifacts/deployment.json';
 
 export const tokens = {
   baseToken: {

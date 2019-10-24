@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
     } else {
       dispatch({ type: types.tokenGrant.requested, payload: { symbol, balance: UINT256_MAX } });
     }
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
