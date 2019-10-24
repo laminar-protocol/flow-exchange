@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import {
-  Text, Separator, Panel, SolidButton, BalanceCell
+  Text, Separator, Panel, SolidButton, BalanceCell,
 } from 'components';
 
 const Container = styled.div`

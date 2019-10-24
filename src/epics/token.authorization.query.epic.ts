@@ -4,13 +4,14 @@ import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
 import types from 'types';
+import { Epic } from 'reducers';
 
-const epic = (action$, state$) => combineLatest(
+const epic: Epic = (action$, state$) => combineLatest(
   action$.pipe(ofType(types.ethereumNetwork.completed), take(1)),
   action$.pipe(ofType(types.tokenAuthorization.requested)),
 ).pipe(
   mergeMap(async ([, action]) => {
-    const { payload: { symbol } } = action;
+    const { payload: { symbol, address } } = action;
 
     try {
       const {
@@ -19,8 +20,9 @@ const epic = (action$, state$) => combineLatest(
         },
       } = state$;
 
+      const grantAddress = address || flow;
       const contract = ethereum.getTokenContract(symbol);
-      const balance = await contract.methods.allowance(account, flow).call();
+      const balance = await contract.methods.allowance(account, grantAddress).call();
       return {
         type: types.tokenAuthorization.completed,
         payload: { symbol, balance },

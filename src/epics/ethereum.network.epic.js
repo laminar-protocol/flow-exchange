@@ -14,7 +14,6 @@ const epic = (action$, state$) => action$.pipe(
       const contractAddresses = deployment[network];
       if (contractAddresses !== null) {
         ethereum.prepareBaseContract(contractAddresses);
-        ethereum.prepareTokenContract(contractAddresses);
         return {
           type: types.ethereumNetwork.completed,
           payload: { network, addresses: contractAddresses },

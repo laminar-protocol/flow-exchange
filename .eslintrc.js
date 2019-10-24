@@ -42,6 +42,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'object-curly-newline': 'off',
+    'lines-between-class-members': 'off',
+    'no-underscore-dangle': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
   },

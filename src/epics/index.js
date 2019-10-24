@@ -10,7 +10,7 @@ epicsContext.keys().forEach((key) => {
 });
 
 multipleEpicsContext.keys().forEach((key) => {
-  epics.push(...multipleEpicsContext(key).default);
+  epics.push(...Object.values(multipleEpicsContext(key)));
 });
 
 const rootEpic = combineEpics(...epics);

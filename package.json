@@ -15,6 +15,7 @@
     "@types/react-dom": "^16.9.2",
     "@types/react-redux": "^7.1.5",
     "@types/styled-components": "^4.1.19",
+    "@types/web3": "^1.0.20",
     "antd": "^3.23.6",
     "bn.js": "^5.0.0",
     "connected-react-router": "^6.5.2",
