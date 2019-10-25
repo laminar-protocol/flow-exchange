@@ -18,10 +18,6 @@ const epic = (action$) => action$.pipe(
     return of(
       { type: types.marketSymbols.changed, payload: tokens },
 
-      // Flow
-      { type: types.flowOracle.requested },
-      { type: types.flowMoneyMarket.requested },
-
       // Token
       ...tokenRequests,
     );

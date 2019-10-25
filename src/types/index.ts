@@ -1,11 +1,9 @@
-import getActionTypeCreators from 'helpers/typeCreator';
-
-const ACTION_TYPES_NAME_SPACE = 'LF_EXCHANGE';
-
-const {
+import {
   apiActionTypes,
   changedActionTypes,
-} = getActionTypeCreators(ACTION_TYPES_NAME_SPACE);
+} from './actionTypeCreators';
+
+import margin from './margin';
 
 const actionTypes = {
   // Application
@@ -23,10 +21,6 @@ const actionTypes = {
   ethereumEnable: apiActionTypes('ethereum_enable'),
   ethereumNetwork: apiActionTypes('ethereum_nework'),
 
-  // Flow
-  flowMoneyMarket: apiActionTypes('flow_money_market'),
-  flowOracle: apiActionTypes('flow_oracle'),
-
   // Token
   tokenBalance: apiActionTypes('token_balance'),
   tokenAuthorization: apiActionTypes('token_authorization'),
@@ -43,6 +37,8 @@ const actionTypes = {
 
   // Spot exchange rate
   spotRate: apiActionTypes('spot_rate'),
+
+  margin,
 };
 
 export default actionTypes;
