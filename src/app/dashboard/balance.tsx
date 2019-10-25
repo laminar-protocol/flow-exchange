@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 
-import {
-  Text, TextCell, NumberFormat,
-} from 'components';
+import { BalanceCell } from 'components';
 import { fromWei } from 'helpers/unitHelper';
 import { State, getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
@@ -24,11 +22,12 @@ const Balance: React.FC<Props> = ({ symbol, token, onBalanceQuery }) => {
   }, [onBalanceQuery, symbol]);
 
   return (
-    <TextCell header={`${symbol} Balance`} accessory="dollar-sign" loading={isQueryingBalance}>
-      <Text weight="bold" size="l">
-        <NumberFormat value={fromWei(balance)} />
-      </Text>
-    </TextCell>
+    <BalanceCell
+      value={fromWei(balance)}
+      text={`${symbol} Balances`}
+      loading={isQueryingBalance}
+      accessory="dollar-sign"
+    />
   );
 };
 

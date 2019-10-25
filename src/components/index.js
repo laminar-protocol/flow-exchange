@@ -13,7 +13,7 @@ export { default as TextCell } from './textCell';
 export { default as Spinner } from './spinner';
 export { default as NumberFormat } from './numberFormat';
 export { default as CurrencySelect } from './currencySelect';
-
+export { default as BalanceCell } from './balanceCell';
 
 export { default as Container } from './container';
 export { default as SideColumn } from './sideColumn';

@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   account: null,
   network: null,
 
-  contracts: {},
+  contracts: {} as any,
 
   isTestnet: false,
 
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   isConnectModalActive: false,
 };
 
-const parseNetwork = (payload) => ({
+const parseNetwork = (payload: any) => ({
   network: payload.network,
   isTestnet: (payload.network !== 'main'),
   contracts: {
@@ -29,7 +29,7 @@ const parseNetwork = (payload) => ({
   },
 });
 
-const reducer = (state = INITIAL_STATE, { type, payload }) => {
+const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
     case types.ethereumModalOpen.changed:
       return {

@@ -15,13 +15,27 @@ import 'antd/dist/antd.css';
 
 library.add(fas);
 
-const Root = () => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Application />
-    </ConnectedRouter>
-  </Provider>
-);
+const render = (App: React.ComponentType) => {
+  ReactDOM.render(
+    (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <App />
+        </ConnectedRouter>
+      </Provider>
+    ),
+    document.getElementById('root'),
+  );
+};
 
-ReactDOM.render(<Root />, document.getElementById('root'));
+render(Application);
+
 serviceWorker.unregister();
+
+if ((module as any).hot) {
+  (module as any).hot.accept('./app/application/application.connect', () => {
+    // eslint-disable-next-line
+    const NextApp = require('./app/application/application.connect').default;
+    render(NextApp);
+  });
+}

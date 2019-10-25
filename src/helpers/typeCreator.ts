@@ -33,15 +33,14 @@ const prefixProvider = (namespace: string) => (actionTypeCreator: (prefix: strin
 
   return actionTypeCreator(prefix);
 };
+
 type ActionTypeCreator = { [P in keyof typeof actionCreators]: typeof actionCreators[P] };
 
 const getActionTypeCreators = (namespace: string): ActionTypeCreator => {
-  if (!namespace) {
-    throw new Error('Please give valid namespace');
-  }
   const providePrefix = prefixProvider(namespace);
-
   return map(providePrefix, actionCreators);
 };
 
 export default getActionTypeCreators;
+
+export type ApiActionTypes = ReturnType<typeof apiActionTypes>;
