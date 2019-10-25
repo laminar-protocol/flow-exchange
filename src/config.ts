@@ -33,14 +33,14 @@ export const symbols = {
 };
 
 export const abi = {
-  ERC20: ERC20Detailed,
-  FlowProtocol,
-  LiquidityPoolInterface,
-  MoneyMarket,
-  FlowMarginProtocol,
-  FlowToken,
-  MarginTradingPair,
-  PriceOracleInterface,
+  ERC20: ERC20Detailed as any,
+  FlowProtocol: FlowProtocol as any,
+  LiquidityPoolInterface: LiquidityPoolInterface as any,
+  MoneyMarket: MoneyMarket as any,
+  FlowMarginProtocol: FlowMarginProtocol as any,
+  FlowToken: FlowToken as any,
+  MarginTradingPair: MarginTradingPair as any,
+  PriceOracleInterface: PriceOracleInterface as any,
 };
 
 export { deployment };

@@ -20,6 +20,9 @@ class Ethereum {
 
   private _liquidityPool?: Contract;
 
+  public readonly ready: Promise<void>;
+  private _resolveReady = () => {};
+
   private _tokens?: {
     DAI: Contract;
     fEUR: Contract;
@@ -29,6 +32,10 @@ class Ethereum {
   constructor() {
     this.ethWeb3 = (window as any).ethereum;
     this.ethProvider = new Web3(this.ethWeb3);
+
+    this.ready = new Promise((resolve) => {
+      this._resolveReady = resolve;
+    });
   }
 
   prepareBaseContract(addresses: Addresses) {
@@ -49,6 +56,8 @@ class Ethereum {
       fEUR: eurContract,
       fJPY: jpyContract,
     };
+
+    this._resolveReady();
   }
 
   getTokenContract(symbol: string) {

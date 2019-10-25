@@ -16,16 +16,16 @@ const epic: Epic = (action$, state$) => combineLatest(
     try {
       const {
         value: {
-          ethereum: { account, contracts: { flow } },
+          ethereum: { account },
         },
       } = state$;
 
-      const grantAddress = address || flow;
+      const grantAddress = address || ethereum.flowContract.options.address;
       const contract = ethereum.getTokenContract(symbol);
       const balance = await contract.methods.allowance(account, grantAddress).call();
       return {
         type: types.tokenAuthorization.completed,
-        payload: { symbol, balance },
+        payload: { symbol, balance, address: grantAddress },
       };
     } catch (error) {
       console.error(error);

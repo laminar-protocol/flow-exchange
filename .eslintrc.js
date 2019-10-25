@@ -44,6 +44,7 @@ module.exports = {
     'object-curly-newline': 'off',
     'lines-between-class-members': 'off',
     'no-underscore-dangle': 'off',
+    'import/prefer-default-export': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
   },

@@ -24,7 +24,7 @@ const render = (App: React.ComponentType) => {
         </ConnectedRouter>
       </Provider>
     ),
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 };
 
@@ -34,6 +34,7 @@ serviceWorker.unregister();
 
 if ((module as any).hot) {
   (module as any).hot.accept('./app/application/application.connect', () => {
+    // eslint-disable-next-line
     const NextApp = require('./app/application/application.connect').default;
     render(NextApp);
   });
