@@ -26,12 +26,6 @@ export const tokens = {
   },
 };
 
-export const symbols = {
-  DAI: 'DAI',
-  EUR: 'fEUR',
-  JPY: 'fJPY',
-};
-
 export const abi = {
   ERC20: ERC20Detailed as any,
   FlowProtocol: FlowProtocol as any,
