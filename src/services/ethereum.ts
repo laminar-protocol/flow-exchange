@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 
-import { abi, symbols, Addresses } from 'config';
+import { abi, Addresses } from 'config';
 
 // workaround to get types that are not exposed directly from web3
 type Provider = Web3['currentProvider'];
