@@ -61,7 +61,7 @@ class Ethereum {
   }
 
   getTokenContract(symbol: string) {
-    return ((this._tokens as any)[symbol] || (this._tokens as any)[(symbols as any)[symbol]]) as Contract;
+    return ((this._tokens as any)[symbol]) as Contract;
   }
 
   get flowContract() {
