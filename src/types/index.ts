@@ -1,44 +1,57 @@
 import {
-  apiActionTypes,
   changedActionTypes,
-} from './actionTypeCreators';
+  moduleActionTypes,
+  apiActionTypes,
+  appActionTypes,
+  triggerActionTypes,
+} from 'helpers/typeCreator';
 
-import margin from './margin';
+const app = moduleActionTypes('app', {
+  init: triggerActionTypes,
+  theme: changedActionTypes,
+});
 
-const actionTypes = {
-  // Application
-  applicationInit: changedActionTypes('application_init'),
+const market = moduleActionTypes('market', {
+  symbols: changedActionTypes,
+});
 
-  // Theme
-  theme: changedActionTypes('theme'),
+const ethereum = moduleActionTypes('ethereum', {
+  modalOpen: changedActionTypes,
+  modalClose: changedActionTypes,
+  enable: apiActionTypes,
+  network: apiActionTypes,
+});
 
-  // Symbols
-  marketSymbols: changedActionTypes('market_symbols'),
+const token = moduleActionTypes('token', {
+  balance: apiActionTypes,
+  authorization: apiActionTypes,
+  grant: apiActionTypes,
+});
 
-  // Ethereum
-  ethereumModalOpen: changedActionTypes('ethereum_modal_open'),
-  ethereumModalClose: changedActionTypes('ethereum_modal_close'),
-  ethereumEnable: apiActionTypes('ethereum_enable'),
-  ethereumNetwork: apiActionTypes('ethereum_nework'),
+const swap = moduleActionTypes('swap', {
+  fromSymbol: changedActionTypes,
+  toSymbol: changedActionTypes,
+  fromAmount: changedActionTypes,
+  toAmount: changedActionTypes,
+  validation: changedActionTypes,
+  mint: apiActionTypes,
+  redeem: apiActionTypes,
+});
 
-  // Token
-  tokenBalance: apiActionTypes('token_balance'),
-  tokenAuthorization: apiActionTypes('token_authorization'),
-  tokenGrant: apiActionTypes('token_grant'),
+const spot = moduleActionTypes('spot', {
+  rate: apiActionTypes,
+});
 
-  // Swap
-  swapFromSymbol: changedActionTypes('swap_from_symbol'),
-  swapToSymbol: changedActionTypes('swap_to_symbol'),
-  swapFromAmount: changedActionTypes('swap_from_amount'),
-  swapToAmount: changedActionTypes('swap_to_amount'),
-  swapValidation: changedActionTypes('swap_validation'),
-  swapMint: apiActionTypes('swap_mint'),
-  swapRedeem: apiActionTypes('swap_redeem'),
+const margin = moduleActionTypes('margin', {
+  enabled: apiActionTypes,
+});
 
-  // Spot exchange rate
-  spotRate: apiActionTypes('spot_rate'),
-
+export default appActionTypes('flow', {
+  app,
+  market,
+  ethereum,
+  token,
+  swap,
+  spot,
   margin,
-};
-
-export default actionTypes;
+});

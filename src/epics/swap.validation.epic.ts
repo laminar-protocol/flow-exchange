@@ -3,11 +3,12 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 
 import types from 'types';
+import { Epic } from 'reducers';
 
-const epic = (action$) => action$.pipe(
-  ofType(types.swapFromAmount.changed, types.swapToAmount.changed),
+const epic: Epic = (action$) => action$.pipe(
+  ofType(types.swap.fromAmount.changed, types.swap.toAmount.changed),
   mergeMap(() => of(
-    { type: types.swapValidation.changed },
+    { type: types.swap.validation.changed },
   )),
 );
 

@@ -4,9 +4,10 @@ import ethereum from 'services/ethereum';
 
 import { tokens } from 'config';
 import types from 'types';
+import { Epic } from 'reducers';
 
-const epic = (action$) => action$.pipe(
-  ofType(types.spotRate.requested),
+const epic: Epic = (action$) => action$.pipe(
+  ofType(types.spot.rate.requested),
   mergeMap(async (action) => {
     try {
       const symbol = action.payload;
@@ -14,7 +15,7 @@ const epic = (action$) => action$.pipe(
       const contract = ethereum.getTokenContract(symbol);
 
       if (contract === ethereum.getTokenContract(tokens.baseToken.symbol)) {
-        return { type: types.spotRate.failed };
+        return { type: types.spot.rate.failed };
       }
 
       const price = await ethereum.oracleContract.methods.getPrice(contract.options.address).call();
@@ -22,14 +23,14 @@ const epic = (action$) => action$.pipe(
       const askSpread = await ethereum.poolContract.methods.getAskSpread(contract.options.address).call();
 
       return {
-        type: types.spotRate.completed,
+        type: types.spot.rate.completed,
         payload: {
           symbol, price, bidSpread, askSpread,
         },
       };
     } catch (error) {
       console.error(error);
-      return { type: types.spotRate.failed };
+      return { type: types.spot.rate.failed };
     }
   }),
 );

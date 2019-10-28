@@ -11,26 +11,26 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch) => ({
   onFromSymbolChange: (symbol) => {
-    dispatch({ type: types.swapFromSymbol.changed, payload: symbol });
+    dispatch({ type: types.swap.fromSymbol.changed, payload: symbol });
   },
   onToSymbolChange: (symbol) => {
-    dispatch({ type: types.swapToSymbol.changed, payload: symbol });
+    dispatch({ type: types.swap.toSymbol.changed, payload: symbol });
   },
   onFromAmountChange: (amount) => {
-    dispatch({ type: types.swapFromAmount.changed, payload: amount });
+    dispatch({ type: types.swap.fromAmount.changed, payload: amount });
   },
   onToAmountChange: (amount) => {
-    dispatch({ type: types.swapToAmount.changed, payload: amount });
+    dispatch({ type: types.swap.toAmount.changed, payload: amount });
   },
   onSwapSymbol: (fromSymbol, toSymbol) => {
-    dispatch({ type: types.swapFromSymbol.changed, payload: toSymbol });
-    dispatch({ type: types.swapToSymbol.changed, payload: fromSymbol });
+    dispatch({ type: types.swap.fromSymbol.changed, payload: toSymbol });
+    dispatch({ type: types.swap.toSymbol.changed, payload: fromSymbol });
   },
   onSwap: (isRedeem) => {
     if (isRedeem) {
-      dispatch({ type: types.swapRedeem.requested });
+      dispatch({ type: types.swap.redeem.requested });
     } else {
-      dispatch({ type: types.swapMint.requested });
+      dispatch({ type: types.swap.mint.requested });
     }
   },
 });

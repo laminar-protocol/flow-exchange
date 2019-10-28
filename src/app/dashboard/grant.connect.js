@@ -9,14 +9,14 @@ const mapStateToProps = ({ token }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onAuthorizationQuery: (symbol) => {
-    dispatch({ type: types.tokenAuthorization.requested, payload: { symbol } });
+    dispatch({ type: types.token.authorization.requested, payload: { symbol } });
   },
 
   onGrant: (symbol, granted) => {
     if (granted) {
-      dispatch({ type: types.tokenGrant.requested, payload: { symbol, balance: UINT256_MIN } });
+      dispatch({ type: types.token.grant.requested, payload: { symbol, balance: UINT256_MIN } });
     } else {
-      dispatch({ type: types.tokenGrant.requested, payload: { symbol, balance: UINT256_MAX } });
+      dispatch({ type: types.token.grant.requested, payload: { symbol, balance: UINT256_MAX } });
     }
   },
 });

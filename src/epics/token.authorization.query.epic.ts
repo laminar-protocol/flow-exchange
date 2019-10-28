@@ -7,8 +7,8 @@ import types from 'types';
 import { Epic } from 'reducers';
 
 const epic: Epic = (action$, state$) => combineLatest(
-  action$.pipe(ofType(types.ethereumNetwork.completed), take(1)),
-  action$.pipe(ofType(types.tokenAuthorization.requested)),
+  action$.pipe(ofType(types.ethereum.network.completed), take(1)),
+  action$.pipe(ofType(types.token.authorization.requested)),
 ).pipe(
   mergeMap(async ([, action]) => {
     const { payload: { symbol, address } } = action;
@@ -24,12 +24,12 @@ const epic: Epic = (action$, state$) => combineLatest(
       const contract = ethereum.getTokenContract(symbol);
       const balance = await contract.methods.allowance(account, grantAddress).call();
       return {
-        type: types.tokenAuthorization.completed,
+        type: types.token.authorization.completed,
         payload: { symbol, balance, address: grantAddress },
       };
     } catch (error) {
       console.error(error);
-      return { type: types.tokenAuthorization.failed, payload: { symbol } };
+      return { type: types.token.authorization.failed, payload: { symbol } };
     }
   }),
 );

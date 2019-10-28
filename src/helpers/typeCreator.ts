@@ -1,46 +1,58 @@
-import { map } from 'ramda';
+import { pipe, map, fromPairs, mapObjIndexed } from 'ramda';
 
-const apiActionTypes = (prefix: string) => (
-  {
-    requested: `${prefix}_REQUESTED`,
-    completed: `${prefix}_COMPLETED`,
-    failed: `${prefix}_FAILED`,
-    cancelled: `${prefix}_CANCELLED`,
-  }
-);
+interface GetActionTypeResult<TActionTypeKeys extends string> {
+  (prefix: string): Record<TActionTypeKeys, string>;
+}
 
-const changedActionTypes = (prefix: string) => (
-  { changed: `${prefix}_CHANGED` }
-);
+export const getActionType = <TActionTypeKeys extends string>(
+  keys: readonly TActionTypeKeys[],
+) => (
+  prefix: string,
+): Record<TActionTypeKeys, string> =>
+  pipe(
+    map((k: TActionTypeKeys) => [k, `${prefix}/${k}`]),
+    fromPairs as () => Record<TActionTypeKeys, string>,
+  )(keys);
 
-const toggledActionTypes = (prefix: string) => (
-  { toggled: `${prefix}_TOGGLED` }
-);
+type GetActionTypeReturnType<T> = T extends GetActionTypeResult<infer TActionTypeKeys> ? Record<TActionTypeKeys, string> : never
 
-const triggerActionTypes = (prefix: string) => (
-  { trigger: `${prefix}_TOGGLED` }
-);
+export const moduleActionTypes = <ModuleActionTypes extends Record<string, GetActionTypeResult<string>>>(
+  modulePrefix: string, actions: ModuleActionTypes,
+) => (
+  parentPrefix: string,
+): { [K in keyof ModuleActionTypes]: GetActionTypeReturnType<ModuleActionTypes[K]> } =>
+  mapObjIndexed((val, key) => val(`${parentPrefix}/${modulePrefix}/${key}`), actions) as any;
 
-const actionCreators = {
-  apiActionTypes,
-  changedActionTypes,
-  toggledActionTypes,
-  triggerActionTypes,
-};
+export const appActionTypes = <AppActionTypes extends Record<string, (prefix: string) => any>>(
+  appPrefix: string, types: AppActionTypes,
+): { [K in keyof AppActionTypes]: ReturnType<AppActionTypes[K]> } =>
+  mapObjIndexed((val) => val(appPrefix), types) as any;
 
-const prefixProvider = (namespace: string) => (actionTypeCreator: (prefix: string) => any) => (name: string) => {
-  const prefix = `${namespace}_${name.toUpperCase()}`;
+const ApiActionTypes = [
+  'requested',
+  'completed',
+  'failed',
+  'cancelled',
+] as const;
 
-  return actionTypeCreator(prefix);
-};
+const ChangedActionTypes = [
+  'changed',
+] as const;
 
-type ActionTypeCreator = { [P in keyof typeof actionCreators]: typeof actionCreators[P] };
+const ToggledActionTypes = [
+  'toggled',
+] as const;
 
-const getActionTypeCreators = (namespace: string): ActionTypeCreator => {
-  const providePrefix = prefixProvider(namespace);
-  return map(providePrefix, actionCreators);
-};
+const TriggerActionTypes = [
+  'trigger',
+] as const;
 
-export default getActionTypeCreators;
+export const apiActionTypes = getActionType(ApiActionTypes);
+export const changedActionTypes = getActionType(ChangedActionTypes);
+export const toggledActionTypes = getActionType(ToggledActionTypes);
+export const triggerActionTypes = getActionType(TriggerActionTypes);
 
-export type ApiActionTypes = ReturnType<typeof apiActionTypes>;
+export type ApiActionTypesRecord = Record<typeof ApiActionTypes[number], string>;
+export type ChangedActionTypesRecord = Record<typeof ChangedActionTypes[number], string>;
+export type ToggledActionTypesRecord = Record<typeof ToggledActionTypes[number], string>;
+export type TriggerActionTypesRecord = Record<typeof TriggerActionTypes[number], string>;

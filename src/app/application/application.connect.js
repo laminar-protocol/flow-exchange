@@ -9,7 +9,7 @@ const mapStateToProps = ({ setting }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onInit: () => {
-    dispatch({ type: types.applicationInit.changed });
+    dispatch({ type: types.app.init.trigger });
   },
 });
 

@@ -3,10 +3,11 @@ import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
 import types from 'types';
+import { Epic } from 'reducers';
 import { toWei } from 'helpers/unitHelper';
 
-const epic = (action$, state$) => action$.pipe(
-  ofType(types.swapRedeem.requested),
+const epic: Epic = (action$, state$) => action$.pipe(
+  ofType(types.swap.redeem.requested),
   mergeMap(async () => {
     try {
       const {
@@ -27,10 +28,10 @@ const epic = (action$, state$) => action$.pipe(
       const method = ethereum.flowContract.methods.redeem(from.options.address, pool, fromAmountWei);
       const success = await method.send({ from: account });
 
-      return { type: types.swapRedeem.completed, payload: success };
+      return { type: types.swap.redeem.completed, payload: success };
     } catch (error) {
       console.error(error);
-      return { type: types.swapRedeem.failed };
+      return { type: types.swap.redeem.failed };
     }
   }),
 );

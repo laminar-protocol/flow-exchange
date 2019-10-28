@@ -4,11 +4,11 @@ const INITIAL_STATE = {
   symbols: {},
 };
 
-export const getSymbols = (symbols) => Object.values(symbols);
+export const getSymbols = (symbols: string) => Object.values(symbols);
 
-const reducer = (state = INITIAL_STATE, { type, payload }) => {
+const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
-    case types.marketSymbols.changed:
+    case types.market.symbols.changed:
       return {
         ...state,
         symbols: payload,

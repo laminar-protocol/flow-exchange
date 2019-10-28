@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   isQuerying: false,
 };
 
-export const parseRate = (rate) => {
+export const parseRate = (rate: any) => {
   const price = toBN(rate.price);
   const askSpread = toBN(rate.askSpread);
   const bidSpread = toBN(rate.bidSpread);
@@ -22,24 +22,24 @@ export const parseRate = (rate) => {
   };
 };
 
-const parseRates = (rates, payload) => ({
+const parseRates = (rates: any, payload: any) => ({
   ...rates,
   [payload.symbol]: parseRate(payload),
 });
 
-const reducer = (state = INITIAL_STATE, { type, payload }) => {
+const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
-    case types.spotRate.requested:
+    case types.spot.rate.requested:
       return {
         ...state,
         isQuerying: true,
       };
-    case types.spotRate.failed:
+    case types.spot.rate.failed:
       return {
         ...state,
         isQuerying: false,
       };
-    case types.spotRate.completed:
+    case types.spot.rate.completed:
       return {
         ...state,
         rates: parseRates(state.rates, payload),
