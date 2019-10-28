@@ -1,46 +1,72 @@
-import { map } from 'ramda';
+import { pipe, map, fromPairs, mapObjIndexed } from 'ramda';
+import { Action as ReduxAction } from 'redux';
 
-const apiActionTypes = (prefix: string) => (
-  {
-    requested: `${prefix}_REQUESTED`,
-    completed: `${prefix}_COMPLETED`,
-    failed: `${prefix}_FAILED`,
-    cancelled: `${prefix}_CANCELLED`,
-  }
-);
+export interface Action<T> extends ReduxAction<string> {
+  payload?: T;
+}
 
-const changedActionTypes = (prefix: string) => (
-  { changed: `${prefix}_CHANGED` }
-);
+type ActionCreator<T> = (payload?: T) => Action<T>
 
-const toggledActionTypes = (prefix: string) => (
-  { toggled: `${prefix}_TOGGLED` }
-);
+interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
+  (prefix: string): Record<TActionTypeKeys, ActionCreator<TPayload>>;
+}
 
-const triggerActionTypes = (prefix: string) => (
-  { trigger: `${prefix}_TOGGLED` }
-);
+export const getActionType = <TActionTypeKeys extends string>(
+  keys: readonly TActionTypeKeys[],
+) => <TPayload>(
+) => (
+  prefix: string,
+): Record<TActionTypeKeys, ActionCreator<TPayload>> =>
+  pipe(
+    map((k: TActionTypeKeys) => [k, (payload: TPayload) => ({ type: `${prefix}/${k}`, payload })]),
+    fromPairs as () => Record<TActionTypeKeys, ActionCreator<TPayload>>,
+  )(keys);
 
-const actionCreators = {
-  apiActionTypes,
-  changedActionTypes,
-  toggledActionTypes,
-  triggerActionTypes,
-};
+type GetActionTypeReturnType<T> =
+  T extends GetActionTypeResult<infer TActionTypeKeys, infer TPayload> ? Record<TActionTypeKeys, ActionCreator<TPayload>> : never
 
-const prefixProvider = (namespace: string) => (actionTypeCreator: (prefix: string) => any) => (name: string) => {
-  const prefix = `${namespace}_${name.toUpperCase()}`;
+export const moduleActions = <ModuleActionTypes extends Record<string, GetActionTypeResult<string, any>>>(
+  modulePrefix: string, actions: ModuleActionTypes,
+) => (
+  parentPrefix: string,
+): { [K in keyof ModuleActionTypes]: GetActionTypeReturnType<ModuleActionTypes[K]> } =>
+  mapObjIndexed((val, key) => val(`${parentPrefix}/${modulePrefix}/${key}`), actions) as any;
 
-  return actionTypeCreator(prefix);
-};
+export const appActions = <AppActionTypes extends Record<string, (prefix: string) => any>>(
+  appPrefix: string, types: AppActionTypes,
+): { [K in keyof AppActionTypes]: ReturnType<AppActionTypes[K]> } =>
+  mapObjIndexed((val) => val(appPrefix), types) as any;
 
-type ActionTypeCreator = { [P in keyof typeof actionCreators]: typeof actionCreators[P] };
+export const appActionTypes = <AppActions extends Record<string, Record<string, Record<string, ActionCreator<any>>>>>(
+  actions: AppActions,
+): { [K in keyof AppActions]: { [K2 in keyof AppActions[K]]: { [K3 in keyof AppActions[K][K2]]: ReturnType<AppActions[K][K2][K3]>['type'] } } } =>
+  mapObjIndexed(mapObjIndexed((x) => x.type), actions) as any;
 
-const getActionTypeCreators = (namespace: string): ActionTypeCreator => {
-  const providePrefix = prefixProvider(namespace);
-  return map(providePrefix, actionCreators);
-};
+const ApiActionTypes = [
+  'requested',
+  'completed',
+  'failed',
+  'cancelled',
+] as const;
 
-export default getActionTypeCreators;
+const ChangedActionTypes = [
+  'changed',
+] as const;
 
-export type ApiActionTypes = ReturnType<typeof apiActionTypes>;
+const ToggledActionTypes = [
+  'toggled',
+] as const;
+
+const TriggerActionTypes = [
+  'trigger',
+] as const;
+
+export const apiActionTypes = getActionType(ApiActionTypes);
+export const changedActionTypes = getActionType(ChangedActionTypes);
+export const toggledActionTypes = getActionType(ToggledActionTypes);
+export const triggerActionTypes = getActionType(TriggerActionTypes);
+
+export type ApiActionTypesRecord = Record<typeof ApiActionTypes[number], string>;
+export type ChangedActionTypesRecord = Record<typeof ChangedActionTypes[number], string>;
+export type ToggledActionTypesRecord = Record<typeof ToggledActionTypes[number], string>;
+export type TriggerActionTypesRecord = Record<typeof TriggerActionTypes[number], string>;

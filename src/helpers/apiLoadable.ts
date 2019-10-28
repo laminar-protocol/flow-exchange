@@ -1,5 +1,5 @@
 import { Action as ReduxAction, Reducer } from 'redux';
-import { ApiActionTypes } from 'helpers/typeCreator';
+import { ApiActionTypesRecord } from 'helpers/typeCreator';
 
 export interface State<T, P = any, E = any> {
   value?: T;
@@ -17,7 +17,7 @@ export const initialState: State<any, any, any> = {
   loading: false,
 };
 
-export function createReducer<T, P = any, E = any>(apiAction: ApiActionTypes): Reducer<State<T, P, E>, Action<P | T | E>> {
+export function createReducer<T, P = any, E = any>(apiAction: ApiActionTypesRecord): Reducer<State<T, P, E>, Action<P | T | E>> {
   return (state = initialState, { type, payload }: Action<P | T | E>) => {
     switch (type) {
       case apiAction.requested:

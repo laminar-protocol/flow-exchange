@@ -10,7 +10,7 @@ export const isEnabledEpic: Epic = (action$) => action$.pipe(
   mergeMap(async () => {
     await ethereum.ready;
     return {
-      type: types.tokenAuthorization.requested,
+      type: types.token.authorization.requested,
       payload: {
         address: ethereum.flowMarginProtocol.options.address,
         symbol: 'DAI',

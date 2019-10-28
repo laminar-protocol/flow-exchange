@@ -3,13 +3,12 @@ import Web3 from 'web3';
 import { abi, Addresses } from 'config';
 
 // workaround to get types that are not exposed directly from web3
-type Provider = Web3['currentProvider'];
 type Eth = Web3['eth'];
 type Contract = InstanceType<Eth['Contract']>;
 
 // TODO: this need some refactor
 class Ethereum {
-  public readonly ethWeb3: Provider;
+  public readonly ethWeb3: any;
   public readonly ethProvider: Web3;
 
   private _flowProtocol?: Contract;
@@ -61,7 +60,7 @@ class Ethereum {
   }
 
   getTokenContract(symbol: string) {
-    return ((this._tokens as any)[symbol]) as Contract;
+    return ((this._tokens as any)[symbol] || (this._tokens as any)[`f${symbol}`]) as Contract;
   }
 
   get flowContract() {

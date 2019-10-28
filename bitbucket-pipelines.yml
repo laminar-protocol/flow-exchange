@@ -21,3 +21,15 @@ pipelines:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 DISTRIBUTION_ID: $DISTRIBUTION_ID
+  pull-requests:
+    '**':
+      - step:
+          name: Test
+          deployment: staging
+          caches:
+            - node
+          script:
+            - yarn
+            - unset CI
+            - yarn lint
+            - yarn build

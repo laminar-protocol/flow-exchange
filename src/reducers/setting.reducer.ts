@@ -4,9 +4,9 @@ const INITIAL_STATE = {
   currentTheme: 'light',
 };
 
-const reducer = (state = INITIAL_STATE, { type, value }) => {
+const reducer = (state = INITIAL_STATE, { type, value }: any) => {
   switch (type) {
-    case types.theme.changed:
+    case types.app.theme.changed:
       return {
         ...state,
         currentTheme: value,

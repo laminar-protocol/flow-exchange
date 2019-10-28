@@ -12,7 +12,7 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch({ type: types.ethereumModalClose.changed });
   },
   onEthereumConnect: () => {
-    dispatch({ type: types.ethereumEnable.requested });
+    dispatch({ type: types.ethereum.enable.requested });
   },
 });
 

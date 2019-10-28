@@ -31,30 +31,30 @@ const parseNetwork = (payload: any) => ({
 
 const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
-    case types.ethereumModalOpen.changed:
+    case types.ethereum.modalOpen.changed:
       return {
         ...state,
         isConnectModalActive: true,
       };
-    case types.ethereumModalClose.changed:
+    case types.ethereum.modalClose.changed:
       return {
         ...state,
         isConnectModalActive: false,
       };
 
-    case types.ethereumEnable.requested:
+    case types.ethereum.enable.requested:
       return {
         ...state,
         isEnabling: true,
       };
-    case types.ethereumEnable.failed:
+    case types.ethereum.enable.failed:
       return {
         ...state,
         isEnabling: false,
         isEnabled: false,
         account: null,
       };
-    case types.ethereumEnable.completed:
+    case types.ethereum.enable.completed:
       return {
         ...state,
         isEnabling: false,
@@ -62,19 +62,19 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         account: payload,
       };
 
-    case types.ethereumNetwork.requested:
+    case types.ethereum.network.requested:
       return {
         ...state,
         isConnecting: true,
       };
-    case types.ethereumNetwork.failed:
+    case types.ethereum.network.failed:
       return {
         ...state,
         isConnecting: false,
         isConnected: false,
       };
 
-    case types.ethereumNetwork.completed:
+    case types.ethereum.network.completed:
       return {
         ...state,
         ...parseNetwork(payload),

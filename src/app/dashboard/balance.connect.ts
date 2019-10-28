@@ -11,7 +11,7 @@ const mapStateToProps = ({ token }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onBalanceQuery: (symbol: string) => {
-    dispatch({ type: types.tokenBalance.requested, payload: { symbol } });
+    dispatch({ type: types.token.balance.requested, payload: { symbol } });
   },
 });
 

@@ -20,7 +20,7 @@ export const getIsGranting = (symbol: string, state: State) => state.isGranting[
 
 const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
-    case types.tokenBalance.requested:
+    case types.token.balance.requested:
       return {
         ...state,
         isQueryingBalance: {
@@ -28,7 +28,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: true,
         },
       };
-    case types.tokenBalance.failed:
+    case types.token.balance.failed:
       return {
         ...state,
         isQueryingBalance: {
@@ -36,7 +36,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: false,
         },
       };
-    case types.tokenBalance.completed:
+    case types.token.balance.completed:
       return {
         ...state,
         balances: {
@@ -49,7 +49,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         },
       };
 
-    case types.tokenAuthorization.requested:
+    case types.token.authorization.requested:
       return {
         ...state,
         isQueryingAuthorization: {
@@ -57,7 +57,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: true,
         },
       };
-    case types.tokenAuthorization.failed:
+    case types.token.authorization.failed:
       return {
         ...state,
         isQueryingAuthorization: {
@@ -65,7 +65,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: false,
         },
       };
-    case types.tokenAuthorization.completed:
+    case types.token.authorization.completed:
       return {
         ...state,
         authorizations: {
@@ -78,7 +78,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         },
       };
 
-    case types.tokenGrant.requested:
+    case types.token.grant.requested:
       return {
         ...state,
         isGranting: {
@@ -86,7 +86,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: true,
         },
       };
-    case types.tokenGrant.failed:
+    case types.token.grant.failed:
       return {
         ...state,
         isGranting: {
@@ -94,7 +94,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
           [payload.symbol]: false,
         },
       };
-    case types.tokenGrant.completed:
+    case types.token.grant.completed:
       return {
         ...state,
         isGranting: {

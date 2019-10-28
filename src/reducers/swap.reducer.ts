@@ -1,7 +1,7 @@
-import types from 'types';
 import validate from 'validate.js';
 import { isEmpty, pathOr } from 'ramda';
 
+import types from 'types';
 import { parseRate } from 'reducers/spotRate.reducer';
 import { fromWei } from 'helpers/unitHelper';
 
@@ -21,17 +21,17 @@ const INITIAL_STATE = {
   validationErrors: {},
 };
 
-export const caculateRate = (rate, isRedeem) => {
+export const caculateRate = (rate: any, isRedeem: boolean) => {
   if (isEmpty(rate)) {
     return null;
   }
   if (isRedeem) {
-    return (1 / fromWei(rate.bidPrice));
+    return 1 / Number(fromWei(rate.bidPrice));
   }
-  return (1 / fromWei(rate.askPrice));
+  return 1 / Number(fromWei(rate.askPrice));
 };
 
-const parseExchangeRate = (rate, fromSymbol, toSymbol) => {
+const parseExchangeRate = (rate: any, fromSymbol: string, toSymbol: string) => {
   const { symbol } = rate;
   if ((fromSymbol === symbol) || (toSymbol === symbol)) {
     return parseRate(rate);
@@ -39,7 +39,7 @@ const parseExchangeRate = (rate, fromSymbol, toSymbol) => {
   return {};
 };
 
-const parseRedeem = (symbols, fromToken) => {
+const parseRedeem = (symbols: any, fromToken: string) => {
   const isBase = pathOr(false, [fromToken, 'isBase'], symbols);
   if (isBase) {
     return false;
@@ -47,7 +47,7 @@ const parseRedeem = (symbols, fromToken) => {
   return true;
 };
 
-const valdiationResult = (state) => {
+const valdiationResult = (state: any) => {
   const {
     fromAmount,
     toAmount,
@@ -82,66 +82,66 @@ const valdiationResult = (state) => {
   };
 };
 
-const reducer = (state = INITIAL_STATE, { type, payload }) => {
+const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
   switch (type) {
-    case types.swapFromSymbol.changed:
+    case types.swap.fromSymbol.changed:
       return {
         ...state,
         rate: {},
         isRedeem: parseRedeem(state.symbols, payload),
         fromSymbol: payload,
       };
-    case types.swapToSymbol.changed:
+    case types.swap.toSymbol.changed:
       return {
         ...state,
         rate: {},
         toSymbol: payload,
       };
-    case types.swapFromAmount.changed:
+    case types.swap.fromAmount.changed:
       return {
         ...state,
         fromAmount: payload,
       };
-    case types.swapToAmount.changed:
+    case types.swap.toAmount.changed:
       return {
         ...state,
         toAmount: payload,
       };
 
-    case types.swapMint.requested:
-    case types.swapRedeem.requested:
+    case types.swap.mint.requested:
+    case types.swap.redeem.requested:
       return {
         ...state,
         isSwapping: true,
       };
 
-    case types.swapMint.failed:
-    case types.swapRedeem.failed:
+    case types.swap.mint.failed:
+    case types.swap.redeem.failed:
       return {
         ...state,
         isSwapping: false,
       };
 
-    case types.swapMint.completed:
-    case types.swapRedeem.completed:
+    case types.swap.mint.completed:
+    case types.swap.redeem.completed:
       return {
         ...state,
         isSwapping: false,
       };
 
-    case types.swapValidation.changed:
+    case types.swap.validation.changed:
       return {
         ...state,
         ...valdiationResult(state),
       };
 
-    case types.marketSymbols.changed:
+    case types.market.symbols.changed:
       return {
         ...state,
         symbols: payload,
       };
 
-    case types.spotRate.completed:
+    case types.spot.rate.completed:
       return {
         ...state,
         rate: parseExchangeRate(payload, state.fromSymbol, state.toSymbol),

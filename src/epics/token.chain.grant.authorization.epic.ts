@@ -3,11 +3,12 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 
 import types from 'types';
+import { Epic } from 'reducers';
 
-const epic = (action$) => action$.pipe(
-  ofType(types.tokenGrant.completed),
+const epic: Epic = (action$) => action$.pipe(
+  ofType(types.token.grant.completed),
   mergeMap((action) => of({
-    type: types.tokenAuthorization.requested,
+    type: types.token.authorization.requested,
     payload: { symbol: action.payload.symbol },
   })),
 );
