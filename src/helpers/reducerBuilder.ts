@@ -19,6 +19,7 @@ export default class ReducerBuilder<S> {
     } else {
       this._reducers[type] = handler;
     }
+    return this;
   }
 
   public build(): Reducer<S> {

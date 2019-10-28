@@ -15,6 +15,7 @@ const reducer = new ReducerBuilder<State>(INITIAL_STATE)
   .handle(actions.market.symbols.changed, (state, { payload: symbols }) => ({
     ...state,
     symbols: symbols || state.symbols,
-  }));
+  }))
+  .build();
 
 export default reducer;
