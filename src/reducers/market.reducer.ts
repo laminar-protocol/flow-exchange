@@ -1,22 +1,20 @@
-import types from 'types';
+import { DeepReadonly } from 'utility-types';
+
+import ReducerBuilder from 'helpers/reducerBuilder';
+import { actions } from 'types';
 
 const INITIAL_STATE = {
-  symbols: {},
+  symbols: {} as Record<string, { symbol: string; name: string }>,
 };
+
+export type State = DeepReadonly<typeof INITIAL_STATE>;
 
 export const getSymbols = (symbols: string) => Object.values(symbols);
 
-const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
-  switch (type) {
-    case types.market.symbols.changed:
-      return {
-        ...state,
-        symbols: payload,
-      };
-
-    default:
-      return state;
-  }
-};
+const reducer = new ReducerBuilder<State>(INITIAL_STATE)
+  .handle(actions.market.symbols.changed, (state, { payload: symbols }) => ({
+    ...state,
+    symbols: symbols || state.symbols,
+  }));
 
 export default reducer;

@@ -13,7 +13,7 @@ const app = moduleActions('app', {
 });
 
 const market = moduleActions('market', {
-  symbols: changedActionTypes<string>(),
+  symbols: changedActionTypes<Record<string, { symbol: string; name: string }>>(),
 });
 
 const ethereum = moduleActions('ethereum', {

@@ -46,6 +46,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'import/prefer-default-export': 'off',
     'implicit-arrow-linebreak': 'off',
+    'no-confusing-arrow': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
   },
