@@ -1,32 +1,46 @@
 import { pipe, map, fromPairs, mapObjIndexed } from 'ramda';
+import { Action as ReduxAction } from 'redux';
 
-interface GetActionTypeResult<TActionTypeKeys extends string> {
-  (prefix: string): Record<TActionTypeKeys, string>;
+export interface Action<T> extends ReduxAction<string> {
+  payload?: T;
+}
+
+type ActionCreator<T> = (payload?: T) => Action<T>
+
+interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
+  (prefix: string): Record<TActionTypeKeys, ActionCreator<TPayload>>;
 }
 
 export const getActionType = <TActionTypeKeys extends string>(
   keys: readonly TActionTypeKeys[],
+) => <TPayload>(
 ) => (
   prefix: string,
-): Record<TActionTypeKeys, string> =>
+): Record<TActionTypeKeys, ActionCreator<TPayload>> =>
   pipe(
-    map((k: TActionTypeKeys) => [k, `${prefix}/${k}`]),
-    fromPairs as () => Record<TActionTypeKeys, string>,
+    map((k: TActionTypeKeys) => [k, (payload: TPayload) => ({ type: `${prefix}/${k}`, payload })]),
+    fromPairs as () => Record<TActionTypeKeys, ActionCreator<TPayload>>,
   )(keys);
 
-type GetActionTypeReturnType<T> = T extends GetActionTypeResult<infer TActionTypeKeys> ? Record<TActionTypeKeys, string> : never
+type GetActionTypeReturnType<T> =
+  T extends GetActionTypeResult<infer TActionTypeKeys, infer TPayload> ? Record<TActionTypeKeys, ActionCreator<TPayload>> : never
 
-export const moduleActionTypes = <ModuleActionTypes extends Record<string, GetActionTypeResult<string>>>(
+export const moduleActions = <ModuleActionTypes extends Record<string, GetActionTypeResult<string, any>>>(
   modulePrefix: string, actions: ModuleActionTypes,
 ) => (
   parentPrefix: string,
 ): { [K in keyof ModuleActionTypes]: GetActionTypeReturnType<ModuleActionTypes[K]> } =>
   mapObjIndexed((val, key) => val(`${parentPrefix}/${modulePrefix}/${key}`), actions) as any;
 
-export const appActionTypes = <AppActionTypes extends Record<string, (prefix: string) => any>>(
+export const appActions = <AppActionTypes extends Record<string, (prefix: string) => any>>(
   appPrefix: string, types: AppActionTypes,
 ): { [K in keyof AppActionTypes]: ReturnType<AppActionTypes[K]> } =>
   mapObjIndexed((val) => val(appPrefix), types) as any;
+
+export const appActionTypes = <AppActions extends Record<string, Record<string, Record<string, ActionCreator<any>>>>>(
+  actions: AppActions,
+): { [K in keyof AppActions]: { [K2 in keyof AppActions[K]]: { [K3 in keyof AppActions[K][K2]]: ReturnType<AppActions[K][K2][K3]>['type'] } } } =>
+  mapObjIndexed(mapObjIndexed((x) => x.type), actions) as any;
 
 const ApiActionTypes = [
   'requested',

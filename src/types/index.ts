@@ -1,52 +1,53 @@
 import {
-  changedActionTypes,
-  moduleActionTypes,
-  apiActionTypes,
+  moduleActions,
+  appActions,
   appActionTypes,
+  changedActionTypes,
+  apiActionTypes,
   triggerActionTypes,
 } from 'helpers/typeCreator';
 
-const app = moduleActionTypes('app', {
-  init: triggerActionTypes,
-  theme: changedActionTypes,
+const app = moduleActions('app', {
+  init: triggerActionTypes<undefined>(),
+  theme: changedActionTypes(),
 });
 
-const market = moduleActionTypes('market', {
-  symbols: changedActionTypes,
+const market = moduleActions('market', {
+  symbols: changedActionTypes<string>(),
 });
 
-const ethereum = moduleActionTypes('ethereum', {
-  modalOpen: changedActionTypes,
-  modalClose: changedActionTypes,
-  enable: apiActionTypes,
-  network: apiActionTypes,
+const ethereum = moduleActions('ethereum', {
+  modalOpen: changedActionTypes(),
+  modalClose: changedActionTypes(),
+  enable: apiActionTypes(),
+  network: apiActionTypes(),
 });
 
-const token = moduleActionTypes('token', {
-  balance: apiActionTypes,
-  authorization: apiActionTypes,
-  grant: apiActionTypes,
+const token = moduleActions('token', {
+  balance: apiActionTypes(),
+  authorization: apiActionTypes(),
+  grant: apiActionTypes(),
 });
 
-const swap = moduleActionTypes('swap', {
-  fromSymbol: changedActionTypes,
-  toSymbol: changedActionTypes,
-  fromAmount: changedActionTypes,
-  toAmount: changedActionTypes,
-  validation: changedActionTypes,
-  mint: apiActionTypes,
-  redeem: apiActionTypes,
+const swap = moduleActions('swap', {
+  fromSymbol: changedActionTypes<string>(),
+  toSymbol: changedActionTypes<string>(),
+  fromAmount: changedActionTypes(),
+  toAmount: changedActionTypes(),
+  validation: changedActionTypes(),
+  mint: apiActionTypes(),
+  redeem: apiActionTypes(),
 });
 
-const spot = moduleActionTypes('spot', {
-  rate: apiActionTypes,
+const spot = moduleActions('spot', {
+  rate: apiActionTypes(),
 });
 
-const margin = moduleActionTypes('margin', {
-  enabled: apiActionTypes,
+const margin = moduleActions('margin', {
+  enabled: apiActionTypes(),
 });
 
-export default appActionTypes('flow', {
+export const actions = appActions('flow', {
   app,
   market,
   ethereum,
@@ -55,3 +56,7 @@ export default appActionTypes('flow', {
   spot,
   margin,
 });
+
+const types = appActionTypes(actions);
+
+export default types;
