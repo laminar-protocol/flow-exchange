@@ -3,7 +3,7 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import { tokens } from 'config';
 
-import types from 'types';
+import types, { actions } from 'types';
 import { Epic } from 'reducers';
 
 const epic: Epic = (action$) => action$.pipe(
@@ -17,7 +17,7 @@ const epic: Epic = (action$) => action$.pipe(
     ]);
 
     return of(
-      { type: types.market.symbols.changed, payload: tokens },
+      actions.market.symbols.changed(tokens),
 
       // Token
       ...tokenRequests,
