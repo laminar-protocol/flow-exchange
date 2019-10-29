@@ -1,11 +1,11 @@
-import { lifecycle, ComponentEnhancer } from 'recompose';
+import { lifecycle } from 'recompose';
 
 interface WithInitProps {
   init(): void;
   uninit?: () => void;
 }
 
-export const withInit: ComponentEnhancer<WithInitProps, WithInitProps> = lifecycle<WithInitProps, {}>({
+export const withInit = lifecycle<WithInitProps, {}>({
   componentDidMount() {
     this.props.init();
   },

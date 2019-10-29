@@ -55,7 +55,10 @@ export function createEpic<S, T, P, E = any>(
       switchMap(({ payload }) =>
         from(run(payload && payload.params, state$.value)).pipe(
           map((resp) => apiAction.completed({ value: resp })),
-          catchError((error: E) => of(apiAction.failed({ error }))),
+          catchError((error: E) => {
+            console.error(error); // TODO redux logger middleware for failed actions
+            return of(apiAction.failed({ error }));
+          }),
           takeUntil(action$.pipe(ofType(types.cancelled))),
         )),
     );

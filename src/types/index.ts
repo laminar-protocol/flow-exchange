@@ -46,7 +46,7 @@ const spot = moduleActions('spot', {
 });
 
 const margin = moduleActions('margin', {
-  allowance: apiActionTypes<PartialState<string>>(),
+  allowance: apiActionTypes<PartialState<number>>(),
 });
 
 export const actions = appActions('flow', {

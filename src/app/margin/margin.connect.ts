@@ -3,11 +3,18 @@ import { Dispatch } from 'redux';
 
 import { actions } from 'types';
 import { withInit } from 'helpers/hoc';
+import { AppState } from 'reducers';
 
 import Component from './margin';
 
-const mapStateToProps = () => ({
-});
+const mapStateToProps = ({ margin: { allowance } }: AppState) => {
+  const allowanceValue = allowance.value || 0;
+  return {
+    isEnabled: allowanceValue > 0,
+    isLoadingAllowance: allowance.loading,
+    allowance: allowanceValue,
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   init: () => {

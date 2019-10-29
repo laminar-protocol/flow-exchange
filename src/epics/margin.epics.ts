@@ -1,5 +1,6 @@
 import ethereum from 'services/ethereum';
 
+import { fromWei } from 'helpers/unitHelper';
 import { createEpic } from 'helpers/apiLoadable';
 import { actions } from 'types';
 import { AppState } from 'reducers';
@@ -9,6 +10,10 @@ import { AppState } from 'reducers';
 export const allowance = createEpic(actions.margin.allowance, async (_params, state: AppState) => {
   await ethereum.ready;
   const { ethereum: { account } } = state;
+  if (!account) { // TODO: improve this
+    return Promise.reject(new Error('No account'));
+  }
   const protocolAddress = ethereum.flowMarginProtocol.options.address;
-  return ethereum.baseTokenContract.methods.allowance(account, protocolAddress).call();
+  const result = await ethereum.baseTokenContract.methods.allowance(account, protocolAddress).call();
+  return Number(fromWei(result));
 });

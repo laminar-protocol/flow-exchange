@@ -18,7 +18,13 @@ const Summary = styled.div`
   justify-content: center;
 `;
 
-const Margin = () => (
+interface Props {
+  isEnabled: boolean;
+  isLoadingAllowance: boolean;
+  allowance: number;
+}
+
+const Margin: React.FC<Props> = ({ isEnabled, isLoadingAllowance, allowance }) => (
   <Container>
     <Text size="h">Margin Exchange</Text>
     <Separator />
@@ -38,7 +44,10 @@ const Margin = () => (
           text="Equity"
         />
       </Summary>
-      <SolidButton>Enable Trading</SolidButton>
+      <div>
+        <SolidButton loading={isLoadingAllowance}>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton>
+        <div>Allowance: {allowance}</div>
+      </div>
     </SummaryPanel>
   </Container>
 );
