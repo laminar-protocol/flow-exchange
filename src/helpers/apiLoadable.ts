@@ -70,5 +70,5 @@ export function createEpic<S, T, P, E = any>(
           takeUntil(action$.pipe(ofType(types.cancelled))),
         )),
     );
-  }
+  };
 }
