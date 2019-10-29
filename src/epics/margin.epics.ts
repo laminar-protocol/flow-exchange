@@ -1,20 +1,14 @@
-import { ofType } from 'redux-observable';
-import { mergeMap } from 'rxjs/operators';
 import ethereum from 'services/ethereum';
 
-import types from 'types';
-import { Epic } from 'reducers';
+import { createEpic } from 'helpers/apiLoadable';
+import { actions } from 'types';
+import { AppState } from 'reducers';
 
-export const isEnabledEpic: Epic = (action$) => action$.pipe(
-  ofType(types.margin.enabled.requested),
-  mergeMap(async () => {
-    await ethereum.ready;
-    return {
-      type: types.token.authorization.requested,
-      payload: {
-        address: ethereum.flowMarginProtocol.options.address,
-        symbol: 'DAI',
-      },
-    };
-  }),
-);
+export const allowance = createEpic(actions.margin.allowance, async (_params, state: AppState) => {
+  await ethereum.ready;
+  const { ethereum: { account } } = state;
+  const protocolAddress = ethereum.flowMarginProtocol.options.address;
+  const bal = await ethereum.baseTokenContract.methods.allowance(account, protocolAddress);
+  console.log(bal);
+  return bal;
+});

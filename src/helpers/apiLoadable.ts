@@ -1,53 +1,62 @@
-import { Action as ReduxAction, Reducer } from 'redux';
-import { ApiActionTypesRecord } from 'helpers/typeCreator';
+import { of, ObservableInput, from } from 'rxjs';
+import { map, switchMap, takeUntil, catchError } from 'rxjs/operators';
+import { mapObjIndexed } from 'ramda';
+import { ofType, Epic } from 'redux-observable';
 
-export interface State<T, P = any, E = any> {
+import { Action, ApiActionTypesRecord } from './typeCreator';
+import ReducerBuilder from './reducerBuilder';
+
+// Handles one API resource request
+// TODO: support multiple requests for a kind with ID
+
+export interface State<T, P = void, E = any> {
   value?: T;
   loading: boolean;
-  lastPayload?: P;
+  params?: P;
   error?: E;
 }
 
-export interface Action<T> extends ReduxAction<string> {
-  payload?: T;
+export type PartialState<T, P = void, E = any> = Partial<State<T, P, E>>;
+
+export interface ApiLodableAction<T> extends Action<T> {
   error?: boolean;
 }
 
-export const initialState: State<any, any, any> = {
+export const initialState = <T, P, E = any>(): State<T, P, E> => ({
   loading: false,
-};
+});
 
-export function createReducer<T, P = any, E = any>(apiAction: ApiActionTypesRecord): Reducer<State<T, P, E>, Action<P | T | E>> {
-  return (state = initialState, { type, payload }: Action<P | T | E>) => {
-    switch (type) {
-      case apiAction.requested:
-        return {
-          ...state,
-          loading: true,
-          lastPayload: payload as P,
-          error: undefined,
-        };
-      case apiAction.cancelled:
-        return {
-          ...state,
-          loading: false,
-          error: payload as E,
-        };
-      case apiAction.completed:
-        return {
-          ...state,
-          loading: false,
-          value: payload as T,
-          error: undefined,
-        };
-      case apiAction.failed:
-        return {
-          ...state,
-          loading: false,
-          error: payload as E,
-        };
-      default:
-        return state;
-    }
-  };
+export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>) {
+  return new ReducerBuilder(initialState<T, P, E>())
+    .handle(apiAction.requested, (_state, { payload }) => ({
+      loading: true,
+      params: payload && payload.params,
+    }))
+    .handle(apiAction.completed, (_state, { payload }) => ({
+      loading: false,
+      value: payload && payload.value,
+      error: undefined,
+    }))
+    .handle([apiAction.cancelled, apiAction.failed], (_state, { payload }) => ({
+      loading: false,
+      error: payload && payload.error,
+    }))
+    .build();
+}
+
+export function createEpic<S, T, P, E = any>(
+  apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>,
+  run: (params: P | undefined, state: S) => ObservableInput<T>,
+): Epic<any, any, S> {
+  const types = mapObjIndexed((x) => x().type, apiAction);
+  return (action$, state$) =>
+    action$.pipe(
+      ofType(types.requested),
+      switchMap(({ payload }) =>
+        from(run(payload && payload.params, state$.value)).pipe(
+          map((resp) => apiAction.completed({ value: resp })),
+          catchError((error: E) => of(apiAction.failed({ error }))),
+          takeUntil(action$.pipe(ofType(types.cancelled))),
+        )),
+    );
 }

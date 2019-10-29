@@ -1,16 +1,16 @@
 import { combineReducers } from 'redux';
 import { DeepReadonly } from 'utility-types';
 import { State as ApiLoadableState, createReducer } from 'helpers/apiLoadable';
-import types from 'types';
+import { actions } from 'types';
 
 export type State = DeepReadonly<{
-  isEnabled: ApiLoadableState<boolean>;
+  allowance: ApiLoadableState<string>;
 }>;
 
-const isEnabled = createReducer<boolean>(types.margin.enabled);
+const allowance = createReducer(actions.margin.allowance);
 
 const reducer = combineReducers({
-  isEnabled,
+  allowance,
 });
 
 export default reducer;

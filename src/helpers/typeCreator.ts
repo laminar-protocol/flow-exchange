@@ -5,7 +5,7 @@ export interface Action<T> extends ReduxAction<string> {
   payload?: T;
 }
 
-type ActionCreator<T> = (payload?: T) => Action<T>
+export type ActionCreator<T> = (payload?: T) => Action<T>
 
 interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
   (prefix: string): Record<TActionTypeKeys, ActionCreator<TPayload>>;
@@ -40,7 +40,7 @@ export const appActions = <AppActionTypes extends Record<string, (prefix: string
 export const appActionTypes = <AppActions extends Record<string, Record<string, Record<string, ActionCreator<any>>>>>(
   actions: AppActions,
 ): { [K in keyof AppActions]: { [K2 in keyof AppActions[K]]: { [K3 in keyof AppActions[K][K2]]: ReturnType<AppActions[K][K2][K3]>['type'] } } } =>
-  mapObjIndexed(mapObjIndexed((x) => x.type), actions) as any;
+  mapObjIndexed(mapObjIndexed(mapObjIndexed((x) => x().type)), actions) as any;
 
 const ApiActionTypes = [
   'requested',
@@ -66,7 +66,7 @@ export const changedActionTypes = getActionType(ChangedActionTypes);
 export const toggledActionTypes = getActionType(ToggledActionTypes);
 export const triggerActionTypes = getActionType(TriggerActionTypes);
 
-export type ApiActionTypesRecord = Record<typeof ApiActionTypes[number], string>;
-export type ChangedActionTypesRecord = Record<typeof ChangedActionTypes[number], string>;
-export type ToggledActionTypesRecord = Record<typeof ToggledActionTypes[number], string>;
-export type TriggerActionTypesRecord = Record<typeof TriggerActionTypes[number], string>;
+export type ApiActionTypesRecord<P> = Record<typeof ApiActionTypes[number], ActionCreator<P>>;
+export type ChangedActionTypesRecord<P> = Record<typeof ChangedActionTypes[number], ActionCreator<P>>;
+export type ToggledActionTypesRecord<P> = Record<typeof ToggledActionTypes[number], ActionCreator<P>>;
+export type TriggerActionTypesRecord<P> = Record<typeof TriggerActionTypes[number], ActionCreator<P>>;
