@@ -7,6 +7,8 @@ import {
   triggerActionTypes,
 } from 'helpers/typeCreator';
 
+import { PartialState } from 'helpers/apiLoadable';
+
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),
   theme: changedActionTypes(),
@@ -44,7 +46,7 @@ const spot = moduleActions('spot', {
 });
 
 const margin = moduleActions('margin', {
-  enabled: apiActionTypes(),
+  allowance: apiActionTypes<PartialState<string>>(),
 });
 
 export const actions = appActions('flow', {

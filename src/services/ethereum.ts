@@ -82,6 +82,10 @@ class Ethereum {
   get flowMarginProtocol() {
     return this._flowMarginProtocol as Contract;
   }
+
+  get baseTokenContract() {
+    return (this._tokens as any).DAI as Contract;
+  }
 }
 
 const ethereum = new Ethereum();

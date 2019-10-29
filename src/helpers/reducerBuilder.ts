@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
-import { Action } from './typeCreator';
+import { Action, ActionCreator } from './typeCreator';
 
-type StateReducer<S, P = any> = (state: S, action: Action<P>) => S
+type StateReducer<S, P = any> = (state: S, action: Action<P>) => Partial<S>
 
 export default class ReducerBuilder<S> {
   private readonly _reducers: Record<string, StateReducer<S>> = {};
@@ -11,24 +11,33 @@ export default class ReducerBuilder<S> {
     this._initalState = initalState;
   }
 
-  public handle<T>(actionCreator: () => Action<T>, handler: StateReducer<S, T>) {
-    const { type } = actionCreator();
-    const existing = this._reducers[type];
-    if (existing) {
-      this._reducers[type] = (s, act) => handler(existing(s, act), act);
-    } else {
-      this._reducers[type] = handler;
+  public handle<T>(actionCreator: ActionCreator<T> | ActionCreator<T>[], handler: StateReducer<S, T>) {
+    const actionCreators = Array.isArray(actionCreator) ? actionCreator : [actionCreator];
+    for (const creator of actionCreators) {
+      const { type } = creator();
+      const existing = this._reducers[type];
+      if (existing) {
+        this._reducers[type] = (s, act) => handler({ ...s, ...existing(s, act) }, act);
+      } else {
+        this._reducers[type] = handler;
+      }
     }
     return this;
   }
 
-  public build(): Reducer<S> {
+  public build(): Reducer<S, Action<any>> {
     return (s = this._initalState, act) => {
       const handler = this._reducers[act.type];
       if (handler) {
-        return handler(s, act);
+        return {
+          ...s,
+          ...handler(s, act),
+        };
       }
       return s;
     };
   }
 }
+
+export const createReducer = <S, T>(actionCreator: ActionCreator<T> | ActionCreator<T>[], initalState: S, handler: StateReducer<S, T>) =>
+  new ReducerBuilder(initalState).handle(actionCreator, handler).build();
