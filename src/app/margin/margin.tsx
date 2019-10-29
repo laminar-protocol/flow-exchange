@@ -20,7 +20,7 @@ const Summary = styled.div`
 
 const Margin = () => (
   <Container>
-    <Text size="h">Spot Exchange</Text>
+    <Text size="h">Margin Exchange</Text>
     <Separator />
     <SummaryPanel>
       <Text size="l">Account Summary</Text>
