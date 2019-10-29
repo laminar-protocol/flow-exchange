@@ -49,6 +49,7 @@ module.exports = {
     'no-confusing-arrow': 'off',
     'no-restricted-syntax': 'off',
     'react/jsx-one-expression-per-line': 'off',
+    'consistent-return': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
   },

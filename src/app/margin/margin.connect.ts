@@ -7,12 +7,13 @@ import { AppState } from 'reducers';
 
 import Component from './margin';
 
-const mapStateToProps = ({ margin: { allowance } }: AppState) => {
+const mapStateToProps = ({ margin: { allowance, trading } }: AppState) => {
   const allowanceValue = allowance.value || 0;
   return {
     isEnabled: allowanceValue > 0,
     isLoadingAllowance: allowance.loading,
-    allowance: allowanceValue,
+    isTogglinigTrading: trading.loading,
+    allowance: allowanceValue > 1e10 ? 'MAX' : allowanceValue.toFixed(2),
   };
 };
 
@@ -22,6 +23,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   uninit: () => {
     dispatch(actions.margin.allowance.cancelled());
+  },
+  onToggleTrading: (enable: boolean) => {
+    dispatch(actions.margin.toggleTrading.requested({ params: enable }));
   },
 });
 

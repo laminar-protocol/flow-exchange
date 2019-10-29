@@ -1,6 +1,7 @@
+import { mapObjIndexed } from 'ramda';
 import Web3 from 'web3';
 
-import { abi, Addresses } from 'config';
+import { abi, Addresses, tradingPairs } from 'config';
 
 // workaround to get types that are not exposed directly from web3
 type Eth = Web3['eth'];
@@ -28,6 +29,8 @@ class Ethereum {
     fJPY: Contract;
   }
 
+  private _marginTradingPairs: Record<string, Contract> = {};
+
   constructor() {
     const anyWindow = window as any;
     if (typeof anyWindow.ethereum !== 'undefined' || (typeof anyWindow.web3 !== 'undefined')) {
@@ -37,9 +40,6 @@ class Ethereum {
       this.ethProvider = new Web3(this.ethWeb3);
 
       provider.autoRefreshOnNetworkChange = false;
-
-      // eslint-disable-next-line no-restricted-globals
-      provider.on('networkChanged', () => location.reload());
     } else {
       // TODO: handle this
       throw new Error('Not supported');
@@ -68,6 +68,8 @@ class Ethereum {
       fEUR: eurContract,
       fJPY: jpyContract,
     };
+
+    this._marginTradingPairs = mapObjIndexed((pair, name) => new this.ethProvider.eth.Contract(abi.MarginTradingPair, addresses[name]), tradingPairs);
 
     this._resolveReady();
   }
@@ -98,6 +100,10 @@ class Ethereum {
 
   get baseTokenContract() {
     return (this._tokens as any).DAI as Contract;
+  }
+
+  get marginTradingPairs() {
+    return this._marginTradingPairs;
   }
 }
 

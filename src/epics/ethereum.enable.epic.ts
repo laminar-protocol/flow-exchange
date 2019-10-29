@@ -14,6 +14,7 @@ const epic: Epic = (action$) => action$.pipe(
       .catch(() => observable.next(actions.ethereum.enable.failed()));
     ethereum.ethWeb3.on('accountsChanged', ([account]: string[]) => {
       observable.next(actions.ethereum.account.changed(account));
+    // TODO: ethereum.ethWeb3.on('networkChanged')
     });
   })),
 );

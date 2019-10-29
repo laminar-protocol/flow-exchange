@@ -48,6 +48,7 @@ const spot = moduleActions('spot', {
 
 const margin = moduleActions('margin', {
   allowance: apiActionTypes<PartialState<number>>(),
+  toggleTrading: apiActionTypes<PartialState<number, boolean>>(),
 });
 
 export const actions = appActions('flow', {

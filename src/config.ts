@@ -26,6 +26,29 @@ export const tokens = {
   },
 };
 
+export const tradingPairs = {
+  l10USDEUR: {
+    base: 'DAI',
+    quote: 'fEUR',
+    leverage: 10,
+  },
+  s10USDEUR: {
+    base: 'DAI',
+    quote: 'fEUR',
+    leverage: -10,
+  },
+  l20USDJPY: {
+    base: 'DAI',
+    quote: 'fJPY',
+    leverage: 20,
+  },
+  s20USDJPY: {
+    base: 'DAI',
+    quote: 'fJPY',
+    leverage: 20,
+  },
+};
+
 export const abi = {
   ERC20: ERC20Detailed as any,
   FlowProtocol: FlowProtocol as any,

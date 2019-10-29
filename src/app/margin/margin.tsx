@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import {
   Text, Separator, Panel, SolidButton, BalanceCell,
 } from 'components';
+import { tradingPairs } from 'config';
+
+import TradingPair from './tradingPair';
 
 const Container = styled.div`
 `;
@@ -21,10 +24,15 @@ const Summary = styled.div`
 interface Props {
   isEnabled: boolean;
   isLoadingAllowance: boolean;
-  allowance: number;
+  isTogglinigTrading: boolean;
+  allowance: string;
+
+  onToggleTrading: (enable: boolean) => void;
 }
 
-const Margin: React.FC<Props> = ({ isEnabled, isLoadingAllowance, allowance }) => (
+const Margin: React.FC<Props> = ({
+  isEnabled, isLoadingAllowance, isTogglinigTrading, allowance, onToggleTrading,
+}) => (
   <Container>
     <Text size="h">Margin Exchange</Text>
     <Separator />
@@ -45,12 +53,14 @@ const Margin: React.FC<Props> = ({ isEnabled, isLoadingAllowance, allowance }) =
         />
       </Summary>
       <div>
-        { isLoadingAllowance
-          ? <SolidButton loading>Loading Allowance</SolidButton>
-          : <SolidButton>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton> }
+        { (isLoadingAllowance || isTogglinigTrading)
+          ? <SolidButton loading>{ isLoadingAllowance ? 'Loading Allowance' : 'Updaing Trading' }</SolidButton>
+          : <SolidButton onClick={() => onToggleTrading(!isEnabled)}>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton> }
         { !isLoadingAllowance && <div>Allowance: {allowance}</div> }
       </div>
     </SummaryPanel>
+    <Separator />
+    { isEnabled && Object.keys(tradingPairs).map((name) => <TradingPair name={name} key={name} />) }
   </Container>
 );
 
