@@ -29,8 +29,21 @@ class Ethereum {
   }
 
   constructor() {
-    this.ethWeb3 = (window as any).ethereum;
-    this.ethProvider = new Web3(this.ethWeb3);
+    const anyWindow = window as any;
+    if (typeof anyWindow.ethereum !== 'undefined' || (typeof anyWindow.web3 !== 'undefined')) {
+      const provider = anyWindow.ethereum || anyWindow.web3.currentProvider;
+
+      this.ethWeb3 = provider;
+      this.ethProvider = new Web3(this.ethWeb3);
+
+      provider.autoRefreshOnNetworkChange = false;
+
+      // eslint-disable-next-line no-restricted-globals
+      provider.on('networkChanged', () => location.reload());
+    } else {
+      // TODO: handle this
+      throw new Error('Not supported');
+    }
 
     this.ready = new Promise((resolve) => {
       this._resolveReady = resolve;

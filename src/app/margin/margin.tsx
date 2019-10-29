@@ -45,8 +45,10 @@ const Margin: React.FC<Props> = ({ isEnabled, isLoadingAllowance, allowance }) =
         />
       </Summary>
       <div>
-        <SolidButton loading={isLoadingAllowance}>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton>
-        <div>Allowance: {allowance}</div>
+        { isLoadingAllowance
+          ? <SolidButton loading>Loading Allowance</SolidButton>
+          : <SolidButton>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton> }
+        { !isLoadingAllowance && <div>Allowance: {allowance}</div> }
       </div>
     </SummaryPanel>
   </Container>

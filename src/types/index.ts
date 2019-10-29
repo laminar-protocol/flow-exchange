@@ -21,8 +21,9 @@ const market = moduleActions('market', {
 const ethereum = moduleActions('ethereum', {
   modalOpen: changedActionTypes(),
   modalClose: changedActionTypes(),
-  enable: apiActionTypes(),
+  enable: apiActionTypes<string>(),
   network: apiActionTypes(),
+  account: changedActionTypes<string>(),
 });
 
 const token = moduleActions('token', {

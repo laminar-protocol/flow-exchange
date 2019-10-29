@@ -81,6 +81,11 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         isConnecting: false,
         isConnected: true,
       };
+    case types.ethereum.account.changed:
+      return {
+        ...state,
+        account: payload,
+      };
     default:
       return state;
   }

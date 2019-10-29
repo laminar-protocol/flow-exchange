@@ -1,4 +1,4 @@
-import { of, ObservableInput, from } from 'rxjs';
+import { of, ObservableInput, from, combineLatest } from 'rxjs';
 import { map, switchMap, takeUntil, catchError } from 'rxjs/operators';
 import { mapObjIndexed } from 'ramda';
 import { ofType, Epic } from 'redux-observable';
@@ -47,10 +47,18 @@ export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Par
 export function createEpic<S, T, P, E = any>(
   apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>,
   run: (params: P | undefined, state: S) => ObservableInput<T>,
+  additionalTrigger?: Epic<any, any, S>,
 ): Epic<any, any, S> {
   const types = mapObjIndexed((x) => x().type, apiAction);
-  return (action$, state$) =>
-    action$.pipe(
+  return (action$, state$, dep) => {
+    let from$;
+    if (additionalTrigger) {
+      const trigger$ = additionalTrigger(action$, state$, dep);
+      from$ = combineLatest(trigger$, action$.pipe(ofType(types.requested))).pipe(map(([, act]) => act));
+    } else {
+      from$ = action$.pipe(ofType(types.requested));
+    }
+    return from$.pipe(
       ofType(types.requested),
       switchMap(({ payload }) =>
         from(run(payload && payload.params, state$.value)).pipe(
@@ -62,4 +70,5 @@ export function createEpic<S, T, P, E = any>(
           takeUntil(action$.pipe(ofType(types.cancelled))),
         )),
     );
+  }
 }
