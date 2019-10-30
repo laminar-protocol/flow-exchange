@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Form, Select } from 'antd';
 
 import {
   Text, Separator, Panel, SolidButton, BalanceCell,
@@ -32,36 +33,51 @@ interface Props {
 
 const Margin: React.FC<Props> = ({
   isEnabled, isLoadingAllowance, isTogglinigTrading, allowance, onToggleTrading,
-}) => (
-  <Container>
-    <Text size="h">Margin Exchange</Text>
-    <Separator />
-    <SummaryPanel>
-      <Text size="l">Account Summary</Text>
-      <Summary>
-        <BalanceCell
-          value="123"
-          text="Balance"
-        />
-        <BalanceCell
-          value="123"
-          text="P/L"
-        />
-        <BalanceCell
-          value="123"
-          text="Equity"
-        />
-      </Summary>
-      <div>
-        { (isLoadingAllowance || isTogglinigTrading)
-          ? <SolidButton loading>{ isLoadingAllowance ? 'Loading Allowance' : 'Updaing Trading' }</SolidButton>
-          : <SolidButton onClick={() => onToggleTrading(!isEnabled)}>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton> }
-        { !isLoadingAllowance && <div>Allowance: {allowance}</div> }
-      </div>
-    </SummaryPanel>
-    <Separator />
-    { isEnabled && Object.keys(tradingPairs).map((name) => <TradingPair name={name} key={name} />) }
-  </Container>
-);
+}) => {
+  const names = Object.keys(tradingPairs);
+  const [pairName, setPairName] = useState(names[0]);
+  return (
+    <Container>
+      <Text size="h">Margin Exchange</Text>
+      <Separator />
+      <SummaryPanel>
+        <Text size="l">Account Summary</Text>
+        <Summary>
+          <BalanceCell
+            value="123"
+            text="Balance"
+          />
+          <BalanceCell
+            value="123"
+            text="P/L"
+          />
+          <BalanceCell
+            value="123"
+            text="Equity"
+          />
+        </Summary>
+        <div>
+          { (isLoadingAllowance || isTogglinigTrading)
+            ? <SolidButton loading>{ isLoadingAllowance ? 'Loading Allowance' : 'Updaing Trading' }</SolidButton>
+            : <SolidButton onClick={() => onToggleTrading(!isEnabled)}>{isEnabled ? 'Disable Trading' : 'Enable Trading'}</SolidButton> }
+          { !isLoadingAllowance && <div>Allowance: {allowance}</div> }
+        </div>
+      </SummaryPanel>
+      { isEnabled && (
+        <>
+          <Separator />
+          <Form>
+            <Form.Item label="Margin trading pair">
+              <Select value={pairName} onChange={setPairName}>
+                { Object.keys(tradingPairs).map((name) => <Select.Option value={name} key={name}>{name}</Select.Option>) }
+              </Select>
+            </Form.Item>
+          </Form>
+          <TradingPair name={pairName} />
+        </>
+      ) }
+    </Container>
+  );
+};
 
 export default Margin;
