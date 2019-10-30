@@ -1,7 +1,7 @@
 import { of, ObservableInput, from, combineLatest } from 'rxjs';
 import { map, switchMap, takeUntil, catchError } from 'rxjs/operators';
 import { mapObjIndexed } from 'ramda';
-import { ofType, Epic } from 'redux-observable';
+import { ofType, Epic, StateObservable } from 'redux-observable';
 
 import { Action, ApiActionTypesRecord } from './typeCreator';
 import ReducerBuilder from './reducerBuilder';
@@ -46,7 +46,7 @@ export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Par
 
 export function createEpic<S, T, P, E = any>(
   apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>,
-  run: (params: P | undefined, state: S) => ObservableInput<T>,
+  run: (params: P, state: StateObservable<S>) => ObservableInput<T>,
   additionalTrigger?: Epic<any, any, S>,
 ): Epic<any, any, S> {
   const types = mapObjIndexed((x) => x().type, apiAction);
@@ -61,7 +61,7 @@ export function createEpic<S, T, P, E = any>(
     return from$.pipe(
       ofType(types.requested),
       switchMap(({ payload }) =>
-        from(run(payload && payload.params, state$.value)).pipe(
+        from(run(payload && payload.params, state$)).pipe(
           map((resp) => apiAction.completed({ value: resp })),
           catchError((error: E) => {
             console.error(error); // TODO redux logger middleware for failed actions
