@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { Form, InputNumber, Select } from 'antd';
+import { Form, InputNumber, Select, Table } from 'antd';
 
 import { AppState } from 'reducers';
 import { actions } from 'types';
 import { Panel, SolidButton } from 'components';
 import { tradingPairs, deployment } from 'config';
+import { ColumnProps } from 'antd/lib/table';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
 interface OwnProps {
   name: string;
 }
 
+// where: {
+//   owner: $owner: Bytes!
+//   pair: $pair: Bytes!
+// }
+
 interface Props extends OwnProps {
+  account: string;
+  pairAddress: string;
   base: string;
   quote: string;
   leverage: number;
@@ -28,9 +38,71 @@ interface Props extends OwnProps {
 const Container = styled(Panel)`
 `;
 
-const TradingPair: React.FC<Props> = ({ base, quote, leverage, isLong, liuqidationFee, liquidityPools, isSending, onOpenPosition }) => {
+const positionQuery = gql`
+  {
+    marginPositionEntities {
+      positionId
+      liquidityPool
+      amount
+      openPrice
+      bidSpread
+      liquidationFee
+      closePrice
+      liquidator
+      closeOwnerAmount
+    }
+  }
+`;
+
+const positionsTableColumns: ColumnProps<any>[] = [
+  {
+    title: 'ID',
+    dataIndex: 'positionId',
+  }, {
+    title: 'Liquidity Pool',
+    dataIndex: 'liquidityPool',
+  }, {
+    title: 'Amount (DAI)',
+    dataIndex: 'amount',
+  }, {
+    title: 'Open Price',
+    dataIndex: 'openPrice',
+  }, {
+    title: 'Bid Spread (%)',
+    dataIndex: 'bidSpread',
+  }, {
+    title: 'Liquidation Fee (DAI)',
+    dataIndex: 'liquidationFee',
+  }, {
+    title: 'Close Price',
+    dataIndex: 'closePrice',
+  }, {
+    title: 'Closed By',
+    dataIndex: 'liquidator',
+  }, {
+    title: 'Closed Amount',
+    dataIndex: 'closeOwnerAmount',
+  }, {
+    title: 'Profit / Lost (DAI)',
+    dataIndex: 'profit',
+  },
+];
+
+const TradingPair: React.FC<Props> = ({
+  account, pairAddress, base, quote, leverage, isLong, liuqidationFee, liquidityPools, isSending, onOpenPosition,
+}) => {
   const [amount, setAmount] = useState(20 as number | undefined);
   const [pool, setPool] = useState(liquidityPools[0].address as string | undefined);
+  const { loading, error, data } = useQuery(positionQuery, {
+    variables: {
+      owner: account,
+      pair: pairAddress,
+    },
+  });
+  const positions = useMemo(() => data && data.marginPositionEntities.map((x: any) => ({
+    ...x,
+    profit: x.closePrice != null && x.closeOwnerAmount - x.amount,
+  })), [data]);
   return (
     <Container>
       <Form labelCol={{ span: 3 }}>
@@ -59,13 +131,17 @@ const TradingPair: React.FC<Props> = ({ base, quote, leverage, isLong, liuqidati
           <SolidButton disabled={!amount || !pool} loading={isSending} onClick={() => onOpenPosition(amount, pool)}>Open Position</SolidButton>
         </Form.Item>
       </Form>
+      <Table columns={positionsTableColumns} loading={loading} dataSource={positions} rowKey="positionId" />
+      { error && <div>Error: {error.message}</div> }
     </Container>
   );
 };
 
-const mapStateToProps = ({ margin: { openPosition } }: AppState, { name }: OwnProps) => {
-  const pair = tradingPairs[name as keyof typeof tradingPairs];
+const mapStateToProps = ({ margin: { openPosition }, ethereum: { account } }: AppState, { name }: OwnProps) => {
+  const pair = tradingPairs[name as keyof typeof tradingPairs]; // TODO: improve this
   return {
+    account,
+    pairAddress: deployment.kovan[name as keyof typeof deployment['kovan']], // TODO: improve this
     base: pair.base,
     quote: pair.quote,
     leverage: Math.abs(pair.leverage),

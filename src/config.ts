@@ -61,3 +61,6 @@ export const abi = {
 };
 
 export { deployment };
+
+// TODO: make this configurable
+export const subgraphEndpoint = 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph';
