@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { Form, InputNumber, Select, Table } from 'antd';
+import { Form, InputNumber, Select, Table, Button } from 'antd';
 
 import { AppState } from 'reducers';
 import { actions } from 'types';
@@ -33,6 +33,7 @@ interface Props extends OwnProps {
   isSending: boolean;
 
   onOpenPosition: (amount?: number, pool?: string) => void;
+  onClosePosition: (id: string) => void;
 }
 
 const Container = styled(Panel)`
@@ -85,11 +86,14 @@ const positionsTableColumns: ColumnProps<any>[] = [
   }, {
     title: 'Profit / Lost (DAI)',
     dataIndex: 'profit',
+  }, {
+    render: (_text, record) => record.closePrice == null && <Button loading={record.isSending} onClick={record.onClose}>Close Position</Button>,
   },
 ];
 
 const TradingPair: React.FC<Props> = ({
-  account, pairAddress, base, quote, leverage, isLong, liuqidationFee, liquidityPools, isSending, onOpenPosition,
+  account, pairAddress, base, quote, leverage, isLong, liuqidationFee, liquidityPools, isSending,
+  onOpenPosition, onClosePosition,
 }) => {
   const [amount, setAmount] = useState(20 as number | undefined);
   const [pool, setPool] = useState(liquidityPools[0].address as string | undefined);
@@ -101,8 +105,15 @@ const TradingPair: React.FC<Props> = ({
   });
   const positions = useMemo(() => data && data.marginPositionEntities.map((x: any) => ({
     ...x,
-    profit: x.closePrice != null && x.closeOwnerAmount - x.amount,
-  })), [data]);
+    amount: Number(x.amount).toFixed(2), // TODO: improve this
+    liquidationFee: Number(x.liquidationFee).toFixed(2), // TODO: improve this
+    closeOwnerAmount: Number(x.closeOwnerAmount).toFixed(2), // TODO: improve this
+    profit: x.closePrice != null && Number(x.closeOwnerAmount - x.amount).toFixed(2), // TODO: improve this
+    onClose: () => onClosePosition(x.positionId),
+    isSending,
+    liquidityPool: x.liquidityPool.substring(0, 8), // TODO: improve this
+    liquidator: x.liquidator && x.liquidator.substring(0, 8), // TODO: improve this
+  })), [data, onClosePosition, isSending]);
   return (
     <Container>
       <Form labelCol={{ span: 3 }}>
@@ -137,7 +148,7 @@ const TradingPair: React.FC<Props> = ({
   );
 };
 
-const mapStateToProps = ({ margin: { openPosition }, ethereum: { account } }: AppState, { name }: OwnProps) => {
+const mapStateToProps = ({ margin: { openPosition, closePosition }, ethereum: { account } }: AppState, { name }: OwnProps) => {
   const pair = tradingPairs[name as keyof typeof tradingPairs]; // TODO: improve this
   return {
     account,
@@ -161,7 +172,7 @@ const mapStateToProps = ({ margin: { openPosition }, ethereum: { account } }: Ap
         availability: 200,
       },
     ],
-    isSending: openPosition.loading,
+    isSending: openPosition.loading || closePosition.loading,
   };
 };
 
@@ -171,6 +182,9 @@ const mapDispatchToProps = (dispatch: Dispatch, { name }: OwnProps) => ({
       return;
     }
     dispatch(actions.margin.openPosition.requested({ params: { name, amount, pool } }));
+  },
+  onClosePosition: (id: string) => {
+    dispatch(actions.margin.closePosition.requested({ params: { name, id } }));
   },
 });
 
