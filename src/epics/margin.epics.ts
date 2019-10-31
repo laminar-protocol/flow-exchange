@@ -65,3 +65,16 @@ export const openPosition = createEpic(
     await ethereum.flowMarginProtocol.methods.openPosition(pairAddress, pool, toWei(amount.toString().toString())).send({ from: account });
   },
 );
+
+export const closePosition = createEpic(
+  actions.margin.closePosition,
+  async ({ name, id }, state: StateObservable<AppState>) => {
+    await ethereum.ready;
+    const { value: { ethereum: { account } } } = state;
+    if (!account) { // TODO: improve this
+      return Promise.reject(new Error('No account'));
+    }
+    const pairAddress = deployment.kovan[name as keyof typeof deployment['kovan']]; // TODO: handle network
+    await ethereum.flowMarginProtocol.methods.closePosition(pairAddress, id).send({ from: account });
+  },
+);

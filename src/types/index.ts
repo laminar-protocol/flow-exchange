@@ -50,6 +50,7 @@ const margin = moduleActions('margin', {
   allowance: apiActionTypes<PartialState<number>>(),
   toggleTrading: apiActionTypes<PartialState<number, boolean>>(),
   openPosition: apiActionTypes<PartialState<void, { name: string; amount: number; pool: string }>>(),
+  closePosition: apiActionTypes<PartialState<void, { name: string; id: string }>>(),
 });
 
 export const actions = appActions('flow', {

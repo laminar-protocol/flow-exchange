@@ -4,8 +4,10 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import 'rxjs';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from '@apollo/react-hooks';
 
+import { subgraphEndpoint } from 'config';
 import Application from 'app/application/application.connect';
 import * as serviceWorker from 'serviceWorker';
 
@@ -15,12 +17,18 @@ import 'antd/dist/antd.css';
 
 library.add(fas);
 
+const client = new ApolloClient({
+  uri: subgraphEndpoint,
+});
+
 const render = (App: React.ComponentType) => {
   ReactDOM.render(
     (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <App />
+          <ApolloProvider client={client}>
+            <App />
+          </ApolloProvider>
         </ConnectedRouter>
       </Provider>
     ),
