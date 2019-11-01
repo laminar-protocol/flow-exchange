@@ -16,11 +16,6 @@ interface OwnProps {
   name: string;
 }
 
-// where: {
-//   owner: $owner: Bytes!
-//   pair: $pair: Bytes!
-// }
-
 interface Props extends OwnProps {
   account: string;
   pairAddress: string;
@@ -40,8 +35,8 @@ const Container = styled(Panel)`
 `;
 
 const positionQuery = gql`
-  subscription {
-    marginPositionEntities {
+  subscription marginPositionEntities($owner: Bytes!, $pair: String!) {
+    marginPositionEntities(orderBy: positionId, where: { owner: $owner, pair: $pair }) {
       positionId
       liquidityPool
       amount
@@ -100,7 +95,7 @@ const TradingPair: React.FC<Props> = ({
   const { loading, error, data } = useSubscription(positionQuery, {
     variables: {
       owner: account,
-      pair: pairAddress,
+      pair: pairAddress.toLocaleLowerCase(),
     },
   });
   const positions = useMemo(() => data && data.marginPositionEntities.map((x: any) => ({
@@ -142,7 +137,7 @@ const TradingPair: React.FC<Props> = ({
           <SolidButton disabled={!amount || !pool} loading={isSending} onClick={() => onOpenPosition(amount, pool)}>Open Position</SolidButton>
         </Form.Item>
       </Form>
-      <Table columns={positionsTableColumns} loading={loading} dataSource={positions} rowKey="positionId" />
+      <Table columns={positionsTableColumns} loading={loading} dataSource={positions} rowKey="positionId" pagination={false} />
       { error && <div>Error: {error.message}</div> }
     </Container>
   );
