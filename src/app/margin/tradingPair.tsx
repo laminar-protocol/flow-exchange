@@ -10,7 +10,7 @@ import { Panel, SolidButton } from 'components';
 import { tradingPairs, deployment } from 'config';
 import { ColumnProps } from 'antd/lib/table';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useSubscription } from '@apollo/react-hooks';
 
 interface OwnProps {
   name: string;
@@ -40,7 +40,7 @@ const Container = styled(Panel)`
 `;
 
 const positionQuery = gql`
-  {
+  subscription {
     marginPositionEntities {
       positionId
       liquidityPool
@@ -81,7 +81,7 @@ const positionsTableColumns: ColumnProps<any>[] = [
     title: 'Closed By',
     dataIndex: 'liquidator',
   }, {
-    title: 'Closed Amount',
+    title: 'Closed Amount (DAI)',
     dataIndex: 'closeOwnerAmount',
   }, {
     title: 'Profit / Lost (DAI)',
@@ -97,7 +97,7 @@ const TradingPair: React.FC<Props> = ({
 }) => {
   const [amount, setAmount] = useState(20 as number | undefined);
   const [pool, setPool] = useState(liquidityPools[0].address as string | undefined);
-  const { loading, error, data } = useQuery(positionQuery, {
+  const { loading, error, data } = useSubscription(positionQuery, {
     variables: {
       owner: account,
       pair: pairAddress,
