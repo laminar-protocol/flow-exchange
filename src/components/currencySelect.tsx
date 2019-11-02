@@ -72,11 +72,14 @@ const Option: React.FC<any> = ({ innerProps, data }) => (
 
 // Custom Symbol Display
 const symbolIcon = (symbol: string) => {
+  // TODO: improve this
   switch (symbol) {
     case 'DAI':
       return 'dollar-sign';
+    case 'EUR':
     case 'fEUR':
       return 'euro-sign';
+    case 'JPY':
     case 'fJPY':
       return 'yen-sign';
     default:

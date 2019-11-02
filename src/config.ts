@@ -1,3 +1,5 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+
 import ERC20Detailed from 'flow-protocol/artifacts/abi/ERC20Detailed.json';
 import FlowProtocol from 'flow-protocol/artifacts/abi/FlowProtocol.json';
 import LiquidityPoolInterface from 'flow-protocol/artifacts/abi/LiquidityPoolInterface.json';
@@ -24,18 +26,22 @@ export const tokens = {
     fullName: 'Dai Stablecoin',
     address: addresses.baseToken,
     currencySymbol: '$',
+    icon: 'dollar-sign' as IconProp,
+
   },
   fEUR: {
     name: 'EUR',
     fullName: 'Flow Euro',
     address: addresses.fEUR,
     currencySymbol: '€',
+    icon: 'euro-sign' as IconProp,
   },
   fJPY: {
     name: 'JPY',
     fullName: 'Flow Japanese Yen',
     address: addresses.fJPY,
     currencySymbol: '¥',
+    icon: 'yen-sign' as IconProp,
   },
 };
 

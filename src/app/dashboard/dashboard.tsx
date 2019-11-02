@@ -28,10 +28,10 @@ const Component = () => (
       <Grant />
     </TokenStatus>
     <TokenStatus>
-      <Balance symbol="EUR" />
+      <Balance symbol="fEUR" />
     </TokenStatus>
     <TokenStatus>
-      <Balance symbol="JPY" />
+      <Balance symbol="fJPY" />
     </TokenStatus>
   </Container>
 );
