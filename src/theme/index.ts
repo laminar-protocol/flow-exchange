@@ -1,5 +1,5 @@
 import theme from 'styled-theming';
-import breakpoint from 'theme/breakpoint';
+import breakpoint from './breakpoint';
 
 // Responsive breakpoint
 export const respondTo = breakpoint;

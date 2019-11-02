@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { Input } from 'antd';
+import { Input as BaseInput } from 'antd';
 
 import * as theme from 'theme';
 
-const Component = styled(Input)`
+const Input = styled(BaseInput)`
   &.ant-input {
     background-color: ${theme.whiteForegroundColor};
     border: 1px solid ${theme.borderColor};
@@ -20,4 +20,4 @@ const Component = styled(Input)`
   }
 `;
 
-export default Component;
+export default Input;

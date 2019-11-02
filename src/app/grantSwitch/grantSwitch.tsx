@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, Spinner } from 'components';
-import { fromWei } from 'helpers/unitHelper';
 import {
   getAuthorization,
   getIsQueryingAuthorization,
@@ -41,7 +40,19 @@ const LockSpinner = styled(Spinner)`
   }
 `;
 
-const Component = ({
+export interface OwnProps {
+  symbol: string;
+  visibleGranted?: boolean;
+}
+
+interface Props extends OwnProps {
+  token: any;
+  className?: string;
+  onGrant: (symbol: string, granted: boolean) => void;
+  onQuery: (symbol: string) => void;
+}
+
+const GrantSwitch: React.FC<Props> = ({
   token,
   symbol,
   className,
@@ -53,7 +64,7 @@ const Component = ({
   const isQueryingAuthorization = getIsQueryingAuthorization(symbol, token);
   const isGranting = getIsGranting(symbol, token);
 
-  const granted = (fromWei(authorization) > 0);
+  const granted = Boolean(authorization);
 
   const loading = isGranting || isQueryingAuthorization;
 
@@ -73,4 +84,4 @@ const Component = ({
   );
 };
 
-export default Component;
+export default GrantSwitch;

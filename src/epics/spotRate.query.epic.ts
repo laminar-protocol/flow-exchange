@@ -2,7 +2,6 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
-import { tokens } from 'config';
 import types from 'types';
 import { Epic } from 'reducers';
 
@@ -14,13 +13,14 @@ const epic: Epic = (action$) => action$.pipe(
 
       const contract = ethereum.getTokenContract(symbol);
 
-      if (contract === ethereum.getTokenContract(tokens.baseToken.symbol)) {
+      if (symbol === 'DAI') { // TODO: improve this
         return { type: types.spot.rate.failed };
       }
 
-      const price = await ethereum.oracleContract.methods.getPrice(contract.options.address).call();
-      const bidSpread = await ethereum.poolContract.methods.getBidSpread(contract.options.address).call();
-      const askSpread = await ethereum.poolContract.methods.getAskSpread(contract.options.address).call();
+      const price = await ethereum.oracle.methods.getPrice(contract.options.address).call();
+      // TODO: handle multiple pool
+      const bidSpread = await ethereum.liquidityPool.methods.getBidSpread(contract.options.address).call();
+      const askSpread = await ethereum.liquidityPool.methods.getAskSpread(contract.options.address).call();
 
       return {
         type: types.spot.rate.completed,

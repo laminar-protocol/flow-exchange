@@ -9,20 +9,33 @@ import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterfa
 
 import deployment from 'flow-protocol/artifacts/deployment.json';
 
-export type Addresses = typeof deployment['kovan'];
+// TODO: setup pipeline for mainnet
+export const network: keyof typeof deployment = process.env.REACT_APP_NETWORK || 'kovan' as any;
+
+if (!deployment[network]) {
+  throw new Error(`Invalid network: ${network}`);
+}
+
+export const addresses = deployment[network];
 
 export const tokens = {
-  baseToken: {
-    symbol: 'DAI',
-    name: 'Dai Stablecoin',
+  DAI: {
+    name: 'DAI',
+    fullName: 'Dai Stablecoin',
+    address: addresses.baseToken,
+    currencySymbol: '$',
   },
   fEUR: {
-    symbol: 'fEUR',
-    name: 'Flow Euro',
+    name: 'EUR',
+    fullName: 'Flow Euro',
+    address: addresses.fEUR,
+    currencySymbol: '€',
   },
   fJPY: {
-    symbol: 'fJPY',
-    name: 'Flow Japanese Yen',
+    name: 'JPY',
+    fullName: 'Flow Japanese Yen',
+    address: addresses.fJPY,
+    currencySymbol: '¥',
   },
 };
 
@@ -31,21 +44,25 @@ export const tradingPairs = {
     base: 'DAI',
     quote: 'fEUR',
     leverage: 10,
+    address: addresses.l10USDEUR,
   },
   s10USDEUR: {
     base: 'DAI',
     quote: 'fEUR',
     leverage: -10,
+    address: addresses.s10USDEUR,
   },
   l20USDJPY: {
     base: 'DAI',
     quote: 'fJPY',
     leverage: 20,
+    address: addresses.l20USDJPY,
   },
   s20USDJPY: {
     base: 'DAI',
     quote: 'fJPY',
     leverage: 20,
+    address: addresses.s20USDJPY,
   },
 };
 
@@ -59,8 +76,6 @@ export const abi = {
   MarginTradingPair: MarginTradingPair as any,
   PriceOracleInterface: PriceOracleInterface as any,
 };
-
-export { deployment };
 
 // TODO: make this configurable
 export const subgraphEndpoints = {

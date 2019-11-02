@@ -1,7 +1,7 @@
 import { mapObjIndexed } from 'ramda';
 import Web3 from 'web3';
 
-import { abi, Addresses, tradingPairs } from 'config';
+import { abi, addresses, tradingPairs } from 'config';
 
 // workaround to get types that are not exposed directly from web3
 type Eth = Web3['eth'];
@@ -9,35 +9,32 @@ type Contract = InstanceType<Eth['Contract']>;
 
 // TODO: this need some refactor
 class Ethereum {
-  public readonly ethWeb3: any;
-  public readonly ethProvider: Web3;
+  public readonly provider: any;
+  public readonly web3: Web3;
 
-  private _flowProtocol?: Contract;
-  private _flowMarginProtocol?: Contract;
+  public readonly flowProtocol: Contract;
+  public readonly flowMarginProtocol: Contract;
 
-  private _oracle?: Contract;
-  private _moneyMarket?: Contract;
+  public readonly oracle: Contract;
+  public readonly moneyMarket: Contract;
 
-  private _liquidityPool?: Contract;
+  public readonly liquidityPool: Contract;
 
-  public readonly ready: Promise<void>;
-  private _resolveReady = () => {};
-
-  private _tokens?: {
+  public readonly tokens: {
     DAI: Contract;
     fEUR: Contract;
     fJPY: Contract;
   }
 
-  private _marginTradingPairs: Record<string, Contract> = {};
+  public readonly marginTradingPairs: Record<string, Contract> = {};
 
   constructor() {
     const anyWindow = window as any;
     if (typeof anyWindow.ethereum !== 'undefined' || (typeof anyWindow.web3 !== 'undefined')) {
       const provider = anyWindow.ethereum || anyWindow.web3.currentProvider;
 
-      this.ethWeb3 = provider;
-      this.ethProvider = new Web3(this.ethWeb3);
+      this.provider = provider;
+      this.web3 = new Web3(this.provider);
 
       provider.autoRefreshOnNetworkChange = false;
     } else {
@@ -45,65 +42,29 @@ class Ethereum {
       throw new Error('Not supported');
     }
 
-    this.ready = new Promise((resolve) => {
-      this._resolveReady = resolve;
-    });
-  }
+    this.flowProtocol = new this.web3.eth.Contract(abi.FlowProtocol, addresses.protocol);
+    this.flowMarginProtocol = new this.web3.eth.Contract(abi.FlowMarginProtocol, addresses.marginProtocol);
 
-  prepareBaseContract(addresses: Addresses) {
-    this._flowProtocol = new this.ethProvider.eth.Contract(abi.FlowProtocol, addresses.protocol);
-    this._flowMarginProtocol = new this.ethProvider.eth.Contract(abi.FlowMarginProtocol, addresses.marginProtocol);
+    this.oracle = new this.web3.eth.Contract(abi.PriceOracleInterface, addresses.oracle);
+    this.moneyMarket = new this.web3.eth.Contract(abi.MoneyMarket, addresses.moneyMarket);
 
-    this._oracle = new this.ethProvider.eth.Contract(abi.PriceOracleInterface, addresses.oracle);
-    this._moneyMarket = new this.ethProvider.eth.Contract(abi.MoneyMarket, addresses.moneyMarket);
+    this.liquidityPool = new this.web3.eth.Contract(abi.LiquidityPoolInterface, addresses.pool);
 
-    this._liquidityPool = new this.ethProvider.eth.Contract(abi.LiquidityPoolInterface, addresses.pool);
+    const daiContract = new this.web3.eth.Contract(abi.ERC20, addresses.baseToken);
+    const eurContract = new this.web3.eth.Contract(abi.ERC20, addresses.fEUR);
+    const jpyContract = new this.web3.eth.Contract(abi.ERC20, addresses.fJPY);
 
-    const daiContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.baseToken);
-    const eurContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.fEUR);
-    const jpyContract = new this.ethProvider.eth.Contract(abi.ERC20, addresses.fJPY);
-
-    this._tokens = {
+    this.tokens = {
       DAI: daiContract,
       fEUR: eurContract,
       fJPY: jpyContract,
     };
 
-    this._marginTradingPairs = mapObjIndexed((pair, name) => new this.ethProvider.eth.Contract(abi.MarginTradingPair, addresses[name]), tradingPairs);
-
-    this._resolveReady();
+    this.marginTradingPairs = mapObjIndexed((pair) => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address), tradingPairs);
   }
 
   getTokenContract(symbol: string) {
-    return ((this._tokens as any)[symbol] || (this._tokens as any)[`f${symbol}`]) as Contract;
-  }
-
-  get flowContract() {
-    return this._flowProtocol as Contract;
-  }
-
-  get poolContract() {
-    return this._liquidityPool as Contract;
-  }
-
-  get oracleContract() {
-    return this._oracle as Contract;
-  }
-
-  get moneyMarketContract() {
-    return this._moneyMarket as Contract;
-  }
-
-  get flowMarginProtocol() {
-    return this._flowMarginProtocol as Contract;
-  }
-
-  get baseTokenContract() {
-    return (this._tokens as any).DAI as Contract;
-  }
-
-  get marginTradingPairs() {
-    return this._marginTradingPairs;
+    return ((this.tokens as any)[symbol] || (this.tokens as any)[`f${symbol}`]) as Contract;
   }
 }
 

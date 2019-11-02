@@ -1,5 +1,5 @@
 import validate from 'validate.js';
-import { isEmpty, pathOr } from 'ramda';
+import { isEmpty } from 'ramda';
 
 import types from 'types';
 import { parseRate } from 'reducers/spotRate.reducer';
@@ -12,7 +12,6 @@ const INITIAL_STATE = {
   fromAmount: 0,
   toAmount: 0,
 
-  symbols: {},
   rate: {},
   isRedeem: false,
 
@@ -23,7 +22,7 @@ const INITIAL_STATE = {
 
 export const caculateRate = (rate: any, isRedeem: boolean) => {
   if (isEmpty(rate)) {
-    return null;
+    return undefined;
   }
   if (isRedeem) {
     return 1 / Number(fromWei(rate.bidPrice));
@@ -37,14 +36,6 @@ const parseExchangeRate = (rate: any, fromSymbol: string, toSymbol: string) => {
     return parseRate(rate);
   }
   return {};
-};
-
-const parseRedeem = (symbols: any, fromToken: string) => {
-  const isBase = pathOr(false, [fromToken, 'isBase'], symbols);
-  if (isBase) {
-    return false;
-  }
-  return true;
 };
 
 const valdiationResult = (state: any) => {
@@ -88,7 +79,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
       return {
         ...state,
         rate: {},
-        isRedeem: parseRedeem(state.symbols, payload),
+        isRedeem: payload !== 'DAI', // TODO: improve this
         fromSymbol: payload,
       };
     case types.swap.toSymbol.changed:
@@ -133,12 +124,6 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
       return {
         ...state,
         ...valdiationResult(state),
-      };
-
-    case types.market.symbols.changed:
-      return {
-        ...state,
-        symbols: payload,
       };
 
     case types.spot.rate.completed:

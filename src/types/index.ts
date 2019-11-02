@@ -14,10 +14,6 @@ const app = moduleActions('app', {
   theme: changedActionTypes(),
 });
 
-const market = moduleActions('market', {
-  symbols: changedActionTypes<Record<string, { symbol: string; name: string }>>(),
-});
-
 const ethereum = moduleActions('ethereum', {
   modalOpen: changedActionTypes(),
   modalClose: changedActionTypes(),
@@ -55,7 +51,6 @@ const margin = moduleActions('margin', {
 
 export const actions = appActions('flow', {
   app,
-  market,
   ethereum,
   token,
   swap,

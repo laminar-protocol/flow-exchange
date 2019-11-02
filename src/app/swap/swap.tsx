@@ -7,7 +7,7 @@ import {
   Text, Separator, Panel, PrimaryButton, Spinner, NumberFormat,
 } from 'components';
 import * as theme from 'theme';
-import { getSymbols } from 'reducers/market.reducer';
+import { tokens } from 'config';
 import { caculateRate } from 'reducers/swap.reducer';
 
 import CurrencyInput from './currencyInput';
@@ -15,7 +15,7 @@ import CurrencyInput from './currencyInput';
 const Container = styled.div`
 `;
 
-const Swap = styled(Panel)`
+const SwapContainer = styled(Panel)`
 `;
 
 const Currency = styled.div`
@@ -99,8 +99,7 @@ const Detail = styled.div`
   text-transform: uppercase;
 `;
 
-const Component = ({
-  market,
+const Swap: React.FC = ({
   swap,
   spotRate,
   onFromSymbolChange,
@@ -109,9 +108,9 @@ const Component = ({
   onToAmountChange,
   onSwap,
   onSwapSymbol,
-}) => {
+}: any) => {
   // Attributes
-  const availableSymbols = getSymbols(market.symbols).map((s) => s.symbol);
+  const availableSymbols = Object.values(tokens).map(({ name }) => name);
   const {
     fromSymbol,
     toSymbol,
@@ -148,7 +147,7 @@ const Component = ({
     <Container>
       <Text size="h">Spot Exchange</Text>
       <Separator />
-      <Swap padding={2}>
+      <SwapContainer padding={2}>
         <Entry>
           <Currency>
             <Label>
@@ -158,8 +157,8 @@ const Component = ({
               symbols={availableSymbols}
               selectedSymbol={fromSymbol}
               disabledSymbol={toSymbol}
-              onCurrencyChange={(e) => { onFromSymbolChange(e); }}
-              onAmountChange={(e) => { onFromAmountChange(e.target.value); }}
+              onCurrencyChange={onFromSymbolChange}
+              onAmountChange={onFromAmountChange}
               disabled={isSwapping}
               requireAuthorization
             />
@@ -183,8 +182,8 @@ const Component = ({
               symbols={availableSymbols}
               selectedSymbol={toSymbol}
               disabledSymbol={fromSymbol}
-              onCurrencyChange={(e) => { onToSymbolChange(e); }}
-              onAmountChange={(e) => { onToAmountChange(e.target.value); }}
+              onCurrencyChange={onToSymbolChange}
+              onAmountChange={onToAmountChange}
               disabled={isSwapping}
             />
             <Validation>
@@ -209,9 +208,9 @@ const Component = ({
             Exchange
           </PrimaryButton>
         </ActionBar>
-      </Swap>
+      </SwapContainer>
     </Container>
   );
 };
 
-export default Component;
+export default Swap;

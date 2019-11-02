@@ -10,7 +10,7 @@ import { ColumnProps } from 'antd/lib/table';
 import { AppState } from 'reducers';
 import { actions } from 'types';
 import { Panel, SolidButton } from 'components';
-import { tradingPairs, deployment } from 'config';
+import { tradingPairs, addresses } from 'config';
 import { FormatBalance, FormatProfit, FormatPrice } from 'components/format';
 
 interface OwnProps {
@@ -154,10 +154,10 @@ const TradingPair: React.FC<Props> = ({
 };
 
 const mapStateToProps = ({ margin: { openPosition, closePosition }, ethereum: { account } }: AppState, { name }: OwnProps) => {
-  const pair = tradingPairs[name as keyof typeof tradingPairs]; // TODO: improve this
+  const pair = tradingPairs[name as keyof typeof tradingPairs];
   return {
     account,
-    pairAddress: deployment.kovan[name as keyof typeof deployment['kovan']], // TODO: improve this
+    pairAddress: pair.address,
     base: pair.base,
     quote: pair.quote,
     leverage: Math.abs(pair.leverage),
@@ -165,13 +165,13 @@ const mapStateToProps = ({ margin: { openPosition, closePosition }, ethereum: { 
     liuqidationFee: 5, // TODO: read this value from contract
     liquidityPools: [ // TODO: read this from reducer
       {
-        address: deployment.kovan.pool,
+        address: addresses.pool,
         name: 'Laminar',
         spread: '0.2%',
         availability: 100,
       },
       {
-        address: deployment.kovan.pool2,
+        address: addresses.pool2,
         name: 'Partner',
         spread: '0.3%',
         availability: 200,
