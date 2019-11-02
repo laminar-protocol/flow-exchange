@@ -2,15 +2,16 @@ import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import gql from 'graphql-tag';
+import { useSubscription } from '@apollo/react-hooks';
 import { Form, InputNumber, Select, Table, Button } from 'antd';
+import { ColumnProps } from 'antd/lib/table';
 
 import { AppState } from 'reducers';
 import { actions } from 'types';
 import { Panel, SolidButton } from 'components';
 import { tradingPairs, deployment } from 'config';
-import { ColumnProps } from 'antd/lib/table';
-import gql from 'graphql-tag';
-import { useSubscription } from '@apollo/react-hooks';
+import { FormatBalance, FormatProfit, FormatPrice } from 'components/format';
 
 interface OwnProps {
   name: string;
@@ -60,27 +61,39 @@ const positionsTableColumns: ColumnProps<any>[] = [
   }, {
     title: 'Amount (DAI)',
     dataIndex: 'amount',
+    render: (text) =>
+      <FormatBalance value={text} />,
   }, {
     title: 'Open Price',
     dataIndex: 'openPrice',
+    render: (text) =>
+      <FormatPrice value={text} />,
   }, {
     title: 'Bid Spread (%)',
     dataIndex: 'bidSpread',
   }, {
     title: 'Liquidation Fee (DAI)',
     dataIndex: 'liquidationFee',
+    render: (text) =>
+      <FormatBalance value={text} />,
   }, {
     title: 'Close Price',
     dataIndex: 'closePrice',
+    render: (text) =>
+      <FormatPrice value={text} />,
   }, {
     title: 'Closed By',
     dataIndex: 'liquidator',
   }, {
     title: 'Closed Amount (DAI)',
     dataIndex: 'closeOwnerAmount',
+    render: (text) =>
+      <FormatBalance value={text} />,
   }, {
     title: 'Profit / Lost (DAI)',
     dataIndex: 'profit',
+    render: (text) =>
+      <FormatProfit value={text} />,
   }, {
     render: (_text, record) => record.closePrice == null && <Button loading={record.isSending} onClick={record.onClose}>Close Position</Button>,
   },
@@ -100,10 +113,7 @@ const TradingPair: React.FC<Props> = ({
   });
   const positions = useMemo(() => data && data.marginPositionEntities.map((x: any) => ({
     ...x,
-    amount: Number(x.amount).toFixed(2), // TODO: improve this
-    liquidationFee: Number(x.liquidationFee).toFixed(2), // TODO: improve this
-    closeOwnerAmount: Number(x.closeOwnerAmount).toFixed(2), // TODO: improve this
-    profit: x.closePrice != null && Number(x.closeOwnerAmount - x.amount).toFixed(2), // TODO: improve this
+    profit: x.closePrice != null ? x.closeOwnerAmount - x.amount : null,
     onClose: () => onClosePosition(x.positionId),
     isSending,
     liquidityPool: x.liquidityPool.substring(0, 8), // TODO: improve this

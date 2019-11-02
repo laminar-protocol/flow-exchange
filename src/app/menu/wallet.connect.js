@@ -9,7 +9,7 @@ const mapStateToProps = ({ ethereum }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onWalletConnect: () => {
-    dispatch({ type: types.ethereumModalOpen.changed });
+    dispatch({ type: types.ethereum.modalOpen.changed });
   },
 });
 

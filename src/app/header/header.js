@@ -5,7 +5,7 @@ import * as theme from 'theme';
 
 import LaminarLogo from 'assets/laminar.svg';
 
-const Header = styled.div`
+const HeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,13 +42,13 @@ const LoogText = styled.div`
   background-clip: text;
 `;
 
-const Component = () => (
-  <Header>
+const Header = () => (
+  <HeaderContainer>
     <LogoContainer>
       <Logo src={LaminarLogo} />
       <LoogText>Exchange</LoogText>
     </LogoContainer>
-  </Header>
+  </HeaderContainer>
 );
 
-export default Component;
+export default Header;

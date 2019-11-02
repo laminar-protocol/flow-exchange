@@ -9,7 +9,7 @@ const mapStateToProps = ({ ethereum }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onClose: () => {
-    dispatch({ type: types.ethereumModalClose.changed });
+    dispatch({ type: types.ethereum.modalClose.changed });
   },
   onEthereumConnect: () => {
     dispatch({ type: types.ethereum.enable.requested });
