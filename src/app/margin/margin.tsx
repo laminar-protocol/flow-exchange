@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Form, Select } from 'antd';
 
+import Balance from 'app/dashboard/balance.connect';
 import {
   Text, Separator, Panel, SolidButton, BalanceCell,
 } from 'components';
@@ -43,17 +44,16 @@ const Margin: React.FC<Props> = ({
       <SummaryPanel>
         <Text size="l">Account Summary</Text>
         <Summary>
-          <BalanceCell
-            value="123"
-            text="Balance"
-          />
+          <Balance symbol="DAI" label="Free Balance" />
           <BalanceCell
             value="123"
             text="P/L"
+            accessory="dollar-sign"
           />
           <BalanceCell
             value="123"
             text="Equity"
+            accessory="dollar-sign"
           />
         </Summary>
         <div>

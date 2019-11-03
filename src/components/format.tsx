@@ -6,6 +6,8 @@ const balanceFormatOptions = {
   thousandSeparated: true,
   mantissa: 2,
   trimMantissa: true,
+  currencyPosition: 'prefix',
+  currencySymbol: '',
 };
 
 const profitFormatOptions = {
@@ -13,6 +15,9 @@ const profitFormatOptions = {
   mantissa: 2,
   trimMantissa: true,
   negative: 'parenthesis',
+  output: 'currency',
+  currencyPosition: 'prefix',
+  currencySymbol: '',
 };
 
 const priceFormatOptions = {

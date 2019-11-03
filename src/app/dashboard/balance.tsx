@@ -6,6 +6,7 @@ import { tokens } from 'config';
 
 export interface OwnProps {
   symbol: string;
+  label?: string;
 }
 
 interface Props extends OwnProps {
@@ -14,7 +15,7 @@ interface Props extends OwnProps {
   onBalanceQuery: (symbol: string) => void;
 }
 
-const Balance: React.FC<Props> = ({ symbol, balance, isQueryingBalance, onBalanceQuery }) => {
+const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, onBalanceQuery }) => {
   useEffect(() => {
     onBalanceQuery(symbol);
   }, [onBalanceQuery, symbol]);
@@ -24,7 +25,7 @@ const Balance: React.FC<Props> = ({ symbol, balance, isQueryingBalance, onBalanc
   return (
     <BalanceCell
       value={fromWei(balance)}
-      text={`${symbol} Balances`}
+      text={label || `${symbol} Balances`}
       loading={isQueryingBalance}
       accessory={icon}
       prefix={currencySymbol}
