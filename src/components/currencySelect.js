@@ -68,9 +68,10 @@ const Option = ({ innerProps, data }) => (
 );
 
 // Custom Symbol Display
+// TODO: Refactor this later
 const symbolIcon = (symbol) => {
   switch (symbol) {
-    case 'DAI':
+    case 'baseToken':
       return 'dollar-sign';
     case 'fEUR':
       return 'euro-sign';
@@ -81,9 +82,10 @@ const symbolIcon = (symbol) => {
   }
 };
 
+// TODO: Refactor this later
 const symbolName = (symbol) => {
   switch (symbol) {
-    case 'DAI':
+    case 'baseToken':
       return 'DAI';
     case 'fEUR':
       return 'Euro';

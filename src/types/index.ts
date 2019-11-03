@@ -15,7 +15,7 @@ const app = moduleActions('app', {
 });
 
 const market = moduleActions('market', {
-  symbols: changedActionTypes<Record<string, { symbol: string; name: string }>>(),
+  symbols: changedActionTypes<Record<string, { symbol: string; name: string; isBaseToken: boolean }>>(),
 });
 
 const ethereum = moduleActions('ethereum', {
@@ -35,8 +35,8 @@ const token = moduleActions('token', {
 const swap = moduleActions('swap', {
   fromSymbol: changedActionTypes<string>(),
   toSymbol: changedActionTypes<string>(),
-  fromAmount: changedActionTypes(),
-  toAmount: changedActionTypes(),
+  fromAmount: changedActionTypes<string>(),
+  toAmount: changedActionTypes<string>(),
   validation: changedActionTypes(),
   mint: apiActionTypes(),
   redeem: apiActionTypes(),

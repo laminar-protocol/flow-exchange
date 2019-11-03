@@ -3,13 +3,34 @@ import { connect } from 'react-redux';
 import types, { actions } from 'types';
 import { AppState } from 'reducers';
 
+import { getSymbols } from 'reducers/market.reducer';
+import { caculateRate } from 'reducers/swap.reducer';
+
 import Component from './swap';
 
 const mapStateToProps = ({
   market, swap, spotRate,
-}: AppState) => ({
-  market, swap, spotRate,
-});
+}: AppState) => {
+  const {
+    fromSymbol,
+    toSymbol,
+    fromAmount,
+    toAmount,
+  } = swap;
+
+  const availableSymbols = Object.keys(market.symbols);
+  const selectedToken = market.symbols[fromSymbol];
+
+  const canGrantSymbol = selectedToken && selectedToken.isBaseToken;
+  return {
+    availableSymbols,
+    fromSymbol,
+    toSymbol,
+    fromAmount,
+    toAmount,
+    canGrantSymbol,
+  };
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onFromSymbolChange: (symbol: string) => {

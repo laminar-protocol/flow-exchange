@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Input as AntInput } from 'antd';
 
 import { CurrencySelect, Input } from 'components';
 import GrantSwitch from 'app/grantSwitch/grantSwitch.connect';
-
 import * as theme from 'theme';
 
-const InputGroup = Input.Group;
+const InputGroup = AntInput.Group;
 
 const Container = styled.div`
 `;
@@ -46,14 +46,25 @@ const Lock = styled(GrantSwitch)`
   border-radius: 0.5rem !important;
 `;
 
-const options = (symbols, selected) => {
+const options = (symbols: string[], selected?: string) => {
   if (symbols) {
     return symbols.map((symbol) => ({ symbol, isDisabled: symbol === selected }));
   }
-  return [];
 };
 
-const Component = ({
+interface Props {
+  className?: string;
+  disabled: boolean;
+  symbols: string[];
+  disabledSymbol?: string;
+  selectedSymbol: string;
+  requireAuthorization?: boolean;
+
+  onCurrencyChange: (symbol: string) => void;
+  onAmountChange: (amount: string) => void;
+}
+
+const Component: React.FC<Props> = ({
   className,
   disabled,
   symbols,
@@ -66,10 +77,10 @@ const Component = ({
   <Container className={className}>
     <InputGroup compact>
       { requireAuthorization && <Lock symbol={selectedSymbol} /> }
-      <AmountInput onChange={onAmountChange} disabled={disabled} />
+      <AmountInput onChange={(event: React.ChangeEvent<HTMLInputElement>) => { onAmountChange(event.target.value); }} disabled={disabled} />
       <SymbolSelect
         options={options(symbols, disabledSymbol)}
-        onChange={(event) => { onCurrencyChange(event.symbol); }}
+        onChange={(event: any) => { onCurrencyChange(event.symbol); }}
         value={{ symbol: selectedSymbol }}
         isDisabled={disabled}
         isSearchable={false}

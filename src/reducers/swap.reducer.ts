@@ -5,9 +5,8 @@ import types from 'types';
 import { parseRate } from 'reducers/spotRate.reducer';
 import { fromWei } from 'helpers/unitHelper';
 
-
 const INITIAL_STATE = {
-  fromSymbol: 'DAI',
+  fromSymbol: 'baseToken',
   toSymbol: 'fEUR',
   fromAmount: 0,
   toAmount: 0,

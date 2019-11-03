@@ -3,12 +3,6 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, Spinner } from 'components';
-import { fromWei } from 'helpers/unitHelper';
-import {
-  getAuthorization,
-  getIsQueryingAuthorization,
-  getIsGranting,
-} from 'reducers/token.reducer';
 import * as theme from 'theme';
 
 const Container = styled.div`
@@ -41,20 +35,29 @@ const LockSpinner = styled(Spinner)`
   }
 `;
 
-const Component = ({
-  token,
+interface Props {
+  symbol: string;
+  isQueryingAuthorization: boolean;
+  isGranting: boolean;
+  granted: boolean;
+
+  onGrant: (symbol: string, granted: boolean) => void;
+  onQuery: (symbol: string) => void;
+
+  className?: string;
+  visibleGranted?: boolean;
+}
+
+const Component: React.FC<Props> = ({
   symbol,
+  isQueryingAuthorization,
+  isGranting,
+  granted,
   className,
   visibleGranted,
   onGrant,
   onQuery,
 }) => {
-  const authorization = getAuthorization(symbol, token);
-  const isQueryingAuthorization = getIsQueryingAuthorization(symbol, token);
-  const isGranting = getIsGranting(symbol, token);
-
-  const granted = (fromWei(authorization) > 0);
-
   const loading = isGranting || isQueryingAuthorization;
 
   useEffect(() => {

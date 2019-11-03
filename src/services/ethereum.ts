@@ -74,7 +74,11 @@ class Ethereum {
     this._resolveReady();
   }
 
+  // TODO: Hack, need to unified tokens naming;
   getTokenContract(symbol: string) {
+    if (symbol === 'baseToken') {
+      return (this._tokens as any).DAI as Contract;
+    }
     return ((this._tokens as any)[symbol] || (this._tokens as any)[`f${symbol}`]) as Contract;
   }
 

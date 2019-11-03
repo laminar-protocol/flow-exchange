@@ -29,7 +29,6 @@ const epic: Epic = (action$) => action$.pipe(
         },
       };
     } catch (error) {
-      console.error(error);
       return { type: types.spot.rate.failed };
     }
   }),

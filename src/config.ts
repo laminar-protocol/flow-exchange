@@ -15,14 +15,17 @@ export const tokens = {
   baseToken: {
     symbol: 'DAI',
     name: 'Dai Stablecoin',
+    isBaseToken: true,
   },
   fEUR: {
     symbol: 'fEUR',
     name: 'Flow Euro',
+    isBaseToken: false,
   },
   fJPY: {
     symbol: 'fJPY',
     name: 'Flow Japanese Yen',
+    isBaseToken: false,
   },
 };
 
