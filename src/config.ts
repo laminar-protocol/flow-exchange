@@ -76,16 +76,16 @@ export const tradingPairs = {
   },
 };
 
-export const liquidityPools = [
-  {
+export const liquidityPools = {
+  [addresses.pool]: {
     address: addresses.pool,
     name: 'Laminar',
   },
-  {
+  [addresses.pool2]: {
     address: addresses.pool2,
     name: 'Partner',
   },
-];
+};
 
 export const abi = {
   ERC20: ERC20Detailed as any,

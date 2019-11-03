@@ -16,7 +16,7 @@ const NumberFormat: React.FC<Props> = ({
     displayType="text"
     thousandSeparator
     prefix={noPrefix ? undefined : (prefix || '$')}
-    decimalScale={2}
+    decimalScale={6}
     fixedDecimalScale
   >
     { children }

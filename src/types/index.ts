@@ -7,7 +7,8 @@ import {
   triggerActionTypes,
 } from 'helpers/typeCreator';
 
-import { PartialState } from 'helpers/apiLoadable';
+import { PartialState } from 'helpers/apiLoadableSingle';
+import { PartialStateWithId } from 'helpers/apiLoadable';
 
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),
@@ -45,12 +46,17 @@ const margin = moduleActions('margin', {
   closePosition: apiActionTypes<PartialState<void, { name: string; id: string }>>(),
 });
 
+const liquidityPool = moduleActions('liquidityPool', {
+  spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
+});
+
 export const actions = appActions('flow', {
   app,
   ethereum,
   token,
   swap,
   margin,
+  liquidityPool,
 });
 
 const types = appActionTypes(actions);

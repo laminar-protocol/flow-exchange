@@ -66,6 +66,10 @@ class Ethereum {
   getTokenContract(symbol: string) {
     return ((this.tokens as any)[symbol] || (this.tokens as any)[`f${symbol}`]) as Contract;
   }
+
+  getLiquidityPoolContract(address: string) {
+    return new this.web3.eth.Contract(abi.LiquidityPoolInterface, address);
+  }
 }
 
 const ethereum = new Ethereum();

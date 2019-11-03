@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -100,12 +100,14 @@ const Detail = styled.div`
 
 const Swap: React.FC = ({
   swap,
+  spread,
   onFromSymbolChange,
   onToSymbolChange,
   onFromAmountChange,
   onToAmountChange,
   onSwap,
   onSwapSymbol,
+  fetchLiquidityPoolSpread,
 }: any) => {
   const availableSymbols = Object.values(tokens).map(({ name }) => name);
   const {
@@ -119,21 +121,32 @@ const Swap: React.FC = ({
 
   const { loading, data: rate } = usePriceRate(fromSymbol, toSymbol);
 
+  useEffect(
+    () =>
+      fetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
+    [fetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
+  );
+
   const swapEnabled = isValid;
-  const isLoading = loading;
+  const isLoading = loading || spread.loading;
+
+  const askSpread = spread.value && spread.value.ask;
+  const bidSpread = spread.value && spread.value.bid;
 
   // Function
   const renderExchangeRate = () => {
-    if (rate == null) {
+    if (rate == null || askSpread == null || bidSpread == null) {
       return null;
     }
+    const adjuestment = isRedeem ? 1 - bidSpread : 1 - askSpread;
+    const finalRate = rate * adjuestment;
 
     return (
       <Text light>
         <strong>1</strong>
         {fromSymbol}
         &nbsp;=&nbsp;
-        <strong><NumberFormat value={rate} noPrefix /></strong>
+        <strong><NumberFormat value={finalRate} noPrefix /></strong>
         {toSymbol}
       </Text>
     );

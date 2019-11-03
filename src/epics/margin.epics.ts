@@ -4,7 +4,7 @@ import { ofType, StateObservable } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
 import { fromWei, UINT256_MAX, UINT256_MIN, toWei } from 'helpers/unitHelper';
-import { createEpic } from 'helpers/apiLoadable';
+import { createEpic } from 'helpers/apiLoadableSingle';
 import types, { actions } from 'types';
 import { AppState, Epic } from 'reducers';
 import { addresses } from 'config';
