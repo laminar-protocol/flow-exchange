@@ -46,7 +46,7 @@ export const usePriceRate = (fromSymbol: TokenSymbol, toSymbol: TokenSymbol, opt
       }
       return fromRate / toRate;
     }
-    return null;
+    return undefined;
   }, [data, fromSymbol, toSymbol]);
 
   return {

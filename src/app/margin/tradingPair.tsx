@@ -10,8 +10,9 @@ import { ColumnProps } from 'antd/lib/table';
 import { AppState } from 'reducers';
 import { actions } from 'types';
 import { Panel, SolidButton } from 'components';
-import { tradingPairs, addresses } from 'config';
+import { tradingPairs, addresses, TokenSymbol } from 'config';
 import { FormatBalance, FormatProfit, FormatPrice } from 'components/format';
+import { usePriceRate } from 'hooks/useOraclePrice';
 
 interface OwnProps {
   name: string;
@@ -20,8 +21,8 @@ interface OwnProps {
 interface Props extends OwnProps {
   account: string;
   pairAddress: string;
-  base: string;
-  quote: string;
+  base: TokenSymbol;
+  quote: TokenSymbol;
   leverage: number;
   isLong: boolean;
   liuqidationFee: number;
@@ -111,6 +112,7 @@ const TradingPair: React.FC<Props> = ({
       pair: pairAddress.toLocaleLowerCase(),
     },
   });
+  const priceRate = usePriceRate(quote, base);
   const positions = useMemo(() => data && data.marginPositionEntities.map((x: any) => ({
     ...x,
     profit: x.closePrice != null ? x.closeOwnerAmount - x.amount : null,
@@ -124,6 +126,9 @@ const TradingPair: React.FC<Props> = ({
       <Form labelCol={{ span: 3 }}>
         <Form.Item label="Tradingi Pair">
           <span className="ant-form-text">{base} {quote}</span>
+        </Form.Item>
+        <Form.Item label="Current Mid Price">
+          <FormatPrice className="ant-form-text" value={priceRate.data} />
         </Form.Item>
         <Form.Item label="Leverage">
           <span className="ant-form-text">x{leverage} {isLong ? 'Long' : 'Short'}</span>

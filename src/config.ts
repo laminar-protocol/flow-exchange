@@ -51,26 +51,26 @@ export const isTokenSymbol = (symbol: string): symbol is TokenSymbol => (tokens 
 
 export const tradingPairs = {
   l10USDEUR: {
-    base: 'DAI',
-    quote: 'fEUR',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fEUR' as TokenSymbol,
     leverage: 10,
     address: addresses.l10USDEUR,
   },
   s10USDEUR: {
-    base: 'DAI',
-    quote: 'fEUR',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fEUR' as TokenSymbol,
     leverage: -10,
     address: addresses.s10USDEUR,
   },
   l20USDJPY: {
-    base: 'DAI',
-    quote: 'fJPY',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.l20USDJPY,
   },
   s20USDJPY: {
-    base: 'DAI',
-    quote: 'fJPY',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.s20USDJPY,
   },
