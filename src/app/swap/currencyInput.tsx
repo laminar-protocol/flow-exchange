@@ -55,6 +55,7 @@ export interface Props {
   disabledSymbol: string;
   selectedSymbol: string;
   requireAuthorization?: boolean;
+  value?: string;
   onCurrencyChange: (symbol: string) => void;
   onAmountChange: (val: string) => void;
 }
@@ -66,13 +67,14 @@ const CurrencyInput: React.FC<Props> = ({
   disabledSymbol,
   selectedSymbol,
   requireAuthorization,
+  value,
   onCurrencyChange,
   onAmountChange,
 }) => (
   <Container className={className}>
     <InputGroup compact>
       { requireAuthorization && <Lock symbol={selectedSymbol} /> }
-      <AmountInput onChange={(e) => onAmountChange(e.target.value)} disabled={disabled} />
+      <AmountInput value={value} onChange={(e) => onAmountChange(e.target.value)} disabled={disabled} />
       <SymbolSelect
         options={options(symbols, disabledSymbol)}
         onChange={(event: any) => { onCurrencyChange(event.symbol); }}

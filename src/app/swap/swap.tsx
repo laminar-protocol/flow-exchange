@@ -124,6 +124,8 @@ const Swap: React.FC = ({
     isRedeem,
     isSwapping,
     validationErrors,
+    fromAmount,
+    toAmount,
   } = swap;
 
   const { loading, data: rate } = usePriceRate(fromSymbol, toSymbol);
@@ -132,6 +134,24 @@ const Swap: React.FC = ({
     () =>
       fetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
     [fetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
+  );
+
+  useEffect(
+    () => {
+      if (fromAmount) {
+        onFromAmountChange(fromAmount, rate);
+      }
+    },
+    [onFromAmountChange, fromAmount, rate],
+  );
+
+  useEffect(
+    () => {
+      if (toAmount && !fromAmount) {
+        onToAmountChange(toAmount, rate);
+      }
+    },
+    [onToAmountChange, fromAmount, toAmount, rate],
   );
 
   const swapEnabled = isValid;
@@ -174,9 +194,10 @@ const Swap: React.FC = ({
               selectedSymbol={fromSymbol}
               disabledSymbol={toSymbol}
               onCurrencyChange={onFromSymbolChange}
-              onAmountChange={onFromAmountChange}
+              onAmountChange={(x) => onFromAmountChange(x, rate)}
               disabled={isSwapping}
               requireAuthorization
+              value={fromAmount}
             />
             <Validation>
               <ValidationText size="s">
@@ -185,7 +206,7 @@ const Swap: React.FC = ({
             </Validation>
           </Currency>
           <Divider>
-            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol); }}>
+            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol, fromAmount, toAmount); }}>
               <FontAwesomeIcon icon="chevron-right" className="normalIcon" />
               <FontAwesomeIcon icon="exchange-alt" className="swapIcon" />
             </ExchangeIcon>
@@ -199,8 +220,9 @@ const Swap: React.FC = ({
               selectedSymbol={toSymbol}
               disabledSymbol={fromSymbol}
               onCurrencyChange={onToSymbolChange}
-              onAmountChange={onToAmountChange}
+              onAmountChange={(x) => onToAmountChange(x, rate)}
               disabled={isSwapping}
+              value={toAmount}
             />
             <Validation>
               <ValidationText size="s">

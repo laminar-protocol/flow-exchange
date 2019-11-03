@@ -32,8 +32,8 @@ const token = moduleActions('token', {
 const swap = moduleActions('swap', {
   fromSymbol: changedActionTypes<string>(),
   toSymbol: changedActionTypes<string>(),
-  fromAmount: changedActionTypes(),
-  toAmount: changedActionTypes(),
+  fromAmount: changedActionTypes<string>(),
+  toAmount: changedActionTypes<string>(),
   validation: changedActionTypes(),
   mint: apiActionTypes(),
   redeem: apiActionTypes(),
