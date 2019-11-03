@@ -34,7 +34,7 @@ interface Props {
 const Margin: React.FC<Props> = ({
   isEnabled, isLoadingAllowance, isTogglinigTrading, allowance, onToggleTrading,
 }) => {
-  const names = Object.keys(tradingPairs);
+  const names: Array<keyof typeof tradingPairs> = Object.keys(tradingPairs) as any;
   const [pairName, setPairName] = useState(names[0]);
   return (
     <Container>
@@ -69,7 +69,8 @@ const Margin: React.FC<Props> = ({
           <Form>
             <Form.Item label="Margin trading pair">
               <Select value={pairName} onChange={setPairName}>
-                { Object.keys(tradingPairs).map((name) => <Select.Option value={name} key={name}>{name}</Select.Option>) }
+                { names.map((name) =>
+                  <Select.Option value={name} key={name}>{tradingPairs[name].name}</Select.Option>) }
               </Select>
             </Form.Item>
           </Form>

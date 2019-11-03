@@ -55,24 +55,28 @@ export const tradingPairs = {
     quote: 'fEUR' as TokenSymbol,
     leverage: 10,
     address: addresses.l10USDEUR,
+    name: 'USDEUR x10 Long',
   },
   s10USDEUR: {
     base: 'DAI' as TokenSymbol,
     quote: 'fEUR' as TokenSymbol,
     leverage: -10,
     address: addresses.s10USDEUR,
+    name: 'USDEUR x10 Short',
   },
   l20USDJPY: {
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.l20USDJPY,
+    name: 'USDJPY x20 Long',
   },
   s20USDJPY: {
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.s20USDJPY,
+    name: 'USDJPY x20 Short',
   },
 };
 
