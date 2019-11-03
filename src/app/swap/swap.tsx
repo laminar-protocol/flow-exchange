@@ -6,7 +6,7 @@ import {
   Text, Separator, Panel, PrimaryButton, Spinner, NumberFormat,
 } from 'components';
 import * as theme from 'theme';
-import { tokens } from 'config';
+import { tokens, isTokenSymbol } from 'config';
 import { usePriceRate } from 'hooks/useOraclePrice';
 
 import CurrencyInput from './currencyInput';
@@ -98,6 +98,13 @@ const Detail = styled.div`
   text-transform: uppercase;
 `;
 
+const symbolName = (symbol: string) => {
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].name;
+  }
+  return symbol;
+};
+
 const Swap: React.FC = ({
   swap,
   spread,
@@ -109,7 +116,7 @@ const Swap: React.FC = ({
   onSwapSymbol,
   fetchLiquidityPoolSpread,
 }: any) => {
-  const availableSymbols = Object.values(tokens).map(({ name }) => name);
+  const availableSymbols = Object.keys(tokens);
   const {
     fromSymbol,
     toSymbol,
@@ -144,10 +151,10 @@ const Swap: React.FC = ({
     return (
       <Text light>
         <strong>1</strong>
-        {fromSymbol}
+        &nbsp;{symbolName(fromSymbol)}
         &nbsp;=&nbsp;
         <strong><NumberFormat value={finalRate} noPrefix /></strong>
-        {toSymbol}
+        &nbsp;{symbolName(toSymbol)}
       </Text>
     );
   };

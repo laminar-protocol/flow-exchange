@@ -4,6 +4,8 @@ import Select from 'react-select';
 
 import * as theme from 'theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isTokenSymbol, tokens } from 'config';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const CurrencySelect = styled(Select)`
   .react-select__control {
@@ -71,33 +73,18 @@ const Option: React.FC<any> = ({ innerProps, data }) => (
 );
 
 // Custom Symbol Display
-const symbolIcon = (symbol: string) => {
-  // TODO: improve this
-  switch (symbol) {
-    case 'DAI':
-      return 'dollar-sign';
-    case 'EUR':
-    case 'fEUR':
-      return 'euro-sign';
-    case 'JPY':
-    case 'fJPY':
-      return 'yen-sign';
-    default:
-      return 'money-bill';
+const symbolIcon = (symbol: string): IconProp => {
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].icon;
   }
+  return 'money-bill';
 };
 
 const symbolName = (symbol: string) => {
-  switch (symbol) {
-    case 'DAI':
-      return 'DAI';
-    case 'fEUR':
-      return 'Euro';
-    case 'fJPY':
-      return 'Yen';
-    default:
-      return symbol;
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].displayName;
   }
+  return symbol;
 };
 
 const CustomCurrency = styled.div<{ isDisabled: boolean }>`

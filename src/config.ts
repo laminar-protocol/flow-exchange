@@ -23,7 +23,7 @@ export const addresses = deployment[network];
 export const tokens = {
   DAI: {
     name: 'DAI',
-    fullName: 'Dai Stablecoin',
+    displayName: 'DAI',
     address: addresses.baseToken,
     currencySymbol: '$',
     icon: 'dollar-sign' as IconProp,
@@ -31,14 +31,14 @@ export const tokens = {
   },
   fEUR: {
     name: 'EUR',
-    fullName: 'Flow Euro',
+    displayName: 'Euro',
     address: addresses.fEUR,
     currencySymbol: '€',
     icon: 'euro-sign' as IconProp,
   },
   fJPY: {
     name: 'JPY',
-    fullName: 'Flow Japanese Yen',
+    displayName: 'Yen',
     address: addresses.fJPY,
     currencySymbol: '¥',
     icon: 'yen-sign' as IconProp,
