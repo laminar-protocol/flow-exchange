@@ -2,7 +2,6 @@ import validate from 'validate.js';
 import { isEmpty } from 'ramda';
 
 import types from 'types';
-import { parseRate } from 'reducers/spotRate.reducer';
 import { fromWei } from 'helpers/unitHelper';
 
 
@@ -28,14 +27,6 @@ export const caculateRate = (rate: any, isRedeem: boolean) => {
     return 1 / Number(fromWei(rate.bidPrice));
   }
   return 1 / Number(fromWei(rate.askPrice));
-};
-
-const parseExchangeRate = (rate: any, fromSymbol: string, toSymbol: string) => {
-  const { symbol } = rate;
-  if ((fromSymbol === symbol) || (toSymbol === symbol)) {
-    return parseRate(rate);
-  }
-  return {};
 };
 
 const valdiationResult = (state: any) => {
@@ -124,12 +115,6 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
       return {
         ...state,
         ...valdiationResult(state),
-      };
-
-    case types.spot.rate.completed:
-      return {
-        ...state,
-        rate: parseExchangeRate(payload, state.fromSymbol, state.toSymbol),
       };
 
     default:

@@ -6,9 +6,9 @@ import { AppState } from 'reducers';
 import Component from './swap';
 
 const mapStateToProps = ({
-  swap, spotRate,
+  swap,
 }: AppState) => ({
-  swap, spotRate,
+  swap,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

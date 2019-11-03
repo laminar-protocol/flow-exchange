@@ -45,6 +45,10 @@ export const tokens = {
   },
 };
 
+export type TokenSymbol = keyof typeof tokens;
+
+export const isTokenSymbol = (symbol: string): symbol is TokenSymbol => (tokens as any)[symbol] != null;
+
 export const tradingPairs = {
   l10USDEUR: {
     base: 'DAI',
@@ -71,6 +75,17 @@ export const tradingPairs = {
     address: addresses.s20USDJPY,
   },
 };
+
+export const liquidityPools = [
+  {
+    address: addresses.pool,
+    name: 'Laminar',
+  },
+  {
+    address: addresses.pool2,
+    name: 'Partner',
+  },
+];
 
 export const abi = {
   ERC20: ERC20Detailed as any,

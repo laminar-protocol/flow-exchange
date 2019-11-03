@@ -38,10 +38,6 @@ const swap = moduleActions('swap', {
   redeem: apiActionTypes(),
 });
 
-const spot = moduleActions('spot', {
-  rate: apiActionTypes(),
-});
-
 const margin = moduleActions('margin', {
   allowance: apiActionTypes<PartialState<number>>(),
   toggleTrading: apiActionTypes<PartialState<number, boolean>>(),
@@ -54,7 +50,6 @@ export const actions = appActions('flow', {
   ethereum,
   token,
   swap,
-  spot,
   margin,
 });
 

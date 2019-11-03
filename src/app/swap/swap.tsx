@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { isEmpty } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
@@ -8,7 +7,7 @@ import {
 } from 'components';
 import * as theme from 'theme';
 import { tokens } from 'config';
-import { caculateRate } from 'reducers/swap.reducer';
+import { usePriceRate } from 'hooks/useOraclePrice';
 
 import CurrencyInput from './currencyInput';
 
@@ -101,7 +100,6 @@ const Detail = styled.div`
 
 const Swap: React.FC = ({
   swap,
-  spotRate,
   onFromSymbolChange,
   onToSymbolChange,
   onFromAmountChange,
@@ -109,35 +107,33 @@ const Swap: React.FC = ({
   onSwap,
   onSwapSymbol,
 }: any) => {
-  // Attributes
   const availableSymbols = Object.values(tokens).map(({ name }) => name);
   const {
     fromSymbol,
     toSymbol,
     isValid,
-    rate,
     isRedeem,
     isSwapping,
     validationErrors,
   } = swap;
-  const { isQuerying } = spotRate;
+
+  const { loading, data: rate } = usePriceRate(fromSymbol, toSymbol);
+
   const swapEnabled = isValid;
-  const isLoading = isQuerying;
+  const isLoading = loading;
 
   // Function
   const renderExchangeRate = () => {
-    if (isEmpty(rate)) {
+    if (rate == null) {
       return null;
     }
-
-    const exchangeRate = caculateRate(rate, isRedeem);
 
     return (
       <Text light>
         <strong>1</strong>
         {fromSymbol}
         &nbsp;=&nbsp;
-        <strong><NumberFormat value={exchangeRate} noPrefix /></strong>
+        <strong><NumberFormat value={rate} noPrefix /></strong>
         {toSymbol}
       </Text>
     );
