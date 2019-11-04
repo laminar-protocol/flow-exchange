@@ -2,34 +2,17 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 import types from 'types';
-import { UINT256_MAX, UINT256_MIN, fromWei } from 'helpers/unitHelper';
+import { UINT256_MAX, UINT256_MIN } from 'helpers/unitHelper';
 import { AppState } from 'reducers';
-import {
-  getAuthorization,
-  getIsQueryingAuthorization,
-  getIsGranting,
-} from 'reducers/token.reducer';
 
-import Component from './grantSwitch';
+import GrantSwitch, { OwnProps } from './grantSwitch';
 
-interface OwnProps {
-  symbol: string;
-  visibleGranted?: boolean;
-}
 
-const mapStateToProps = ({ token }: AppState, { symbol, visibleGranted }: OwnProps) => {
-  const authorization: string = getAuthorization(symbol, token);
-  const isQueryingAuthorization: boolean = getIsQueryingAuthorization(symbol, token);
-  const isGranting: boolean = getIsGranting(symbol, token);
-  const granted: boolean = (Number(fromWei(authorization)) > 0);
-  return {
-    symbol,
-    isGranting,
-    isQueryingAuthorization,
-    granted,
-    visibleGranted,
-  };
-};
+const mapStateToProps = ({ token }: AppState, { symbol, visibleGranted }: OwnProps) => ({
+  token,
+  symbol,
+  visibleGranted,
+});
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onQuery: (symbol: string) => {
@@ -45,4 +28,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(GrantSwitch);

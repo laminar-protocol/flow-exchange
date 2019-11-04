@@ -5,6 +5,7 @@ import ethereum from 'services/ethereum';
 import types from 'types';
 import { Epic } from 'reducers';
 import { toWei } from 'helpers/unitHelper';
+import { addresses } from 'config';
 
 const epic: Epic = (action$, state$) => action$.pipe(
   ofType(types.swap.redeem.requested),
@@ -14,9 +15,6 @@ const epic: Epic = (action$, state$) => action$.pipe(
         value: {
           ethereum: {
             account,
-            contracts: {
-              pool,
-            },
           },
           swap: { fromAmount, fromSymbol },
         },
@@ -25,7 +23,7 @@ const epic: Epic = (action$, state$) => action$.pipe(
       const from = ethereum.getTokenContract(fromSymbol);
       const fromAmountWei = toWei(fromAmount);
 
-      const method = ethereum.flowContract.methods.redeem(from.options.address, pool, fromAmountWei);
+      const method = ethereum.flowProtocol.methods.redeem(from.options.address, addresses.pool, fromAmountWei);
       const success = await method.send({ from: account });
 
       return { type: types.swap.redeem.completed, payload: success };

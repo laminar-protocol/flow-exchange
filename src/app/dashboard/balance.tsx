@@ -2,31 +2,33 @@ import React, { useEffect } from 'react';
 
 import { BalanceCell } from 'components';
 import { fromWei } from 'helpers/unitHelper';
-import { State, getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
+import { tokens } from 'config';
 
-interface OwnProps {
+export interface OwnProps {
   symbol: string;
+  label?: string;
 }
 
 interface Props extends OwnProps {
-  token: State;
+  balance: string;
+  isQueryingBalance: boolean;
   onBalanceQuery: (symbol: string) => void;
 }
 
-const Balance: React.FC<Props> = ({ symbol, token, onBalanceQuery }) => {
-  const balance = getBalance(symbol, token);
-  const isQueryingBalance = getIsQueryingBalance(symbol, token);
-
+const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, onBalanceQuery }) => {
   useEffect(() => {
     onBalanceQuery(symbol);
   }, [onBalanceQuery, symbol]);
 
+  const { icon, currencySymbol } = tokens[symbol as keyof typeof tokens];
+
   return (
     <BalanceCell
       value={fromWei(balance)}
-      text={`${symbol} Balances`}
+      text={label || `${symbol} Balances`}
       loading={isQueryingBalance}
-      accessory="dollar-sign"
+      accessory={icon}
+      prefix={currencySymbol}
     />
   );
 };

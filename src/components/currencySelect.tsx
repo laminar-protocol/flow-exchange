@@ -4,6 +4,8 @@ import Select from 'react-select';
 
 import * as theme from 'theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isTokenSymbol, tokens } from 'config';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 const CurrencySelect = styled(Select)`
   .react-select__control {
@@ -33,7 +35,9 @@ const Placeholder = () => <CustomPlaceholder>Select...</CustomPlaceholder>;
 
 const CustomSingleValue = styled.div`
 `;
-const SingleValue = ({ innerProps, data }) => (
+
+
+const SingleValue: React.FC<any> = ({ innerProps, data }) => (
   <CustomSingleValue {...innerProps}>
     <Currency symbol={data.symbol} />
   </CustomSingleValue>
@@ -47,7 +51,8 @@ const CustomIndicatorSeparator = styled.span`
   margin-top: 0.5rem;
   width: 1px;
 `;
-const IndicatorSeparator = ({ innerProps }) => <CustomIndicatorSeparator {...innerProps} />;
+
+const IndicatorSeparator: React.FC<any> = ({ innerProps }) => <CustomIndicatorSeparator {...innerProps} />;
 
 const CustomOption = styled.div`
   border-bottom: 1px solid ${theme.borderColor};
@@ -61,41 +66,27 @@ const CustomOption = styled.div`
     border-bottom: 0;
   }
 `;
-const Option = ({ innerProps, data }) => (
+const Option: React.FC<any> = ({ innerProps, data }) => (
   <CustomOption {...innerProps}>
     <Currency symbol={data.symbol} isDisabled={data.isDisabled} />
   </CustomOption>
 );
 
-// Custom Symbol Display
-// TODO: Refactor this later
-const symbolIcon = (symbol) => {
-  switch (symbol) {
-    case 'baseToken':
-      return 'dollar-sign';
-    case 'fEUR':
-      return 'euro-sign';
-    case 'fJPY':
-      return 'yen-sign';
-    default:
-      return 'money-bill';
+const symbolIcon = (symbol: string): IconProp => {
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].icon;
   }
+  return 'money-bill';
 };
 
-// TODO: Refactor this later
-const symbolName = (symbol) => {
-  switch (symbol) {
-    case 'baseToken':
-      return 'DAI';
-    case 'fEUR':
-      return 'Euro';
-    case 'fJPY':
-      return 'Yen';
-    default:
-      return symbol;
+const symbolName = (symbol: string) => {
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].displayName;
   }
+  return symbol;
 };
-const CustomCurrency = styled.div`
+
+const CustomCurrency = styled.div<{ isDisabled: boolean }>`
   color: ${theme.foregroundColor};
   display: flex;
   justify-content: flex-start;
@@ -109,7 +100,8 @@ const CustomCurrency = styled.div`
   }
   opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
 `;
-const Currency = ({ symbol, isDisabled }) => (
+
+const Currency: React.FC<any> = ({ symbol, isDisabled }) => (
   <CustomCurrency isDisabled={isDisabled}>
     <div className="icon">
       <FontAwesomeIcon icon={symbolIcon(symbol)} />
@@ -120,9 +112,7 @@ const Currency = ({ symbol, isDisabled }) => (
   </CustomCurrency>
 );
 
-
-// Component
-const Component = ({ ...props }) => (
+const CurrencySelectComponent: React.FC<any> = ({ ...props }) => (
   <CurrencySelect
     classNamePrefix="react-select"
     components={{
@@ -133,4 +123,4 @@ const Component = ({ ...props }) => (
   />
 );
 
-export default Component;
+export default CurrencySelectComponent;

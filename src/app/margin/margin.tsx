@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Form, Select } from 'antd';
 
+import Balance from 'app/dashboard/balance.connect';
 import {
   Text, Separator, Panel, SolidButton, BalanceCell,
 } from 'components';
@@ -34,7 +35,7 @@ interface Props {
 const Margin: React.FC<Props> = ({
   isEnabled, isLoadingAllowance, isTogglinigTrading, allowance, onToggleTrading,
 }) => {
-  const names = Object.keys(tradingPairs);
+  const names: Array<keyof typeof tradingPairs> = Object.keys(tradingPairs) as any;
   const [pairName, setPairName] = useState(names[0]);
   return (
     <Container>
@@ -43,17 +44,16 @@ const Margin: React.FC<Props> = ({
       <SummaryPanel>
         <Text size="l">Account Summary</Text>
         <Summary>
-          <BalanceCell
-            value="123"
-            text="Balance"
-          />
+          <Balance symbol="DAI" label="Free Balance" />
           <BalanceCell
             value="123"
             text="P/L"
+            accessory="dollar-sign"
           />
           <BalanceCell
             value="123"
             text="Equity"
+            accessory="dollar-sign"
           />
         </Summary>
         <div>
@@ -69,7 +69,8 @@ const Margin: React.FC<Props> = ({
           <Form>
             <Form.Item label="Margin trading pair">
               <Select value={pairName} onChange={setPairName}>
-                { Object.keys(tradingPairs).map((name) => <Select.Option value={name} key={name}>{name}</Select.Option>) }
+                { names.map((name) =>
+                  <Select.Option value={name} key={name}>{tradingPairs[name].name}</Select.Option>) }
               </Select>
             </Form.Item>
           </Form>

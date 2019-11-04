@@ -35,8 +35,12 @@ const LockSpinner = styled(Spinner)`
   }
 `;
 
-interface Props {
+export interface OwnProps {
   symbol: string;
+  visibleGranted?: boolean;
+}
+
+interface Props extends OwnProps {
   isQueryingAuthorization: boolean;
   isGranting: boolean;
   granted: boolean;
@@ -45,10 +49,9 @@ interface Props {
   onQuery: (symbol: string) => void;
 
   className?: string;
-  visibleGranted?: boolean;
 }
 
-const Component: React.FC<Props> = ({
+const GrantSwitch: React.FC<Props> = ({
   symbol,
   isQueryingAuthorization,
   isGranting,
@@ -76,4 +79,4 @@ const Component: React.FC<Props> = ({
   );
 };
 
-export default Component;
+export default GrantSwitch;

@@ -3,10 +3,9 @@ import styled from 'styled-components';
 import { Input as AntInput } from 'antd';
 
 import { CurrencySelect, Input } from 'components';
+import InputGroup from 'antd/lib/input/Group';
 import GrantSwitch from 'app/grantSwitch/grantSwitch.connect';
 import * as theme from 'theme';
-
-const InputGroup = AntInput.Group;
 
 const Container = styled.div`
 `;
@@ -64,7 +63,7 @@ interface Props {
   onAmountChange: (amount: string) => void;
 }
 
-const Component: React.FC<Props> = ({
+const CurrencyInput: React.FC<Props> = ({
   className,
   disabled,
   symbols,
@@ -89,4 +88,4 @@ const Component: React.FC<Props> = ({
   </Container>
 );
 
-export default Component;
+export default CurrencyInput;

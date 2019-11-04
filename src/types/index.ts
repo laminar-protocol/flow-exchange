@@ -7,15 +7,12 @@ import {
   triggerActionTypes,
 } from 'helpers/typeCreator';
 
-import { PartialState } from 'helpers/apiLoadable';
+import { PartialState } from 'helpers/apiLoadableSingle';
+import { PartialStateWithId } from 'helpers/apiLoadable';
 
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),
   theme: changedActionTypes(),
-});
-
-const market = moduleActions('market', {
-  symbols: changedActionTypes<Record<string, { symbol: string; name: string; isBaseToken: boolean }>>(),
 });
 
 const ethereum = moduleActions('ethereum', {
@@ -42,10 +39,6 @@ const swap = moduleActions('swap', {
   redeem: apiActionTypes(),
 });
 
-const spot = moduleActions('spot', {
-  rate: apiActionTypes(),
-});
-
 const margin = moduleActions('margin', {
   allowance: apiActionTypes<PartialState<number>>(),
   toggleTrading: apiActionTypes<PartialState<number, boolean>>(),
@@ -53,14 +46,17 @@ const margin = moduleActions('margin', {
   closePosition: apiActionTypes<PartialState<void, { name: string; id: string }>>(),
 });
 
+const liquidityPool = moduleActions('liquidityPool', {
+  spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
+});
+
 export const actions = appActions('flow', {
   app,
-  market,
   ethereum,
   token,
   swap,
-  spot,
   margin,
+  liquidityPool,
 });
 
 const types = appActionTypes(actions);

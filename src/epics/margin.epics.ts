@@ -4,10 +4,10 @@ import { ofType, StateObservable } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
 import { fromWei, UINT256_MAX, UINT256_MIN, toWei } from 'helpers/unitHelper';
-import { createEpic } from 'helpers/apiLoadable';
+import { createEpic } from 'helpers/apiLoadableSingle';
 import types, { actions } from 'types';
 import { AppState, Epic } from 'reducers';
-import { deployment } from 'config';
+import { addresses } from 'config';
 
 export const changeAccount: Epic = (action$) => action$.pipe(
   ofType(types.ethereum.account.changed),
@@ -17,13 +17,12 @@ export const changeAccount: Epic = (action$) => action$.pipe(
 export const allowance = createEpic(
   actions.margin.allowance,
   async (_params, state: StateObservable<AppState>) => {
-    await ethereum.ready;
     const { value: { ethereum: { account } } } = state;
     if (!account) { // TODO: improve this
       return Promise.reject(new Error('No account'));
     }
     const protocolAddress = ethereum.flowMarginProtocol.options.address;
-    const result = await ethereum.baseTokenContract.methods.allowance(account, protocolAddress).call();
+    const result = await ethereum.tokens.DAI.methods.allowance(account, protocolAddress).call();
     return Number(fromWei(result));
   },
   (action$) =>
@@ -33,14 +32,13 @@ export const allowance = createEpic(
 export const toggleEnable = createEpic(
   actions.margin.toggleTrading,
   async (enable, state: StateObservable<AppState>) => {
-    await ethereum.ready;
     const { value: { ethereum: { account } } } = state;
     if (!account) { // TODO: improve this
       return Promise.reject(new Error('No account'));
     }
     const protocolAddress = ethereum.flowMarginProtocol.options.address;
     const amount = enable ? UINT256_MAX : UINT256_MIN;
-    await ethereum.baseTokenContract.methods.approve(protocolAddress, amount).send({ from: account });
+    await ethereum.tokens.DAI.methods.approve(protocolAddress, amount).send({ from: account });
     return Number(fromWei(amount));
   },
 );
@@ -56,12 +54,11 @@ export const updateAllowance: Epic = (action$) => action$.pipe(
 export const openPosition = createEpic(
   actions.margin.openPosition,
   async ({ name, amount, pool }, state: StateObservable<AppState>) => {
-    await ethereum.ready;
     const { value: { ethereum: { account } } } = state;
     if (!account) { // TODO: improve this
       return Promise.reject(new Error('No account'));
     }
-    const pairAddress = deployment.kovan[name as keyof typeof deployment['kovan']]; // TODO: handle network
+    const pairAddress = addresses[name as keyof typeof addresses];
     await ethereum.flowMarginProtocol.methods.openPosition(pairAddress, pool, toWei(amount.toString().toString())).send({ from: account });
   },
 );
@@ -69,12 +66,11 @@ export const openPosition = createEpic(
 export const closePosition = createEpic(
   actions.margin.closePosition,
   async ({ name, id }, state: StateObservable<AppState>) => {
-    await ethereum.ready;
     const { value: { ethereum: { account } } } = state;
     if (!account) { // TODO: improve this
       return Promise.reject(new Error('No account'));
     }
-    const pairAddress = deployment.kovan[name as keyof typeof deployment['kovan']]; // TODO: handle network
+    const pairAddress = addresses[name as keyof typeof addresses];
     await ethereum.flowMarginProtocol.methods.closePosition(pairAddress, id).send({ from: account });
   },
 );

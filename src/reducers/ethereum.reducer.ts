@@ -4,9 +4,7 @@ const INITIAL_STATE = {
   account: null,
   network: null,
 
-  contracts: {} as any,
-
-  isTestnet: false,
+  isTestnet: true, // TODO: replace with config
 
   isEnabling: false,
   isConnecting: false,
@@ -20,13 +18,6 @@ const INITIAL_STATE = {
 const parseNetwork = (payload: any) => ({
   network: payload.network,
   isTestnet: (payload.network !== 'main'),
-  contracts: {
-    dai: payload.addresses.baseToken,
-    flow: payload.addresses.protocol,
-    eur: payload.addresses.fEUR,
-    jpy: payload.addresses.fJPY,
-    pool: payload.addresses.pool,
-  },
 });
 
 const reducer = (state = INITIAL_STATE, { type, payload }: any) => {

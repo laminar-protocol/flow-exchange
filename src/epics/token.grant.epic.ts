@@ -2,6 +2,7 @@ import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
 
+import { addresses } from 'config';
 import types from 'types';
 import { Epic } from 'reducers';
 
@@ -12,11 +13,11 @@ const epic: Epic = (action$, state$) => action$.pipe(
     try {
       const {
         value: {
-          ethereum: { account, contracts: { flow } },
+          ethereum: { account },
         },
       } = state$;
       const contract = ethereum.getTokenContract(symbol);
-      await contract.methods.approve(flow, balance).send({ from: account });
+      await contract.methods.approve(addresses.protocol, balance).send({ from: account });
 
       return { type: types.token.grant.completed, payload: { symbol } };
     } catch (error) {

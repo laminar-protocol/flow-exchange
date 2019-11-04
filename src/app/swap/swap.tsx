@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { isEmpty } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   Text, Separator, Panel, PrimaryButton, Spinner, NumberFormat,
 } from 'components';
 import * as theme from 'theme';
+import { tokens, isTokenSymbol } from 'config';
+import { usePriceRate } from 'hooks/useOraclePrice';
 
 import CurrencyInput from './currencyInput';
 
 const Container = styled.div`
 `;
 
-const Swap = styled(Panel)`
+const SwapContainer = styled(Panel)`
 `;
 
 const Currency = styled.div`
@@ -97,56 +98,91 @@ const Detail = styled.div`
   text-transform: uppercase;
 `;
 
-interface Props {
-  availableSymbols: string[];
-  canGrantSymbol: boolean;
+const symbolName = (symbol: string) => {
+  if (isTokenSymbol(symbol)) {
+    return tokens[symbol].name;
+  }
+  return symbol;
+};
 
-  fromSymbol: string;
-  toSymbol: string;
-  rate: number;
-
-  fromAmount?: number;
-  toAmount?: number;
-
-  isQueryingRate: boolean;
-  isSwapping: boolean;
-  isValid: boolean;
-  isRedeem: boolean;
-
-  onSwap: (isRedeem: boolean) => void;
-  onFromSymbolChange: (symbol: string) => void;
-  onToSymbolChange: (symbol: string) => void;
-  onFromAmountChange: (amount: string) => void;
-  onToAmountChange: (amount: string) => void;
-  onSwapSymbol: (fromSymbol: string, toSymbol: string) => void;
-}
-const Component: React.FC<Props> = ({
-  availableSymbols,
-  canGrantSymbol,
-  fromSymbol,
-  toSymbol,
-  rate,
-  fromAmount,
-  toAmount,
-  isQueryingRate,
-  isSwapping,
-  isValid,
-  isRedeem,
-  onSwap,
+const Swap: React.FC = ({
+  swap,
+  spread,
   onFromSymbolChange,
   onToSymbolChange,
   onFromAmountChange,
   onToAmountChange,
   onSwapSymbol,
-}) => {
-  const isLoading = isQueryingRate;
-  const isEnabled = isValid;
+  fetchLiquidityPoolSpread,
+}: any) => {
+  const availableSymbols = Object.keys(tokens);
+  const {
+    fromSymbol,
+    toSymbol,
+    isValid,
+    isRedeem,
+    isSwapping,
+    validationErrors,
+    fromAmount,
+    toAmount,
+  } = swap;
+
+  const { loading, data: rate } = usePriceRate(fromSymbol, toSymbol);
+
+  useEffect(
+    () =>
+      fetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
+    [fetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
+  );
+
+  useEffect(
+    () => {
+      if (fromAmount) {
+        onFromAmountChange(fromAmount, rate);
+      }
+    },
+    [onFromAmountChange, fromAmount, rate],
+  );
+
+  useEffect(
+    () => {
+      if (toAmount && !fromAmount) {
+        onToAmountChange(toAmount, rate);
+      }
+    },
+    [onToAmountChange, fromAmount, toAmount, rate],
+  );
+
+  const swapEnabled = isValid;
+  const isLoading = loading || spread.loading;
+
+  const askSpread = spread.value && spread.value.ask;
+  const bidSpread = spread.value && spread.value.bid;
+
+  // Function
+  const renderExchangeRate = () => {
+    if (rate == null || askSpread == null || bidSpread == null) {
+      return null;
+    }
+    const adjuestment = isRedeem ? 1 - bidSpread : 1 - askSpread;
+    const finalRate = rate * adjuestment;
+
+    return (
+      <Text light>
+        <strong>1</strong>
+        &nbsp;{symbolName(fromSymbol)}
+        &nbsp;=&nbsp;
+        <strong><NumberFormat value={finalRate} noPrefix /></strong>
+        &nbsp;{symbolName(toSymbol)}
+      </Text>
+    );
+  };
 
   return (
     <Container>
       <Text size="h">Spot Exchange</Text>
       <Separator />
-      <Swap padding={2}>
+      <SwapContainer padding={2}>
         <Entry>
           <Currency>
             <Label>
@@ -156,17 +192,18 @@ const Component: React.FC<Props> = ({
               symbols={availableSymbols}
               selectedSymbol={fromSymbol}
               disabledSymbol={toSymbol}
-              onCurrencyChange={(symbol) => { onFromSymbolChange(symbol); }}
-              onAmountChange={(value) => { onFromAmountChange(value); }}
+              onCurrencyChange={onFromSymbolChange}
+              onAmountChange={(x) => onFromAmountChange(x, rate)}
               disabled={isSwapping}
-              requireAuthorization={canGrantSymbol}
+              requireAuthorization
+              value={fromAmount}
             />
             <Validation>
               <ValidationText size="s" />
             </Validation>
           </Currency>
           <Divider>
-            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol); }}>
+            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol, fromAmount, toAmount); }}>
               <FontAwesomeIcon icon="chevron-right" className="normalIcon" />
               <FontAwesomeIcon icon="exchange-alt" className="swapIcon" />
             </ExchangeIcon>
@@ -179,9 +216,10 @@ const Component: React.FC<Props> = ({
               symbols={availableSymbols}
               selectedSymbol={toSymbol}
               disabledSymbol={fromSymbol}
-              onCurrencyChange={(e) => { onToSymbolChange(e); }}
-              onAmountChange={(e) => { onToAmountChange(e); }}
+              onCurrencyChange={onToSymbolChange}
+              onAmountChange={(x) => onToAmountChange(x, rate)}
               disabled={isSwapping}
+              value={toAmount}
             />
             <Validation>
               <ValidationText size="s" />
@@ -202,9 +240,9 @@ const Component: React.FC<Props> = ({
             Exchange
           </PrimaryButton>
         </ActionBar>
-      </Swap>
+      </SwapContainer>
     </Container>
   );
 };
 
-export default Component;
+export default Swap;

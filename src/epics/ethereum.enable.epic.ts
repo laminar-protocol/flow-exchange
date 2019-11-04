@@ -9,12 +9,12 @@ import { Epic } from 'reducers';
 const epic: Epic = (action$) => action$.pipe(
   ofType(types.ethereum.enable.requested),
   mergeMap(() => new Observable((observable) => {
-    ethereum.ethWeb3.enable()
+    ethereum.provider.enable()
       .then(([account]: string[]) => observable.next(actions.ethereum.enable.completed(account)))
       .catch(() => observable.next(actions.ethereum.enable.failed()));
-    ethereum.ethWeb3.on('accountsChanged', ([account]: string[]) => {
+    ethereum.provider.on('accountsChanged', ([account]: string[]) => {
       observable.next(actions.ethereum.account.changed(account));
-    // TODO: ethereum.ethWeb3.on('networkChanged')
+    // TODO: ethereum.provider.on('networkChanged')
     });
   })),
 );

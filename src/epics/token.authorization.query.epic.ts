@@ -20,7 +20,7 @@ const epic: Epic = (action$, state$) => combineLatest(
         },
       } = state$;
 
-      const grantAddress = address || ethereum.flowContract.options.address;
+      const grantAddress = address || ethereum.flowProtocol.options.address;
       const contract = ethereum.getTokenContract(symbol);
       const balance = await contract.methods.allowance(account, grantAddress).call();
       return {

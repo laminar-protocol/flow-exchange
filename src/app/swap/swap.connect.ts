@@ -2,33 +2,23 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import types, { actions } from 'types';
 import { AppState } from 'reducers';
+import { addresses, tokens, isTokenSymbol } from 'config';
 
-import { getSymbols } from 'reducers/market.reducer';
-import { caculateRate } from 'reducers/swap.reducer';
+import Swap from './swap';
 
-import Component from './swap';
+const defaultPool = addresses.pool;
 
 const mapStateToProps = ({
-  market, swap, spotRate,
+  swap, liquidityPool: { spread: { states } },
 }: AppState) => {
-  const {
-    fromSymbol,
-    toSymbol,
-    fromAmount,
-    toAmount,
-  } = swap;
-
-  const availableSymbols = Object.keys(market.symbols);
-  const selectedToken = market.symbols[fromSymbol];
-
-  const canGrantSymbol = selectedToken && selectedToken.isBaseToken;
+  let spread;
+  const otherSymbol = swap.isRedeem ? swap.fromSymbol : swap.toSymbol;
+  if (isTokenSymbol(otherSymbol)) {
+    spread = states[[defaultPool, tokens[otherSymbol].address].toString()];
+  }
   return {
-    availableSymbols,
-    fromSymbol,
-    toSymbol,
-    fromAmount,
-    toAmount,
-    canGrantSymbol,
+    swap,
+    spread: spread || {},
   };
 };
 
@@ -39,15 +29,25 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   onToSymbolChange: (symbol: string) => {
     dispatch(actions.swap.toSymbol.changed(symbol));
   },
-  onFromAmountChange: (amount: string) => {
-    dispatch({ type: types.swap.fromAmount.changed, payload: amount });
+  onFromAmountChange: (amount: string, rate?: number) => {
+    dispatch(actions.swap.fromAmount.changed(amount));
+    if (rate != null) {
+      const toAmount = Number(amount) * rate;
+      dispatch(actions.swap.toAmount.changed(toAmount.toString()));
+    }
   },
-  onToAmountChange: (amount: string) => {
-    dispatch({ type: types.swap.toAmount.changed, payload: amount });
+  onToAmountChange: (amount: string, rate?: number) => {
+    dispatch(actions.swap.toAmount.changed(amount));
+    if (rate != null) {
+      const fromAmount = Number(amount) / rate;
+      dispatch(actions.swap.fromAmount.changed(fromAmount.toString()));
+    }
   },
-  onSwapSymbol: (fromSymbol: string, toSymbol: string) => {
-    dispatch({ type: types.swap.fromSymbol.changed, payload: toSymbol });
-    dispatch({ type: types.swap.toSymbol.changed, payload: fromSymbol });
+  onSwapSymbol: (fromSymbol: string, toSymbol: string, fromAmount: string, toAmount: string) => {
+    dispatch(actions.swap.fromSymbol.changed(toSymbol));
+    dispatch(actions.swap.toSymbol.changed(fromSymbol));
+    dispatch(actions.swap.fromAmount.changed(toAmount));
+    dispatch(actions.swap.toAmount.changed(fromAmount));
   },
   onSwap: (isRedeem: boolean) => {
     if (isRedeem) {
@@ -56,6 +56,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       dispatch({ type: types.swap.mint.requested });
     }
   },
+  fetchLiquidityPoolSpread: (otherSymbol: string) => {
+    if (isTokenSymbol(otherSymbol)) {
+      dispatch(actions.liquidityPool.spread.requested({ id: [defaultPool, tokens[otherSymbol].address] }));
+    }
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(Swap);
