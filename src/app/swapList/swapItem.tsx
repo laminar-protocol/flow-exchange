@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, FormatBalance } from 'components';
 import { tokens, TokenSymbol } from 'config';
-import { fromWei } from 'helpers/unitHelper';
 import * as theme from 'theme';
 
 const Line = styled.div`

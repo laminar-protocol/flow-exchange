@@ -13,10 +13,22 @@ const Container = styled.div`
   }
 `;
 
-const Component = ({ ethereum, onClose, onEthereumConnect }) => (
+export interface StateProps {
+  isConnectModalActive: boolean;
+  isConnecting: boolean;
+  onEthereumConnect: () => void;
+  onClose: () => void;
+}
+
+const Component: React.FC<StateProps> = ({
+  isConnectModalActive,
+  isConnecting,
+  onEthereumConnect,
+  onClose,
+}) => (
   <Modal
     centered
-    visible={ethereum.isConnectModalActive}
+    visible={isConnectModalActive}
     closable={false}
     footer={null}
     onCancel={() => onClose()}
@@ -24,7 +36,7 @@ const Component = ({ ethereum, onClose, onEthereumConnect }) => (
     <Container>
       <Text size="t">Connect</Text>
       <Separator size={1} />
-      <SolidButton size="large" onClick={onEthereumConnect} loading={ethereum.isConnecting}>MetaMask</SolidButton>
+      <SolidButton size="large" onClick={onEthereumConnect} loading={isConnecting}>MetaMask</SolidButton>
       <SolidButton size="large" disabled>Coinbase Wallet</SolidButton>
       <SolidButton size="large" disabled>Ledger</SolidButton>
       <Separator size={1} />
