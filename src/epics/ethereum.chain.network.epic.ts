@@ -9,9 +9,9 @@ import { Epic } from 'reducers';
 const epic: Epic = (action$) => action$.pipe(
   ofType(types.ethereum.network.completed),
   mergeMap(() => {
-    const values = Object.values(tokens);
+    const values = Object.keys(tokens);
 
-    const tokenRequests: any = values.flatMap(({ name: key }) => [
+    const tokenRequests: any = values.flatMap((key) => [
       { type: types.token.balance.requested, payload: { symbol: key } },
       { type: types.token.authorization.requested, payload: { symbol: key } },
     ]);

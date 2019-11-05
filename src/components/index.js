@@ -12,6 +12,7 @@ export { default as Panel } from './panel';
 export { default as TextCell } from './textCell';
 export { default as Spinner } from './spinner';
 export { default as NumberFormat } from './numberFormat';
+export { FormatBalance } from './format';
 export { default as CurrencySelect } from './currencySelect';
 export { default as BalanceCell } from './balanceCell';
 

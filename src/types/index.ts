@@ -12,7 +12,7 @@ import { PartialStateWithId } from 'helpers/apiLoadable';
 
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),
-  theme: changedActionTypes(),
+  theme: changedActionTypes<string>(),
 });
 
 const ethereum = moduleActions('ethereum', {

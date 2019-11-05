@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Text, Spinner } from 'components';
 import * as theme from 'theme';
 
+// ----------
+// Styles
+// ----------
+
 const Container = styled.div`
   display: flex !important;
   align-items: center;
@@ -35,12 +39,16 @@ const LockSpinner = styled(Spinner)`
   }
 `;
 
+// ----------
+// Interface
+// ----------
+
 export interface OwnProps {
   symbol: string;
   visibleGranted?: boolean;
 }
 
-interface Props extends OwnProps {
+export interface StateProps {
   isQueryingAuthorization: boolean;
   isGranting: boolean;
   granted: boolean;
@@ -50,6 +58,10 @@ interface Props extends OwnProps {
 
   className?: string;
 }
+
+type Props = OwnProps & StateProps;
+
+// ----------
 
 const GrantSwitch: React.FC<Props> = ({
   symbol,

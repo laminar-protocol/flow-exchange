@@ -27,7 +27,7 @@ export const tokens = {
     address: addresses.baseToken,
     currencySymbol: '$',
     icon: 'dollar-sign' as IconProp,
-
+    isBaseToken: true,
   },
   fEUR: {
     name: 'EUR',
@@ -35,6 +35,7 @@ export const tokens = {
     address: addresses.fEUR,
     currencySymbol: '€',
     icon: 'euro-sign' as IconProp,
+    isBaseToken: false,
   },
   fJPY: {
     name: 'JPY',
@@ -42,12 +43,20 @@ export const tokens = {
     address: addresses.fJPY,
     currencySymbol: '¥',
     icon: 'yen-sign' as IconProp,
+    isBaseToken: false,
   },
 };
 
 export type TokenSymbol = keyof typeof tokens;
 
 export const isTokenSymbol = (symbol: string): symbol is TokenSymbol => (tokens as any)[symbol] != null;
+export const isBaseTokenSymbol = (symbol: string): symbol is TokenSymbol => {
+  const token = (tokens as any)[symbol];
+  if (token === null) {
+    return false;
+  }
+  return token.isBaseToken;
+};
 
 export const tradingPairs = {
   l10USDEUR: {
@@ -55,39 +64,39 @@ export const tradingPairs = {
     quote: 'fEUR' as TokenSymbol,
     leverage: 10,
     address: addresses.l10USDEUR,
-    name: 'USDEUR x10 Long',
+    name: 'USDEUR 10× Long',
   },
   s10USDEUR: {
     base: 'DAI' as TokenSymbol,
     quote: 'fEUR' as TokenSymbol,
     leverage: -10,
     address: addresses.s10USDEUR,
-    name: 'USDEUR x10 Short',
+    name: 'USDEUR 10× Short',
   },
   l20USDJPY: {
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.l20USDJPY,
-    name: 'USDJPY x20 Long',
+    name: 'USDJPY 20× Long',
   },
   s20USDJPY: {
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.s20USDJPY,
-    name: 'USDJPY x20 Short',
+    name: 'USDJPY 20× Short',
   },
 };
 
 export const liquidityPools = {
   [addresses.pool]: {
     address: addresses.pool,
-    name: 'Laminar',
+    name: 'Laminar Finance',
   },
   [addresses.pool2]: {
     address: addresses.pool2,
-    name: 'Partner',
+    name: 'ACME Finance',
   },
 };
 
