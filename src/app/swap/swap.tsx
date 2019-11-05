@@ -7,6 +7,7 @@ import {
   Text, Separator, PrimaryButton,
 } from 'components';
 import BalanceLine from 'app/balanceLine/balanceLine.connect';
+import SwapList from 'app/swapList/swapList.connect';
 
 import {
   Container,
@@ -22,7 +23,7 @@ import {
   Detail,
   SwapDetail,
   SwapBalance,
-  SwapList,
+  SwapListContainer,
 } from './swap.style';
 import Amount from './amount';
 import ExchangeRate from './exchangeRate';
@@ -200,9 +201,9 @@ const Swap: React.FC<StateProps> = ({
             ))
           }
         </SwapBalance>
-        <SwapList>
-
-        </SwapList>
+        <SwapListContainer>
+          <SwapList />
+        </SwapListContainer>
       </SwapDetail>
     </Container>
   );

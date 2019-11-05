@@ -93,6 +93,7 @@ export const SwapDetail = styled.div`
   margin-top: 2rem;
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   ${theme.respondTo.lg`
     flex-direction: column;
   `};
@@ -108,6 +109,10 @@ export const SwapBalance = styled(Panel)`
   `};
 `;
 
-export const SwapList = styled(Panel)`
+export const SwapListContainer = styled(Panel)`
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: stretch;
 `;

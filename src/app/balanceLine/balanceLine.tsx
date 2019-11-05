@@ -19,7 +19,6 @@ const Line = styled.div`
 
 export interface OwnProps {
   symbol: string;
-  label?: string;
 }
 
 export interface StateProps {
@@ -32,7 +31,7 @@ type Props = OwnProps & StateProps;
 
 // ----------
 
-const BalanceLine: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, onBalanceQuery }) => {
+const BalanceLine: React.FC<Props> = ({ symbol, balance, isQueryingBalance, onBalanceQuery }) => {
   useEffect(() => {
     onBalanceQuery(symbol);
   }, [onBalanceQuery, symbol]);

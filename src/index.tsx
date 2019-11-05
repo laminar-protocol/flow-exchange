@@ -50,6 +50,7 @@ const link = split(
 const client = new ApolloClient({
   cache,
   link,
+  connectToDevTools: true,
 });
 
 const render = (App: React.ComponentType) => {
