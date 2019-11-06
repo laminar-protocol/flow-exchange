@@ -2,7 +2,7 @@ import { lifecycle } from 'recompose';
 
 interface WithInitProps {
   init(): void;
-  uninit?: () => void;
+  deinit?: () => void;
 }
 
 export const withInit = lifecycle<WithInitProps, {}>({
@@ -10,9 +10,9 @@ export const withInit = lifecycle<WithInitProps, {}>({
     this.props.init();
   },
   componentWillUnmount() {
-    const { uninit } = this.props;
-    if (uninit) {
-      uninit();
+    const { deinit } = this.props;
+    if (deinit) {
+      deinit();
     }
   },
 });

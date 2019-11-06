@@ -12,8 +12,7 @@ const mapStateToProps = ({ margin: { allowance, trading } }: AppState) => {
   return {
     isEnabled: allowanceValue > 0,
     isLoadingAllowance: allowance.loading,
-    isTogglinigTrading: trading.loading,
-    allowance: allowanceValue > 1e10 ? 'MAX' : allowanceValue.toFixed(2),
+    isGranting: trading.loading,
   };
 };
 
@@ -21,10 +20,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   init: () => {
     dispatch(actions.margin.allowance.requested());
   },
-  uninit: () => {
+  deinit: () => {
     dispatch(actions.margin.allowance.cancelled());
   },
-  onToggleTrading: (enable: boolean) => {
+
+  onGrant: (enable: boolean) => {
     dispatch(actions.margin.toggleTrading.requested({ params: enable }));
   },
 });

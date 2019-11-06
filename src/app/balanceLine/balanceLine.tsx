@@ -19,6 +19,7 @@ const Line = styled.div`
 
 export interface OwnProps {
   symbol: string;
+  lite?: boolean;
 }
 
 export interface StateProps {
@@ -31,12 +32,20 @@ type Props = OwnProps & StateProps;
 
 // ----------
 
-const BalanceLine: React.FC<Props> = ({ symbol, balance, isQueryingBalance, onBalanceQuery }) => {
+const BalanceLine: React.FC<Props> = ({ symbol, lite, balance, isQueryingBalance, onBalanceQuery }) => {
   useEffect(() => {
     onBalanceQuery(symbol);
   }, [onBalanceQuery, symbol]);
 
   const { displayName, currencySymbol } = tokens[symbol as TokenSymbol];
+
+  if (lite) {
+    return (
+      <Text weight="bold">
+        { isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} /> }
+      </Text>
+    );
+  }
 
   return (
     <Line>

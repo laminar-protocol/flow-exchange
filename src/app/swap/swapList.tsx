@@ -58,19 +58,16 @@ export interface StateProps {
 // ----------
 
 const SwapList: React.FC<StateProps> = ({ account }) => {
-  const { loading: isLoading, error, data } = useSubscription(listQuery, {
+  const { loading: isLoading, data } = useSubscription(listQuery, {
     variables: {
       user: account,
     },
   });
 
-  console.log(error);
-
   const positions = useMemo(() => data && data.eventEntities.map((event: any) => ({
     ...event,
   })), [data]);
 
-  console.log(positions);
   if (isLoading) {
     return (
       <CenterContainer><Spinner /></CenterContainer>

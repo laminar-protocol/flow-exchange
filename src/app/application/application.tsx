@@ -8,15 +8,22 @@ import GlobalStyle from 'theme/globalStyle';
 
 library.add(fas);
 
-const Component = ({ currentTheme, onInit }) => {
+export  interface StateProps {
+  currentTheme: string,
+  onInit: () =>  void;
+}
+
+const Component: React.FC<StateProps> = ({ currentTheme, onInit }) => {
   useEffect(() => {
     onInit();
   }, [onInit]);
 
   return (
     <ThemeProvider theme={{ mode: currentTheme }}>
-      <GlobalStyle />
-      <Main />
+      <>
+        <GlobalStyle />
+        <Main />
+      </>
     </ThemeProvider>
   );
 };

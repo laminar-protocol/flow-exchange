@@ -7,7 +7,6 @@ import {
   Text, Separator, PrimaryButton,
 } from 'components';
 import BalanceLine from 'app/balanceLine/balanceLine.connect';
-import SwapList from 'app/swapList/swapList.connect';
 
 import {
   Container,
@@ -26,6 +25,7 @@ import {
   SwapListContainer,
 } from './swap.style';
 import Amount from './amount';
+import SwapList from './swapList.connect';
 import ExchangeRate from './exchangeRate';
 
 // ----------
@@ -194,7 +194,7 @@ const Swap: React.FC<StateProps> = ({
       <SwapDetail>
         <SwapBalance>
           <Text size="l">Balances</Text>
-          <Separator />
+          <Separator size={1}/>
           {
             availableSymbols.map(symbol => (
               <BalanceLine symbol={symbol} key={symbol} />

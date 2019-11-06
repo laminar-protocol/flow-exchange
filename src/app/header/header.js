@@ -46,7 +46,7 @@ const Header = () => (
   <HeaderContainer>
     <LogoContainer>
       <Logo src={LaminarLogo} />
-      <LoogText>Exchange</LoogText>
+      <LoogText>Flow Exchange</LoogText>
     </LogoContainer>
   </HeaderContainer>
 );

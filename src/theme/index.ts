@@ -73,6 +73,18 @@ export const errorForegroundColor = theme('mode', {
   dark: 'rgba(255, 0, 0, 1)',
 });
 
+// Button
+export const sellColor = theme('mode', {
+  light: '#c00',
+  dark: 'rgba(255, 0, 0, 1)',
+});
+
+export const buyColor = theme('mode', {
+  light: '#090',
+  dark: 'rgba(0, 128, 0, 1)',
+});
+
+
 // Side bar
 export const sideBarWidth = 300;
 

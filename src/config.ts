@@ -89,16 +89,51 @@ export const tradingPairs = {
   },
 };
 
-export const liquidityPools = {
-  [addresses.pool]: {
-    address: addresses.pool,
-    name: 'Laminar Finance',
+export const tradingSymbols = {
+  EURUSD: {
+    name: 'EURUSD',
+    long: 'l10USDEUR',
+    short: 's10USDEUR',
+    leverage: 10,
+    chartSymbol: 'EURUSD',
+    isJPY: false, // TODO: Find the correct term
+    prefixUSD: false, // TODO: Find the correct term
   },
-  [addresses.pool2]: {
-    address: addresses.pool2,
-    name: 'ACME Finance',
+  USDJPY: {
+    name: 'USDJPY',
+    long: 'l20USDJPY',
+    short: 's20USDJPY',
+    leverage: 20,
+    chartSymbol: 'USDJPY',
+    isJPY: true, // TODO: Find the correct term
+    prefixUSD: true, // TODO: Find the correct term
   },
 };
+
+export type TradingSymbol = keyof typeof tradingSymbols;
+export const isTradingSymbol = (symbol: string): symbol is TradingSymbol => (tradingSymbols as any)[symbol] != null;
+
+
+export const liquidityPools = {
+  POOL1: {
+    key: 'POOL1',
+    address: addresses.pool,
+    name: 'Laminar',
+    availability: 12000, // TODO: Read from contract
+    spread: 0.03, // TODO: Read from contract
+  },
+  POOL2: {
+    key: 'POOL2',
+    address: addresses.pool2,
+    name: 'ACME',
+    availability: 10000, // TODO: Read from contract
+    spread: 0.02, // TODO: Read from contract
+  },
+};
+
+export type LiquidityPool = keyof typeof liquidityPools;
+export const isLiquidityPool = (pool: string): pool is LiquidityPool => (liquidityPools as any)[pool] != null;
+
 
 export const abi = {
   ERC20: ERC20Detailed as any,

@@ -42,7 +42,10 @@ const Component = () => (
             <Route path="/lending">
               <Lending />
             </Route>
-            <Route path="/margin">
+            <Route exact path="/margin">
+              <Redirect to="/margin/POOL1/EURUSD" />
+            </Route>
+            <Route path="/margin/:pool/:tradingSymbol">
               <Margin />
             </Route>
             <Route path="/liquidity">

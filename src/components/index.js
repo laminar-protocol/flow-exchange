@@ -6,6 +6,7 @@ export { default as Flex } from './flex';
 export { default as Separator } from './separator';
 export { default as Text } from './text';
 export { default as Input } from './input';
+export { default as InputNumber } from './inputNumber';
 export { default as Indicator } from './indicator';
 export { default as Modal } from './modal';
 export { default as Panel } from './panel';

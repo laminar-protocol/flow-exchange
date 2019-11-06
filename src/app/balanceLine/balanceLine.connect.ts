@@ -6,7 +6,8 @@ import { getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
 
 import Balance, { OwnProps } from './balanceLine';
 
-const mapStateToProps = ({ token }: AppState, { symbol }: OwnProps) => ({
+const mapStateToProps = ({ token }: AppState, { symbol, lite }: OwnProps) => ({
+  lite,
   balance: getBalance(symbol, token),
   isQueryingBalance: getIsQueryingBalance(symbol, token),
 });
