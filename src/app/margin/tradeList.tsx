@@ -39,6 +39,10 @@ const ListHeader = styled.div`
     text-transform: uppercase;
     width: 12.5%;
   }
+
+  .profit {
+    text-align: right;
+  }
 `;
 
 // ----------
