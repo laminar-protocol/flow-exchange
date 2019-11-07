@@ -145,7 +145,10 @@ export const tradingPairs = {
 
 // TODO: Refactor these
 
-export const findTradingPairByAddress = (address: string) => Object.values(tradingPairs).find((pair) => (pair.address.toLocaleLowerCase() === address.toLocaleLowerCase()));
+export const findTradingPairByAddress = (address: string) => {
+  const pairs = Object.values(tradingPairs);
+  return pairs.find((pair) => (pair.address.toLocaleLowerCase() === address.toLocaleLowerCase()));
+};
 
 export const tradingSymbols = {
   EURUSD: {

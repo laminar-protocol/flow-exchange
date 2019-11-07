@@ -72,9 +72,9 @@ type Props = OwnProps & StateProps;
 
 const OpenTrade: React.FC<Props> = ({
   amount,
-  bidSpread,
-  liquidationFee,
-  liquidityPool,
+  // bidSpread,
+  // liquidationFee,
+  // liquidityPool,
   openPrice,
   pair,
   positionId,
