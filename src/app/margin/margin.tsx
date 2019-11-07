@@ -142,6 +142,8 @@ const TradeControl = styled(Panel)`
 // ----------
 
 interface Props {
+  currentTheme: string;
+
   isEnabled: boolean;
   isLoadingAllowance: boolean;
   isGranting: boolean;
@@ -153,6 +155,7 @@ interface Props {
 // ----------
 
 const Margin: React.FC<Props> = ({
+  currentTheme,
   isEnabled,
   isLoadingAllowance,
   isGranting,
@@ -194,19 +197,6 @@ const Margin: React.FC<Props> = ({
           <SummaryCell>
             <div className="header">
               <Text light>
-                P&amp;L
-              </Text>
-            </div>
-            <div>
-              <Text weight="bold">
-                $0
-              </Text>
-            </div>
-          </SummaryCell>
-
-          <SummaryCell>
-            <div className="header">
-              <Text light>
                 Enable Trading
               </Text>
             </div>
@@ -224,7 +214,7 @@ const Margin: React.FC<Props> = ({
       <MainPanel>
         <MarketPanel>
           <Chart>
-            <ChartWidget symbol={tradingSymbol.chartSymbol} />
+            <ChartWidget symbol={tradingSymbol.chartSymbol} currentTheme={currentTheme} />
           </Chart>
           <MarketList>
             <SymbolList />

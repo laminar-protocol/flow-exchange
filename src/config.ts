@@ -157,9 +157,8 @@ export const tradingSymbols = {
     short: 's10USDEUR',
     leverage: 10,
     chartSymbol: 'EURUSD',
-    isJPY: false, // TODO: Find the correct term
-    prefixUSD: false, // TODO: Find the correct term
-    sp: 4,
+    inverted: false, // TODO: Find the correct term
+    precision: 4,
   },
   USDJPY: {
     name: 'USDJPY',
@@ -167,9 +166,8 @@ export const tradingSymbols = {
     short: 's20USDJPY',
     leverage: 20,
     chartSymbol: 'USDJPY',
-    isJPY: true, // TODO: Find the correct term
-    prefixUSD: true, // TODO: Find the correct term
-    sp: 2,
+    inverted: true, // TODO: Find the correct term
+    precision: 2,
   },
   XAUUSD: {
     name: 'XAUUSD',
@@ -177,9 +175,8 @@ export const tradingSymbols = {
     short: 's20USDXAU',
     leverage: 20,
     chartSymbol: 'XAUUSD',
-    isJPY: false, // TODO: Find the correct term
-    prefixUSD: false, // TODO: Find the correct term
-    sp: 4,
+    inverted: false, // TODO: Find the correct term
+    precision: 2,
   },
 };
 

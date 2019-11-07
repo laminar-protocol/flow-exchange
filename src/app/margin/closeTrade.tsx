@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { FormatBalance, FormatPrice } from 'components/format';
-
+import { FormatProfit, FormatRate } from 'components/format';
 import { findTradingPairByAddress, findTradingSybmolByPairAddress } from 'config';
 import * as theme from 'theme';
 
+import { calculateRate } from './rate';
 // ----------
 // Style
 // ----------
@@ -31,6 +31,7 @@ const ListRow = styled.div`
 
   .action {
     text-align: right;
+    text-transform: uppercase;
   }
 
   .openPrice, .amount {
@@ -49,6 +50,7 @@ export interface Props {
   openPrice: string;
   pair: string;
   closePrice: string;
+  closeOwnerAmount: string;
 }
 
 // ----------
@@ -57,6 +59,7 @@ const OpenTrade: React.FC<Props> = ({
   amount,
   openPrice,
   closePrice,
+  closeOwnerAmount,
   pair,
 }) => {
   // TODO: Fix type
@@ -64,6 +67,9 @@ const OpenTrade: React.FC<Props> = ({
   const symbolInfo: any = findTradingSybmolByPairAddress(pair);
 
   const { symbol: tradingSymbol, direction } = symbolInfo;
+  const openRate = calculateRate(0, tradingSymbol.inverted, direction, Number(openPrice));
+  const closeRate = calculateRate(0, tradingSymbol.inverted, direction, Number(closePrice));
+  const profit = Number(closeOwnerAmount) - Number(amount);
 
   return (
     <Container>
@@ -81,19 +87,19 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column amount">
-          <FormatBalance value={amount} />
+          <FormatProfit value={amount} />
         </div>
 
         <div className="column openPrice">
-          <FormatPrice value={openPrice} options={{ mantissa: tradingSymbol.sp }} />
+          <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
         </div>
 
         <div className="column closePrice">
-          <FormatPrice value={closePrice} options={{ mantissa: tradingSymbol.sp }} />
+          <FormatRate value={closeRate} options={{ mantissa: tradingSymbol.precision }} />
         </div>
 
         <div className="column profit">
-          &nbsp;
+          <FormatProfit value={profit} />
         </div>
 
         <div className="column action">

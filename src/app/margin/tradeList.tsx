@@ -46,7 +46,7 @@ const ListHeader = styled.div`
 // ----------
 const positionQuery = gql`
   subscription marginPositionEntities($owner: Bytes!) {
-    marginPositionEntities(orderBy: positionId, orderDirection: desc, where: { owner: $owner }) {
+    marginPositionEntities(first: 25, orderBy: openTime, orderDirection: desc, where: { owner: $owner }) {
       positionId
       liquidityPool
       amount
@@ -56,6 +56,7 @@ const positionQuery = gql`
       closePrice
       liquidator
       closeOwnerAmount
+      openTime
       pair {
         id
       }
@@ -158,6 +159,7 @@ const TradeList: React.FC<Props> = ({
               closePrice={position.closePrice}
               amount={position.amount}
               pair={position.pair.id}
+              closeOwnerAmount={position.closeOwnerAmount}
             />
           );
         })

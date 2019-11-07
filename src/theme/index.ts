@@ -68,6 +68,12 @@ export const whiteForegroundColor = theme('mode', {
   dark: 'rgba(255, 255, 255, 0.05)',
 });
 
+export const alwaysWhiteForegroundColor = theme('mode', {
+  light: '#fff',
+  dark: 'rgba(255, 255, 255, 0.65)',
+});
+
+
 export const errorForegroundColor = theme('mode', {
   light: '#c00',
   dark: 'rgba(255, 0, 0, 1)',
@@ -76,12 +82,12 @@ export const errorForegroundColor = theme('mode', {
 // Button
 export const sellColor = theme('mode', {
   light: '#c00',
-  dark: 'rgba(255, 0, 0, 1)',
+  dark: 'rgba(255, 0, 0, 0.5)',
 });
 
 export const buyColor = theme('mode', {
   light: '#090',
-  dark: 'rgba(0, 128, 0, 1)',
+  dark: 'rgba(0, 128, 0, 0.5)',
 });
 
 
