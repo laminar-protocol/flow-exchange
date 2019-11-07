@@ -1,5 +1,6 @@
 export { default as Button } from './button';
 export { default as PrimaryButton } from './primaryButton';
+export { default as LightButton } from './lightButton';
 export { default as SolidButton } from './solidButton';
 export { default as Switch } from './switch';
 export { default as Flex } from './flex';

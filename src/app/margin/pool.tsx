@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
+import { liquidityPools } from 'config';
 import { FormatBalance } from 'components/format';
 import * as theme from 'theme';
 

@@ -108,6 +108,8 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
         <Text>{tradingSymbol.name}</Text>
         <Text weight="bold">{tradingPair.leverage}×</Text>
       </TradeLine>
+      <Separator size={1} />
+
       <TradeLine>
         <Input
           disabled={!isEnabled || isOpening}
@@ -124,8 +126,6 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
           }}
         />
       </TradeLine>
-
-      <Separator size={1} />
 
       <TradeButton>
         <BuyButton
@@ -146,10 +146,10 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
 
       <TradePrice>
         <Text weight="bold">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'bid') }
+          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'ask') }
         </Text>
         <Text weight="bold">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'ask') }
+          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'bid') }
         </Text>
       </TradePrice>
     </Container>

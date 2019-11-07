@@ -5315,7 +5315,7 @@ flatten@^1.0.2:
 
 flow-protocol@laminar-protocol/flow-protocol-ethereum:
   version "0.0.2"
-  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/0747312b5bc3d2381aa192c0b2cb44c91aef329e"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/d20c1cb8c26b6c632790a4f12b7900824bd83a9e"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"

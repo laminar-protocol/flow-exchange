@@ -3,16 +3,17 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import {
-  Text, Panel, Switch, Separator, Input,
+  Text, Panel, Switch,
 } from 'components';
 import * as theme from 'theme';
-import { isTradingSymbol, tradingSymbols } from 'config';
+import { tradingSymbols } from 'config';
 
 import BalanceLine from 'app/balanceLine/balanceLine.connect';
 import ChartWidget from 'app/chartWidget/chartWidget';
 
 import SymbolList from './symbolList';
 import Trade from './trade.connect';
+import TradeList from './tradeList.connect';
 
 const Container = styled.div`
   display: flex;
@@ -111,23 +112,26 @@ const MarketList = styled.div`
 const TradePanel = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 
   ${theme.respondTo.lg`
     flex-direction: column-reverse;
   `};
-
 `;
 
-const TradeList = styled(Panel)`
+const TradeView = styled(Panel)`
   flex: 1;
   align-self: stretch;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TradeControl = styled(Panel)`
   width: 30%;
   margin-left: 2rem;
   ${theme.respondTo.lg`
-    width: auto;
+    width: 100%;
     margin-bottom: 2rem;
     margin-left: 0;
   `};
@@ -227,9 +231,9 @@ const Margin: React.FC<Props> = ({
           </MarketList>
         </MarketPanel>
         <TradePanel>
-          <TradeList>
-
-          </TradeList>
+          <TradeView>
+            <TradeList />
+          </TradeView>
           <TradeControl>
             <Trade symbol={symbol} pool={pool} />
           </TradeControl>

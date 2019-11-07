@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import {
   Separator, Flex, Switch,
@@ -43,6 +44,20 @@ const LoogText = styled.div`
 
 const Menu = styled.div``;
 
+const AdjustIcon = styled(FontAwesomeIcon)`
+  font-size: ${theme.textNormalSize};
+  color: ${theme.lightForegroundColor};
+`;
+
+const ThemeSwitch = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  ${AdjustIcon} {
+    margin-left: 1rem;
+  }
+`;
+
 // ----------
 // Interface
 // ----------
@@ -78,9 +93,10 @@ const Component: React.FC<StateProps> = ({
         <div>
           <NetworkStatus />
         </div>
-        <div>
-          <Switch onChange={(value) => { onChangeTheme(currentTheme); }} checked={currentTheme === 'dark'} />
-        </div>
+        <ThemeSwitch>
+          <Switch onChange={() => { onChangeTheme(currentTheme); }} checked={currentTheme === 'dark'} />
+          <AdjustIcon icon="adjust" />
+        </ThemeSwitch>
       </Flex>
 
     </div>

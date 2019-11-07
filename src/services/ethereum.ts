@@ -24,6 +24,8 @@ class Ethereum {
     DAI: Contract;
     fEUR: Contract;
     fJPY: Contract;
+    fXAU: Contract;
+    fAAPL: Contract;
   }
 
   public readonly marginTradingPairs: Record<string, Contract> = {};
@@ -53,11 +55,15 @@ class Ethereum {
     const daiContract = new this.web3.eth.Contract(abi.ERC20, addresses.baseToken);
     const eurContract = new this.web3.eth.Contract(abi.ERC20, addresses.fEUR);
     const jpyContract = new this.web3.eth.Contract(abi.ERC20, addresses.fJPY);
+    const appleContract = new this.web3.eth.Contract(abi.ERC20, addresses.fAAPL);
+    const xauContract = new this.web3.eth.Contract(abi.ERC20, addresses.fXAU);
 
     this.tokens = {
       DAI: daiContract,
       fEUR: eurContract,
       fJPY: jpyContract,
+      fAAPL: appleContract,
+      fXAU: xauContract,
     };
 
     this.marginTradingPairs = mapObjIndexed((pair) => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address), tradingPairs);

@@ -45,7 +45,25 @@ export const tokens = {
     icon: 'yen-sign' as IconProp,
     isBaseToken: false,
   },
+  fXAU: {
+    name: 'XAU',
+    displayName: 'Gold',
+    address: addresses.fXAU,
+    currencySymbol: '',
+    icon: 'cubes' as IconProp,
+    isBaseToken: false,
+  },
+  fAAPL: {
+    name: 'AAPL',
+    displayName: 'Apple',
+    address: addresses.fAAPL,
+    currencySymbol: '',
+    icon: 'sticky-note' as IconProp,
+    isBaseToken: false,
+  },
 };
+
+// TODO: Refactor these
 
 export type TokenSymbol = keyof typeof tokens;
 
@@ -60,6 +78,7 @@ export const isBaseTokenSymbol = (symbol: string): symbol is TokenSymbol => {
 
 export const tradingPairs = {
   l10USDEUR: {
+    symbol: 'l10USDEUR',
     base: 'DAI' as TokenSymbol,
     quote: 'fEUR' as TokenSymbol,
     leverage: 10,
@@ -67,6 +86,7 @@ export const tradingPairs = {
     name: 'USDEUR 10× Long',
   },
   s10USDEUR: {
+    symbol: 's10USDEUR',
     base: 'DAI' as TokenSymbol,
     quote: 'fEUR' as TokenSymbol,
     leverage: -10,
@@ -74,6 +94,7 @@ export const tradingPairs = {
     name: 'USDEUR 10× Short',
   },
   l20USDJPY: {
+    symbol: 'l20USDJPY',
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
@@ -81,13 +102,50 @@ export const tradingPairs = {
     name: 'USDJPY 20× Long',
   },
   s20USDJPY: {
+    symbol: 's20USDJPY',
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
     leverage: 20,
     address: addresses.s20USDJPY,
     name: 'USDJPY 20× Short',
   },
+  l20USDXAU: {
+    symbol: 'l20USDXAU',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fXAU' as TokenSymbol,
+    leverage: 20,
+    address: addresses.l20USDXAU,
+    name: 'XAUUSD 20× Long',
+  },
+  s20USDXAU: {
+    symbol: 's20USDXAU',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fXAU' as TokenSymbol,
+    leverage: 20,
+    address: addresses.s20USDXAU,
+    name: 'XAUUSD 20× Short',
+  },
+  l5USDAPPL: {
+    symbol: 'l5USDAPPL',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fAAPL' as TokenSymbol,
+    leverage: 5,
+    address: addresses.l5USDAPPL,
+    name: 'AAPL 20× Long',
+  },
+  s5USDAPPL: {
+    symbol: 's5USDAPPL',
+    base: 'DAI' as TokenSymbol,
+    quote: 'fAAPL' as TokenSymbol,
+    leverage: 5,
+    address: addresses.s5USDAPPL,
+    name: 'AAPL 20× Short',
+  },
 };
+
+// TODO: Refactor these
+
+export const findTradingPairByAddress = (address: string) => Object.values(tradingPairs).find((pair) => (pair.address.toLocaleLowerCase() === address.toLocaleLowerCase()));
 
 export const tradingSymbols = {
   EURUSD: {
@@ -98,6 +156,7 @@ export const tradingSymbols = {
     chartSymbol: 'EURUSD',
     isJPY: false, // TODO: Find the correct term
     prefixUSD: false, // TODO: Find the correct term
+    sp: 4,
   },
   USDJPY: {
     name: 'USDJPY',
@@ -107,12 +166,42 @@ export const tradingSymbols = {
     chartSymbol: 'USDJPY',
     isJPY: true, // TODO: Find the correct term
     prefixUSD: true, // TODO: Find the correct term
+    sp: 2,
+  },
+  XAUUSD: {
+    name: 'XAUUSD',
+    long: 'l20USDXAU',
+    short: 's20USDXAU',
+    leverage: 20,
+    chartSymbol: 'XAUUSD',
+    isJPY: false, // TODO: Find the correct term
+    prefixUSD: false, // TODO: Find the correct term
+    sp: 4,
   },
 };
 
+// TODO: Refactor these
+
 export type TradingSymbol = keyof typeof tradingSymbols;
 export const isTradingSymbol = (symbol: string): symbol is TradingSymbol => (tradingSymbols as any)[symbol] != null;
+export const findTradingSybmolByPairAddress = (address: string) => {
+  const pair = findTradingPairByAddress(address);
+  if (!pair) {
+    return null;
+  }
 
+  const symbols = Object.values(tradingSymbols);
+  const symbol = symbols.find((s) => (s.long === pair.symbol) || (s.short === pair.symbol));
+
+  if (symbol) {
+    return {
+      symbol,
+      direction: (symbol.long === pair.symbol) ? 'long' : 'short',
+    };
+  }
+
+  return null;
+};
 
 export const liquidityPools = {
   POOL1: {
@@ -120,14 +209,14 @@ export const liquidityPools = {
     address: addresses.pool,
     name: 'Laminar',
     availability: 12000, // TODO: Read from contract
-    spread: 0.03, // TODO: Read from contract
+    spread: 0.003, // TODO: Read from contract
   },
   POOL2: {
     key: 'POOL2',
     address: addresses.pool2,
     name: 'ACME',
     availability: 10000, // TODO: Read from contract
-    spread: 0.02, // TODO: Read from contract
+    spread: 0.0031, // TODO: Read from contract
   },
 };
 
