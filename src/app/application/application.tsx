@@ -8,9 +8,9 @@ import GlobalStyle from 'theme/globalStyle';
 
 library.add(fas);
 
-export  interface StateProps {
-  currentTheme: string,
-  onInit: () =>  void;
+export interface StateProps {
+  currentTheme: string;
+  onInit: () => void;
 }
 
 const Component: React.FC<StateProps> = ({ currentTheme, onInit }) => {

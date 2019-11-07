@@ -194,7 +194,7 @@ const Swap: React.FC<StateProps> = ({
       <SwapDetail>
         <SwapBalance>
           <Text size="l">Balances</Text>
-          <Separator size={1}/>
+          <Separator size={1} />
           {
             availableSymbols.map(symbol => (
               <BalanceLine symbol={symbol} key={symbol} />

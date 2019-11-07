@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import types from 'types';
 import { UINT256_MAX, UINT256_MIN } from 'helpers/unitHelper';
 import { AppState } from 'reducers';
-import  { getAuthorization, getIsQueryingAuthorization, getIsGranting } from 'reducers/token.reducer';
+import { getAuthorization, getIsQueryingAuthorization, getIsGranting } from 'reducers/token.reducer';
 
 import GrantSwitch, { OwnProps } from './grantSwitch';
 

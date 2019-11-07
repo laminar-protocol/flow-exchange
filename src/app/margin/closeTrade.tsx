@@ -93,8 +93,9 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column profit">
-
+          &nbsp;
         </div>
+
         <div className="column action">
             Closed
         </div>
