@@ -72,7 +72,6 @@ const Option: React.FC<any> = ({ innerProps, data }) => (
   </CustomOption>
 );
 
-// Custom Symbol Display
 const symbolIcon = (symbol: string): IconProp => {
   if (isTokenSymbol(symbol)) {
     return tokens[symbol].icon;

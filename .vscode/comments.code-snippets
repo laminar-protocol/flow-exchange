@@ -1,0 +1,7 @@
+{
+  "Comment": {
+    "prefix": ["comment"],
+    "body": ["// ----------", "// $0", "// ----------"],
+    "description": "Comment blocks."
+  }
+}

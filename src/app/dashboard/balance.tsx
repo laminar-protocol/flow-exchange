@@ -4,16 +4,24 @@ import { BalanceCell } from 'components';
 import { fromWei } from 'helpers/unitHelper';
 import { tokens } from 'config';
 
+// ----------
+// Interface
+// ----------
+
 export interface OwnProps {
   symbol: string;
   label?: string;
 }
 
-interface Props extends OwnProps {
+export interface StateProps {
   balance: string;
   isQueryingBalance: boolean;
   onBalanceQuery: (symbol: string) => void;
 }
+
+type Props = OwnProps & StateProps;
+
+// ----------
 
 const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, onBalanceQuery }) => {
   useEffect(() => {

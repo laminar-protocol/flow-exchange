@@ -3,12 +3,11 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, Spinner } from 'components';
-import {
-  getAuthorization,
-  getIsQueryingAuthorization,
-  getIsGranting,
-} from 'reducers/token.reducer';
 import * as theme from 'theme';
+
+// ----------
+// Styles
+// ----------
 
 const Container = styled.div`
   display: flex !important;
@@ -40,32 +39,40 @@ const LockSpinner = styled(Spinner)`
   }
 `;
 
+// ----------
+// Interface
+// ----------
+
 export interface OwnProps {
   symbol: string;
   visibleGranted?: boolean;
 }
 
-interface Props extends OwnProps {
-  token: any;
-  className?: string;
+export interface StateProps {
+  isQueryingAuthorization: boolean;
+  isGranting: boolean;
+  granted: boolean;
+
   onGrant: (symbol: string, granted: boolean) => void;
   onQuery: (symbol: string) => void;
+
+  className?: string;
 }
 
+type Props = OwnProps & StateProps;
+
+// ----------
+
 const GrantSwitch: React.FC<Props> = ({
-  token,
   symbol,
+  isQueryingAuthorization,
+  isGranting,
+  granted,
   className,
   visibleGranted,
   onGrant,
   onQuery,
 }) => {
-  const authorization = getAuthorization(symbol, token);
-  const isQueryingAuthorization = getIsQueryingAuthorization(symbol, token);
-  const isGranting = getIsGranting(symbol, token);
-
-  const granted = Boolean(authorization);
-
   const loading = isGranting || isQueryingAuthorization;
 
   useEffect(() => {

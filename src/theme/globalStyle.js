@@ -20,6 +20,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
   }
 
+  a {
+    color: ${theme.foregroundColor} !important;
+  }
+
   .ant-modal-mask {
     background-color: rgba(0, 0, 0, 0.25) !important;
   }

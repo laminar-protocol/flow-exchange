@@ -1424,7 +1424,7 @@
   resolved "https://registry.yarnpkg.com/@types/eslint-visitor-keys/-/eslint-visitor-keys-1.0.0.tgz#1ee30d79544ca84d68d4b3cdb0af4f205663dd2d"
   integrity sha512-OCutwjDZ4aFS6PB1UZ988C4YgwlBHJd6wCeQqaLdmadZ/7e+w79+hbMUFC1QXDNCmdyoRfAFdm0RypzwR+Qpag==
 
-"@types/history@^4.7.3":
+"@types/history@*", "@types/history@^4.7.3":
   version "4.7.3"
   resolved "https://registry.yarnpkg.com/@types/history/-/history-4.7.3.tgz#856c99cdc1551d22c22b18b5402719affec9839a"
   integrity sha512-cS5owqtwzLN5kY+l+KgKdRJ/Cee8tlmQoGQuIE9tWnSmS3JMKzmxo2HIAk2wODMifGwO20d62xZQLYz+RLfXmw==
@@ -1536,6 +1536,23 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
+"@types/react-router-dom@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.2.tgz#853f229f1f297513c0be84f7c914a08b778cfdf5"
+  integrity sha512-kRx8hoBflE4Dp7uus+j/0uMHR5uGTAvQtc4A3vOTWKS+epe0leCuxEx7HNT7XGUd1lH53/moWM51MV2YUyhzAg==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.2.tgz#41e5e6aa333a7b9a2bfdac753c04e1ca4b3e0d21"
+  integrity sha512-euC3SiwDg3NcjFdNmFL8uVuAFTpZJm0WMFUw+4eXMUnxa7M9RGFEG0szt0z+/Zgk4G2k9JBFhaEnY64RBiFmuw==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-select@^3.0.8":
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-3.0.8.tgz#b824a12d438dd493c30ffff49a805f797602a837"
@@ -1581,6 +1598,13 @@
   integrity sha512-kEvD7XMguXgG7jJJS//cE1QTbkFj2qDtIPAg1FvXxE8D6jD1C0WabJjT7cVitC7TK0N5I3yp2955hqNFFZV0wg==
   dependencies:
     "@types/react" "*"
+
+"@types/round-to@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/round-to/-/round-to-4.0.0.tgz#87361cf2bc72a2b8bd802b7cf56237421eb7c1f7"
+  integrity sha512-tQIYDCzWSeXAncLFzYYX5aIle5qAWYTeHQSgdzjZVI4PB5dhzBtXUOrtHSMp5dKkQZ8UEKZTGJZkZFy3dYH/qA==
+  dependencies:
+    round-to "*"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -5291,7 +5315,7 @@ flatten@^1.0.2:
 
 flow-protocol@laminar-protocol/flow-protocol-ethereum:
   version "0.0.2"
-  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/0747312b5bc3d2381aa192c0b2cb44c91aef329e"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/d20c1cb8c26b6c632790a4f12b7900824bd83a9e"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
@@ -10897,6 +10921,11 @@ rmc-feedback@^2.0.0:
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.5"
+
+round-to@*, round-to@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/round-to/-/round-to-4.0.0.tgz#7576de9f721e58bd8116757fc3ba10f44d5b3886"
+  integrity sha512-2HD3qSm7FGv1uBQywsK43YtSeXQhh5CUscaFGsvbr38oZzfLqoPQAPw2ngvpXKruAEsn7WuPXdq1mrUSkR70MQ==
 
 rsvp@^4.8.4:
   version "4.8.5"

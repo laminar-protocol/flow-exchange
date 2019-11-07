@@ -1,183 +1,128 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  Text, Separator, Panel, PrimaryButton, Spinner, NumberFormat,
-} from 'components';
-import * as theme from 'theme';
-import { tokens, isTokenSymbol } from 'config';
+import { TokenSymbol } from 'config';
 import { usePriceRate } from 'hooks/useOraclePrice';
+import {
+  Text, Separator, PrimaryButton,
+} from 'components';
+import BalanceLine from 'app/balanceLine/balanceLine.connect';
 
-import CurrencyInput from './currencyInput';
+import {
+  Container,
+  SwapContainer,
+  Entry,
+  Currency,
+  Label,
+  Divider,
+  ExchangeIcon,
+  Validation,
+  ValidationText,
+  ActionBar,
+  Detail,
+  SwapDetail,
+  SwapBalance,
+  SwapListContainer,
+} from './swap.style';
+import Amount from './amount';
+import SwapList from './swapList.connect';
+import ExchangeRate from './exchangeRate';
 
-const Container = styled.div`
-`;
+// ----------
+// Interface
+// ----------
 
-const SwapContainer = styled(Panel)`
-`;
+export interface StateProps {
+  askSpread?: number;
+  bidSpread?: number;
 
-const Currency = styled.div`
-  flex: 1;
-  align-self: stretch;
-`;
+  availableSymbols: TokenSymbol[];
+  availableFromSymbols: TokenSymbol[];
+  availableToSymbols: TokenSymbol[];
 
-const Label = styled.div`
-  height: 1.5rem;
-`;
+  fromSymbol: TokenSymbol;
+  toSymbol: TokenSymbol;
+  fromAmount?: string;
+  toAmount?: string;
 
-const Validation = styled.div`
-  height: 1.5rem;
-  display: flex;
-  align-items: flex-end;
-`;
+  isSwapping: boolean;
+  isValid: boolean;
+  isRedeem: boolean;
 
-const ValidationText = styled(Text)`
-  color: ${theme.errorForegroundColor};
-`;
+  isLoadingSpread: boolean;
 
-const Entry = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  ${theme.respondTo.lg`
-    flex-direction: column;
-  `};
-`;
+  onFromSymbolChange: (symbol: string) => void;
+  onToSymbolChange: (symbol: string) => void;
+  onFromAmountChange: (amount: string, rate?: number, spread?: number) => void;
+  onToAmountChange: (amount: string, rate?: number, spread?: number) => void;
+  onSwapSymbol: (fromSymbol: string, toSymbol: string, fromAmount?: string, toAmount?: string) => void;
+  onSwap: (isRedeem: boolean) => void;
+  onFetchLiquidityPoolSpread: (otherSymbol: string) => void;
+}
 
-const Divider = styled.div`
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-  width: 6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ${theme.respondTo.lg`
-    margin-top: 0rem;
-    margin-bottom: 0rem;
-  `};
-`;
+// ----------
 
-const ExchangeIcon = styled.div`
-  color: ${theme.lightForegroundColor};
-  font-size: 1.75rem;
-  height: 3rem;
-  width: 3rem;
-  line-height: 3rem;
-  text-align: center;
-  border-radius: 0.5rem;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 0 0 0 1px ${theme.borderColor};
-      .normalIcon {
-        display: none;
-      }
-      .swapIcon {
-        display: inline;
-      }
-  }
-  &:active {
-    box-shadow: 0 0 0 1px ${theme.darkBorderColor};
-  }
-  .swapIcon {
-    display: none;
-  }
-`;
-
-const ActionBar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Detail = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-transform: uppercase;
-`;
-
-const symbolName = (symbol: string) => {
-  if (isTokenSymbol(symbol)) {
-    return tokens[symbol].name;
-  }
-  return symbol;
-};
-
-const Swap: React.FC = ({
-  swap,
-  spread,
+const Swap: React.FC<StateProps> = ({
+  askSpread,
+  bidSpread,
+  availableSymbols,
+  availableFromSymbols,
+  availableToSymbols,
+  fromSymbol,
+  toSymbol,
+  fromAmount,
+  toAmount,
+  isSwapping,
+  isValid,
+  isRedeem,
+  isLoadingSpread,
   onFromSymbolChange,
   onToSymbolChange,
   onFromAmountChange,
   onToAmountChange,
-  onSwap,
   onSwapSymbol,
-  fetchLiquidityPoolSpread,
-}: any) => {
-  const availableSymbols = Object.keys(tokens);
+  onSwap,
+  onFetchLiquidityPoolSpread,
+}) => {
+  // ----------
+  // State
+  // ----------
+  const isEnabled = isValid && !isSwapping;
+  let spread: number | undefined;
+  if (bidSpread && askSpread) {
+    spread = isRedeem ? bidSpread : askSpread;
+  }
+
+  // ----------
+  // Hooks
+  // ----------
   const {
-    fromSymbol,
-    toSymbol,
-    isValid,
-    isRedeem,
-    isSwapping,
-    validationErrors,
-    fromAmount,
-    toAmount,
-  } = swap;
-
-  const { loading, data: rate } = usePriceRate(fromSymbol, toSymbol);
-
-  useEffect(
-    () =>
-      fetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
-    [fetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
-  );
+    loading: isLoadingRate,
+    data: rate,
+  } = usePriceRate(fromSymbol, toSymbol);
 
   useEffect(
     () => {
-      if (fromAmount) {
-        onFromAmountChange(fromAmount, rate);
+      if (fromAmount && toAmount === undefined) {
+        onFromAmountChange(fromAmount, rate, spread);
+      }
+
+      if (toAmount && fromAmount === undefined) {
+        onToAmountChange(toAmount, rate, spread);
       }
     },
-    [onFromAmountChange, fromAmount, rate],
+    [onFromAmountChange, onToAmountChange, fromAmount, toAmount, spread, rate],
   );
 
+  // ----------
+  // Effects
+  // ----------
   useEffect(
-    () => {
-      if (toAmount && !fromAmount) {
-        onToAmountChange(toAmount, rate);
-      }
-    },
-    [onToAmountChange, fromAmount, toAmount, rate],
+    () => onFetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
+    [onFetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
   );
 
-  const swapEnabled = isValid;
-  const isLoading = loading || spread.loading;
-
-  const askSpread = spread.value && spread.value.ask;
-  const bidSpread = spread.value && spread.value.bid;
-
-  // Function
-  const renderExchangeRate = () => {
-    if (rate == null || askSpread == null || bidSpread == null) {
-      return null;
-    }
-    const adjuestment = isRedeem ? 1 - bidSpread : 1 - askSpread;
-    const finalRate = rate * adjuestment;
-
-    return (
-      <Text light>
-        <strong>1</strong>
-        &nbsp;{symbolName(fromSymbol)}
-        &nbsp;=&nbsp;
-        <strong><NumberFormat value={finalRate} noPrefix /></strong>
-        &nbsp;{symbolName(toSymbol)}
-      </Text>
-    );
-  };
+  const isLoading = isLoadingSpread || isLoadingRate;
 
   return (
     <Container>
@@ -189,20 +134,17 @@ const Swap: React.FC = ({
             <Label>
               <Text weight="bold" size="s" light>Send</Text>
             </Label>
-            <CurrencyInput
-              symbols={availableSymbols}
+            <Amount
+              symbols={availableFromSymbols}
               selectedSymbol={fromSymbol}
-              disabledSymbol={toSymbol}
               onCurrencyChange={onFromSymbolChange}
-              onAmountChange={(x) => onFromAmountChange(x, rate)}
+              onAmountChange={(x) => onFromAmountChange(x, rate, spread)}
               disabled={isSwapping}
-              requireAuthorization
               value={fromAmount}
+              requireAuthorization={!isRedeem}
             />
             <Validation>
-              <ValidationText size="s">
-                {validationErrors.fromAmount}
-              </ValidationText>
+              <ValidationText size="s" />
             </Validation>
           </Currency>
           <Divider>
@@ -215,38 +157,54 @@ const Swap: React.FC = ({
             <Label>
               <Text weight="bold" size="s" light>Recieve</Text>
             </Label>
-            <CurrencyInput
-              symbols={availableSymbols}
+            <Amount
+              symbols={availableToSymbols}
               selectedSymbol={toSymbol}
-              disabledSymbol={fromSymbol}
               onCurrencyChange={onToSymbolChange}
-              onAmountChange={(x) => onToAmountChange(x, rate)}
+              onAmountChange={(x) => onToAmountChange(x, rate, spread)}
               disabled={isSwapping}
               value={toAmount}
             />
             <Validation>
-              <ValidationText size="s">
-                {validationErrors.toAmount}
-              </ValidationText>
+              <ValidationText size="s" />
             </Validation>
           </Currency>
         </Entry>
         <Separator />
         <ActionBar>
           <Detail>
-            {isLoading && <Spinner loading={isLoading} /> }
-            {!isLoading && renderExchangeRate() }
+            <ExchangeRate
+              isLoading={isLoading}
+              spread={spread}
+              rate={rate}
+              fromSymbol={fromSymbol}
+              toSymbol={toSymbol}
+            />
           </Detail>
           <PrimaryButton
             size="large"
             loading={isSwapping}
             onClick={() => { onSwap(isRedeem); }}
-            disabled={!swapEnabled}
+            disabled={!isEnabled}
           >
             Exchange
           </PrimaryButton>
         </ActionBar>
       </SwapContainer>
+      <SwapDetail>
+        <SwapBalance>
+          <Text size="l">Balances</Text>
+          <Separator size={1}/>
+          {
+            availableSymbols.map(symbol => (
+              <BalanceLine symbol={symbol} key={symbol} />
+            ))
+          }
+        </SwapBalance>
+        <SwapListContainer>
+          <SwapList />
+        </SwapListContainer>
+      </SwapDetail>
     </Container>
   );
 };

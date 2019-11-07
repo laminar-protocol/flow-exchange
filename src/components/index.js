@@ -1,17 +1,20 @@
 export { default as Button } from './button';
 export { default as PrimaryButton } from './primaryButton';
+export { default as LightButton } from './lightButton';
 export { default as SolidButton } from './solidButton';
 export { default as Switch } from './switch';
 export { default as Flex } from './flex';
 export { default as Separator } from './separator';
 export { default as Text } from './text';
 export { default as Input } from './input';
+export { default as InputNumber } from './inputNumber';
 export { default as Indicator } from './indicator';
 export { default as Modal } from './modal';
 export { default as Panel } from './panel';
 export { default as TextCell } from './textCell';
 export { default as Spinner } from './spinner';
 export { default as NumberFormat } from './numberFormat';
+export { FormatBalance } from './format';
 export { default as CurrencySelect } from './currencySelect';
 export { default as BalanceCell } from './balanceCell';
 
