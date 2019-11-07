@@ -6,9 +6,10 @@ import {
 } from 'components';
 import { usePriceRate } from 'hooks/useOraclePrice';
 import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
+import { FormatRate } from 'components/format';
 import * as theme from 'theme';
 
-import { formatRate } from './format';
+import { calculateRate } from './rate';
 
 const Container = styled.div``;
 
@@ -61,6 +62,7 @@ const SellButton = styled(SolidButton)`
   &.ant-btn:active
   {
     background-color: ${theme.sellColor};
+    color: ${theme.alwaysWhiteForegroundColor};
   }
 `;
 
@@ -71,6 +73,7 @@ const BuyButton = styled(SolidButton)`
   &.ant-btn:active
   {
     background-color: ${theme.buyColor};
+    color: ${theme.alwaysWhiteForegroundColor};
   }
 `;
 
@@ -99,7 +102,7 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
   const liquidityPool = (liquidityPools as any)[pool];
   const tradingPair = (tradingPairs as any)[tradingSymbol.long];
 
-  const { loading, data } = usePriceRate(tradingPair.quote, tradingPair.base);
+  const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
   const [amount, setAmount] = useState(20 as number | undefined);
 
   return (
@@ -146,10 +149,16 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
 
       <TradePrice>
         <Text weight="bold">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'ask') }
+          <FormatRate
+            value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'ask', rate)}
+            options={{ mantissa: tradingSymbol.precision }}
+          />
         </Text>
         <Text weight="bold">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'bid') }
+          <FormatRate
+            value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'bid', rate)}
+            options={{ mantissa: tradingSymbol.precision }}
+          />
         </Text>
       </TradePrice>
     </Container>

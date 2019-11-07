@@ -25,13 +25,14 @@ const Widget = styled.div`
   }
 `;
 
-const loadChart = (symbol) => {
+const loadChart = (symbol, currentTheme) => {
+  const theme = (currentTheme === 'dark') ? 'Dark' : 'Light'
   new TradingView.widget({
     "autosize": true,
     "symbol": symbol,
     "interval": "D",
     "timezone": "Etc/UTC",
-    "theme": "Light",
+    "theme": currentTheme,
     "style": "1",
     "locale": "en",
     "toolbar_bg": "#f1f3f6",
@@ -43,10 +44,11 @@ const loadChart = (symbol) => {
 
 const ChartWidget = ({
   symbol,
+  currentTheme,
 }) => {
   useEffect(() => {
-    loadChart(symbol);
-  }, [symbol]);
+    loadChart(symbol, currentTheme);
+  }, [symbol, currentTheme]);
 
   return (
     <Widget>

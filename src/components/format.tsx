@@ -1,5 +1,4 @@
 import React from 'react';
-
 import numbro from 'numbro';
 
 const balanceFormatOptions = {
@@ -14,7 +13,6 @@ const profitFormatOptions = {
   thousandSeparated: true,
   mantissa: 2,
   trimMantissa: true,
-  negative: 'parenthesis',
   output: 'currency',
   currencyPosition: 'prefix',
   currencySymbol: '',
@@ -25,6 +23,13 @@ const priceFormatOptions = {
   mantissa: 8,
   trimMantissa: true,
 };
+
+const rateFormatOptions = {
+  thousandSeparated: true,
+  mantissa: 8,
+  trimMantissa: false,
+};
+
 
 export interface FormatProps {
   value?: string | number;
@@ -51,3 +56,11 @@ export const FormatProfit: React.FC<FormatProps> = (props) => (
 export const FormatPrice: React.FC<FormatProps> = (props) => (
   <Format {...props} defaultOptions={priceFormatOptions} />
 );
+
+export const FormatRate: React.FC<FormatProps> = (props) => {
+  const { value } = props;
+  if (!value) {
+    return <span>—</span>;
+  }
+  return <Format {...props} defaultOptions={rateFormatOptions} />;
+};

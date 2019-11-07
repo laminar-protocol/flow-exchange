@@ -4,9 +4,10 @@ import { Link, useParams } from 'react-router-dom';
 
 import { usePriceRate } from 'hooks/useOraclePrice';
 import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
+import { FormatRate } from 'components/format';
 import * as theme from 'theme';
 
-import { formatRate } from './format';
+import { calculateRate } from './rate';
 
 interface RowProps {
   highlight?: boolean;
@@ -59,7 +60,7 @@ const Symbol: React.FC<Props> = ({ symbol, pool }) => {
   const liquidityPool = (liquidityPools as any)[pool];
   const tradingPair = (tradingPairs as any)[tradingSymbol.long];
 
-  const { loading, data } = usePriceRate(tradingPair.quote, tradingPair.base);
+  const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
 
   return (
     <Link to={`/margin/${liquidityPool.key}/${tradingSymbol.name}`}>
@@ -68,10 +69,16 @@ const Symbol: React.FC<Props> = ({ symbol, pool }) => {
           {tradingSymbol.name}
         </div>
         <div className="bid">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'bid') }
+          <FormatRate
+            value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'bid', rate)}
+            options={{ mantissa: tradingSymbol.precision }}
+          />
         </div>
         <div className="ask">
-          { (loading || !data) ? '—' : formatRate(data, liquidityPool.spread, tradingSymbol.prefixUSD, tradingSymbol.isJPY, 'ask') }
+          <FormatRate
+            value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'ask', rate)}
+            options={{ mantissa: tradingSymbol.precision }}
+          />
         </div>
       </SymbolRow>
     </Link>

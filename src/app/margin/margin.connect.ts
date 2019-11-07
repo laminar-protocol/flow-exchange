@@ -7,9 +7,18 @@ import { AppState } from 'reducers';
 
 import Component from './margin';
 
-const mapStateToProps = ({ margin: { allowance, trading } }: AppState) => {
+const mapStateToProps = ({
+  margin: {
+    allowance,
+    trading,
+  },
+  setting: {
+    currentTheme,
+  },
+}: AppState) => {
   const allowanceValue = allowance.value || 0;
   return {
+    currentTheme,
     isEnabled: allowanceValue > 0,
     isLoadingAllowance: allowance.loading,
     isGranting: trading.loading,

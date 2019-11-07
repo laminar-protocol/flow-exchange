@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import {
   LightButton,
 } from 'components';
-import { FormatBalance, FormatPrice } from 'components/format';
+import { FormatProfit, FormatRate } from 'components/format';
 
-// import { usePriceRate } from 'hooks/useOraclePrice';
+import { usePriceRate } from 'hooks/useOraclePrice';
 import { findTradingPairByAddress, findTradingSybmolByPairAddress } from 'config';
 import * as theme from 'theme';
+import { calculateRate } from './rate';
 
 // ----------
 // Style
@@ -72,7 +73,7 @@ type Props = OwnProps & StateProps;
 
 const OpenTrade: React.FC<Props> = ({
   amount,
-  // bidSpread,
+  bidSpread,
   // liquidationFee,
   // liquidityPool,
   openPrice,
@@ -88,8 +89,15 @@ const OpenTrade: React.FC<Props> = ({
   const symbolInfo: any = findTradingSybmolByPairAddress(pair);
 
   const { symbol: tradingSymbol, direction } = symbolInfo;
+  const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
+  const openRate = calculateRate(0, tradingSymbol.inverted, direction, Number(openPrice));
 
-  // const { loading, data } = usePriceRate(tradingPair.quote, tradingPair.base);
+  let profit;
+  if (rate) {
+    const bidRate = rate * (1 - Number(bidSpread));
+    const percent = (bidRate - Number(openPrice)) / Number(openPrice);
+    profit = percent * Number(amount) * Number(tradingPair.leverage);
+  }
 
   return (
     <Container>
@@ -107,11 +115,11 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column amount">
-          <FormatBalance value={amount} />
+          <FormatProfit value={amount} />
         </div>
 
         <div className="column openPrice">
-          <FormatPrice value={openPrice} options={{ mantissa: tradingSymbol.sp }} />
+          <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
         </div>
 
         <div className="column closePrice">
@@ -119,7 +127,7 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column profit">
-          &nbsp;
+          { profit ? <FormatProfit value={profit} /> : '—' }
         </div>
         <div className="column action">
           <LightButton
