@@ -17,6 +17,8 @@ import Application from 'app/application/application.connect';
 import * as serviceWorker from 'serviceWorker';
 
 import store, { history } from './store';
+import ethereum from './services/ethereum';
+import NoService from './app/noService/noService';
 
 import 'antd/dist/antd.css';
 
@@ -55,15 +57,17 @@ const client = new ApolloClient({
 
 const render = (App: React.ComponentType) => {
   ReactDOM.render(
-    (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <ApolloProvider client={client}>
-            <App />
-          </ApolloProvider>
-        </ConnectedRouter>
-      </Provider>
-    ),
+    ethereum.provider
+      ? (
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
+            <ApolloProvider client={client}>
+              <App />
+            </ApolloProvider>
+          </ConnectedRouter>
+        </Provider>
+      )
+      : <NoService />,
     document.getElementById('root'),
   );
 };
