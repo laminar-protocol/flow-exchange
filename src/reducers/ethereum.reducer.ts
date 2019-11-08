@@ -1,4 +1,5 @@
 import types from 'types';
+import { network } from '../config';
 
 const INITIAL_STATE = {
   account: null,
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
   isConnected: false,
 
   isConnectModalActive: false,
+  isNetworkGuardModalActive: false,
 };
 
 const parseNetwork = (payload: any) => ({
@@ -65,13 +67,17 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         isConnected: false,
       };
 
-    case types.ethereum.network.completed:
+    case types.ethereum.network.completed: {
+      const networkInfo = parseNetwork(payload);
       return {
         ...state,
-        ...parseNetwork(payload),
+        ...networkInfo,
         isConnecting: false,
         isConnected: true,
+        isNetworkGuardModalActive: networkInfo.network && (networkInfo.network !== network),
       };
+    }
+
     case types.ethereum.account.changed:
       return {
         ...state,

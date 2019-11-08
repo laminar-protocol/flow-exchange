@@ -26,23 +26,26 @@ class Ethereum {
     fJPY: Contract;
     fXAU: Contract;
     fAAPL: Contract;
-  }
+  };
+
+
+  public readonly faucets: {
+    DAI: Contract;
+  };
 
   public readonly marginTradingPairs: Record<string, Contract> = {};
 
   constructor() {
+    // TODO: handle null provider
+    let provider = null;
     const anyWindow = window as any;
-    if (typeof anyWindow.ethereum !== 'undefined' || (typeof anyWindow.web3 !== 'undefined')) {
-      const provider = anyWindow.ethereum || anyWindow.web3.currentProvider;
-
-      this.provider = provider;
-      this.web3 = new Web3(this.provider);
-
+    if (anyWindow.ethereum || anyWindow.web3) {
+      provider = anyWindow.ethereum || anyWindow.web3.currentProvider;
       provider.autoRefreshOnNetworkChange = false;
-    } else {
-      // TODO: handle this
-      throw new Error('Not supported');
     }
+
+    this.provider = provider;
+    this.web3 = new Web3(this.provider);
 
     this.flowProtocol = new this.web3.eth.Contract(abi.FlowProtocol, addresses.protocol);
     this.flowMarginProtocol = new this.web3.eth.Contract(abi.FlowMarginProtocol, addresses.marginProtocol);
@@ -66,6 +69,11 @@ class Ethereum {
       fXAU: xauContract,
     };
 
+    const daiFaucetContract = new this.web3.eth.Contract(abi.FaucetInterface, addresses.baseToken);
+    this.faucets = {
+      DAI: daiFaucetContract,
+    };
+
     this.marginTradingPairs = mapObjIndexed((pair) => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address), tradingPairs);
   }
 
@@ -74,10 +82,15 @@ class Ethereum {
     return ((this.tokens as any)[symbol] || (this.tokens as any)[`f${symbol}`]) as Contract;
   }
 
+  getFaucetContract(symbol: string) {
+    return ((this.faucets as any)[symbol] || (this.faucets as any)[`f${symbol}`]) as Contract;
+  }
+
   getLiquidityPoolContract(address: string) {
     return new this.web3.eth.Contract(abi.LiquidityPoolInterface, address);
   }
 }
 
 const ethereum = new Ethereum();
+
 export default ethereum;
