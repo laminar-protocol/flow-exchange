@@ -6,6 +6,15 @@ import ethereum from 'services/ethereum';
 import types, { actions } from 'types';
 import { Epic } from 'reducers';
 
+const networkDecimalToString: any = {
+  1: 'mainnet',
+  2: 'morden',
+  3: 'ropsten',
+  4: 'rinkeby',
+  5: 'goerli',
+  42: 'kovan',
+};
+
 const epic: Epic = (action$) => action$.pipe(
   ofType(types.ethereum.enable.requested),
   mergeMap(() => new Observable((observable) => {
@@ -14,7 +23,11 @@ const epic: Epic = (action$) => action$.pipe(
       .catch(() => observable.next(actions.ethereum.enable.failed()));
     ethereum.provider.on('accountsChanged', ([account]: string[]) => {
       observable.next(actions.ethereum.account.changed(account));
-    // TODO: ethereum.provider.on('networkChanged')
+    });
+    ethereum.provider.on('networkChanged', (network: string) => {
+      observable.next(actions.ethereum.network.completed({
+        network: networkDecimalToString[network] || 'unknown',
+      }));
     });
   })),
 );
