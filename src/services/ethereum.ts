@@ -26,7 +26,12 @@ class Ethereum {
     fJPY: Contract;
     fXAU: Contract;
     fAAPL: Contract;
-  }
+  };
+
+
+  public readonly faucets: {
+    DAI: Contract;
+  };
 
   public readonly marginTradingPairs: Record<string, Contract> = {};
 
@@ -66,12 +71,21 @@ class Ethereum {
       fXAU: xauContract,
     };
 
+    const daiFaucetContract = new this.web3.eth.Contract(abi.FaucetInterface, addresses.baseToken);
+    this.faucets = {
+      DAI: daiFaucetContract,
+    };
+
     this.marginTradingPairs = mapObjIndexed((pair) => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address), tradingPairs);
   }
 
   // TODO: Hack, need to unified tokens naming;
   getTokenContract(symbol: string) {
     return ((this.tokens as any)[symbol] || (this.tokens as any)[`f${symbol}`]) as Contract;
+  }
+
+  getFaucetContract(symbol: string) {
+    return ((this.faucets as any)[symbol] || (this.faucets as any)[`f${symbol}`]) as Contract;
   }
 
   getLiquidityPoolContract(address: string) {

@@ -50,6 +50,10 @@ const liquidityPool = moduleActions('liquidityPool', {
   spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
 });
 
+const faucet = moduleActions('faucet', {
+  dai: apiActionTypes(),
+});
+
 export const actions = appActions('flow', {
   app,
   ethereum,
@@ -57,6 +61,7 @@ export const actions = appActions('flow', {
   swap,
   margin,
   liquidityPool,
+  faucet,
 });
 
 const types = appActionTypes(actions);

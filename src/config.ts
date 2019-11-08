@@ -8,6 +8,7 @@ import FlowMarginProtocol from 'flow-protocol/artifacts/abi/FlowMarginProtocol.j
 import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
 import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
 import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
+import FaucetInterface from 'flow-protocol/artifacts/abi/FaucetInterface.json';
 
 import deployment from 'flow-protocol/artifacts/deployment.json';
 
@@ -233,6 +234,7 @@ export const abi = {
   FlowToken: FlowToken as any,
   MarginTradingPair: MarginTradingPair as any,
   PriceOracleInterface: PriceOracleInterface as any,
+  FaucetInterface: FaucetInterface as any,
 };
 
 // TODO: make this configurable
