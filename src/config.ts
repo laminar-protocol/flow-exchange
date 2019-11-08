@@ -162,8 +162,8 @@ export const tradingSymbols = {
   },
   USDJPY: {
     name: 'USDJPY',
-    long: 'l20USDJPY',
-    short: 's20USDJPY',
+    long: 's20USDJPY',
+    short: 'l20USDJPY',
     leverage: 20,
     chartSymbol: 'USDJPY',
     inverted: true, // TODO: Find the correct term

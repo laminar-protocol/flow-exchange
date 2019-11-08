@@ -43,7 +43,7 @@ const positionQuery = gql`
       liquidityPool
       amount
       openPrice
-      bidSpread
+      closeSpread
       liquidationFee
       closePrice
       liquidator
@@ -71,7 +71,7 @@ const positionsTableColumns: ColumnProps<any>[] = [
       <FormatPrice value={text} />,
   }, {
     title: 'Bid Spread (%)',
-    dataIndex: 'bidSpread',
+    dataIndex: 'closeSpread',
   }, {
     title: 'Liquidation Fee (DAI)',
     dataIndex: 'liquidationFee',

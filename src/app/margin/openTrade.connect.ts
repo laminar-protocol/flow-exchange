@@ -19,7 +19,7 @@ const mapStateToProps = (
   }: AppState,
   {
     amount,
-    bidSpread,
+    closeSpread,
     liquidationFee,
     liquidityPool,
     openPrice,
@@ -30,7 +30,7 @@ const mapStateToProps = (
   const allowanceValue = allowance.value || 0;
   return {
     amount,
-    bidSpread,
+    closeSpread,
     liquidationFee,
     liquidityPool,
     openPrice,

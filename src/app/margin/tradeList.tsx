@@ -39,6 +39,10 @@ const ListHeader = styled.div`
     text-transform: uppercase;
     width: 12.5%;
   }
+
+  .profit {
+    text-align: right;
+  }
 `;
 
 // ----------
@@ -51,7 +55,7 @@ const positionQuery = gql`
       liquidityPool
       amount
       openPrice
-      bidSpread
+      closeSpread
       liquidationFee
       closePrice
       liquidator
@@ -146,7 +150,7 @@ const TradeList: React.FC<Props> = ({
                 openPrice={position.openPrice}
                 liquidityPool={position.liquidityPool}
                 amount={position.amount}
-                bidSpread={position.bidSpread}
+                closeSpread={position.closeSpread}
                 liquidationFee={position.liquidationFee}
                 pair={position.pair.id}
               />

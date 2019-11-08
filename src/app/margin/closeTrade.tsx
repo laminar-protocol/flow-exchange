@@ -34,9 +34,11 @@ const ListRow = styled.div`
     text-transform: uppercase;
   }
 
-  .openPrice, .amount {
-
+  .profit {
+    font-weight: ${theme.boldWeight};
+    text-align: right;
   }
+
   .direction {
     text-transform: uppercase;
   }
