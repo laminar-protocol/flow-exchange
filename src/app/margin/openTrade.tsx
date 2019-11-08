@@ -95,16 +95,13 @@ const OpenTrade: React.FC<Props> = ({
 
   // TODO: Refactor and common inverted logics
   let profit;
-  if (rate) {
-    if (tradingSymbol.inverted) {
-      const closeRate = rate * (1.0 + Number(closeSpread));
-      const percent = (closeRate - Number(openPrice)) / Number(openPrice);
-      profit = -(percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage));
-    } else {
-      const closeRate = rate * (1.0 - Number(closeSpread));
-      const percent = (closeRate - Number(openPrice)) / Number(openPrice);
-      profit = percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage);
-    }
+  if (rate && tradingPair) {
+    const spreadValue = Number(closeSpread);
+    const spread = tradingPair.leverage > 0 ? spreadValue : -spreadValue;
+    const open = Number(openPrice);
+    const close = rate * (1 - spread);
+    const delta = (close - open) / open;
+    profit = delta * tradingPair.leverage * (Number(amount) - Number(liquidationFee));
   }
 
   return (
@@ -135,7 +132,7 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column profit">
-          { profit ? <FormatProfit value={profit} /> : '—' }
+          { (profit !== undefined) ? <FormatProfit value={profit} /> : '—' }
         </div>
         <div className="column action">
           <LightButton

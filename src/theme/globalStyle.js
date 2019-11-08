@@ -32,6 +32,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${theme.backgroundColor} !important;
     box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.05) !important;
     color: ${theme.foregroundColor};
+    border-radius: 0.5rem !important;
   }
 `;
 
