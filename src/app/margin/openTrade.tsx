@@ -102,24 +102,6 @@ const OpenTrade: React.FC<Props> = ({
     const close = rate * (1 - spread);
     const delta = (close - open) / open;
     profit = delta * tradingPair.leverage * (Number(amount) - Number(liquidationFee));
-    if (direction === 'long') {
-
-      console.log(rate);
-      console.log(open);
-      console.log(close);
-    }
-
-
-    // const spreadDirection = (direction === 'short') ? -1 : 1;
-    // if (tradingSymbol.inverted) {
-    //   const closeRate = rate * (1.0 + Number(closeSpread) * spreadDirection);
-    //   const percent = (closeRate - Number(openPrice)) / Number(openPrice);
-    //   profit = (percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage));
-    // } else {
-    //   const closeRate = rate * (1.0 - Number(closeSpread) * spreadDirection);
-    //   const percent = (closeRate - Number(openPrice)) / Number(openPrice);
-    //   profit = percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage);
-    // }
   }
 
   return (

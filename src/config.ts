@@ -106,7 +106,7 @@ export const tradingPairs = {
     symbol: 's20USDJPY',
     base: 'DAI' as TokenSymbol,
     quote: 'fJPY' as TokenSymbol,
-    leverage: 20,
+    leverage: -20,
     address: addresses.s20USDJPY,
     name: 'USDJPY 20× Short',
   },
