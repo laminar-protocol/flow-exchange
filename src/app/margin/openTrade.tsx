@@ -53,7 +53,7 @@ const ListRow = styled.div`
 // ----------
 export interface OwnProps {
   amount: string;
-  bidSpread: string;
+  closeSpread: string;
   liquidationFee: string;
   liquidityPool: string;
   openPrice: string;
@@ -75,9 +75,8 @@ type Props = OwnProps & StateProps;
 
 const OpenTrade: React.FC<Props> = ({
   amount,
-  bidSpread,
-  // liquidationFee,
-  // liquidityPool,
+  closeSpread,
+  liquidationFee,
   openPrice,
   pair,
   positionId,
@@ -94,11 +93,18 @@ const OpenTrade: React.FC<Props> = ({
   const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
   const openRate = calculateRate(0, tradingSymbol.inverted, direction, Number(openPrice));
 
+  // TODO: Refactor and common inverted logics
   let profit;
   if (rate) {
-    const bidRate = rate * (1 - Number(bidSpread));
-    const percent = (bidRate - Number(openPrice)) / Number(openPrice);
-    profit = percent * Number(amount) * Number(tradingPair.leverage);
+    if (tradingSymbol.inverted) {
+      const closeRate = rate * (1.0 + Number(closeSpread));
+      const percent = (closeRate - Number(openPrice)) / Number(openPrice);
+      profit = -(percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage));
+    } else {
+      const closeRate = rate * (1.0 - Number(closeSpread));
+      const percent = (closeRate - Number(openPrice)) / Number(openPrice);
+      profit = percent * (Number(amount) - Number(liquidationFee)) * Number(tradingPair.leverage);
+    }
   }
 
   return (
