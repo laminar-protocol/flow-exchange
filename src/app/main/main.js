@@ -10,7 +10,7 @@ import Margin from 'app/margin/margin.connect';
 import Swap from 'app/swap/swap.connect';
 import Liquidity from 'app/liquidity/liquidity.connect';
 import ConnectModal from 'app/connectModal/connectModal.connect';
-
+import NetworkGuardModal from 'app/networkGuardModal/networkGuardModal.connect';
 
 import {
   Container, SideBar, Prime, SideColumn, PrimeColumn,
@@ -56,6 +56,7 @@ const Component = () => (
             </Route>
           </Content>
         </Switch>
+        <NetworkGuardModal />
         <ConnectModal />
       </Prime>
     </PrimeColumn>
