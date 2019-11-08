@@ -6,6 +6,7 @@ import {
 
 import Balance from './balance.connect';
 import Grant from './grant.connect';
+import Faucet from './faucet.connect';
 
 const Container = styled.div`
 `;
@@ -32,6 +33,9 @@ const Component = () => (
     </TokenStatus>
     <TokenStatus>
       <Balance symbol="fJPY" />
+    </TokenStatus>
+    <TokenStatus>
+      <Faucet symbol="DAI" amount="100" />
     </TokenStatus>
   </Container>
 );
