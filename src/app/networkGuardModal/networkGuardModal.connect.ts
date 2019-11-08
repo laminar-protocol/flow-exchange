@@ -3,8 +3,7 @@ import { AppState } from 'reducers';
 
 import Component from './networkGuardModal';
 
-const mapStateToProps = ({ ethereum: { network, isNetworkGuardModalActive } }: AppState) => ({
-  network,
+const mapStateToProps = ({ ethereum: { isNetworkGuardModalActive } }: AppState) => ({
   isNetworkGuardModalActive,
 });
 
