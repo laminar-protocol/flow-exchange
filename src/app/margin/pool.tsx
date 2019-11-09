@@ -47,7 +47,7 @@ interface Props {
 
 // ----------
 
-const SymbolList: React.FC<Props> = ({ symbol, pool }) => {
+const LiquidityPool: React.FC<Props> = ({ symbol, pool }) => {
   const { pool: selectedPool } = useParams();
 
   // TODO: Fix type
@@ -67,4 +67,4 @@ const SymbolList: React.FC<Props> = ({ symbol, pool }) => {
   );
 };
 
-export default SymbolList;
+export default LiquidityPool;

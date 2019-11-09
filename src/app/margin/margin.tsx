@@ -147,7 +147,6 @@ interface Props {
   isEnabled: boolean;
   isLoadingAllowance: boolean;
   isGranting: boolean;
-  allowance: string;
 
   onGrant: (enable: boolean) => void;
 }
@@ -179,7 +178,7 @@ const Margin: React.FC<Props> = ({
       <SummaryPanel>
         <SummaryHeader>
           <Text size="l">
-            Acccount Summary
+            Margin Trading
           </Text>
         </SummaryHeader>
         <AccountSummary>

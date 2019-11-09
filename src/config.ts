@@ -21,6 +21,8 @@ if (!deployment[network]) {
 
 export const addresses = deployment[network];
 
+export const explorer = 'https://kovan.etherscan.io';
+
 export const tokens = {
   DAI: {
     name: 'DAI',
@@ -59,7 +61,7 @@ export const tokens = {
     displayName: 'Apple',
     address: addresses.fAAPL,
     currencySymbol: '',
-    icon: 'sticky-note' as IconProp,
+    icon: 'award' as IconProp,
     isBaseToken: false,
   },
 };

@@ -7,7 +7,7 @@ import {
 import { FormatProfit, FormatRate } from 'components/format';
 
 import { usePriceRate } from 'hooks/useOraclePrice';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress } from 'config';
+import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from 'config';
 import * as theme from 'theme';
 import { calculateRate } from './rate';
 
@@ -59,6 +59,7 @@ export interface OwnProps {
   openPrice: string;
   pair: string;
   positionId: number;
+  openTxhash: string;
 }
 
 export interface StateProps {
@@ -80,6 +81,7 @@ const OpenTrade: React.FC<Props> = ({
   openPrice,
   pair,
   positionId,
+  openTxhash,
   isEnabled,
   isOpening,
   isClosing,
@@ -124,7 +126,9 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column openPrice">
-          <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
+          <a href={`${explorer}/tx/${openTxhash}`} target="_blank" rel="noopener noreferrer">
+            <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
+          </a>
         </div>
 
         <div className="column closePrice">

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import Menu from 'app/menu/menu.connect';
 import Header from 'app/header/header';
-import Dashboard from 'app/dashboard/dashboard.connect';
+import Dashboard from 'app/dashboard/dashboard';
 import Lending from 'app/lending/lending.connect';
 import Margin from 'app/margin/margin.connect';
 import Swap from 'app/swap/swap.connect';
@@ -21,7 +21,7 @@ const Content = styled.div`
   margin: 3rem;
 `;
 
-const Component = () => (
+const Main: React.FC<{}> = () => (
   <Container>
     <SideColumn>
       <SideBar>
@@ -63,4 +63,4 @@ const Component = () => (
   </Container>
 );
 
-export default Component;
+export default Main;

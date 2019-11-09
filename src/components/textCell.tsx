@@ -6,7 +6,6 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import * as theme from 'theme';
 
 import Text from './text';
-import Panel from './panel';
 import Spinner from './spinner';
 
 const Header = styled.div`
@@ -38,7 +37,7 @@ const AccessoryIcon = styled(FontAwesomeIcon)`
   color: ${theme.fadeForegroundColor};
 `;
 
-const Container = styled(Panel)`
+const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -49,8 +48,6 @@ const Container = styled(Panel)`
 `;
 
 interface Props {
-  radius?: number;
-  padding?: number;
   header?: string;
   accessory?: IconProp;
   loading?: boolean;
@@ -59,9 +56,9 @@ interface Props {
 }
 
 const TextCell: React.FC<Props> = ({
-  radius, padding, header, accessory, loading, children, className,
+  header, accessory, loading, children, className,
 }) => (
-  <Container radius={radius} padding={padding} className={className}>
+  <Container className={className}>
     <Accessory>
       {(accessory && !loading) && <AccessoryIcon icon={accessory} size="2x" />}
       { loading && <AccessorySpinner /> }

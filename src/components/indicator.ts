@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import * as theme from 'theme';
 
-const Component = styled.span`
+interface IndicatorProps {
+  size?: number;
+}
+
+const Indicator = styled.span<IndicatorProps>`
   background-color: ${(props) => {
     switch (props.color) {
       case 'green':
@@ -12,9 +16,9 @@ const Component = styled.span`
         return theme.indicatorGrayColor;
     }
   }};
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  border-radius: ${(props) => props.size / 2}px;
+  width: ${(props) => props.size || 10}px;
+  height: ${(props) => props.size || 10}px;
+  border-radius: ${(props) => (props.size || 10) / 2}px;
 `;
 
-export default Component;
+export default Indicator;

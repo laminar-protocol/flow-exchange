@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, FormatBalance } from 'components';
-import { tokens, TokenSymbol } from 'config';
+import { tokens, TokenSymbol, explorer } from 'config';
 import * as theme from 'theme';
 
 const Line = styled.div`
@@ -94,7 +94,7 @@ const SwapItem: React.FC<StateProps> = ({
       </Timestamp>
       <View>
         <Text>
-          <a href={`https://kovan.etherscan.io/tx/${tx}`} target="_blank" rel="noopener noreferrer">
+          <a href={`${explorer}/tx/${tx}`} target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon="external-link-alt" />
           </a>
         </Text>

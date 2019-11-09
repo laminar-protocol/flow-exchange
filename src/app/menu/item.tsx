@@ -29,18 +29,19 @@ const Content = styled.div`
 // ----------
 export interface StateProps {
   icon: IconProp;
+
   noRoute?: boolean;
-  to: string;
+  to?: string;
   onClick?: any;
   children?: ReactNode;
 }
 
-const Component: React.FC<StateProps> = ({
+const MenuItem: React.FC<StateProps> = ({
   icon, noRoute, to, onClick, children,
 }) => {
   const Element = noRoute ? 'a' : Link;
   return (
-    <Element to={to} onClick={onClick}>
+    <Element to={to || ''} onClick={onClick}>
       <Item>
         <Icon>
           <FontAwesomeIcon icon={icon} />
@@ -53,4 +54,4 @@ const Component: React.FC<StateProps> = ({
   );
 };
 
-export default Component;
+export default MenuItem;

@@ -3,7 +3,7 @@ import { Button } from 'antd';
 
 import * as theme from 'theme';
 
-const Component = styled(Button)`
+const SolidButton = styled(Button)`
   &.ant-btn,
   &.ant-btn:hover,
   &.ant-btn:focus,
@@ -16,4 +16,4 @@ const Component = styled(Button)`
   }
 `;
 
-export default Component;
+export default SolidButton;

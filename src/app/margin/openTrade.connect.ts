@@ -25,6 +25,7 @@ const mapStateToProps = (
     openPrice,
     pair,
     positionId,
+    openTxhash,
   }: OwnProps,
 ) => {
   const allowanceValue = allowance.value || 0;
@@ -36,6 +37,7 @@ const mapStateToProps = (
     openPrice,
     pair,
     positionId,
+    openTxhash,
     account,
     isEnabled: allowanceValue > 0,
     isOpening: openPosition.loading,

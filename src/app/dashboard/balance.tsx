@@ -28,12 +28,12 @@ const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, o
     onBalanceQuery(symbol);
   }, [onBalanceQuery, symbol]);
 
-  const { icon, currencySymbol } = tokens[symbol as keyof typeof tokens];
+  const { icon, currencySymbol, name } = tokens[symbol as keyof typeof tokens];
 
   return (
     <BalanceCell
       value={fromWei(balance)}
-      text={label || `${symbol} Balances`}
+      text={label || `${name} Balances`}
       loading={isQueryingBalance}
       accessory={icon}
       prefix={currencySymbol}

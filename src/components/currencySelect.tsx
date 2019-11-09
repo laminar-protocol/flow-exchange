@@ -7,6 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isTokenSymbol, tokens } from 'config';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
+// ----------
+// Style
+// ----------
+
 const CurrencySelect = styled(Select)`
   .react-select__control {
     background-color: ${theme.whiteForegroundColor};
@@ -27,15 +31,12 @@ const CurrencySelect = styled(Select)`
   }
 `;
 
-// Custom Components for Select
 const CustomPlaceholder = styled.div`
   color: ${theme.lightForegroundColor};
 `;
 const Placeholder = () => <CustomPlaceholder>Select...</CustomPlaceholder>;
 
-const CustomSingleValue = styled.div`
-`;
-
+const CustomSingleValue = styled.div``;
 
 const SingleValue: React.FC<any> = ({ innerProps, data }) => (
   <CustomSingleValue {...innerProps}>
@@ -52,6 +53,25 @@ const CustomIndicatorSeparator = styled.span`
   width: 1px;
 `;
 
+const CustomCurrency = styled.div<{ isDisabled: boolean }>`
+  color: ${theme.foregroundColor};
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: ${theme.normalWeight};
+  font-size: 1.25rem;
+  .icon {
+    color: ${theme.lightForegroundColor};
+    width: 1.75rem;
+  }
+  opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
+`;
+
+// ----------
+// Custom select
+// ----------
+
 const IndicatorSeparator: React.FC<any> = ({ innerProps }) => <CustomIndicatorSeparator {...innerProps} />;
 
 const CustomOption = styled.div`
@@ -66,6 +86,7 @@ const CustomOption = styled.div`
     border-bottom: 0;
   }
 `;
+
 const Option: React.FC<any> = ({ innerProps, data }) => (
   <CustomOption {...innerProps}>
     <Currency symbol={data.symbol} isDisabled={data.isDisabled} />
@@ -85,21 +106,6 @@ const symbolName = (symbol: string) => {
   }
   return symbol;
 };
-
-const CustomCurrency = styled.div<{ isDisabled: boolean }>`
-  color: ${theme.foregroundColor};
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  text-transform: uppercase;
-  font-weight: ${theme.normalWeight};
-  font-size: 1.25rem;
-  .icon {
-    color: ${theme.lightForegroundColor};
-    width: 1.5rem;
-  }
-  opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
-`;
 
 const Currency: React.FC<any> = ({ symbol, isDisabled }) => (
   <CustomCurrency isDisabled={isDisabled}>

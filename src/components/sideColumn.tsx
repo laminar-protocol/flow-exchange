@@ -25,10 +25,15 @@ const Container = styled(Layout)`
   }
 `;
 
-const Component = ({ children }) => (
-  <Container>
+interface Props {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const SideColumn: React.FC<Props> = ({ children, className }) => (
+  <Container className={className}>
     { children }
   </Container>
 );
 
-export default Component;
+export default SideColumn;
