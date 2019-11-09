@@ -80,6 +80,11 @@ export const ActionBar = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row;
+  ${theme.respondTo.sm`
+    flex-direction: column;
+    align-items: flex-start;
+  `}
 `;
 
 export const Detail = styled.div`
@@ -87,6 +92,9 @@ export const Detail = styled.div`
   justify-content: flex-start;
   align-items: center;
   text-transform: uppercase;
+  ${theme.respondTo.sm`
+    margin-bottom: 1rem;
+  `}
 `;
 
 export const SwapDetail = styled.div`

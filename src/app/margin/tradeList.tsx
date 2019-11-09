@@ -34,6 +34,11 @@ const ListHeader = styled.div`
   border-bottom: 1px solid ${theme.borderColor};
   padding-bottom: 1rem;
 
+  ${theme.respondTo.sm`
+    display: none;
+  `};
+
+
   .column {
     font-weight: ${theme.boldWeight};
     text-transform: uppercase;
@@ -46,7 +51,6 @@ const ListHeader = styled.div`
 `;
 
 const Filter = styled.div`
-  margin-bottom: 2rem;
 `;
 
 // ----------

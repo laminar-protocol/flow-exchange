@@ -18,6 +18,13 @@ const AmountInput = styled(Input)`
     height: 3.5rem !important;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+
+    ${theme.respondTo.sm`
+      width: 100% !important;
+      border-top-right-radius: 0.5rem !important;
+      border-bottom-left-radius: 0 !important;
+
+    `}
   }
   &.ant-input-disabled {
     cursor: default !important;
@@ -27,6 +34,17 @@ const AmountInput = styled(Input)`
 const SymbolSelect = styled(CurrencySelect)`
   display: block;
   width: 40%;
+
+  ${theme.respondTo.sm`
+      width: 100%;
+      .react-select__control {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-bottom-left-radius: 0.5rem !important;
+        border-top: 0px;
+      }
+  `}
+
   .react-select__control {
     height: 3.5rem;
     border-top-left-radius: 0;

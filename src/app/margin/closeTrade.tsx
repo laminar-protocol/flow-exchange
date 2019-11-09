@@ -25,6 +25,19 @@ const ListRow = styled.div`
   justify-content: space-between;
   align-items: center;
 
+  ${theme.respondTo.sm`
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    .column {
+
+      width: 25% !important;
+      text-align: left !important;
+      margin: 0.25rem 0;
+    }
+  `};
+
   .column {
     width: 12.5%;
   }
