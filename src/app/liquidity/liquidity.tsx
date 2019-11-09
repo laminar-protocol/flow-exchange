@@ -20,10 +20,15 @@ const Provider = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const Item = styled.div`
   width: 25%;
+  ${theme.respondTo.lg`
+    width: 50%;
+  `}
+
   div {
     margin: 0.5rem 0;
   }
