@@ -11,7 +11,7 @@ const SolidButton = styled(Button)`
   {
     border: 0px;
     font-weight: ${theme.boldWeight};
-    color: ${theme.whiteForegroundColor};
+    color: ${theme.alwaysWhiteForegroundColor};
     background-color: ${theme.keyColorBlue};
   }
 `;

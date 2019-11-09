@@ -12,6 +12,7 @@ const Component = styled(Button)`
     border: 1px solid ${theme.borderColor};
     font-weight: ${theme.boldWeight};
     color: ${theme.foregroundColor};
+    background-color: ${theme.lightBackgroundColor};
   }
 `;
 
