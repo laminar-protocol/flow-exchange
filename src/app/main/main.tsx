@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router';
 import styled from 'styled-components';
 
+import * as theme from 'theme';
+
 import Menu from 'app/menu/menu.connect';
 import Header from 'app/header/header';
 import Dashboard from 'app/dashboard/dashboard';
@@ -12,6 +14,7 @@ import Liquidity from 'app/liquidity/liquidity.connect';
 import ConnectModal from 'app/connectModal/connectModal.connect';
 import NetworkGuardModal from 'app/networkGuardModal/networkGuardModal.connect';
 
+
 import {
   Container, SideBar, Prime, SideColumn, PrimeColumn,
 } from 'components';
@@ -19,6 +22,9 @@ import {
 
 const Content = styled.div`
   margin: 3rem;
+  ${theme.respondTo.sm`
+    margin: 1rem;
+  `}
 `;
 
 const Main: React.FC<{}> = () => (

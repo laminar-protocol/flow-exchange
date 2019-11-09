@@ -14,23 +14,40 @@ const Line = styled.div`
   align-items: center;
   border-bottom: 1px solid ${theme.borderColor};
   padding-bottom: 0.75rem;
+
+  ${theme.respondTo.sm`
+    flex-direction: column;
+    align-items: flex-start;
+  `};
 `;
 
 const Symbol = styled.div`
   width: 35%;
+  ${theme.respondTo.sm`
+    width: 100%;
+  `};
 `;
 
 const Amount = styled.div`
   width: 35%;
+  ${theme.respondTo.sm`
+    width: 100%;
+  `};
 `;
 
 const Timestamp = styled.div`
   width: 25%;
+  ${theme.respondTo.sm`
+    width: 100%;
+  `};
 `;
 
 const View = styled.div`
   width: 5%;
   text-align: right;
+  ${theme.respondTo.sm`
+    width: 100%;
+  `};
 `;
 
 // ----------

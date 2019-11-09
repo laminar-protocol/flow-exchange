@@ -33,7 +33,7 @@ const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, o
   return (
     <BalanceCell
       value={fromWei(balance)}
-      text={label || `${name} Balances`}
+      text={label || `${name} Balance`}
       loading={isQueryingBalance}
       accessory={icon}
       prefix={currencySymbol}

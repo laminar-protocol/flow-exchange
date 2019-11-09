@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import * as theme from 'theme';
 
@@ -44,10 +45,12 @@ const LoogText = styled.div`
 
 const Header: React.FC<{}> = () => (
   <HeaderContainer>
-    <LogoContainer>
-      <Logo src={LaminarLogo} />
-      <LoogText>Flow Exchange</LoogText>
-    </LogoContainer>
+    <Link to="/">
+      <LogoContainer>
+        <Logo src={LaminarLogo} />
+        <LoogText>Flow Exchange</LoogText>
+      </LogoContainer>
+    </Link>
   </HeaderContainer>
 );
 
