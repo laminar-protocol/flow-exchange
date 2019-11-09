@@ -1,4 +1,6 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Button } from '../../components';
 
 export interface Props {
@@ -11,7 +13,7 @@ const Faucet: React.FC<Props> = ({ amount, symbol, onOpenFaucet }) => (
   <Button
     onClick={() => { onOpenFaucet(symbol, amount); }}
   >
-    {symbol} Faucet
+    <FontAwesomeIcon icon="shower" />
   </Button>
 );
 

@@ -85,7 +85,7 @@ const Component: React.FC<StateProps> = ({
         <MenuItem icon="chart-line" to="/margin">Margin Trading</MenuItem>
         <MenuItem icon="exchange-alt" to="/swap">Swap</MenuItem>
         <MenuItem icon="landmark" to="/lending">Deposit &amp; Earn</MenuItem>
-        <MenuItem icon="hand-holding-usd" to="/liqudity">Liqudity Provider</MenuItem>
+        <MenuItem icon="hand-holding-usd" to="/liquidity">Liquidity Provider</MenuItem>
       </Menu>
     </div>
     <div>

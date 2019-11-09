@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { FormatProfit, FormatRate } from 'components/format';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress } from 'config';
+import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from 'config';
 import * as theme from 'theme';
 
 import { calculateRate } from './rate';
@@ -53,6 +53,8 @@ export interface Props {
   pair: string;
   closePrice: string;
   closeOwnerAmount: string;
+  openTxhash: string;
+  closeTxhash: string;
 }
 
 // ----------
@@ -61,6 +63,8 @@ const OpenTrade: React.FC<Props> = ({
   amount,
   openPrice,
   closePrice,
+  openTxhash,
+  closeTxhash,
   closeOwnerAmount,
   pair,
 }) => {
@@ -93,11 +97,15 @@ const OpenTrade: React.FC<Props> = ({
         </div>
 
         <div className="column openPrice">
-          <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
+          <a href={`${explorer}/tx/${openTxhash}`} target="_blank" rel="noopener noreferrer">
+            <FormatRate value={openRate} options={{ mantissa: tradingSymbol.precision }} />
+          </a>
         </div>
 
         <div className="column closePrice">
-          <FormatRate value={closeRate} options={{ mantissa: tradingSymbol.precision }} />
+          <a href={`${explorer}/tx/${closeTxhash}`} target="_blank" rel="noopener noreferrer">
+            <FormatRate value={closeRate} options={{ mantissa: tradingSymbol.precision }} />
+          </a>
         </div>
 
         <div className="column profit">

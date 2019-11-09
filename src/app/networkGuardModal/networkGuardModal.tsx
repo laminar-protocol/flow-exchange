@@ -13,10 +13,10 @@ const Container = styled.div`
 `;
 
 export interface StateProps {
-  isNetworkGuardModalActive: boolean;
+  isNetworkGuardModalActive?: boolean;
 }
 
-const Component: React.FC<StateProps> = ({
+const NetworkGuardModal: React.FC<StateProps> = ({
   isNetworkGuardModalActive,
 }) => (
   <Modal
@@ -31,4 +31,4 @@ const Component: React.FC<StateProps> = ({
   </Modal>
 );
 
-export default Component;
+export default NetworkGuardModal;

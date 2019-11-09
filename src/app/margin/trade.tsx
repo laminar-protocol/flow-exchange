@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  Text, SolidButton, Separator, Input,
+  Text, SolidButton, Separator, Input, SegmentedControl, SegmentedControlItem, InputNumber,
 } from 'components';
 import { usePriceRate } from 'hooks/useOraclePrice';
 import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
@@ -54,6 +54,17 @@ const TradePrice = styled.div`
   }
 `;
 
+const AmountInput = styled(Input)`
+  &.ant-input {
+    font-variant-numeric: tabular-nums;
+    font-weight: ${theme.lightWeight};
+    font-size: 1.5rem !important;
+    height: 3rem !important;
+  }
+  &.ant-input-disabled {
+    cursor: default !important;
+  }
+`;
 
 const SellButton = styled(SolidButton)`
   &.ant-btn,
@@ -104,17 +115,65 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
 
   const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
   const [amount, setAmount] = useState(20 as number | undefined);
+  const [displayMode, setModePosition] = useState('basic' as string);
+
+  const renderAdvanced = () => {
+    if (displayMode === 'basic') {
+      return;
+    }
+    return (
+      <>
+        <Separator size={1} />
+        <TradeLine>
+          <Text weight="bold" light>Under Development</Text>
+        </TradeLine>
+        <Separator size={1} />
+        <TradeLine>
+          <Text>Buy Limit</Text>
+          <InputNumber disabled />
+        </TradeLine>
+        <TradeLine>
+          <Text>Buy Stop</Text>
+          <InputNumber disabled />
+        </TradeLine>
+        <TradeLine>
+          <Text>Sell Stop</Text>
+          <InputNumber disabled />
+        </TradeLine>
+        <TradeLine>
+          <Text>Sell Limit</Text>
+          <InputNumber disabled />
+        </TradeLine>
+        <TradeLine>
+          <Text>Slippage</Text>
+          <InputNumber disabled />
+        </TradeLine>
+        <Separator size={1} />
+      </>
+    );
+  };
 
   return (
     <Container>
-      <TradeLine>
-        <Text>{tradingSymbol.name}</Text>
-        <Text weight="bold">{tradingPair.leverage}×</Text>
-      </TradeLine>
+      <SegmentedControl
+        defaultValue={displayMode}
+        buttonStyle="solid"
+        value={displayMode}
+        onChange={(e) => { setModePosition(e.target.value); }}
+      >
+        <SegmentedControlItem value="basic">Basic</SegmentedControlItem>
+        <SegmentedControlItem value="advanced">Advanced</SegmentedControlItem>
+      </SegmentedControl>
+
       <Separator size={1} />
 
       <TradeLine>
-        <Input
+        <Text>{tradingSymbol.name}</Text>
+        <Text weight="bold">{Math.abs(tradingPair.leverage)}×</Text>
+      </TradeLine>
+
+      <TradeLine>
+        <AmountInput
           disabled={!isEnabled || isOpening}
           type="number"
           placeholder="Amount"
@@ -129,6 +188,8 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
           }}
         />
       </TradeLine>
+
+      { renderAdvanced() }
 
       <TradeButton>
         <BuyButton

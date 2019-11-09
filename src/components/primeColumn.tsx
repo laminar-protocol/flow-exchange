@@ -12,10 +12,15 @@ const Container = styled(Layout)`
   `}
 `;
 
-const Component = ({ children }) => (
+interface Props {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+const PrimeColumn: React.FC<Props> = ({ children }) => (
   <Container>
     { children }
   </Container>
 );
 
-export default Component;
+export default PrimeColumn;

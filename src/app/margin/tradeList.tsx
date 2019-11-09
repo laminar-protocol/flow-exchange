@@ -45,6 +45,10 @@ const ListHeader = styled.div`
   }
 `;
 
+const Filter = styled.div`
+  margin-bottom: 2rem;
+`;
+
 // ----------
 // Query
 // ----------
@@ -61,6 +65,9 @@ const positionQuery = gql`
       liquidator
       closeOwnerAmount
       openTime
+      closeTime
+      openTxhash
+      closeTxhash
       pair {
         id
       }
@@ -94,6 +101,8 @@ const TradeList: React.FC<Props> = ({
     ...event,
   })), [data]);
 
+  // const [displayPosition, setDisplayPosition] = useState('open' as string);
+
   if (isLoading) {
     return (
       <CenterContainer><Spinner /></CenterContainer>
@@ -114,6 +123,17 @@ const TradeList: React.FC<Props> = ({
 
   return (
     <Container>
+      <Filter>
+        {/* <SegmentedControl
+          defaultValue={displayPosition}
+          buttonStyle="solid"
+          value={displayPosition}
+          onChange={(e) => {setDisplayPosition(e.target.value)}}
+        >
+          <SegmentedControlItem value="open">Open</SegmentedControlItem>
+          <SegmentedControlItem value="closed">Closed</SegmentedControlItem>
+        </SegmentedControl> */}
+      </Filter>
       <ListHeader>
         <div className="column pair">
           Symbol
@@ -153,6 +173,7 @@ const TradeList: React.FC<Props> = ({
                 closeSpread={position.closeSpread}
                 liquidationFee={position.liquidationFee}
                 pair={position.pair.id}
+                openTxhash={position.openTxhash}
               />
             );
           }
@@ -164,6 +185,8 @@ const TradeList: React.FC<Props> = ({
               amount={position.amount}
               pair={position.pair.id}
               closeOwnerAmount={position.closeOwnerAmount}
+              openTxhash={position.openTxhash}
+              closeTxhash={position.closeTxhash}
             />
           );
         })

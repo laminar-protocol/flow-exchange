@@ -36,6 +36,11 @@ export const separatorColor = theme('mode', {
   dark: 'rgba(255, 255, 255, 0.10)',
 });
 
+export const segmentControlBackgroundColor = theme('mode', {
+  light: 'rgba(0, 0, 0, 0.025)',
+  dark: 'rgba(255, 255, 255, 0.05)',
+});
+
 // Theme colors
 export const keyColorBlue = theme('mode', {
   light: 'rgba(0,85,255,1)',
@@ -73,6 +78,11 @@ export const alwaysWhiteForegroundColor = theme('mode', {
   dark: 'rgba(255, 255, 255, 0.65)',
 });
 
+
+export const noticeForegroundColor = theme('mode', {
+  light: '#f80',
+  dark: 'rgba(255, 138, 0, 0.75)',
+});
 
 export const errorForegroundColor = theme('mode', {
   light: '#c00',

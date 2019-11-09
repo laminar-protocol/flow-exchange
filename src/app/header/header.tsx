@@ -42,7 +42,7 @@ const LoogText = styled.div`
   background-clip: text;
 `;
 
-const Header = () => (
+const Header: React.FC<{}> = () => (
   <HeaderContainer>
     <LogoContainer>
       <Logo src={LaminarLogo} />

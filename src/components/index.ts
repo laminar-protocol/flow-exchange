@@ -17,6 +17,8 @@ export { default as NumberFormat } from './numberFormat';
 export { FormatBalance } from './format';
 export { default as CurrencySelect } from './currencySelect';
 export { default as BalanceCell } from './balanceCell';
+export { default as SegmentedControl } from './segmentedControl';
+export { default as SegmentedControlItem } from './segmentedControlItem';
 
 export { default as Container } from './container';
 export { default as SideColumn } from './sideColumn';
