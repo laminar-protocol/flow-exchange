@@ -11,6 +11,7 @@ import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import * as Sentry from '@sentry/browser';
 
 import { subgraphEndpoints } from 'config';
 import Application from 'app/application/application.connect';
@@ -21,6 +22,8 @@ import ethereum from './services/ethereum';
 import NoService from './app/noService/noService';
 
 import 'antd/dist/antd.css';
+
+Sentry.init({ dsn: 'https://d480bdd4a4314799a685468721b3e891@sentry.io/1814370' });
 
 library.add(fas);
 
