@@ -27,7 +27,6 @@ const Widget = styled.div`
 `;
 
 const loadChart = (symbol: string, currentTheme: string) => {
-  return;
   const theme = (currentTheme === 'dark') ? 'Dark' : 'Light'
   new TradingView.widget({
     "autosize": true,
