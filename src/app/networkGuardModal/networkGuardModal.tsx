@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Modal, Text } from 'components';
-import { network } from 'config';
+import { network as requiredNetwork } from 'config';
 
 const Container = styled.div`
   display: flex;
@@ -14,10 +14,11 @@ const Container = styled.div`
 
 export interface StateProps {
   isNetworkGuardModalActive?: boolean;
+  network?: string;
 }
 
 const NetworkGuardModal: React.FC<StateProps> = ({
-  isNetworkGuardModalActive,
+  isNetworkGuardModalActive, network,
 }) => (
   <Modal
     centered
@@ -26,7 +27,8 @@ const NetworkGuardModal: React.FC<StateProps> = ({
     footer={null}
   >
     <Container>
-      <Text>Connect to {network} network & refesh.</Text>
+      <Text>Please connect to {requiredNetwork} network & refesh.</Text>
+      <div>Current network: {network}</div>
     </Container>
   </Modal>
 );
