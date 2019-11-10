@@ -18,9 +18,17 @@ const networkDecimalToString: any = {
 const epic: Epic = (action$) => action$.pipe(
   ofType(types.ethereum.enable.requested),
   mergeMap(() => new Observable((observable) => {
-    ethereum.provider.enable()
-      .then(([account]: string[]) => observable.next(actions.ethereum.enable.completed(account)))
-      .catch(() => observable.next(actions.ethereum.enable.failed()));
+    try {
+      ethereum.provider.enable()
+        .then(([account]: string[]) => observable.next(actions.ethereum.enable.completed(account)))
+        .catch(() => observable.next(actions.ethereum.enable.failed()));
+    } catch {
+      ethereum.web3.eth.getAccounts((_error, accounts) => {
+        if (accounts && accounts[0]) {
+          observable.next(actions.ethereum.enable.completed(accounts[0]));
+        }
+      });
+    }
     try {
       ethereum.provider.on('accountsChanged', ([account]: string[]) => {
         observable.next(actions.ethereum.account.changed(account));
