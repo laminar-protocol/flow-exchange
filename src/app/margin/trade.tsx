@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  Text, SolidButton, Separator, Input, SegmentedControl, SegmentedControlItem, InputNumber,
+  Text, SolidButton, Separator, Input, SegmentedControl, SegmentedControlItem, InputNumber, Notice,
 } from 'components';
 import { usePriceRate } from 'hooks/useOraclePrice';
 import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
@@ -125,7 +125,7 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
       <>
         <Separator size={1} />
         <TradeLine>
-          <Text weight="bold" light>Under Development</Text>
+          <Notice size="s" light>Under Development</Notice>
         </TradeLine>
         <Separator size={1} />
         <TradeLine>

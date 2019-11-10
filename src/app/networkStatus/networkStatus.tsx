@@ -24,13 +24,7 @@ const NetworkName = styled.div`
   text-transform: capitalize;
 `;
 
-const indicatorStatus = (ethereum) => {
-  const {
-    isConnected,
-    isConnecting,
-    isEnabling,
-  } = ethereum;
-
+const indicatorStatus = (isConnected: boolean, isConnecting: boolean, isEnabling: boolean) => {
   if (isConnecting || isEnabling) {
     return 'yellow';
   }
@@ -42,12 +36,7 @@ const indicatorStatus = (ethereum) => {
   return 'gray';
 };
 
-const networkStatus = (ethereum) => {
-  const {
-    isConnected,
-    isConnecting,
-    isEnabling,
-  } = ethereum;
+const networkStatus = (isConnected: boolean, isConnecting: boolean, isEnabling: boolean) => {
   if (isConnecting || isEnabling) {
     return 'Connecting';
   }
@@ -57,8 +46,11 @@ const networkStatus = (ethereum) => {
   return 'Disconnected';
 };
 
-const networkName = (ethereum) => {
-  const { network } = ethereum;
+const networkName = (network?: string) => {
+  if (!network) {
+    return 'No Network';
+  }
+
   switch (network) {
     case 'main':
       return 'Mainnet';
@@ -67,16 +59,28 @@ const networkName = (ethereum) => {
   }
 };
 
-const renderNetworkName = (name) => <NetworkName><Text size="s" light>{name}</Text></NetworkName>;
+const renderNetworkName = (name?: string) => <NetworkName><Text size="s" light>{name}</Text></NetworkName>;
 
-const Component = ({ ethereum }) => (
+export interface StateProps {
+  isConnected: boolean;
+  isConnecting: boolean;
+  isEnabling: boolean;
+  network?: string;
+}
+
+const NetworkStatus: React.FC<StateProps> = ({
+  isConnected,
+  isConnecting,
+  isEnabling,
+  network,
+}) => (
   <Container>
-    <Indicator size={10} color={indicatorStatus(ethereum)} />
+    <Indicator size={10} color={indicatorStatus(isConnected, isConnecting, isEnabling)} />
     <StatusText>
-      <div><Text>{networkStatus(ethereum)}</Text></div>
-      {ethereum.isConnected && renderNetworkName(networkName(ethereum))}
+      <div><Text>{networkStatus(isConnected, isConnecting, isEnabling)}</Text></div>
+      {isConnected && renderNetworkName(networkName(network))}
     </StatusText>
   </Container>
 );
 
-export default Component;
+export default NetworkStatus;

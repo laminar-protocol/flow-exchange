@@ -59,33 +59,36 @@ const Items = styled.div`
   justify-content:  flex-start;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 2rem;
+
   .item-link {
     ${theme.respondTo.lg`
-    width: 100%;
-    & {
+      width: 100%;
       border: none !important;
       border-bottom: 1px solid ${theme.borderColor} !important;
-    }
-  `}
+    `}
+
     width: 50%;
+
     &:nth-child(1) {
       border-bottom: 1px solid ${theme.borderColor};
       border-right: 1px solid ${theme.borderColor};
     }
+
     &:nth-child(2) {
       border-bottom: 1px solid ${theme.borderColor};
     }
+
     &:nth-child(3) {
       border-right: 1px solid ${theme.borderColor};
     }
   }
-  margin-top: 2rem;
 `;
 
 const Item = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content:  flex-start;
+  justify-content: flex-start;
   align-items: center;
 
   .link-icon {
@@ -160,7 +163,7 @@ const Component = () => (
               <Title>
                 Spot Exchange
                 <Description>
-                  Synthetic assets, Instant liquidity
+                  Synthetic assets, infinite liquidity
                 </Description>
               </Title>
             </Item>
@@ -182,7 +185,7 @@ const Component = () => (
               <Title>
                 Liquidity Provider
                 <Description>
-                  Become a counter party
+                  Become a counter party &amp; earn
                 </Description>
               </Title>
             </Item>

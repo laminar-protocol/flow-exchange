@@ -20,7 +20,6 @@ if (!deployment[network]) {
 }
 
 export const addresses = deployment[network];
-
 export const explorer = 'https://kovan.etherscan.io';
 
 export const tokens = {
@@ -124,7 +123,7 @@ export const tradingPairs = {
     symbol: 's20USDXAU',
     base: 'DAI' as TokenSymbol,
     quote: 'fXAU' as TokenSymbol,
-    leverage: 20,
+    leverage: -20,
     address: addresses.s20USDXAU,
     name: 'XAUUSD 20× Short',
   },
@@ -140,7 +139,7 @@ export const tradingPairs = {
     symbol: 's5USDAPPL',
     base: 'DAI' as TokenSymbol,
     quote: 'fAAPL' as TokenSymbol,
-    leverage: 5,
+    leverage: -5,
     address: addresses.s5USDAPPL,
     name: 'AAPL 20× Short',
   },
@@ -158,27 +157,27 @@ export const tradingSymbols = {
     name: 'EURUSD',
     long: 'l10USDEUR',
     short: 's10USDEUR',
-    leverage: 10,
     chartSymbol: 'EURUSD',
-    inverted: false, // TODO: Find the correct term
+    inverted: false,
+    leverage: 10,
     precision: 4,
   },
   USDJPY: {
     name: 'USDJPY',
     long: 's20USDJPY',
     short: 'l20USDJPY',
-    leverage: 20,
     chartSymbol: 'USDJPY',
-    inverted: true, // TODO: Find the correct term
+    inverted: true,
+    leverage: 20,
     precision: 2,
   },
   XAUUSD: {
     name: 'XAUUSD',
     long: 'l20USDXAU',
     short: 's20USDXAU',
-    leverage: 20,
     chartSymbol: 'XAUUSD',
-    inverted: false, // TODO: Find the correct term
+    inverted: false,
+    leverage: 20,
     precision: 2,
   },
 };
