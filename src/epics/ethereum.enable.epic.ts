@@ -21,14 +21,22 @@ const epic: Epic = (action$) => action$.pipe(
     ethereum.provider.enable()
       .then(([account]: string[]) => observable.next(actions.ethereum.enable.completed(account)))
       .catch(() => observable.next(actions.ethereum.enable.failed()));
-    ethereum.provider.on('accountsChanged', ([account]: string[]) => {
-      observable.next(actions.ethereum.account.changed(account));
-    });
-    ethereum.provider.on('networkChanged', (network: string) => {
-      observable.next(actions.ethereum.network.completed({
-        network: networkDecimalToString[network] || 'unknown',
-      }));
-    });
+    try {
+      ethereum.provider.on('accountsChanged', ([account]: string[]) => {
+        observable.next(actions.ethereum.account.changed(account));
+      });
+    } catch {
+      // ignore
+    }
+    try {
+      ethereum.provider.on('networkChanged', (network: string) => {
+        observable.next(actions.ethereum.network.completed({
+          network: networkDecimalToString[network] || 'unknown',
+        }));
+      });
+    } catch {
+      // ignore
+    }
   })),
 );
 
