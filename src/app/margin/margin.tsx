@@ -59,6 +59,13 @@ const SummaryCell = styled.div`
   padding-left: 1.5rem;
   border-left: 1px solid ${theme.borderColor};
 
+  ${theme.respondTo.md`
+    align-items: flex-start;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
+  `};
+
   &:first-child {
     border-left: 0;
   }

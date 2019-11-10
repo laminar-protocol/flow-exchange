@@ -60,6 +60,12 @@ const Lock = styled(GrantSwitch)`
   margin-top: -1.25rem;
   z-index: 168;
   border-radius: 0.5rem !important;
+
+  ${theme.respondTo.sm`
+    top: 0.5rem;
+    margin-top: 0;
+  `}
+
 `;
 
 const options = (symbols: string[], disabledSymbols?: string[]) => {

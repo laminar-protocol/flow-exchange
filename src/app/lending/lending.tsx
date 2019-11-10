@@ -1,18 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Text, Separator, Panel, SolidButton } from 'components';
+import { Text, Separator, Panel, SolidButton, Notice } from 'components';
 import * as theme from 'theme';
 
 const Container = styled.div`
-`;
-
-const Development = styled(Text)`
-  background-color: ${theme.noticeForegroundColor};
-  color: ${theme.alwaysWhiteForegroundColor};
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
 `;
 
 const Provider = styled.div`
@@ -39,7 +31,7 @@ const Component = () => (
     <p>
       <Text size="h">Borrow &amp; Lending</Text>
     </p>
-    <Development weight="bold">Under Development | Demo Page</Development>
+    <Notice weight="bold">Under Development | Demo Page</Notice>
     <Separator />
     <Panel>
       <Provider>
