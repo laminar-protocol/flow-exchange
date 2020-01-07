@@ -21,8 +21,7 @@ const epic: Epic = (action$, state$) => action$.pipe(
 
       return { type: types.faucet.dai.completed, payload: { amount } };
     } catch (error) {
-      console.error(error);
-      return { type: types.faucet.dai.failed, payload: null };
+      return { type: types.faucet.dai.failed, payload: null, error };
     }
   }),
 );

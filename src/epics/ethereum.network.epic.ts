@@ -16,8 +16,7 @@ const epic: Epic = (action$, state$) => action$.pipe(
         payload: { network },
       };
     } catch (error) {
-      console.error(error);
-      return { type: types.ethereum.network.failed };
+      return { type: types.ethereum.network.failed, error };
     }
   }),
 );

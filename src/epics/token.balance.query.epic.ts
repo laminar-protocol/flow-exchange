@@ -26,8 +26,7 @@ const epic: Epic = (action$, state$) => combineLatest(
         payload: { symbol, balance },
       };
     } catch (error) {
-      console.error(error);
-      return { type: types.token.balance.failed, payload: { symbol, error } };
+      return { type: types.token.balance.failed, payload: { symbol, error }, error };
     }
   }),
 );

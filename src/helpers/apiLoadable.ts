@@ -87,10 +87,7 @@ export function createEpic<S, T, I, P, E = any>(
       mergeMap(({ payload }) =>
         from(run(payload && payload.id, payload && payload.params, state$)).pipe(
           map((resp) => apiAction.completed({ id: payload && payload.id, value: resp })),
-          catchError((error: E) => {
-            console.error(error); // TODO redux logger middleware for failed actions
-            return of(apiAction.failed({ id: payload && payload.id, error }));
-          }),
+          catchError((error: E) => of(apiAction.failed({ id: payload && payload.id, error }))),
           takeUntil(action$.pipe(
             ofType(types.cancelled),
             filter((action) => action.payload && payload && (action.payload.id === payload.id)),

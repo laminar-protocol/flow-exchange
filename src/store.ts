@@ -5,6 +5,7 @@ import { createBrowserHistory } from 'history';
 
 import createRootReducer from 'reducers';
 import rootEpic from 'epics';
+import { errorLogger } from 'middleware';
 
 export const history = createBrowserHistory();
 
@@ -24,6 +25,7 @@ const epicMiddleware = createEpicMiddleware();
 
 // Router
 const combinedMiddleware = applyMiddleware(
+  errorLogger,
   routerMiddleware(history),
   epicMiddleware,
 );
