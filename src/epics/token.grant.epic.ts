@@ -21,8 +21,7 @@ const epic: Epic = (action$, state$) => action$.pipe(
 
       return { type: types.token.grant.completed, payload: { symbol } };
     } catch (error) {
-      console.error(error);
-      return { type: types.token.grant.failed, payload: { symbol } };
+      return { type: types.token.grant.failed, payload: { symbol }, error };
     }
   }),
 );

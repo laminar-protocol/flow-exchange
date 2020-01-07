@@ -28,8 +28,7 @@ const epic: Epic = (action$, state$) => action$.pipe(
 
       return { type: types.swap.mint.completed, payload: success };
     } catch (error) {
-      console.error(error);
-      return { type: types.swap.mint.failed };
+      return { type: types.swap.mint.failed, error };
     }
   }),
 );

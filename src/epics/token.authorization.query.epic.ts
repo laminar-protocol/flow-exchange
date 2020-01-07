@@ -28,8 +28,7 @@ const epic: Epic = (action$, state$) => combineLatest(
         payload: { symbol, balance, address: grantAddress },
       };
     } catch (error) {
-      console.error(error);
-      return { type: types.token.authorization.failed, payload: { symbol } };
+      return { type: types.token.authorization.failed, payload: { symbol }, error };
     }
   }),
 );
