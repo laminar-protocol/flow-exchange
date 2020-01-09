@@ -10,8 +10,8 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   border: 1px solid ${theme.borderColor};
-  padding: ${(props) => (props.padding || 1.25)}rem;
-  border-radius: ${(props) => (props.radius || 0.5)}rem;
+  padding: ${props => props.padding || 1.25}rem;
+  border-radius: ${props => props.radius || 0.5}rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   background-color: ${theme.lightBackgroundColor};
 `;
@@ -21,11 +21,9 @@ interface Props extends ContainerProps {
   children?: React.ReactNode;
 }
 
-const Panel: React.FC<Props> = ({
-  className, radius, padding, children,
-}) => (
+const Panel: React.FC<Props> = ({ className, radius, padding, children }) => (
   <Container className={className} radius={radius} padding={padding}>
-    { children }
+    {children}
   </Container>
 );
 

@@ -6,14 +6,15 @@ import { notification } from 'antd';
 import types from 'types';
 import { Epic } from 'reducers';
 
-const epic: Epic = (action$) => action$.pipe(
-  ofType(types.swap.mint.completed, types.swap.redeem.completed),
-  mergeMap(() => {
-    notification.success({
-      message: 'Swap Successful',
-    });
-    return empty();
-  }),
-);
+const epic: Epic = action$ =>
+  action$.pipe(
+    ofType(types.swap.mint.completed, types.swap.redeem.completed),
+    mergeMap(() => {
+      notification.success({
+        message: 'Swap Successful',
+      });
+      return empty();
+    })
+  );
 
 export default epic;

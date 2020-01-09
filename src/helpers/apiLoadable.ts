@@ -20,7 +20,7 @@ export interface MultiState<T, I = string, P = void, E = any> {
 }
 
 export function createReducer<T, I = string, P = void, E = any>(
-  apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>,
+  apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>
 ) {
   return new ReducerBuilder<MultiState<T, I, P, E>>({ states: {} })
     .handle(apiAction.requested, (state, { payload }) => {
@@ -71,9 +71,9 @@ export function createReducer<T, I = string, P = void, E = any>(
 export function createEpic<S, T, I, P, E = any>(
   apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>,
   run: (id: I, params: P, state: StateObservable<S>) => ObservableInput<T>,
-  additionalTrigger?: Epic<any, any, S>,
+  additionalTrigger?: Epic<any, any, S>
 ): Epic<any, any, S> {
-  const types = mapObjIndexed((x) => x().type, apiAction);
+  const types = mapObjIndexed(x => x().type, apiAction);
   return (action$, state$, dep) => {
     let from$;
     if (additionalTrigger) {
@@ -86,13 +86,16 @@ export function createEpic<S, T, I, P, E = any>(
       ofType(types.requested),
       mergeMap(({ payload }) =>
         from(run(payload && payload.id, payload && payload.params, state$)).pipe(
-          map((resp) => apiAction.completed({ id: payload && payload.id, value: resp })),
+          map(resp => apiAction.completed({ id: payload && payload.id, value: resp })),
           catchError((error: E) => of(apiAction.failed({ id: payload && payload.id, error }))),
-          takeUntil(action$.pipe(
-            ofType(types.cancelled),
-            filter((action) => action.payload && payload && (action.payload.id === payload.id)),
-          )),
-        )),
+          takeUntil(
+            action$.pipe(
+              ofType(types.cancelled),
+              filter(action => action.payload && payload && action.payload.id === payload.id)
+            )
+          )
+        )
+      )
     );
   };
 }

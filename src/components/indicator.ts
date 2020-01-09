@@ -6,7 +6,7 @@ interface IndicatorProps {
 }
 
 const Indicator = styled.span<IndicatorProps>`
-  background-color: ${(props) => {
+  background-color: ${props => {
     switch (props.color) {
       case 'green':
         return theme.indicatorGreenColor;
@@ -16,9 +16,9 @@ const Indicator = styled.span<IndicatorProps>`
         return theme.indicatorGrayColor;
     }
   }};
-  width: ${(props) => props.size || 10}px;
-  height: ${(props) => props.size || 10}px;
-  border-radius: ${(props) => (props.size || 10) / 2}px;
+  width: ${props => props.size || 10}px;
+  height: ${props => props.size || 10}px;
+  border-radius: ${props => (props.size || 10) / 2}px;
 `;
 
 export default Indicator;

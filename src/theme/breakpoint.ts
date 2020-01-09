@@ -9,8 +9,11 @@ const breakpoints = {
   xl: '1400px',
 };
 
-export default mapObjIndexed((val) => (...args: Parameters<typeof css>) => css`
-@media (max-width: ${val}) {
-  ${css(...args)};
-}
-`, breakpoints);
+export default mapObjIndexed(
+  val => (...args: Parameters<typeof css>) => css`
+    @media (max-width: ${val}) {
+      ${css(...args)};
+    }
+  `,
+  breakpoints
+);

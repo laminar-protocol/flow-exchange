@@ -78,7 +78,6 @@ export const alwaysWhiteForegroundColor = theme('mode', {
   dark: 'rgba(255, 255, 255, 0.65)',
 });
 
-
 export const noticeForegroundColor = theme('mode', {
   light: '#f80',
   dark: 'rgba(255, 138, 0, 0.75)',
@@ -99,7 +98,6 @@ export const buyColor = theme('mode', {
   light: '#090',
   dark: 'rgba(0, 128, 0, 0.5)',
 });
-
 
 // Side bar
 export const sideBarWidth = 300;

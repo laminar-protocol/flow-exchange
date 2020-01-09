@@ -13,7 +13,7 @@ import FaucetInterface from 'flow-protocol/artifacts/abi/FaucetInterface.json';
 import deployment from 'flow-protocol/artifacts/deployment.json';
 
 // TODO: setup pipeline for mainnet
-export const network: keyof typeof deployment = process.env.REACT_APP_NETWORK || 'kovan' as any;
+export const network: keyof typeof deployment = process.env.REACT_APP_NETWORK || ('kovan' as any);
 
 if (!deployment[network]) {
   throw new Error(`Invalid network: ${network}`);
@@ -149,7 +149,7 @@ export const tradingPairs = {
 
 export const findTradingPairByAddress = (address: string) => {
   const pairs = Object.values(tradingPairs);
-  return pairs.find((pair) => (pair.address.toLocaleLowerCase() === address.toLocaleLowerCase()));
+  return pairs.find(pair => pair.address.toLocaleLowerCase() === address.toLocaleLowerCase());
 };
 
 export const tradingSymbols = {
@@ -193,12 +193,12 @@ export const findTradingSybmolByPairAddress = (address: string) => {
   }
 
   const symbols = Object.values(tradingSymbols);
-  const symbol = symbols.find((s) => (s.long === pair.symbol) || (s.short === pair.symbol));
+  const symbol = symbols.find(s => s.long === pair.symbol || s.short === pair.symbol);
 
   if (symbol) {
     return {
       symbol,
-      direction: (symbol.long === pair.symbol) ? 'long' : 'short',
+      direction: symbol.long === pair.symbol ? 'long' : 'short',
     };
   }
 
@@ -224,7 +224,6 @@ export const liquidityPools = {
 
 export type LiquidityPool = keyof typeof liquidityPools;
 export const isLiquidityPool = (pool: string): pool is LiquidityPool => (liquidityPools as any)[pool] != null;
-
 
 export const abi = {
   ERC20: ERC20Detailed as any,

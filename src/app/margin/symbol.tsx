@@ -15,7 +15,7 @@ interface RowProps {
 
 const SymbolRow = styled.div<RowProps>`
   color: ${theme.foregroundColor};
-  background-color: ${(props) => (props.highlight ? theme.backgroundColor : 'transparent')};
+  background-color: ${props => (props.highlight ? theme.backgroundColor : 'transparent')};
 
   border-bottom: 1px solid ${theme.borderColor};
 
@@ -31,15 +31,14 @@ const SymbolRow = styled.div<RowProps>`
     width: 30%;
   }
 
-  .bid, .ask {
+  .bid,
+  .ask {
     width: 35%;
     text-align: right;
     font-variant-numeric: tabular-nums;
     font-weight: ${theme.boldWeight};
   }
-
 `;
-
 
 // ----------
 // Interface
@@ -65,9 +64,7 @@ const Symbol: React.FC<Props> = ({ symbol, pool }) => {
   return (
     <Link to={`/margin/${liquidityPool.key}/${tradingSymbol.name}`}>
       <SymbolRow highlight={tradingSymbol.name === selectedSymbol}>
-        <div className="symbol">
-          {tradingSymbol.name}
-        </div>
+        <div className="symbol">{tradingSymbol.name}</div>
         <div className="bid">
           <FormatRate
             value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'bid', rate)}

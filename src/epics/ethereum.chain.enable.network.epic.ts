@@ -5,9 +5,10 @@ import { ofType } from 'redux-observable';
 import types from 'types';
 import { Epic } from 'reducers';
 
-const epic: Epic = (action$) => action$.pipe(
-  ofType(types.ethereum.enable.completed),
-  mergeMap(() => of({ type: types.ethereum.network.requested })),
-);
+const epic: Epic = action$ =>
+  action$.pipe(
+    ofType(types.ethereum.enable.completed),
+    mergeMap(() => of({ type: types.ethereum.network.requested }))
+  );
 
 export default epic;

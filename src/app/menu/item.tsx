@@ -36,9 +36,7 @@ export interface StateProps {
   children?: ReactNode;
 }
 
-const MenuItem: React.FC<StateProps> = ({
-  icon, noRoute, to, onClick, children,
-}) => {
+const MenuItem: React.FC<StateProps> = ({ icon, noRoute, to, onClick, children }) => {
   const Element = noRoute ? 'a' : Link;
   return (
     <Element to={to || ''} onClick={onClick}>
@@ -46,9 +44,7 @@ const MenuItem: React.FC<StateProps> = ({
         <Icon>
           <FontAwesomeIcon icon={icon} />
         </Icon>
-        <Content>
-          { children }
-        </Content>
+        <Content>{children}</Content>
       </Item>
     </Element>
   );

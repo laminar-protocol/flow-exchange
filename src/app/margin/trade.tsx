@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  Text, SolidButton, Separator, Input, SegmentedControl, SegmentedControlItem, InputNumber, Notice,
+  Text,
+  SolidButton,
+  Separator,
+  Input,
+  SegmentedControl,
+  SegmentedControlItem,
+  InputNumber,
+  Notice,
 } from 'components';
 import { usePriceRate } from 'hooks/useOraclePrice';
 import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
@@ -41,7 +48,7 @@ const TradePrice = styled.div`
   display: flex;
   flex-direction: row;
   ${Text} {
-    text-align:center;
+    text-align: center;
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
     flex: 1;
@@ -70,8 +77,7 @@ const SellButton = styled(SolidButton)`
   &.ant-btn,
   &.ant-btn:hover,
   &.ant-btn:focus,
-  &.ant-btn:active
-  {
+  &.ant-btn:active {
     background-color: ${theme.sellColor};
     color: ${theme.alwaysWhiteForegroundColor};
   }
@@ -81,8 +87,7 @@ const BuyButton = styled(SolidButton)`
   &.ant-btn,
   &.ant-btn:hover,
   &.ant-btn:focus,
-  &.ant-btn:active
-  {
+  &.ant-btn:active {
     background-color: ${theme.buyColor};
     color: ${theme.alwaysWhiteForegroundColor};
   }
@@ -125,7 +130,9 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
       <>
         <Separator size={1} />
         <TradeLine>
-          <Notice size="s" light>Under Development</Notice>
+          <Notice size="s" light>
+            Under Development
+          </Notice>
         </TradeLine>
         <Separator size={1} />
         <TradeLine>
@@ -159,7 +166,9 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
         defaultValue={displayMode}
         buttonStyle="solid"
         value={displayMode}
-        onChange={(e) => { setModePosition(e.target.value); }}
+        onChange={e => {
+          setModePosition(e.target.value);
+        }}
       >
         <SegmentedControlItem value="basic">Basic</SegmentedControlItem>
         <SegmentedControlItem value="advanced">Advanced</SegmentedControlItem>
@@ -178,7 +187,7 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
           type="number"
           placeholder="Amount"
           value={amount}
-          onChange={(event) => {
+          onChange={event => {
             const number = Number(event.target.value);
             if (number > 0) {
               setAmount(Number(event.target.value));
@@ -189,7 +198,7 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
         />
       </TradeLine>
 
-      { renderAdvanced() }
+      {renderAdvanced()}
 
       <TradeButton>
         <BuyButton

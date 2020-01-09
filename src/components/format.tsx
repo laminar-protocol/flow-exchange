@@ -30,7 +30,6 @@ const rateFormatOptions = {
   trimMantissa: false,
 };
 
-
 export interface FormatProps {
   value?: string | number;
   options?: Record<string, any>;
@@ -42,22 +41,20 @@ export interface FormatExtraProps extends FormatProps {
 }
 
 export const Format: React.FC<FormatExtraProps> = ({ value, options, className, defaultOptions }) => (
-  <span className={className}>{value == null ? '' : numbro(value).format(options ? { ...defaultOptions, ...options } : defaultOptions)}</span>
+  <span className={className}>
+    {value == null ? '' : numbro(value).format(options ? { ...defaultOptions, ...options } : defaultOptions)}
+  </span>
 );
 
-export const FormatBalance: React.FC<FormatProps> = (props) => (
+export const FormatBalance: React.FC<FormatProps> = props => (
   <Format {...props} defaultOptions={balanceFormatOptions} />
 );
 
-export const FormatProfit: React.FC<FormatProps> = (props) => (
-  <Format {...props} defaultOptions={profitFormatOptions} />
-);
+export const FormatProfit: React.FC<FormatProps> = props => <Format {...props} defaultOptions={profitFormatOptions} />;
 
-export const FormatPrice: React.FC<FormatProps> = (props) => (
-  <Format {...props} defaultOptions={priceFormatOptions} />
-);
+export const FormatPrice: React.FC<FormatProps> = props => <Format {...props} defaultOptions={priceFormatOptions} />;
 
-export const FormatRate: React.FC<FormatProps> = (props) => {
+export const FormatRate: React.FC<FormatProps> = props => {
   const { value } = props;
   if (!value) {
     return <span>—</span>;

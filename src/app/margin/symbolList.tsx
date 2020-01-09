@@ -32,7 +32,9 @@ const SymbolHeader = styled.div`
   border-bottom: 1px solid ${theme.borderColor};
   padding-bottom: 1rem;
 
-  .symbol, .bid, .ask {
+  .symbol,
+  .bid,
+  .ask {
     font-weight: ${theme.boldWeight};
     text-transform: uppercase;
   }
@@ -40,7 +42,8 @@ const SymbolHeader = styled.div`
   .symbol {
     width: 30%;
   }
-  .bid, .ask {
+  .bid,
+  .ask {
     width: 35%;
     text-align: right;
   }
@@ -55,7 +58,8 @@ const PoolHeader = styled.div`
   border-bottom: 1px solid ${theme.borderColor};
   padding-bottom: 1rem;
 
-  .pool, .available {
+  .pool,
+  .available {
     font-weight: ${theme.boldWeight};
     text-transform: uppercase;
   }
@@ -84,28 +88,22 @@ const SymbolList: React.FC = () => {
     <Container padding={0}>
       <SymbolContainer>
         <SymbolHeader>
-          <div className="symbol">
-            Symbol
-          </div>
-          <div className="bid">
-            Bid
-          </div>
-          <div className="ask">
-            Ask
-          </div>
+          <div className="symbol">Symbol</div>
+          <div className="bid">Bid</div>
+          <div className="ask">Ask</div>
         </SymbolHeader>
-        { symbols.map((symbol) => <Symbol key={symbol} symbol={symbol} pool={selectedPool} />) }
+        {symbols.map(symbol => (
+          <Symbol key={symbol} symbol={symbol} pool={selectedPool} />
+        ))}
       </SymbolContainer>
       <PoolContainer>
         <PoolHeader>
-          <div className="pool">
-            Liquidity Pool
-          </div>
-          <div className="available">
-            Available
-          </div>
+          <div className="pool">Liquidity Pool</div>
+          <div className="available">Available</div>
         </PoolHeader>
-        { pools.map((pool) => <Pool key={pool} pool={pool} symbol={selectedSymbol} />) }
+        {pools.map(pool => (
+          <Pool key={pool} pool={pool} symbol={selectedSymbol} />
+        ))}
       </PoolContainer>
     </Container>
   );

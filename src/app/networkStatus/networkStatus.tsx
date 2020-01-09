@@ -59,7 +59,13 @@ const networkName = (network?: string) => {
   }
 };
 
-const renderNetworkName = (name?: string) => <NetworkName><Text size="s" light>{name}</Text></NetworkName>;
+const renderNetworkName = (name?: string) => (
+  <NetworkName>
+    <Text size="s" light>
+      {name}
+    </Text>
+  </NetworkName>
+);
 
 export interface StateProps {
   isConnected: boolean;
@@ -68,16 +74,13 @@ export interface StateProps {
   network?: string;
 }
 
-const NetworkStatus: React.FC<StateProps> = ({
-  isConnected,
-  isConnecting,
-  isEnabling,
-  network,
-}) => (
+const NetworkStatus: React.FC<StateProps> = ({ isConnected, isConnecting, isEnabling, network }) => (
   <Container>
     <Indicator size={10} color={indicatorStatus(isConnected, isConnecting, isEnabling)} />
     <StatusText>
-      <div><Text>{networkStatus(isConnected, isConnecting, isEnabling)}</Text></div>
+      <div>
+        <Text>{networkStatus(isConnected, isConnecting, isEnabling)}</Text>
+      </div>
       {isConnected && renderNetworkName(networkName(network))}
     </StatusText>
   </Container>

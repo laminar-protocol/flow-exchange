@@ -93,17 +93,11 @@ const OpenTrade: React.FC<Props> = ({
   return (
     <Container>
       <ListRow>
-        <div className="column pair">
-          {tradingSymbol.name}
-        </div>
+        <div className="column pair">{tradingSymbol.name}</div>
 
-        <div className="column direction">
-          { direction }
-        </div>
+        <div className="column direction">{direction}</div>
 
-        <div className="column lerverage">
-          { Math.abs(Number(tradingPair.leverage)) }×
-        </div>
+        <div className="column lerverage">{Math.abs(Number(tradingPair.leverage))}×</div>
 
         <div className="column amount">
           <FormatProfit value={amount} />
@@ -125,11 +119,7 @@ const OpenTrade: React.FC<Props> = ({
           <FormatProfit value={profit} />
         </div>
 
-        <div className="column action">
-            Closed
-        </div>
-
-
+        <div className="column action">Closed</div>
       </ListRow>
     </Container>
   );

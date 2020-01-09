@@ -19,7 +19,7 @@ const INITIAL_STATE = {
 
 const parseNetwork = (payload: any) => ({
   network: payload.network,
-  isTestnet: (payload.network !== 'main'),
+  isTestnet: payload.network !== 'main',
 });
 
 const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
@@ -74,7 +74,7 @@ const reducer = (state = INITIAL_STATE, { type, payload }: any) => {
         ...networkInfo,
         isConnecting: false,
         isConnected: true,
-        isNetworkGuardModalActive: networkInfo.network && (networkInfo.network !== network),
+        isNetworkGuardModalActive: networkInfo.network && networkInfo.network !== network,
       };
     }
 

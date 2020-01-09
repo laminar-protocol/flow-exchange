@@ -5,11 +5,11 @@ const multipleEpicsContext = require.context('./', true, /\.epics\.(j|t)sx?$/);
 
 const epics = [];
 
-epicsContext.keys().forEach((key) => {
+epicsContext.keys().forEach(key => {
   epics.push(epicsContext(key).default);
 });
 
-multipleEpicsContext.keys().forEach((key) => {
+multipleEpicsContext.keys().forEach(key => {
   epics.push(...Object.values(multipleEpicsContext(key)));
 });
 

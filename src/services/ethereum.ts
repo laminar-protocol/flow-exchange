@@ -28,7 +28,6 @@ class Ethereum {
     fAAPL: Contract;
   };
 
-
   public readonly faucets: {
     DAI: Contract;
   };
@@ -74,7 +73,10 @@ class Ethereum {
       DAI: daiFaucetContract,
     };
 
-    this.marginTradingPairs = mapObjIndexed((pair) => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address), tradingPairs);
+    this.marginTradingPairs = mapObjIndexed(
+      pair => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address),
+      tradingPairs
+    );
   }
 
   // TODO: Hack, need to unified tokens naming;

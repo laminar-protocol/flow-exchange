@@ -14,11 +14,7 @@ import Liquidity from 'app/liquidity/liquidity.connect';
 import ConnectModal from 'app/connectModal/connectModal.connect';
 import NetworkGuardModal from 'app/networkGuardModal/networkGuardModal.connect';
 
-
-import {
-  Container, SideBar, Prime, SideColumn, PrimeColumn,
-} from 'components';
-
+import { Container, SideBar, Prime, SideColumn, PrimeColumn } from 'components';
 
 const Content = styled.div`
   margin: 3rem;

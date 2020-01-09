@@ -2,7 +2,7 @@ import { mergeDeepRight } from 'ramda';
 import { Reducer } from 'redux';
 import { Action, ActionCreator } from './typeCreator';
 
-type StateReducer<S, P = any> = (state: S, action: Action<P>) => Partial<S>
+type StateReducer<S, P = any> = (state: S, action: Action<P>) => Partial<S>;
 
 export default class ReducerBuilder<S extends object> {
   private readonly _reducers: Record<string, StateReducer<S>> = {};
@@ -38,6 +38,7 @@ export default class ReducerBuilder<S extends object> {
 }
 
 export const createReducer = <S extends object, T>(
-  actionCreator: ActionCreator<T> | ActionCreator<T>[], initalState: S, handler: StateReducer<S, T>,
-) =>
-  new ReducerBuilder(initalState).handle(actionCreator, handler).build();
+  actionCreator: ActionCreator<T> | ActionCreator<T>[],
+  initalState: S,
+  handler: StateReducer<S, T>
+) => new ReducerBuilder(initalState).handle(actionCreator, handler).build();

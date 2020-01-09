@@ -11,7 +11,7 @@ const mapStateToProps = ({ setting: { currentTheme } }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onChangeTheme: (currentTheme: string) => {
-    const theme = (currentTheme === 'light') ? 'dark' : 'light';
+    const theme = currentTheme === 'light' ? 'dark' : 'light';
     dispatch(actions.app.theme.changed(theme));
   },
 });

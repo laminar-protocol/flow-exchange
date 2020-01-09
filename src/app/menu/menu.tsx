@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  Separator, Flex, Switch,
-} from 'components';
+import { Separator, Flex, Switch } from 'components';
 import * as theme from 'theme';
 import NetworkStatus from 'app/networkStatus/networkStatus.connect';
 import LaminarLogo from 'assets/laminar.svg';
@@ -66,10 +64,7 @@ export interface StateProps {
   onChangeTheme: (theme: string) => void;
 }
 
-const Component: React.FC<StateProps> = ({
-  currentTheme,
-  onChangeTheme,
-}) => (
+const Component: React.FC<StateProps> = ({ currentTheme, onChangeTheme }) => (
   <Container>
     <div>
       <LogoContainer>
@@ -80,12 +75,22 @@ const Component: React.FC<StateProps> = ({
       <Menu>
         <Wallet />
         <Separator />
-        <MenuItem icon="home" to="/dashboard">Dashboard</MenuItem>
+        <MenuItem icon="home" to="/dashboard">
+          Dashboard
+        </MenuItem>
         <Separator />
-        <MenuItem icon="chart-line" to="/margin">Margin Trading</MenuItem>
-        <MenuItem icon="exchange-alt" to="/swap">Swap</MenuItem>
-        <MenuItem icon="landmark" to="/lending">Deposit &amp; Earn</MenuItem>
-        <MenuItem icon="hand-holding-usd" to="/liquidity">Liquidity Provider</MenuItem>
+        <MenuItem icon="chart-line" to="/margin">
+          Margin Trading
+        </MenuItem>
+        <MenuItem icon="exchange-alt" to="/swap">
+          Swap
+        </MenuItem>
+        <MenuItem icon="landmark" to="/lending">
+          Deposit &amp; Earn
+        </MenuItem>
+        <MenuItem icon="hand-holding-usd" to="/liquidity">
+          Liquidity Provider
+        </MenuItem>
       </Menu>
     </div>
     <div>
@@ -94,11 +99,15 @@ const Component: React.FC<StateProps> = ({
           <NetworkStatus />
         </div>
         <ThemeSwitch>
-          <Switch onChange={() => { onChangeTheme(currentTheme); }} checked={currentTheme === 'dark'} />
+          <Switch
+            onChange={() => {
+              onChangeTheme(currentTheme);
+            }}
+            checked={currentTheme === 'dark'}
+          />
           <AdjustIcon icon="adjust" />
         </ThemeSwitch>
       </Flex>
-
     </div>
   </Container>
 );

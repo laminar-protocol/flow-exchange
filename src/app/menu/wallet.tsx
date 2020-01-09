@@ -1,16 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  Text,
-} from 'components';
-
+import { Text } from 'components';
 
 import { truncate } from 'helpers/stringHelper';
 import MenuItem from './item';
 
 const Address = styled(Text)`
-
   text-overflow: ellipsis;
 `;
 
@@ -26,14 +22,12 @@ export interface StateProps {
   onWalletConnect: () => void;
 }
 
-const Component: React.FC<StateProps> = ({
-  account, onWalletConnect,
-}) => (
+const Component: React.FC<StateProps> = ({ account, onWalletConnect }) => (
   <MenuItem icon="wallet" noRoute onClick={() => onWalletConnect()}>
     <div>Wallet</div>
     <div>
       <Address size="s" light>
-        { accountName(account) || 'Please connect your wallet' }
+        {accountName(account) || 'Please connect your wallet'}
       </Address>
     </div>
   </MenuItem>

@@ -25,7 +25,11 @@ const query = gql`
 
 export const useOraclePrice = (options?: SubscriptionHookOptions<QueryResult, {}>) => useSubscription(query, options);
 
-export const usePriceRate = (fromSymbol: TokenSymbol, toSymbol: TokenSymbol, options?: SubscriptionHookOptions<QueryResult, {}>) => {
+export const usePriceRate = (
+  fromSymbol: TokenSymbol,
+  toSymbol: TokenSymbol,
+  options?: SubscriptionHookOptions<QueryResult, {}>
+) => {
   const { loading, error, data } = useOraclePrice(options);
   const rate = useMemo(() => {
     if (fromSymbol === toSymbol) {

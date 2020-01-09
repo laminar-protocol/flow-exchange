@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { Text, Separator, Panel, PrimaryButton, Flex, Notice } from 'components';
 import * as theme from 'theme';
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const Provider = styled.div`
   display: flex;
@@ -51,9 +50,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $500,000
-            </Text>
+            <Text size="l">$500,000</Text>
           </div>
         </Item>
 
@@ -64,9 +61,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $10,000,000
-            </Text>
+            <Text size="l">$10,000,000</Text>
           </div>
         </Item>
 
@@ -77,9 +72,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              EUR, JPY
-            </Text>
+            <Text size="l">EUR, JPY</Text>
           </div>
         </Item>
       </Provider>
@@ -97,9 +90,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $200,000
-            </Text>
+            <Text size="l">$200,000</Text>
           </div>
         </Item>
 
@@ -110,9 +101,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $5,000,000
-            </Text>
+            <Text size="l">$5,000,000</Text>
           </div>
         </Item>
 
@@ -123,9 +112,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              XAU
-            </Text>
+            <Text size="l">XAU</Text>
           </div>
         </Item>
       </Provider>

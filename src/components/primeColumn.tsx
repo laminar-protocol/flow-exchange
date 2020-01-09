@@ -17,10 +17,6 @@ interface Props {
   className?: string;
 }
 
-const PrimeColumn: React.FC<Props> = ({ children }) => (
-  <Container>
-    { children }
-  </Container>
-);
+const PrimeColumn: React.FC<Props> = ({ children }) => <Container>{children}</Container>;
 
 export default PrimeColumn;

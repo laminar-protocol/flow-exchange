@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { Text, Separator, Panel, SolidButton, Notice } from 'components';
 import * as theme from 'theme';
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const Provider = styled.div`
   display: flex;
@@ -47,9 +46,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $500,000
-            </Text>
+            <Text size="l">$500,000</Text>
           </div>
         </Item>
 
@@ -60,9 +57,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              3%
-            </Text>
+            <Text size="l">3%</Text>
           </div>
         </Item>
 
@@ -86,9 +81,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $200,000
-            </Text>
+            <Text size="l">$200,000</Text>
           </div>
         </Item>
 
@@ -99,9 +92,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              3%
-            </Text>
+            <Text size="l">3%</Text>
           </div>
         </Item>
 
@@ -125,9 +116,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $200,000
-            </Text>
+            <Text size="l">$200,000</Text>
           </div>
         </Item>
 
@@ -138,9 +127,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              3%
-            </Text>
+            <Text size="l">3%</Text>
           </div>
         </Item>
 
@@ -164,9 +151,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              $200,000
-            </Text>
+            <Text size="l">$200,000</Text>
           </div>
         </Item>
 
@@ -177,9 +162,7 @@ const Component = () => (
             </Text>
           </div>
           <div>
-            <Text size="l">
-              3%
-            </Text>
+            <Text size="l">3%</Text>
           </div>
         </Item>
 

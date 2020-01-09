@@ -39,42 +39,42 @@ class ChartTicker extends Component {
 
   componentDidMount() {
     const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
     script.async = false;
     script.innerHTML = JSON.stringify({
-      "symbols": [
+      symbols: [
         {
-          "description": "",
-          "proName": "FX:EURUSD"
+          description: '',
+          proName: 'FX:EURUSD',
         },
         {
-          "description": "",
-          "proName": "FX:USDJPY"
+          description: '',
+          proName: 'FX:USDJPY',
         },
         {
-          "description": "",
-          "proName": "OANDA:XAUUSD"
+          description: '',
+          proName: 'OANDA:XAUUSD',
         },
         {
-          "description": "",
-          "proName": "NASDAQ:AAPL"
-        }
+          description: '',
+          proName: 'NASDAQ:AAPL',
+        },
       ],
-      "colorTheme": "light",
-      "isTransparent": false,
-      "displayMode": "compact",
-      "locale": "en"
-    })
+      colorTheme: 'light',
+      isTransparent: false,
+      displayMode: 'compact',
+      locale: 'en',
+    });
     this.chartRef.current.appendChild(script);
   }
 
   render() {
-    return(
-    <Link to='/margin'>
-      <Widget ref={this.chartRef}>
-          <div className="tradingview-widget-container__widget"></div>
-      </Widget>
-    </Link>
+    return (
+      <Link to="/margin">
+        <Widget ref={this.chartRef}>
+          <div className="tradingview-widget-container__widget" />
+        </Widget>
+      </Link>
     );
   }
 }
