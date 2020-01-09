@@ -3,9 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { TokenSymbol } from 'config';
 import { usePriceRate } from 'hooks/useOraclePrice';
-import {
-  Text, Separator, PrimaryButton,
-} from 'components';
+import { Text, Separator, PrimaryButton } from 'components';
 import BalanceLine from 'app/balanceLine/balanceLine.connect';
 
 import {
@@ -96,31 +94,27 @@ const Swap: React.FC<StateProps> = ({
   // ----------
   // Hooks
   // ----------
-  const {
-    loading: isLoadingRate,
-    data: rate,
-  } = usePriceRate(fromSymbol, toSymbol);
+  const { loading: isLoadingRate, data: rate } = usePriceRate(fromSymbol, toSymbol);
 
-  useEffect(
-    () => {
-      if (fromAmount && toAmount === undefined) {
-        onFromAmountChange(fromAmount, rate, spread);
-      }
+  useEffect(() => {
+    if (fromAmount && toAmount === undefined) {
+      onFromAmountChange(fromAmount, rate, spread);
+    }
 
-      if (toAmount && fromAmount === undefined) {
-        onToAmountChange(toAmount, rate, spread);
-      }
-    },
-    [onFromAmountChange, onToAmountChange, fromAmount, toAmount, spread, rate],
-  );
+    if (toAmount && fromAmount === undefined) {
+      onToAmountChange(toAmount, rate, spread);
+    }
+  }, [onFromAmountChange, onToAmountChange, fromAmount, toAmount, spread, rate]);
 
   // ----------
   // Effects
   // ----------
-  useEffect(
-    () => onFetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol),
-    [onFetchLiquidityPoolSpread, fromSymbol, toSymbol, isRedeem],
-  );
+  useEffect(() => onFetchLiquidityPoolSpread(isRedeem ? fromSymbol : toSymbol), [
+    onFetchLiquidityPoolSpread,
+    fromSymbol,
+    toSymbol,
+    isRedeem,
+  ]);
 
   const isLoading = isLoadingSpread || isLoadingRate;
 
@@ -132,13 +126,15 @@ const Swap: React.FC<StateProps> = ({
         <Entry>
           <Currency>
             <Label>
-              <Text weight="bold" size="s" light>Send</Text>
+              <Text weight="bold" size="s" light>
+                Send
+              </Text>
             </Label>
             <Amount
               symbols={availableFromSymbols}
               selectedSymbol={fromSymbol}
               onCurrencyChange={onFromSymbolChange}
-              onAmountChange={(x) => onFromAmountChange(x, rate, spread)}
+              onAmountChange={x => onFromAmountChange(x, rate, spread)}
               disabled={isSwapping}
               value={fromAmount}
               requireAuthorization={!isRedeem}
@@ -148,20 +144,26 @@ const Swap: React.FC<StateProps> = ({
             </Validation>
           </Currency>
           <Divider>
-            <ExchangeIcon onClick={() => { onSwapSymbol(fromSymbol, toSymbol, fromAmount, toAmount); }}>
+            <ExchangeIcon
+              onClick={() => {
+                onSwapSymbol(fromSymbol, toSymbol, fromAmount, toAmount);
+              }}
+            >
               <FontAwesomeIcon icon="chevron-right" className="normalIcon" />
               <FontAwesomeIcon icon="exchange-alt" className="swapIcon" />
             </ExchangeIcon>
           </Divider>
           <Currency>
             <Label>
-              <Text weight="bold" size="s" light>Recieve</Text>
+              <Text weight="bold" size="s" light>
+                Recieve
+              </Text>
             </Label>
             <Amount
               symbols={availableToSymbols}
               selectedSymbol={toSymbol}
               onCurrencyChange={onToSymbolChange}
-              onAmountChange={(x) => onToAmountChange(x, rate, spread)}
+              onAmountChange={x => onToAmountChange(x, rate, spread)}
               disabled={isSwapping}
               value={toAmount}
             />
@@ -184,7 +186,9 @@ const Swap: React.FC<StateProps> = ({
           <PrimaryButton
             size="large"
             loading={isSwapping}
-            onClick={() => { onSwap(isRedeem); }}
+            onClick={() => {
+              onSwap(isRedeem);
+            }}
             disabled={!isEnabled}
           >
             Exchange
@@ -195,11 +199,9 @@ const Swap: React.FC<StateProps> = ({
         <SwapBalance>
           <Text size="l">Balances</Text>
           <Separator size={1} />
-          {
-            availableSymbols.map(symbol => (
-              <BalanceLine symbol={symbol} key={symbol} />
-            ))
-          }
+          {availableSymbols.map(symbol => (
+            <BalanceLine symbol={symbol} key={symbol} />
+          ))}
         </SwapBalance>
         <SwapListContainer>
           <SwapList />

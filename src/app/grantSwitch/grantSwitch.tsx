@@ -32,7 +32,8 @@ const LockSpinner = styled(Spinner)`
     color: ${theme.foregroundColor};
     font-size: 1rem !important;
     line-height: 1rem;
-    .anticon, svg {
+    .anticon,
+    svg {
       width: 1rem;
       height: 1rem;
     }
@@ -84,9 +85,14 @@ const GrantSwitch: React.FC<Props> = ({
   }
 
   return (
-    <Container className={className} onClick={() => { onGrant(symbol, granted); }}>
-      { loading ? <LockSpinner /> : <LockIcon icon="lock" /> }
-      { !isQueryingAuthorization && <LockText light>Enable Trading</LockText> }
+    <Container
+      className={className}
+      onClick={() => {
+        onGrant(symbol, granted);
+      }}
+    >
+      {loading ? <LockSpinner /> : <LockIcon icon="lock" />}
+      {!isQueryingAuthorization && <LockText light>Enable Trading</LockText>}
     </Container>
   );
 };

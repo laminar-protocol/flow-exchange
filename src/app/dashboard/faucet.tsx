@@ -11,7 +11,9 @@ export interface Props {
 
 const Faucet: React.FC<Props> = ({ amount, symbol, onOpenFaucet }) => (
   <Button
-    onClick={() => { onOpenFaucet(symbol, amount); }}
+    onClick={() => {
+      onOpenFaucet(symbol, amount);
+    }}
   >
     <FontAwesomeIcon icon="shower" />
   </Button>

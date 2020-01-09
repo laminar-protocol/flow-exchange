@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-import {
-  Text, Panel,
-} from 'components';
+import { Text, Panel } from 'components';
 import * as theme from 'theme';
 
 export const Container = styled.div``;
@@ -61,12 +59,12 @@ export const ExchangeIcon = styled.div`
   &:hover {
     cursor: pointer;
     box-shadow: 0 0 0 1px ${theme.borderColor};
-      .normalIcon {
-        display: none;
-      }
-      .swapIcon {
-        display: inline;
-      }
+    .normalIcon {
+      display: none;
+    }
+    .swapIcon {
+      display: inline;
+    }
   }
   &:active {
     box-shadow: 0 0 0 1px ${theme.darkBorderColor};

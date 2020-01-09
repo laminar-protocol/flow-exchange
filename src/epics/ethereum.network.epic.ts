@@ -5,20 +5,21 @@ import ethereum from 'services/ethereum';
 import types from 'types';
 import { Epic } from 'reducers';
 
-const epic: Epic = (action$, state$) => action$.pipe(
-  ofType(types.ethereum.network.requested),
-  filter(() => state$.value.ethereum.isEnabled),
-  mergeMap(async () => {
-    try {
-      const network = await ethereum.web3.eth.net.getNetworkType();
-      return {
-        type: types.ethereum.network.completed,
-        payload: { network },
-      };
-    } catch (error) {
-      return { type: types.ethereum.network.failed, error };
-    }
-  }),
-);
+const epic: Epic = (action$, state$) =>
+  action$.pipe(
+    ofType(types.ethereum.network.requested),
+    filter(() => state$.value.ethereum.isEnabled),
+    mergeMap(async () => {
+      try {
+        const network = await ethereum.web3.eth.net.getNetworkType();
+        return {
+          type: types.ethereum.network.completed,
+          payload: { network },
+        };
+      } catch (error) {
+        return { type: types.ethereum.network.failed, error };
+      }
+    }),
+  );
 
 export default epic;

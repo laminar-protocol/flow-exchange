@@ -7,8 +7,7 @@ const Component = styled(Button)`
   &.ant-btn,
   &.ant-btn:hover,
   &.ant-btn:focus,
-  &.ant-btn:active
-  {
+  &.ant-btn:active {
     background: linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%);
     color: #fff;
     border: 0;
@@ -16,8 +15,7 @@ const Component = styled(Button)`
   }
 
   &.ant-btn[disabled],
-  &.ant-btn[disabled]:hover
-  {
+  &.ant-btn[disabled]:hover {
     opacity: 0.75;
     color: #fff;
   }

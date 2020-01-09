@@ -31,9 +31,7 @@ interface Props {
 }
 
 const SideColumn: React.FC<Props> = ({ children, className }) => (
-  <Container className={className}>
-    { children }
-  </Container>
+  <Container className={className}>{children}</Container>
 );
 
 export default SideColumn;

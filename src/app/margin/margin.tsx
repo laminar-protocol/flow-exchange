@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-import {
-  Text, Panel, Switch,
-} from 'components';
+import { Text, Panel, Switch } from 'components';
 import * as theme from 'theme';
 import { tradingSymbols } from 'config';
 
@@ -46,8 +44,8 @@ const AccountSummary = styled.div`
 
 const SummaryCell = styled.div`
   .header {
-    margin-bottom:  0.5rem;
-    text-transform:  uppercase;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
   }
 
   display: flex;
@@ -86,11 +84,9 @@ const MarketPanel = styled.div`
   margin: 2rem 0;
   min-height: 50vh;
 
-
   ${theme.respondTo.lg`
     flex-direction: column;
   `};
-
 `;
 
 const Chart = styled.div`
@@ -100,7 +96,6 @@ const Chart = styled.div`
   ${theme.respondTo.lg`
     min-height: 30vh;
   `};
-
 `;
 
 const MarketList = styled.div`
@@ -160,13 +155,7 @@ interface Props {
 
 // ----------
 
-const Margin: React.FC<Props> = ({
-  currentTheme,
-  isEnabled,
-  isLoadingAllowance,
-  isGranting,
-  onGrant,
-}) => {
+const Margin: React.FC<Props> = ({ currentTheme, isEnabled, isLoadingAllowance, isGranting, onGrant }) => {
   // ----------
   // URL
   // ----------
@@ -184,16 +173,12 @@ const Margin: React.FC<Props> = ({
     <Container>
       <SummaryPanel>
         <SummaryHeader>
-          <Text size="l">
-            Margin Trading
-          </Text>
+          <Text size="l">Margin Trading</Text>
         </SummaryHeader>
         <AccountSummary>
           <SummaryCell>
             <div className="header">
-              <Text light>
-                Balance
-              </Text>
+              <Text light>Balance</Text>
             </div>
             <div>
               <BalanceLine symbol="DAI" lite />
@@ -202,19 +187,18 @@ const Margin: React.FC<Props> = ({
 
           <SummaryCell>
             <div className="header">
-              <Text light>
-                Enable Trading
-              </Text>
+              <Text light>Enable Trading</Text>
             </div>
             <div>
               <Switch
                 checked={isEnabled}
                 disabled={isLoadingAllowance || isGranting}
-                onClick={() => { onGrant(!isEnabled); }}
+                onClick={() => {
+                  onGrant(!isEnabled);
+                }}
               />
             </div>
           </SummaryCell>
-
         </AccountSummary>
       </SummaryPanel>
       <MainPanel>

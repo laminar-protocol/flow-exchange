@@ -44,9 +44,7 @@ const link = split(
   // split based on operation type
   ({ query }) => {
     const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' && definition.operation === 'subscription'
-    );
+    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
   httpLink,
@@ -60,17 +58,17 @@ const client = new ApolloClient({
 
 const render = (App: React.ComponentType) => {
   ReactDOM.render(
-    ethereum.provider
-      ? (
-        <Provider store={store}>
-          <ConnectedRouter history={history}>
-            <ApolloProvider client={client}>
-              <App />
-            </ApolloProvider>
-          </ConnectedRouter>
-        </Provider>
-      )
-      : <NoService />,
+    ethereum.provider ? (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <ApolloProvider client={client}>
+            <App />
+          </ApolloProvider>
+        </ConnectedRouter>
+      </Provider>
+    ) : (
+      <NoService />
+    ),
     document.getElementById('root'),
   );
 };

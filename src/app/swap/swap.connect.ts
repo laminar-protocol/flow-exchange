@@ -10,17 +10,9 @@ import Swap from './swap';
 const defaultPool = addresses.pool;
 
 const mapStateToProps = ({
-  swap: {
-    fromAmount,
-    fromSymbol,
-    toAmount,
-    toSymbol,
-    isSwapping,
-  },
+  swap: { fromAmount, fromSymbol, toAmount, toSymbol, isSwapping },
   liquidityPool: {
-    spread: {
-      states,
-    },
+    spread: { states },
   },
 }: AppState) => {
   // ----------

@@ -8,18 +8,16 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const NumberFormat: React.FC<Props> = ({
-  value, noPrefix, prefix, children,
-}) => (
+const NumberFormat: React.FC<Props> = ({ value, noPrefix, prefix, children }) => (
   <NumberFormatComp
     value={value}
     displayType="text"
     thousandSeparator
-    prefix={noPrefix ? undefined : (prefix || '$')}
+    prefix={noPrefix ? undefined : prefix || '$'}
     decimalScale={6}
     fixedDecimalScale
   >
-    { children }
+    {children}
   </NumberFormatComp>
 );
 

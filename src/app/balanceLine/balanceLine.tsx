@@ -42,7 +42,7 @@ const BalanceLine: React.FC<Props> = ({ symbol, lite, balance, isQueryingBalance
   if (lite) {
     return (
       <Text weight="bold">
-        { isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} /> }
+        {isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} />}
       </Text>
     );
   }
@@ -50,13 +50,11 @@ const BalanceLine: React.FC<Props> = ({ symbol, lite, balance, isQueryingBalance
   return (
     <Line>
       <div>
-        <Text>
-          {displayName}
-        </Text>
+        <Text>{displayName}</Text>
       </div>
       <div>
         <Text weight="bold">
-          { isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} /> }
+          {isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} />}
         </Text>
       </div>
     </Line>

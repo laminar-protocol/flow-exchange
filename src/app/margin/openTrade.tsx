@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  LightButton,
-} from 'components';
+import { LightButton } from 'components';
 import { FormatProfit, FormatRate } from 'components/format';
 
 import { usePriceRate } from 'hooks/useOraclePrice';
@@ -122,17 +120,11 @@ const OpenTrade: React.FC<Props> = ({
   return (
     <Container>
       <ListRow>
-        <div className="column pair">
-          {tradingSymbol.name}
-        </div>
+        <div className="column pair">{tradingSymbol.name}</div>
 
-        <div className="column direction">
-          { direction }
-        </div>
+        <div className="column direction">{direction}</div>
 
-        <div className="column lerverage">
-          { Math.abs(Number(tradingPair.leverage)) }×
-        </div>
+        <div className="column lerverage">{Math.abs(Number(tradingPair.leverage))}×</div>
 
         <div className="column amount">
           <FormatProfit value={amount} />
@@ -144,24 +136,20 @@ const OpenTrade: React.FC<Props> = ({
           </a>
         </div>
 
-        <div className="column closePrice">
-          &nbsp;
-        </div>
+        <div className="column closePrice">&nbsp;</div>
 
-        <div className="column profit">
-          { (profit !== undefined) ? <FormatProfit value={profit} /> : '—' }
-        </div>
+        <div className="column profit">{profit !== undefined ? <FormatProfit value={profit} /> : '—'}</div>
         <div className="column action">
           <LightButton
             size="small"
-            disabled={!isEnabled || (isClosing || isOpening)}
-            onClick={() => { onClosePosition(tradingPair.symbol, positionId.toString()); }}
+            disabled={!isEnabled || isClosing || isOpening}
+            onClick={() => {
+              onClosePosition(tradingPair.symbol, positionId.toString());
+            }}
           >
             Close
           </LightButton>
         </div>
-
-
       </ListRow>
     </Container>
   );

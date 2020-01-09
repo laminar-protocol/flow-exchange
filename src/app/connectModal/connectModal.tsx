@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-  Modal, SolidButton, Button, Separator, Text,
-} from 'components';
+import { Modal, SolidButton, Button, Separator, Text } from 'components';
 
 const Container = styled.div`
   display: flex;
@@ -20,27 +18,24 @@ export interface StateProps {
   onClose: () => void;
 }
 
-const Component: React.FC<StateProps> = ({
-  isConnectModalActive,
-  isConnecting,
-  onEthereumConnect,
-  onClose,
-}) => (
-  <Modal
-    centered
-    visible={isConnectModalActive}
-    closable={false}
-    footer={null}
-    onCancel={() => onClose()}
-  >
+const Component: React.FC<StateProps> = ({ isConnectModalActive, isConnecting, onEthereumConnect, onClose }) => (
+  <Modal centered visible={isConnectModalActive} closable={false} footer={null} onCancel={() => onClose()}>
     <Container>
       <Text size="t">Connect</Text>
       <Separator size={1} />
-      <SolidButton size="large" onClick={onEthereumConnect} loading={isConnecting}>MetaMask</SolidButton>
-      <SolidButton size="large" disabled>Coinbase Wallet</SolidButton>
-      <SolidButton size="large" disabled>Ledger</SolidButton>
+      <SolidButton size="large" onClick={onEthereumConnect} loading={isConnecting}>
+        MetaMask
+      </SolidButton>
+      <SolidButton size="large" disabled>
+        Coinbase Wallet
+      </SolidButton>
+      <SolidButton size="large" disabled>
+        Ledger
+      </SolidButton>
       <Separator size={1} />
-      <Button size="large" onClick={onClose}>Cancel</Button>
+      <Button size="large" onClick={onClose}>
+        Cancel
+      </Button>
     </Container>
   </Modal>
 );

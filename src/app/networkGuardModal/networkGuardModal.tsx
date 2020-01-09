@@ -17,15 +17,8 @@ export interface StateProps {
   network?: string;
 }
 
-const NetworkGuardModal: React.FC<StateProps> = ({
-  isNetworkGuardModalActive, network,
-}) => (
-  <Modal
-    centered
-    visible={isNetworkGuardModalActive}
-    closable={false}
-    footer={null}
-  >
+const NetworkGuardModal: React.FC<StateProps> = ({ isNetworkGuardModalActive, network }) => (
+  <Modal centered visible={isNetworkGuardModalActive} closable={false} footer={null}>
     <Container>
       <Text>Please connect to {requiredNetwork} network & refesh.</Text>
       <div>Current network: {network}</div>

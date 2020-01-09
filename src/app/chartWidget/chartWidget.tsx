@@ -27,19 +27,19 @@ const Widget = styled.div`
 `;
 
 const loadChart = (symbol: string, currentTheme: string) => {
-  const theme = (currentTheme === 'dark') ? 'Dark' : 'Light'
+  const theme = currentTheme === 'dark' ? 'Dark' : 'Light';
   new TradingView.widget({
-    "autosize": true,
-    "symbol": symbol,
-    "interval": "D",
-    "timezone": "Etc/UTC",
-    "theme": currentTheme,
-    "style": "1",
-    "locale": "en",
-    "toolbar_bg": "#f1f3f6",
-    "enable_publishing": false,
-    "allow_symbol_change": false,
-    "container_id": "trading_view_widget"
+    autosize: true,
+    symbol: symbol,
+    interval: 'D',
+    timezone: 'Etc/UTC',
+    theme: currentTheme,
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#f1f3f6',
+    enable_publishing: false,
+    allow_symbol_change: false,
+    container_id: 'trading_view_widget',
   });
 };
 
@@ -48,10 +48,7 @@ interface Props {
   currentTheme: string;
 }
 
-const ChartWidget: React.FC<Props> = ({
-  symbol,
-  currentTheme,
-}) => {
+const ChartWidget: React.FC<Props> = ({ symbol, currentTheme }) => {
   useEffect(() => {
     loadChart(symbol, currentTheme);
   }, [symbol, currentTheme]);

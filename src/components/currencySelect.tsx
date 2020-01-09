@@ -23,11 +23,10 @@ const CurrencySelect = styled(Select)`
   }
   .react-select__menu {
     background-color: ${theme.whiteForegroundColor};
-    box-shadow: 0 3px 15px hsla(0,0%,0%,0.05) !important;
+    box-shadow: 0 3px 15px hsla(0, 0%, 0%, 0.05) !important;
     border: 1px solid ${theme.borderColor};
   }
   .react-select__menu-list {
-
   }
 `;
 
@@ -65,7 +64,7 @@ const CustomCurrency = styled.div<{ isDisabled: boolean }>`
     color: ${theme.lightForegroundColor};
     width: 1.75rem;
   }
-  opacity: ${(props) => (props.isDisabled ? 0.5 : 1)};
+  opacity: ${props => (props.isDisabled ? 0.5 : 1)};
 `;
 
 // ----------
@@ -79,7 +78,7 @@ const CustomOption = styled.div`
   padding: 0.5rem 1rem;
   color: ${theme.foregroundColor};
   cursor: pointer;
-  &:hover{
+  &:hover {
     background-color: ${theme.fadeForegroundColor};
   }
   &:last-child {
@@ -112,9 +111,7 @@ const Currency: React.FC<any> = ({ symbol, isDisabled }) => (
     <div className="icon">
       <FontAwesomeIcon icon={symbolIcon(symbol)} />
     </div>
-    <div className="text">
-      {symbolName(symbol)}
-    </div>
+    <div className="text">{symbolName(symbol)}</div>
   </CustomCurrency>
 );
 
@@ -122,7 +119,10 @@ const CurrencySelectComponent: React.FC<any> = ({ ...props }) => (
   <CurrencySelect
     classNamePrefix="react-select"
     components={{
-      SingleValue, Placeholder, IndicatorSeparator, Option,
+      SingleValue,
+      Placeholder,
+      IndicatorSeparator,
+      Option,
     }}
     isSearchable={false}
     {...props}

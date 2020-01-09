@@ -2,9 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import {
-  Text, Separator, Panel, Flex,
-} from 'components';
+import { Text, Separator, Panel, Flex } from 'components';
 
 import ChartTicker from 'app/chartWidget/chartTicker';
 import * as theme from 'theme';
@@ -12,8 +10,7 @@ import * as theme from 'theme';
 import Balance from './balance.connect';
 import Faucet from './faucet.connect';
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const DashboardContainer = styled.div`
   display: flex;
@@ -56,7 +53,7 @@ const Markets = styled.div`
 const Items = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content:  flex-start;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   margin-top: 2rem;
@@ -110,7 +107,6 @@ const Description = styled.div`
   color: ${theme.lightForegroundColor};
 `;
 
-
 const Component = () => (
   <Container>
     <Text size="h">Dashboard</Text>
@@ -149,12 +145,8 @@ const Component = () => (
               <FontAwesomeIcon icon="chart-line" className="link-icon" />
               <Title>
                 Margin Trading
-                <Description>
-                  Lerverged trading up to 50×
-                </Description>
-
+                <Description>Lerverged trading up to 50×</Description>
               </Title>
-
             </Item>
           </Link>
           <Link to="/swap" className="item-link">
@@ -162,9 +154,7 @@ const Component = () => (
               <FontAwesomeIcon icon="exchange-alt" className="link-icon" />
               <Title>
                 Spot Exchange
-                <Description>
-                  Synthetic assets, infinite liquidity
-                </Description>
+                <Description>Synthetic assets, infinite liquidity</Description>
               </Title>
             </Item>
           </Link>
@@ -173,9 +163,7 @@ const Component = () => (
               <FontAwesomeIcon icon="landmark" className="link-icon" />
               <Title>
                 Deposit &amp; Earn
-                <Description>
-                  Earn interest on synthetic assets
-                </Description>
+                <Description>Earn interest on synthetic assets</Description>
               </Title>
             </Item>
           </Link>
@@ -184,13 +172,10 @@ const Component = () => (
               <FontAwesomeIcon icon="hand-holding-usd" className="link-icon" />
               <Title>
                 Liquidity Provider
-                <Description>
-                  Become a counter party &amp; earn
-                </Description>
+                <Description>Become a counter party &amp; earn</Description>
               </Title>
             </Item>
           </Link>
-
         </Items>
       </Markets>
     </DashboardContainer>

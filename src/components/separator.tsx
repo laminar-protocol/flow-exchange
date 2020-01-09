@@ -4,13 +4,13 @@ import styled from 'styled-components';
 import * as theme from 'theme';
 
 interface ContainerProps {
-  size? : number;
+  size?: number;
   height?: number;
 }
 
 const Container = styled.div<ContainerProps>`
-  margin: ${(props) => (props.size || 2)}rem 0;
-  height: ${(props) => (props.height || 1)}px;
+  margin: ${props => props.size || 2}rem 0;
+  height: ${props => props.height || 1}px;
   background-color: ${theme.separatorColor};
 `;
 
@@ -20,7 +20,7 @@ interface Props extends ContainerProps {
 
 const Separator: React.FC<Props> = ({ size, height, children }) => (
   <Container size={size} height={height}>
-    { children }
+    {children}
   </Container>
 );
 

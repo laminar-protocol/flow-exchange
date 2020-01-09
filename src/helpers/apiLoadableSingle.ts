@@ -47,7 +47,7 @@ export function createEpic<S, T, P, E = any>(
   run: (params: P, state: StateObservable<S>) => ObservableInput<T>,
   additionalTrigger?: Epic<any, any, S>,
 ): Epic<any, any, S> {
-  const types = mapObjIndexed((x) => x().type, apiAction);
+  const types = mapObjIndexed(x => x().type, apiAction);
   return (action$, state$, dep) => {
     let from$;
     if (additionalTrigger) {
@@ -56,14 +56,17 @@ export function createEpic<S, T, P, E = any>(
     } else {
       from$ = action$.pipe(ofType(types.requested));
     }
+
+    // eslint-disable-next-line no-unexpected-multiline
     return from$.pipe(
       ofType(types.requested),
       switchMap(({ payload }) =>
         from(run(payload && payload.params, state$)).pipe(
-          map((resp) => apiAction.completed({ value: resp })),
+          map(resp => apiAction.completed({ value: resp })),
           catchError((error: E) => of(apiAction.failed({ error }))),
           takeUntil(action$.pipe(ofType(types.cancelled))),
-        )),
+        ),
+      ),
     );
   };
 }

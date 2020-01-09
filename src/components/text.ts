@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Text = styled.span<Props>`
-  font-size: ${(props) => {
+  font-size: ${props => {
     switch (props.size) {
       case 's':
         return theme.textSmallSize;
@@ -22,7 +22,7 @@ const Text = styled.span<Props>`
         return theme.textNormalSize;
     }
   }};
-  font-weight: ${(props) => {
+  font-weight: ${props => {
     switch (props.weight) {
       case 'bold':
         return theme.boldWeight;
@@ -32,7 +32,7 @@ const Text = styled.span<Props>`
         return theme.normalWeight;
     }
   }};
-  color: ${(props) => (props.light ? theme.lightForegroundColor : theme.foregroundColor)};
+  color: ${props => (props.light ? theme.lightForegroundColor : theme.foregroundColor)};
 `;
 
 export default Text;

@@ -6,19 +6,19 @@ import types, { actions } from 'types';
 
 import { Epic } from 'reducers';
 
-export const notificationEpic: Epic = (action$) => action$.pipe(
-  ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
-  mergeMap(() => {
-    notification.success({
-      message: 'Order Successful',
-    });
-    return empty();
-  }),
-);
+export const notificationEpic: Epic = action$ =>
+  action$.pipe(
+    ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
+    mergeMap(() => {
+      notification.success({
+        message: 'Order Successful',
+      });
+      return empty();
+    }),
+  );
 
-export const refreshEpic: Epic = (action$) => action$.pipe(
-  ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
-  mergeMap(() => of(
-    actions.token.balance.requested({ symbol: 'DAI' }),
-  )),
-);
+export const refreshEpic: Epic = action$ =>
+  action$.pipe(
+    ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
+    mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' }))),
+  );

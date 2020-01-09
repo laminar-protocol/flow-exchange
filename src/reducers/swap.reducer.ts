@@ -14,10 +14,7 @@ const INITIAL_STATE = {
 };
 
 const valdiationResult = (state: any) => {
-  const {
-    fromAmount,
-    toAmount,
-  } = state;
+  const { fromAmount, toAmount } = state;
   const attributes = { fromAmount, toAmount };
   const constraints = {
     fromAmount: {

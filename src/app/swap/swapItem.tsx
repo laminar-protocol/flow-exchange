@@ -64,14 +64,7 @@ export interface StateProps {
 
 // ----------
 
-const SwapItem: React.FC<StateProps> = ({
-  tx,
-  kind,
-  baseTokenAmount,
-  flowTokenAmount,
-  timestamp,
-  symbol,
-}) => {
+const SwapItem: React.FC<StateProps> = ({ tx, kind, baseTokenAmount, flowTokenAmount, timestamp, symbol }) => {
   const { name, currencySymbol } = tokens[symbol as TokenSymbol];
   const { name: baseTokenName, currencySymbol: baseTokenCurrencySymbol } = tokens.DAI;
   const date = new Date(timestamp * 1000);
@@ -79,35 +72,27 @@ const SwapItem: React.FC<StateProps> = ({
   return (
     <Line>
       <Symbol>
-        <Text>
-          { isMint ? `${baseTokenName} → ${name}` : `${name} → ${baseTokenName}` }
-        </Text>
+        <Text>{isMint ? `${baseTokenName} → ${name}` : `${name} → ${baseTokenName}`}</Text>
       </Symbol>
       <Amount>
         <Text>
-          {
-            isMint
-              ? (
-                <>
-                  <FormatBalance value={baseTokenAmount} options={{ prefix: baseTokenCurrencySymbol }} />
-                  &nbsp;→&nbsp;
-                  <FormatBalance value={flowTokenAmount} options={{ prefix: currencySymbol }} />
-                </>
-              )
-              : (
-                <>
-                  <FormatBalance value={flowTokenAmount} options={{ prefix: currencySymbol }} />
-                  &nbsp;→&nbsp;
-                  <FormatBalance value={baseTokenAmount} options={{ prefix: baseTokenCurrencySymbol }} />
-                </>
-              )
-          }
+          {isMint ? (
+            <>
+              <FormatBalance value={baseTokenAmount} options={{ prefix: baseTokenCurrencySymbol }} />
+              &nbsp;→&nbsp;
+              <FormatBalance value={flowTokenAmount} options={{ prefix: currencySymbol }} />
+            </>
+          ) : (
+            <>
+              <FormatBalance value={flowTokenAmount} options={{ prefix: currencySymbol }} />
+              &nbsp;→&nbsp;
+              <FormatBalance value={baseTokenAmount} options={{ prefix: baseTokenCurrencySymbol }} />
+            </>
+          )}
         </Text>
       </Amount>
       <Timestamp>
-        <Text light>
-          {date.toLocaleString()}
-        </Text>
+        <Text light>{date.toLocaleString()}</Text>
       </Timestamp>
       <View>
         <Text>

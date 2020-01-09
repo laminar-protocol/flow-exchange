@@ -24,16 +24,9 @@ if (process.env.NODE_ENV === 'development') {
 const epicMiddleware = createEpicMiddleware();
 
 // Router
-const combinedMiddleware = applyMiddleware(
-  errorLogger,
-  routerMiddleware(history),
-  epicMiddleware,
-);
+const combinedMiddleware = applyMiddleware(errorLogger, routerMiddleware(history), epicMiddleware);
 
-const composedEnhancers = compose(
-  combinedMiddleware,
-  ...devToolEnhancer,
-);
+const composedEnhancers = compose(combinedMiddleware, ...devToolEnhancer);
 
 const store = createStore(createRootReducer(history), {}, composedEnhancers);
 

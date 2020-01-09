@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import {
-  Text, Spinner,
-} from 'components';
+import { Text, Spinner } from 'components';
 import * as theme from 'theme';
 
 import OpenTrade from './openTrade.connect';
@@ -38,7 +36,6 @@ const ListHeader = styled.div`
     display: none;
   `};
 
-
   .column {
     font-weight: ${theme.boldWeight};
     text-transform: uppercase;
@@ -50,8 +47,7 @@ const ListHeader = styled.div`
   }
 `;
 
-const Filter = styled.div`
-`;
+const Filter = styled.div``;
 
 // ----------
 // Query
@@ -91,9 +87,7 @@ type Props = StateProps;
 
 // ----------
 
-const TradeList: React.FC<Props> = ({
-  account,
-}) => {
+const TradeList: React.FC<Props> = ({ account }) => {
   // TODO: Fix type
   const { loading: isLoading, data } = useSubscription(positionQuery, {
     variables: {
@@ -101,15 +95,15 @@ const TradeList: React.FC<Props> = ({
     },
   });
 
-  const positions = useMemo(() => data && data.marginPositionEntities.map((event: any) => ({
-    ...event,
-  })), [data]);
+  const positions = useMemo(() => data && data.marginPositionEntities.map((event: any) => ({ ...event })), [data]);
 
   // const [displayPosition, setDisplayPosition] = useState('open' as string);
 
   if (isLoading) {
     return (
-      <CenterContainer><Spinner /></CenterContainer>
+      <CenterContainer>
+        <Spinner />
+      </CenterContainer>
     );
   }
 
@@ -139,62 +133,44 @@ const TradeList: React.FC<Props> = ({
         </SegmentedControl> */}
       </Filter>
       <ListHeader>
-        <div className="column pair">
-          Symbol
-        </div>
-        <div className="column amount">
-          B/S
-        </div>
-        <div className="column leverage">
-          Leverage
-        </div>
-        <div className="column amount">
-          Amount
-        </div>
-        <div className="column openPrice">
-          Open
-        </div>
-        <div className="column closePrice">
-          Close
-        </div>
-        <div className="column profit">
-          P&amp;L
-        </div>
-        <div className="column action">
-          &nbsp;
-        </div>
+        <div className="column pair">Symbol</div>
+        <div className="column amount">B/S</div>
+        <div className="column leverage">Leverage</div>
+        <div className="column amount">Amount</div>
+        <div className="column openPrice">Open</div>
+        <div className="column closePrice">Close</div>
+        <div className="column profit">P&amp;L</div>
+        <div className="column action">&nbsp;</div>
       </ListHeader>
-      {
-        positions.map((position: any) => {
-          if (!position.closePrice) {
-            return (
-              <OpenTrade
-                key={`${position.pair.id}-${position.positionId}`}
-                positionId={position.positionId}
-                openPrice={position.openPrice}
-                liquidityPool={position.liquidityPool}
-                amount={position.amount}
-                closeSpread={position.closeSpread}
-                liquidationFee={position.liquidationFee}
-                pair={position.pair.id}
-                openTxhash={position.openTxhash}
-              />
-            );
-          }
+      {positions.map((position: any) => {
+        if (!position.closePrice) {
           return (
-            <CloseTrade
+            <OpenTrade
               key={`${position.pair.id}-${position.positionId}`}
+              positionId={position.positionId}
               openPrice={position.openPrice}
-              closePrice={position.closePrice}
+              liquidityPool={position.liquidityPool}
               amount={position.amount}
+              closeSpread={position.closeSpread}
+              liquidationFee={position.liquidationFee}
               pair={position.pair.id}
-              closeOwnerAmount={position.closeOwnerAmount}
               openTxhash={position.openTxhash}
-              closeTxhash={position.closeTxhash}
             />
           );
-        })
-      }
+        }
+        return (
+          <CloseTrade
+            key={`${position.pair.id}-${position.positionId}`}
+            openPrice={position.openPrice}
+            closePrice={position.closePrice}
+            amount={position.amount}
+            pair={position.pair.id}
+            closeOwnerAmount={position.closeOwnerAmount}
+            openTxhash={position.openTxhash}
+            closeTxhash={position.closeTxhash}
+          />
+        );
+      })}
     </Container>
   );
 };

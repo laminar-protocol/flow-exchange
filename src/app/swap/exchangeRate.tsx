@@ -24,13 +24,7 @@ export interface StateProps {
 
 // ----------
 
-const ExchangeRate: React.FC<StateProps> = ({
-  spread,
-  rate,
-  isLoading,
-  fromSymbol,
-  toSymbol,
-}) => {
+const ExchangeRate: React.FC<StateProps> = ({ spread, rate, isLoading, fromSymbol, toSymbol }) => {
   if (isLoading) {
     return <Spinner loading={isLoading} />;
   }
@@ -45,7 +39,9 @@ const ExchangeRate: React.FC<StateProps> = ({
       <strong>1</strong>
       &nbsp;{symbolName(fromSymbol)}
       &nbsp;≈&nbsp;
-      <strong><NumberFormat value={value} noPrefix /></strong>
+      <strong>
+        <NumberFormat value={value} noPrefix />
+      </strong>
       &nbsp;{symbolName(toSymbol)}
     </Text>
   );

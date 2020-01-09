@@ -12,8 +12,7 @@ const Header = styled.div`
   text-transform: uppercase;
 `;
 
-const Main = styled.div`
-`;
+const Main = styled.div``;
 
 const Content = styled.div`
   flex: 1;
@@ -55,26 +54,22 @@ interface Props {
   className?: string;
 }
 
-const TextCell: React.FC<Props> = ({
-  header, accessory, loading, children, className,
-}) => (
+const TextCell: React.FC<Props> = ({ header, accessory, loading, children, className }) => (
   <Container className={className}>
     <Accessory>
-      {(accessory && !loading) && <AccessoryIcon icon={accessory} size="2x" />}
-      { loading && <AccessorySpinner /> }
+      {accessory && !loading && <AccessoryIcon icon={accessory} size="2x" />}
+      {loading && <AccessorySpinner />}
     </Accessory>
 
     <Content>
-      {
-        header && (
-          <Header>
-            <Text size="s" light weight="bold">{header}</Text>
-          </Header>
-        )
-      }
-      <Main>
-        { children }
-      </Main>
+      {header && (
+        <Header>
+          <Text size="s" light weight="bold">
+            {header}
+          </Text>
+        </Header>
+      )}
+      <Main>{children}</Main>
     </Content>
   </Container>
 );
