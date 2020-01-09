@@ -15,5 +15,5 @@ export default mapObjIndexed(
       ${css(...args)};
     }
   `,
-  breakpoints
+  breakpoints,
 );

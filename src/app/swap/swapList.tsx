@@ -61,14 +61,7 @@ const SwapList: React.FC<StateProps> = ({ account }) => {
     },
   });
 
-  const positions = useMemo(
-    () =>
-      data &&
-      data.eventEntities.map((event: any) => ({
-        ...event,
-      })),
-    [data]
-  );
+  const positions = useMemo(() => data && data.eventEntities.map((event: any) => ({ ...event })), [data]);
 
   if (isLoading) {
     return (

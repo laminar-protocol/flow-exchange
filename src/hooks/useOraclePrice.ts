@@ -28,7 +28,7 @@ export const useOraclePrice = (options?: SubscriptionHookOptions<QueryResult, {}
 export const usePriceRate = (
   fromSymbol: TokenSymbol,
   toSymbol: TokenSymbol,
-  options?: SubscriptionHookOptions<QueryResult, {}>
+  options?: SubscriptionHookOptions<QueryResult, {}>,
 ) => {
   const { loading, error, data } = useOraclePrice(options);
   const rate = useMemo(() => {

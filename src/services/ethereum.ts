@@ -75,7 +75,7 @@ class Ethereum {
 
     this.marginTradingPairs = mapObjIndexed(
       pair => new this.web3.eth.Contract(abi.MarginTradingPair, pair.address),
-      tradingPairs
+      tradingPairs,
     );
   }
 

@@ -40,5 +40,5 @@ export default class ReducerBuilder<S extends object> {
 export const createReducer = <S extends object, T>(
   actionCreator: ActionCreator<T> | ActionCreator<T>[],
   initalState: S,
-  handler: StateReducer<S, T>
+  handler: StateReducer<S, T>,
 ) => new ReducerBuilder(initalState).handle(actionCreator, handler).build();

@@ -17,26 +17,23 @@ module.exports = {
     SharedArrayBuffer: 'readonly',
   },
   parserOptions: {
-    project: [
-      './tsconfig.json',
-    ]
+    project: ['./tsconfig.json'],
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'import',
-    'react-hooks',
-  ],
+  plugins: ['react', '@typescript-eslint', 'import', 'react-hooks'],
   rules: {
     '@typescript-eslint/indent': ['error', 2],
     indent: 'off', // required as 'off' by @typescript-eslint/indent
-    'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx', '.tsx'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
     'react/prop-types': [0],
     'react/jsx-props-no-spreading': [0],
     'max-len': ['error', { code: 150 }],
-    'spaced-comment': ['error', 'always', {
-      'markers': ['/'],
-    }],
+    'spaced-comment': [
+      'error',
+      'always',
+      {
+        markers: ['/'],
+      },
+    ],
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     '@typescript-eslint/explicit-function-return-type': 'off',
@@ -52,15 +49,17 @@ module.exports = {
     'consistent-return': 'off',
     '@typescript-eslint/prefer-regexp-exec': 'off', // maybe later?
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
+    'function-paren-newline': 'off', // fix conflicts with prittier
+    'arrow-parens': ['error', 'as-needed'], // fix conflicts with prittier
   },
   settings: {
     'import/resolver': {
       node: {
-        paths: ['src']
+        paths: ['src'],
       },
       typescript: {
-        directory: './tsconfig.json'
-      }
-    }
+        directory: './tsconfig.json',
+      },
+    },
   },
 };

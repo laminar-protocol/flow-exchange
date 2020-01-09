@@ -12,7 +12,7 @@ import { addresses } from 'config';
 export const changeAccount: Epic = action$ =>
   action$.pipe(
     ofType(types.ethereum.account.changed),
-    map(() => actions.margin.allowance.requested())
+    map(() => actions.margin.allowance.requested()),
   );
 
 export const allowance = createEpic(
@@ -31,7 +31,7 @@ export const allowance = createEpic(
     const result = await ethereum.tokens.DAI.methods.allowance(account, protocolAddress).call();
     return Number(fromWei(result));
   },
-  action$ => action$.pipe(ofType(types.ethereum.network.completed), take(1))
+  action$ => action$.pipe(ofType(types.ethereum.network.completed), take(1)),
 );
 
 export const toggleEnable = createEpic(
@@ -50,13 +50,13 @@ export const toggleEnable = createEpic(
     const amount = enable ? UINT256_MAX : UINT256_MIN;
     await ethereum.tokens.DAI.methods.approve(protocolAddress, amount).send({ from: account });
     return Number(fromWei(amount));
-  }
+  },
 );
 
 export const updateAllowance: Epic = action$ =>
   action$.pipe(
     ofType(types.margin.toggleTrading.completed),
-    mergeMap(({ payload }) => of(actions.margin.allowance.cancelled(), actions.margin.allowance.completed(payload)))
+    mergeMap(({ payload }) => of(actions.margin.allowance.cancelled(), actions.margin.allowance.completed(payload))),
   );
 
 export const openPosition = createEpic(
@@ -75,7 +75,7 @@ export const openPosition = createEpic(
     await ethereum.flowMarginProtocol.methods
       .openPosition(pairAddress, pool, toWei(amount.toString().toString()))
       .send({ from: account });
-  }
+  },
 );
 
 export const closePosition = createEpic(
@@ -92,5 +92,5 @@ export const closePosition = createEpic(
     }
     const pairAddress = addresses[name as keyof typeof addresses];
     await ethereum.flowMarginProtocol.methods.closePosition(pairAddress, id).send({ from: account });
-  }
+  },
 );

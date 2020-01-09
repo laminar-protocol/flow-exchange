@@ -12,11 +12,11 @@ interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
 }
 
 export const getActionType = <TActionTypeKeys extends string>(keys: readonly TActionTypeKeys[]) => <TPayload>() => (
-  prefix: string
+  prefix: string,
 ): Record<TActionTypeKeys, ActionCreator<TPayload>> =>
   pipe(
     map((k: TActionTypeKeys) => [k, (payload: TPayload) => ({ type: `${prefix}/${k}`, payload })]),
-    fromPairs as () => Record<TActionTypeKeys, ActionCreator<TPayload>>
+    fromPairs as () => Record<TActionTypeKeys, ActionCreator<TPayload>>,
   )(keys);
 
 type GetActionTypeReturnType<T> = T extends GetActionTypeResult<infer TActionTypeKeys, infer TPayload>
@@ -25,17 +25,17 @@ type GetActionTypeReturnType<T> = T extends GetActionTypeResult<infer TActionTyp
 
 export const moduleActions = <ModuleActionTypes extends Record<string, GetActionTypeResult<string, any>>>(
   modulePrefix: string,
-  actions: ModuleActionTypes
+  actions: ModuleActionTypes,
 ) => (parentPrefix: string): { [K in keyof ModuleActionTypes]: GetActionTypeReturnType<ModuleActionTypes[K]> } =>
   mapObjIndexed((val, key) => val(`${parentPrefix}/${modulePrefix}/${key}`), actions) as any;
 
 export const appActions = <AppActionTypes extends Record<string, (prefix: string) => any>>(
   appPrefix: string,
-  types: AppActionTypes
+  types: AppActionTypes,
 ): { [K in keyof AppActionTypes]: ReturnType<AppActionTypes[K]> } => mapObjIndexed(val => val(appPrefix), types) as any;
 
 export const appActionTypes = <AppActions extends Record<string, Record<string, Record<string, ActionCreator<any>>>>>(
-  actions: AppActions
+  actions: AppActions,
 ): {
   [K in keyof AppActions]: {
     [K2 in keyof AppActions[K]]: { [K3 in keyof AppActions[K][K2]]: ReturnType<AppActions[K][K2][K3]>['type'] };

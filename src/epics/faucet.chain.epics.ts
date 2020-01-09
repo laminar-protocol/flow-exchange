@@ -14,11 +14,11 @@ export const notificationEpic: Epic = action$ =>
         message: 'Mint Successful',
       });
       return empty();
-    })
+    }),
   );
 
 export const refreshEpic: Epic = action$ =>
   action$.pipe(
     ofType(types.faucet.dai.completed),
-    mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' })))
+    mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' }))),
   );

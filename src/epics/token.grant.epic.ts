@@ -26,7 +26,7 @@ const epic: Epic = (action$, state$) =>
       } catch (error) {
         return { type: types.token.grant.failed, payload: { symbol }, error };
       }
-    })
+    }),
   );
 
 export default epic;

@@ -26,7 +26,7 @@ const epic: Epic = (action$, state$) =>
       } catch (error) {
         return { type: types.faucet.dai.failed, payload: null, error };
       }
-    })
+    }),
   );
 
 export default epic;

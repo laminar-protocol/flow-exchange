@@ -47,7 +47,7 @@ const link = split(
     return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
   },
   wsLink,
-  httpLink
+  httpLink,
 );
 
 const client = new ApolloClient({
@@ -69,7 +69,7 @@ const render = (App: React.ComponentType) => {
     ) : (
       <NoService />
     ),
-    document.getElementById('root')
+    document.getElementById('root'),
   );
 };
 

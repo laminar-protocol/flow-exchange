@@ -20,7 +20,7 @@ export interface MultiState<T, I = string, P = void, E = any> {
 }
 
 export function createReducer<T, I = string, P = void, E = any>(
-  apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>
+  apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>,
 ) {
   return new ReducerBuilder<MultiState<T, I, P, E>>({ states: {} })
     .handle(apiAction.requested, (state, { payload }) => {
@@ -71,7 +71,7 @@ export function createReducer<T, I = string, P = void, E = any>(
 export function createEpic<S, T, I, P, E = any>(
   apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>,
   run: (id: I, params: P, state: StateObservable<S>) => ObservableInput<T>,
-  additionalTrigger?: Epic<any, any, S>
+  additionalTrigger?: Epic<any, any, S>,
 ): Epic<any, any, S> {
   const types = mapObjIndexed(x => x().type, apiAction);
   return (action$, state$, dep) => {
@@ -91,11 +91,11 @@ export function createEpic<S, T, I, P, E = any>(
           takeUntil(
             action$.pipe(
               ofType(types.cancelled),
-              filter(action => action.payload && payload && action.payload.id === payload.id)
-            )
-          )
-        )
-      )
+              filter(action => action.payload && payload && action.payload.id === payload.id),
+            ),
+          ),
+        ),
+      ),
     );
   };
 }

@@ -8,7 +8,7 @@ import Component, { OwnProps } from './openTrade';
 
 const mapStateToProps = (
   { margin: { allowance, openPosition, closePosition }, ethereum: { account } }: AppState,
-  { amount, closeSpread, liquidationFee, liquidityPool, openPrice, pair, positionId, openTxhash }: OwnProps
+  { amount, closeSpread, liquidationFee, liquidityPool, openPrice, pair, positionId, openTxhash }: OwnProps,
 ) => {
   const allowanceValue = allowance.value || 0;
   return {

@@ -9,7 +9,7 @@ import { Epic } from 'reducers';
 const epic: Epic = (action$, state$) =>
   combineLatest(
     action$.pipe(ofType(types.ethereum.network.completed), take(1)),
-    action$.pipe(ofType(types.token.balance.requested))
+    action$.pipe(ofType(types.token.balance.requested)),
   ).pipe(
     mergeMap(async ([, action]) => {
       const {
@@ -31,7 +31,7 @@ const epic: Epic = (action$, state$) =>
       } catch (error) {
         return { type: types.token.balance.failed, payload: { symbol, error }, error };
       }
-    })
+    }),
   );
 
 export default epic;

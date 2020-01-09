@@ -29,7 +29,7 @@ const epic: Epic = (action$, state$) =>
       } catch (error) {
         return { type: types.swap.redeem.failed, error };
       }
-    })
+    }),
   );
 
 export default epic;

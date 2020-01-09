@@ -8,7 +8,7 @@ import { Epic } from 'reducers';
 const epic: Epic = action$ =>
   action$.pipe(
     ofType(types.ethereum.enable.completed),
-    mergeMap(() => of({ type: types.ethereum.modalClose.changed }))
+    mergeMap(() => of({ type: types.ethereum.modalClose.changed })),
   );
 
 export default epic;

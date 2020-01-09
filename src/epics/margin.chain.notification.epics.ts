@@ -14,11 +14,11 @@ export const notificationEpic: Epic = action$ =>
         message: 'Order Successful',
       });
       return empty();
-    })
+    }),
   );
 
 export const refreshEpic: Epic = action$ =>
   action$.pipe(
     ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
-    mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' })))
+    mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' }))),
   );

@@ -14,7 +14,7 @@ const epic: Epic = action$ =>
         message: 'Swap Successful',
       });
       return empty();
-    })
+    }),
   );
 
 export default epic;

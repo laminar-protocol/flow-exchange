@@ -19,7 +19,7 @@ const epic: Epic = (action$, state$) =>
       } catch (error) {
         return { type: types.ethereum.network.failed, error };
       }
-    })
+    }),
   );
 
 export default epic;

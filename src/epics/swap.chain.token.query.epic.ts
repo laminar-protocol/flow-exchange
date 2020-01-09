@@ -18,7 +18,7 @@ const epic: Epic = action$ =>
       ]);
 
       return of(...tokenRequests);
-    })
+    }),
   );
 
 export default epic;

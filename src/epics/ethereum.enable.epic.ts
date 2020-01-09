@@ -45,14 +45,14 @@ const epic: Epic = action$ =>
               observable.next(
                 actions.ethereum.network.completed({
                   network: networkDecimalToString[network] || 'unknown',
-                })
+                }),
               );
             });
           } catch {
             // ignore
           }
-        })
-    )
+        }),
+    ),
   );
 
 export default epic;

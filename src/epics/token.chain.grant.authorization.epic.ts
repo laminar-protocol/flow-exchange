@@ -8,12 +8,7 @@ import { Epic } from 'reducers';
 const epic: Epic = action$ =>
   action$.pipe(
     ofType(types.token.grant.completed),
-    mergeMap(action =>
-      of({
-        type: types.token.authorization.requested,
-        payload: { symbol: action.payload.symbol },
-      })
-    )
+    mergeMap(action => of({ type: types.token.authorization.requested, payload: { symbol: action.payload.symbol } })),
   );
 
 export default epic;
