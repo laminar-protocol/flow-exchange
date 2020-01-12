@@ -22,6 +22,7 @@ class Ethereum {
 
   public readonly tokens: {
     DAI: Contract;
+    iUSD: Contract;
     fEUR: Contract;
     fJPY: Contract;
     fXAU: Contract;
@@ -55,6 +56,7 @@ class Ethereum {
     this.liquidityPool = new this.web3.eth.Contract(abi.LiquidityPoolInterface, addresses.pool);
 
     const daiContract = new this.web3.eth.Contract(abi.ERC20, addresses.baseToken);
+    const iusdContract = new this.web3.eth.Contract(abi.ERC20, addresses.iToken);
     const eurContract = new this.web3.eth.Contract(abi.ERC20, addresses.fEUR);
     const jpyContract = new this.web3.eth.Contract(abi.ERC20, addresses.fJPY);
     const appleContract = new this.web3.eth.Contract(abi.ERC20, addresses.fAAPL);
@@ -62,6 +64,7 @@ class Ethereum {
 
     this.tokens = {
       DAI: daiContract,
+      iUSD: iusdContract,
       fEUR: eurContract,
       fJPY: jpyContract,
       fAAPL: appleContract,

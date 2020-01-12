@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import { liquidityPools } from 'config';
-import { FormatBalance } from 'components/format';
-import * as theme from 'theme';
+import { StateWithId } from '../../helpers/apiLoadable';
+import { FormatBalance } from '../../components/format';
+import { Spinner } from '../../components';
+import * as theme from '../../theme';
 
 interface RowProps {
   highlight?: boolean;
@@ -42,23 +43,27 @@ const PoolRow = styled.div<RowProps>`
 
 interface Props {
   symbol: string;
-  pool: string;
+  poolId: string;
+  poolName: string;
+  poolAvailability?: StateWithId<string>;
 }
 
 // ----------
 
-const LiquidityPool: React.FC<Props> = ({ symbol, pool }) => {
+const LiquidityPool: React.FC<Props> = ({ symbol, poolId, poolName, poolAvailability }) => {
   const { pool: selectedPool } = useParams();
 
-  // TODO: Fix type
-  const liquidityPool = (liquidityPools as any)[pool];
-
+  console.log(poolAvailability);
   return (
-    <Link to={`/margin/${liquidityPool.key}/${symbol}`} key={liquidityPool.key}>
-      <PoolRow highlight={liquidityPool.key === selectedPool}>
-        <div className="symbol">{liquidityPool.name}</div>
+    <Link to={`/margin/${poolId}/${symbol}`} key={poolId}>
+      <PoolRow highlight={poolId === selectedPool}>
+        <div className="symbol">{poolName}</div>
         <div className="ask">
-          <FormatBalance value={liquidityPool.availability} options={{ currencySymbol: '$' }} />
+          {poolAvailability && !poolAvailability.loading ? (
+            <FormatBalance value={poolAvailability.value} options={{ currencySymbol: '$' }} />
+          ) : (
+            <Spinner loading={poolAvailability && poolAvailability.loading} />
+          )}
         </div>
       </PoolRow>
     </Link>

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Panel } from 'components';
-import * as theme from 'theme';
-import { tradingSymbols, liquidityPools } from 'config';
-
+import { Panel } from '../../components';
+import * as theme from '../../theme';
+import { tradingSymbols } from '../../config';
+import { AppState } from '../../reducers';
+import { actions } from '../../types';
 import Symbol from './symbol';
 import Pool from './pool';
 
@@ -76,10 +78,20 @@ const PoolHeader = styled.div`
 // ----------
 
 const SymbolList: React.FC = () => {
+  const dispatch = useDispatch();
+
   const symbols = Object.keys(tradingSymbols);
-  const pools = Object.keys(liquidityPools);
+  const pools = useSelector<AppState, any>(state => state.liquidityPool.pools);
+  const poolAvailables = useSelector<AppState, any>(state => state.liquidityPool.availables);
 
   const { tradingSymbol: selectedSymbol, pool: selectedPool } = useParams();
+
+  useLayoutEffect(() => {
+    for (const poolId of pools.allIds) {
+      dispatch(actions.liquidityPool.available.requested({ id: pools.byId[poolId].address }));
+    }
+  }, [dispatch, ...pools.allIds]);
+
   if (!selectedSymbol || !selectedPool) {
     return null;
   }
@@ -101,8 +113,14 @@ const SymbolList: React.FC = () => {
           <div className="pool">Liquidity Pool</div>
           <div className="available">Available</div>
         </PoolHeader>
-        {pools.map(pool => (
-          <Pool key={pool} pool={pool} symbol={selectedSymbol} />
+        {pools.allIds.map((poolId: string) => (
+          <Pool
+            key={poolId}
+            poolId={poolId}
+            poolName={pools.byId[poolId].name}
+            poolAvailability={poolAvailables.states[pools.byId[poolId].address]}
+            symbol={selectedSymbol}
+          />
         ))}
       </PoolContainer>
     </Container>

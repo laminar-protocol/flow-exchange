@@ -1,18 +1,29 @@
-import { combineReducers, Reducer } from 'redux';
-import { DeepReadonly } from 'utility-types';
-import { MultiState as ApiLoadableState, createReducer } from 'helpers/apiLoadable';
-import { actions } from 'types';
+import { combineReducers } from 'redux';
 
-type _State = {
-  spread: ApiLoadableState<{ ask: number; bid: number }, [string, string]>;
+import { addresses } from '../config';
+import { createReducer } from '../helpers/apiLoadable';
+import { actions } from '../types';
+
+const POOLS_INITIAL_STATE = {
+  byId: {
+    POOL1: {
+      id: 'POOL1',
+      address: addresses.pool,
+      name: 'Laminar',
+    },
+    POOL2: {
+      id: 'POOL2',
+      address: addresses.pool2,
+      name: 'ACME',
+    },
+  },
+  allIds: ['POOL1', 'POOL2'],
 };
 
-export type State = DeepReadonly<_State>;
-
-const spread = createReducer(actions.liquidityPool.spread);
-
-const reducer: Reducer<_State> = combineReducers({
-  spread,
+const reducer = combineReducers({
+  spread: createReducer(actions.liquidityPool.spread),
+  availables: createReducer(actions.liquidityPool.available),
+  pools: (state = POOLS_INITIAL_STATE) => state,
 });
 
 export default reducer;

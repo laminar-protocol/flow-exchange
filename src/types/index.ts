@@ -48,6 +48,7 @@ const margin = moduleActions('margin', {
 
 const liquidityPool = moduleActions('liquidityPool', {
   spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
+  available: apiActionTypes<PartialStateWithId<string, string>>(),
 });
 
 const faucet = moduleActions('faucet', {
