@@ -51,7 +51,8 @@ const SymbolSelect = styled(CurrencySelect)`
   }
 `;
 
-const Lock = styled(GrantSwitch)`
+// TODO: fix type
+const Lock = styled(GrantSwitch as React.FC<any>)`
   position: absolute;
   height: 2.5rem;
   top: 50%;
@@ -68,7 +69,7 @@ const Lock = styled(GrantSwitch)`
 
 const options = (symbols: string[], disabledSymbols?: string[]) => {
   if (symbols) {
-    return symbols.map(symbol => ({ symbol, isDisabled: disabledSymbols && disabledSymbols.includes(symbol) }));
+    return symbols.map(symbol => ({ symbol, isDisabled: disabledSymbols?.includes(symbol) }));
   }
 };
 

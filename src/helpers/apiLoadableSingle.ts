@@ -27,17 +27,17 @@ export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Par
   return new ReducerBuilder(initialState<T, P, E>())
     .handle(apiAction.requested, (state, { payload }) => ({
       loading: true,
-      params: payload && payload.params,
-      value: equals(payload && payload.params, state.params) ? state.value : undefined,
+      params: payload?.params,
+      value: equals(payload?.params, state.params) ? state.value : undefined,
     }))
     .handle(apiAction.completed, (_state, { payload }) => ({
       loading: false,
-      value: payload && payload.value,
+      value: payload?.value,
       error: undefined,
     }))
     .handle([apiAction.cancelled, apiAction.failed], (_state, { payload }) => ({
       loading: false,
-      error: payload && payload.error,
+      error: payload?.error,
     }))
     .build();
 }
@@ -61,7 +61,7 @@ export function createEpic<S, T, P, E = any>(
     return from$.pipe(
       ofType(types.requested),
       switchMap(({ payload }) =>
-        from(run(payload && payload.params, state$)).pipe(
+        from(run(payload?.params, state$)).pipe(
           map(resp => apiAction.completed({ value: resp })),
           catchError((error: E) => of(apiAction.failed({ error }))),
           takeUntil(action$.pipe(ofType(types.cancelled))),

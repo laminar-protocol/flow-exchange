@@ -35,7 +35,7 @@ export const usePriceRate = (
     if (fromSymbol === toSymbol) {
       return 1;
     }
-    if (data && data.priceEntities) {
+    if (data?.priceEntities) {
       const fromAddress = tokens[fromSymbol].address.toLocaleLowerCase();
       const toAddress = tokens[toSymbol].address.toLocaleLowerCase();
       let fromRate = 1;

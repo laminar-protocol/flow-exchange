@@ -28,7 +28,7 @@ const epic: Epic = action$ =>
               .catch(() => observable.next(actions.ethereum.enable.failed()));
           } catch {
             ethereum.web3.eth.getAccounts((_error, accounts) => {
-              if (accounts && accounts[0]) {
+              if (accounts?.[0]) {
                 observable.next(actions.ethereum.enable.completed(accounts[0]));
               }
             });
