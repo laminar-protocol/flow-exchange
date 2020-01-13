@@ -95,7 +95,7 @@ const TradeList: React.FC<Props> = ({ account }) => {
     },
   });
 
-  const positions = useMemo(() => data && data.marginPositionEntities.map((event: any) => ({ ...event })), [data]);
+  const positions = useMemo(() => data?.marginPositionEntities.map((event: any) => ({ ...event })), [data]);
 
   // const [displayPosition, setDisplayPosition] = useState('open' as string);
 
