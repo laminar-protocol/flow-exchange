@@ -20,7 +20,6 @@ describe('ethereum', () => {
     const bid = await contract.methods.getBidSpread(tokenAddr).call();
     const ask = await contract.methods.getAskSpread(tokenAddr).call();
 
-    console.log(contract.methods.balanceOf);
     console.log(`bid spread: ${bid}; ask spread: ${ask}`);
 
     expect(bid).toBeDefined();

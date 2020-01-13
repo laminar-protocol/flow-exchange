@@ -53,7 +53,6 @@ interface Props {
 const LiquidityPool: React.FC<Props> = ({ symbol, poolId, poolName, poolAvailability }) => {
   const { pool: selectedPool } = useParams();
 
-  console.log(poolAvailability);
   return (
     <Link to={`/margin/${poolId}/${symbol}`} key={poolId}>
       <PoolRow highlight={poolId === selectedPool}>
