@@ -1,15 +1,13 @@
 import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import types, { actions } from 'types';
-import { AppState } from 'reducers';
-import { addresses, tokens, isTokenSymbol, isBaseTokenSymbol, TokenSymbol } from 'config';
-import { caculate } from 'helpers/exchangeRateHelper';
 
-import Swap from './swap';
+import types, { actions } from '../../types';
+import { AppState } from '../../reducers';
+import { addresses, tokens, isTokenSymbol, isBaseTokenSymbol, TokenSymbol } from '../../config';
+import { caculate } from '../../helpers/exchangeRateHelper';
 
 const defaultPool = addresses.pool;
 
-const mapStateToProps = ({
+export const swapSelector = ({
   swap: { fromAmount, fromSymbol, toAmount, toSymbol, isSwapping },
   liquidityPool: {
     spread: { states },
@@ -69,7 +67,7 @@ const mapStateToProps = ({
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+export const swapDispatcher = (dispatch: Dispatch) => ({
   onFromSymbolChange: (symbol: string) => {
     dispatch(actions.swap.fromAmount.changed(undefined));
     dispatch(actions.swap.fromSymbol.changed(symbol));
@@ -111,5 +109,3 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     }
   },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(Swap);

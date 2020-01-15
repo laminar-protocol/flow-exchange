@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { LightButton } from 'components';
 import { FormatProfit, FormatRate } from 'components/format';
 
-import { usePriceRate } from 'hooks/useOraclePrice';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from 'config';
-import * as theme from 'theme';
+import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from '../../config';
+import * as theme from '../../theme';
 import { calculateRate } from './rate';
+import { actions } from '../../types';
+import { AppState } from '../../reducers';
+import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
 
 // ----------
 // Style
@@ -62,7 +64,7 @@ const ListRow = styled.div`
 // ----------
 // Interface
 // ----------
-export interface OwnProps {
+export type Props = {
   amount: string;
   closeSpread: string;
   liquidationFee: string;
@@ -71,17 +73,13 @@ export interface OwnProps {
   pair: string;
   positionId: number;
   openTxhash: string;
-}
+};
 
-export interface StateProps {
+export type StateProps = {
   isEnabled: boolean;
   isOpening: boolean;
   isClosing: boolean;
-  account: string;
-  onClosePosition: (name: string, id: string) => void;
-}
-
-type Props = OwnProps & StateProps;
+};
 
 // ----------
 
@@ -93,11 +91,9 @@ const OpenTrade: React.FC<Props> = ({
   pair,
   positionId,
   openTxhash,
-  isEnabled,
-  isOpening,
-  isClosing,
-  onClosePosition,
 }) => {
+  const dispatch = useDispatch();
+
   // TODO: Fix type
   const tradingPair: any = findTradingPairByAddress(pair);
   const symbolInfo: any = findTradingSybmolByPairAddress(pair);
@@ -105,6 +101,23 @@ const OpenTrade: React.FC<Props> = ({
   const { symbol: tradingSymbol, direction } = symbolInfo;
   const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
   const openRate = calculateRate(0, tradingSymbol.inverted, direction, Number(openPrice));
+
+  const { isEnabled, isOpening, isClosing } = useShallowEqualSelector<AppState, StateProps>(
+    ({ margin: { allowance, openPosition, closePosition } }: AppState) => {
+      const allowanceValue = allowance.value || 0;
+      return {
+        isEnabled: allowanceValue > 0,
+        isOpening: openPosition.loading,
+        isClosing: closePosition.loading,
+      };
+    },
+  );
+  const onClosePosition = useCallback(
+    (name: string, id: string) => {
+      dispatch(actions.margin.closePosition.requested({ params: { name, id } }));
+    },
+    [dispatch],
+  );
 
   // TODO: Refactor and common inverted logics
   let profit;

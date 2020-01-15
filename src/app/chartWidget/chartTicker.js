@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import * as theme from 'theme';
+import * as theme from '../../theme';
 
 const Widget = styled.div`
   flex: 1;

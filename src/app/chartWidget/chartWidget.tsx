@@ -4,7 +4,7 @@ declare const TradingView: any;
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import * as theme from 'theme';
+import * as theme from '../../theme';
 
 const Widget = styled.div`
   flex: 1;
@@ -27,7 +27,6 @@ const Widget = styled.div`
 `;
 
 const loadChart = (symbol: string, currentTheme: string) => {
-  const theme = currentTheme === 'dark' ? 'Dark' : 'Light';
   new TradingView.widget({
     autosize: true,
     symbol: symbol,
@@ -59,4 +58,5 @@ const ChartWidget: React.FC<Props> = ({ symbol, currentTheme }) => {
     </Widget>
   );
 };
+
 export default ChartWidget;

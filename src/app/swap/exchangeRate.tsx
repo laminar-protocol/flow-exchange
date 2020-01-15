@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { NumberFormat, Spinner, Text } from 'components';
-import { tokens, isTokenSymbol, TokenSymbol } from 'config';
-import { caculate } from 'helpers/exchangeRateHelper';
+import { NumberFormat, Spinner, Text } from '../../components';
+import { tokens, isTokenSymbol, TokenSymbol } from '../../config';
+import { caculate } from '../../helpers/exchangeRateHelper';
 
 const symbolName = (symbol: string) => {
   if (isTokenSymbol(symbol)) {

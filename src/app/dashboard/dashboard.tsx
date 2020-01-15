@@ -4,11 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { Text, Separator, Panel, Flex } from 'components';
 
-import ChartTicker from 'app/chartWidget/chartTicker';
-import * as theme from 'theme';
-
-import Balance from './balance.connect';
-import Faucet from './faucet.connect';
+import ChartTicker from '../chartWidget/chartTicker';
+import * as theme from '../../theme';
+import Balance from './balance';
+import Faucet from './faucet';
 
 const Container = styled.div``;
 
@@ -107,7 +106,7 @@ const Description = styled.div`
   color: ${theme.lightForegroundColor};
 `;
 
-const Component = () => (
+const Dashboard = () => (
   <Container>
     <Text size="h">Dashboard</Text>
     <Separator />
@@ -182,4 +181,4 @@ const Component = () => (
   </Container>
 );
 
-export default Component;
+export default Dashboard;

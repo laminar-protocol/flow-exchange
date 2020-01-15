@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-import * as theme from 'theme';
+import * as theme from '../../theme';
 
 const Item = styled.div`
   font-size: 1rem;

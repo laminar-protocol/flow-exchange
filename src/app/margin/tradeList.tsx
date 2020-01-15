@@ -6,8 +6,10 @@ import gql from 'graphql-tag';
 import { Text, Spinner } from 'components';
 import * as theme from 'theme';
 
-import OpenTrade from './openTrade.connect';
+import OpenTrade from './openTrade';
 import CloseTrade from './closeTrade';
+import { AppState } from '../../reducers';
+import { useShallowEqualSelector } from '../../hooks';
 
 // ----------
 // Style
@@ -79,15 +81,17 @@ const positionQuery = gql`
 // Interface
 // ----------
 
-export interface StateProps {
+export type StateProps = {
   account: string;
-}
-
-type Props = StateProps;
+};
 
 // ----------
 
-const TradeList: React.FC<Props> = ({ account }) => {
+const TradeList: React.FC = () => {
+  const account = useShallowEqualSelector<AppState, StateProps>(({ ethereum: { account } }: AppState) => ({
+    account,
+  }));
+
   // TODO: Fix type
   const { loading: isLoading, data } = useSubscription(positionQuery, {
     variables: {

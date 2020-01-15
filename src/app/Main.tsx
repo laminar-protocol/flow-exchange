@@ -4,15 +4,15 @@ import styled from 'styled-components';
 
 import * as theme from 'theme';
 
-import Menu from 'app/menu/menu.connect';
-import Header from 'app/header/header';
+import Menu from 'app/menu/menu';
 import Dashboard from 'app/dashboard/dashboard';
-import Lending from 'app/lending/lending.connect';
-import Margin from 'app/margin/margin.connect';
-import Swap from 'app/swap/swap.connect';
-import Liquidity from 'app/liquidity/liquidity.connect';
-import ConnectModal from 'app/connectModal/connectModal.connect';
-import NetworkGuardModal from 'app/networkGuardModal/networkGuardModal.connect';
+import Lending from 'app/lending/lending';
+import Margin from 'app/margin/margin';
+import Swap from 'app/swap/swap';
+import Liquidity from 'app/liquidity/liquidity';
+import Header from './Header';
+import ConnectModal from './ConnectModal';
+import NetworkGuardModal from './NetworkGuardModal';
 
 import { Container, SideBar, Prime, SideColumn, PrimeColumn } from 'components';
 
