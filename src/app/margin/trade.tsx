@@ -10,10 +10,10 @@ import {
   SegmentedControlItem,
   InputNumber,
   Notice,
+  FormatRate,
 } from '../../components';
 import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
 import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
-import { FormatRate } from '../../components/format';
 import * as theme from '../../theme';
 import { actions } from '../../types';
 import { AppState } from '../../reducers';

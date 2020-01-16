@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import { usePriceRate } from 'hooks/useOraclePrice';
-import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
-import { FormatRate } from 'components/format';
-import * as theme from 'theme';
+import { usePriceRate } from '../../hooks';
+import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
+import { FormatRate } from '../../components';
+import * as theme from '../../theme';
 
 import { calculateRate } from './rate';
 

@@ -5,8 +5,8 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import * as theme from 'theme';
 
-import Text from './text';
-import Spinner from './spinner';
+import Text from './Text';
+import Spinner from '../Spinner';
 
 const Header = styled.div`
   text-transform: uppercase;

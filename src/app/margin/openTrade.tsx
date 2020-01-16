@@ -1,9 +1,7 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { LightButton } from 'components';
-import { FormatProfit, FormatRate } from 'components/format';
-
+import { LightButton, FormatProfit, FormatRate } from '../../components';
 import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from '../../config';
 import * as theme from '../../theme';
 import { calculateRate } from './rate';

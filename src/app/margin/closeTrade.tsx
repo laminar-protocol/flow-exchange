@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { FormatProfit, FormatRate } from 'components/format';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from 'config';
-import * as theme from 'theme';
+import * as theme from '../../theme';
+import { FormatProfit, FormatRate } from '../../components';
+import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from '../../config';
 
 import { calculateRate } from './rate';
 // ----------

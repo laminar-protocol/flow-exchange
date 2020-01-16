@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
 import { StateWithId } from '../../helpers/apiLoadable';
-import { FormatBalance } from '../../components/format';
-import { Spinner } from '../../components';
+import { FormatBalance, Spinner } from '../../components';
 import * as theme from '../../theme';
 
 interface RowProps {

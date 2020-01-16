@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Input as BaseInput } from 'antd';
 
-import * as theme from 'theme';
+import * as theme from '../../theme';
 
 const Input = styled(BaseInput)`
   &.ant-input {

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import * as theme from 'theme';
-import Text from './text';
+import { Text } from './display';
 
 const Notice = styled(Text)`
   background-color: ${theme.noticeForegroundColor};

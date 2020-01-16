@@ -19,7 +19,7 @@ import * as serviceWorker from 'serviceWorker';
 
 import store, { history } from './store';
 import ethereum from './services/ethereum';
-import NoService from './app/NoService';
+import NoService from './app/common/NoService';
 
 import 'antd/dist/antd.css';
 
