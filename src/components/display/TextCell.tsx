@@ -6,7 +6,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import * as theme from 'theme';
 
 import Text from './Text';
-import Spinner from '../Spinner';
+import { Spinner } from '../feedback';
 
 const Header = styled.div`
   text-transform: uppercase;
