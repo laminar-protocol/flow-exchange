@@ -1,5 +1,6 @@
 export * from './buttons';
 export * from './display';
+export * from './feedback';
 export * from './inputs';
 export * from './selects';
 export * from './layouts';
@@ -10,4 +11,3 @@ export * from './navigation';
 
 export { default as Notice } from './Notice';
 export { default as Modal } from './Modal';
-export { default as Spinner } from './Spinner';
