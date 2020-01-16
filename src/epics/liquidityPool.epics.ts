@@ -5,7 +5,7 @@ import { actions } from '../types';
 import { Epic } from '../reducers';
 import { createEpic } from '../helpers/apiLoadable';
 import { fromWei } from '../helpers/unitHelper';
-import { addresses } from '../config';
+import { addresses, tokens } from '../config';
 
 export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poolAddr, tokenAddr]) => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
@@ -35,8 +35,13 @@ export const available: Epic = createEpic(actions.liquidityPool.available, async
 export const allowed_tokens: Epic = createEpic(actions.liquidityPool.allowed_tokens, async poolAddr => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
 
-  return ['XAU', 'EUR']; // TODO: call contract
-  const allowed_tokens = await contract.methods.getAllowedTokens().call();
+  let allowed_tokens = [];
+  for (let token of Object.values(tokens).filter(i => i.isBaseToken === false)) {
+    const spread = await contract.methods.getBidSpread(token.address).call();
+    if (spread !== 0) {
+      allowed_tokens.push(token.name);
+    }
+  }
 
   return allowed_tokens;
 });
