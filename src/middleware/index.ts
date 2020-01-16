@@ -1,3 +1,1 @@
-import errorLogger from './errorLogger';
-
-export { errorLogger };
+export * from './errorLogger';

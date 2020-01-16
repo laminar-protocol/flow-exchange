@@ -1,4 +1,4 @@
-export default () => (next: any) => (action: any): any => {
+export const errorLogger = () => (next: any) => (action: any): any => {
   // check for errors on action or payload
   const { type } = action;
   const { error } = action || action.payload;

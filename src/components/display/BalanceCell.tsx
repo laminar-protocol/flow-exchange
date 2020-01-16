@@ -1,8 +1,9 @@
 import React from 'react';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-import { Text, TextCell } from 'components';
-import { FormatBalance } from './format';
+import Text from './Text';
+import TextCell from './TextCell';
+import { FormatBalance } from './Format';
 
 interface Props {
   value: string;
