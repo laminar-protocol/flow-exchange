@@ -6,8 +6,8 @@ import { Text, FormatBalance } from '../components';
 import { tokens, TokenSymbol } from '../config';
 import { fromWei } from '../helpers/unitHelper';
 import types from '../types';
-import { AppState } from 'reducers';
-import { getBalance, getIsQueryingBalance } from 'reducers/token.reducer';
+import { AppState } from '../reducers';
+import { getBalance, getIsQueryingBalance } from '../reducers/token.reducer';
 
 const Line = styled.div`
   margin: 1rem 0;
