@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { TokenSymbol } from 'config';
-import { usePriceRate } from 'hooks/useOraclePrice';
-import { Text, Separator, PrimaryButton } from 'components';
-import BalanceLine from 'app/balanceLine/balanceLine.connect';
+import { swapDispatcher, swapSelector } from './swap.connect';
+import { TokenSymbol } from '../../config';
+import { Text, Separator, PrimaryButton } from '../../components';
+import BalanceLine from '../BalanceLine';
+import { AppState } from '../../reducers';
+import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
 
 import {
   Container,
@@ -23,7 +25,7 @@ import {
   SwapListContainer,
 } from './swap.style';
 import Amount from './amount';
-import SwapList from './swapList.connect';
+import SwapList from './swapList';
 import ExchangeRate from './exchangeRate';
 
 // ----------
@@ -48,40 +50,39 @@ export interface StateProps {
   isRedeem: boolean;
 
   isLoadingSpread: boolean;
-
-  onFromSymbolChange: (symbol: string) => void;
-  onToSymbolChange: (symbol: string) => void;
-  onFromAmountChange: (amount: string, rate?: number, spread?: number) => void;
-  onToAmountChange: (amount: string, rate?: number, spread?: number) => void;
-  onSwapSymbol: (fromSymbol: string, toSymbol: string, fromAmount?: string, toAmount?: string) => void;
-  onSwap: (isRedeem: boolean) => void;
-  onFetchLiquidityPoolSpread: (otherSymbol: string) => void;
 }
 
 // ----------
 
-const Swap: React.FC<StateProps> = ({
-  askSpread,
-  bidSpread,
-  availableSymbols,
-  availableFromSymbols,
-  availableToSymbols,
-  fromSymbol,
-  toSymbol,
-  fromAmount,
-  toAmount,
-  isSwapping,
-  isValid,
-  isRedeem,
-  isLoadingSpread,
-  onFromSymbolChange,
-  onToSymbolChange,
-  onFromAmountChange,
-  onToAmountChange,
-  onSwapSymbol,
-  onSwap,
-  onFetchLiquidityPoolSpread,
-}) => {
+const Swap: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const {
+    askSpread,
+    bidSpread,
+    availableSymbols,
+    availableFromSymbols,
+    availableToSymbols,
+    fromSymbol,
+    toSymbol,
+    fromAmount,
+    toAmount,
+    isSwapping,
+    isValid,
+    isRedeem,
+    isLoadingSpread,
+  } = useShallowEqualSelector<AppState, StateProps>(swapSelector);
+
+  const {
+    onFromSymbolChange,
+    onToSymbolChange,
+    onFromAmountChange,
+    onToAmountChange,
+    onSwapSymbol,
+    onSwap,
+    onFetchLiquidityPoolSpread,
+  } = useMemo(() => swapDispatcher(dispatch), [dispatch]);
+
   // ----------
   // State
   // ----------

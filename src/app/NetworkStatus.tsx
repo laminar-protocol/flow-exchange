@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Indicator, Text } from 'components';
+
+import { AppState } from '../reducers';
+import { Indicator, Text } from '../components';
+import { useShallowEqualSelector } from '../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -67,23 +70,34 @@ const renderNetworkName = (name?: string) => (
   </NetworkName>
 );
 
-export interface StateProps {
+export type StateProps = {
   isConnected: boolean;
   isConnecting: boolean;
   isEnabling: boolean;
   network?: string;
-}
+};
 
-const NetworkStatus: React.FC<StateProps> = ({ isConnected, isConnecting, isEnabling, network }) => (
-  <Container>
-    <Indicator size={10} color={indicatorStatus(isConnected, isConnecting, isEnabling)} />
-    <StatusText>
-      <div>
-        <Text>{networkStatus(isConnected, isConnecting, isEnabling)}</Text>
-      </div>
-      {isConnected && renderNetworkName(networkName(network))}
-    </StatusText>
-  </Container>
-);
+const NetworkStatus: React.FC = () => {
+  const { isConnected, isConnecting, isEnabling, network } = useShallowEqualSelector<AppState, StateProps>(
+    ({ ethereum: { isConnected, isConnecting, isEnabling, network } }: AppState) => ({
+      isConnected,
+      isConnecting,
+      isEnabling,
+      network,
+    }),
+  );
+
+  return (
+    <Container>
+      <Indicator size={10} color={indicatorStatus(isConnected, isConnecting, isEnabling)} />
+      <StatusText>
+        <div>
+          <Text>{networkStatus(isConnected, isConnecting, isEnabling)}</Text>
+        </div>
+        {isConnected && renderNetworkName(networkName(network))}
+      </StatusText>
+    </Container>
+  );
+};
 
 export default NetworkStatus;

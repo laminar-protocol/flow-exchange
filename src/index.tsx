@@ -14,12 +14,12 @@ import { getMainDefinition } from 'apollo-utilities';
 import * as Sentry from '@sentry/browser';
 
 import { subgraphEndpoints } from 'config';
-import Application from 'app/application/application.connect';
+import Application from 'app/Application';
 import * as serviceWorker from 'serviceWorker';
 
 import store, { history } from './store';
 import ethereum from './services/ethereum';
-import NoService from './app/noService/noService';
+import NoService from './app/NoService';
 
 import 'antd/dist/antd.css';
 
@@ -78,9 +78,9 @@ render(Application);
 serviceWorker.unregister();
 
 if ((module as any).hot) {
-  (module as any).hot.accept('./app/application/application.connect', () => {
+  (module as any).hot.accept('./app/Application', () => {
     // eslint-disable-next-line
-    const NextApp = require('./app/application/application.connect').default;
+    const NextApp = require('./app/Application').default;
     render(NextApp);
   });
 }

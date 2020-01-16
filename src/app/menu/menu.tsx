@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Separator, Flex, Switch } from 'components';
-import * as theme from 'theme';
-import NetworkStatus from 'app/networkStatus/networkStatus.connect';
-import LaminarLogo from 'assets/laminar.svg';
-
-import Wallet from './wallet.connect';
+import { Separator, Flex, Switch } from '../../components';
+import * as theme from '../../theme';
+import NetworkStatus from '../NetworkStatus';
+import LaminarLogo from '../../assets/laminar.svg';
+import Wallet from './wallet';
 import MenuItem from './item';
+import { actions } from '../../types';
+import { AppState } from '../../reducers';
+import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -40,7 +42,7 @@ const LoogText = styled.div`
   background-clip: text;
 `;
 
-const Menu = styled.div``;
+const MenuContainer = styled.div``;
 
 const AdjustIcon = styled(FontAwesomeIcon)`
   font-size: ${theme.textNormalSize};
@@ -61,55 +63,70 @@ const ThemeSwitch = styled.div`
 // ----------
 export interface StateProps {
   currentTheme: string;
-  onChangeTheme: (theme: string) => void;
 }
 
-const Component: React.FC<StateProps> = ({ currentTheme, onChangeTheme }) => (
-  <Container>
-    <div>
-      <LogoContainer>
-        <Logo src={LaminarLogo} />
-        <LoogText>Flow Exchange</LoogText>
-      </LogoContainer>
-      <Separator />
-      <Menu>
-        <Wallet />
-        <Separator />
-        <MenuItem icon="home" to="/dashboard">
-          Dashboard
-        </MenuItem>
-        <Separator />
-        <MenuItem icon="chart-line" to="/margin">
-          Margin Trading
-        </MenuItem>
-        <MenuItem icon="exchange-alt" to="/swap">
-          Swap
-        </MenuItem>
-        <MenuItem icon="landmark" to="/lending">
-          Deposit &amp; Earn
-        </MenuItem>
-        <MenuItem icon="hand-holding-usd" to="/liquidity">
-          Liquidity Provider
-        </MenuItem>
-      </Menu>
-    </div>
-    <div>
-      <Flex>
-        <div>
-          <NetworkStatus />
-        </div>
-        <ThemeSwitch>
-          <Switch
-            onChange={() => {
-              onChangeTheme(currentTheme);
-            }}
-            checked={currentTheme === 'dark'}
-          />
-          <AdjustIcon icon="adjust" />
-        </ThemeSwitch>
-      </Flex>
-    </div>
-  </Container>
-);
+const Menu: React.FC = () => {
+  const dispatch = useDispatch();
 
-export default Component;
+  const { currentTheme } = useShallowEqualSelector<AppState, StateProps>(({ setting: { currentTheme } }: AppState) => ({
+    currentTheme,
+  }));
+
+  const onChangeTheme = useCallback(
+    (currentTheme: string) => {
+      const theme = currentTheme === 'light' ? 'dark' : 'light';
+      dispatch(actions.app.theme.changed(theme));
+    },
+    [dispatch],
+  );
+
+  return (
+    <Container>
+      <div>
+        <LogoContainer>
+          <Logo src={LaminarLogo} />
+          <LoogText>Flow Exchange</LoogText>
+        </LogoContainer>
+        <Separator />
+        <MenuContainer>
+          <Wallet />
+          <Separator />
+          <MenuItem icon="home" to="/dashboard">
+            Dashboard
+          </MenuItem>
+          <Separator />
+          <MenuItem icon="chart-line" to="/margin">
+            Margin Trading
+          </MenuItem>
+          <MenuItem icon="exchange-alt" to="/swap">
+            Swap
+          </MenuItem>
+          <MenuItem icon="landmark" to="/lending">
+            Deposit &amp; Earn
+          </MenuItem>
+          <MenuItem icon="hand-holding-usd" to="/liquidity">
+            Liquidity Provider
+          </MenuItem>
+        </MenuContainer>
+      </div>
+      <div>
+        <Flex>
+          <div>
+            <NetworkStatus />
+          </div>
+          <ThemeSwitch>
+            <Switch
+              onChange={() => {
+                onChangeTheme(currentTheme);
+              }}
+              checked={currentTheme === 'dark'}
+            />
+            <AdjustIcon icon="adjust" />
+          </ThemeSwitch>
+        </Flex>
+      </div>
+    </Container>
+  );
+};
+
+export default Menu;

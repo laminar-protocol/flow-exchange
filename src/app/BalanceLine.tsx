@@ -1,9 +1,13 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import { Text, FormatBalance } from 'components';
-import { tokens, TokenSymbol } from 'config';
-import { fromWei } from 'helpers/unitHelper';
+import { useDispatch, useShallowEqualSelector } from '../hooks';
+import { Text, FormatBalance } from '../components';
+import { tokens, TokenSymbol } from '../config';
+import { fromWei } from '../helpers/unitHelper';
+import types from '../types';
+import { AppState } from '../reducers';
+import { getBalance, getIsQueryingBalance } from '../reducers/token.reducer';
 
 const Line = styled.div`
   margin: 1rem 0;
@@ -17,25 +21,22 @@ const Line = styled.div`
 // Interface
 // ----------
 
-export interface OwnProps {
+export interface Props {
   symbol: string;
   lite?: boolean;
 }
 
-export interface StateProps {
-  balance: string;
-  isQueryingBalance: boolean;
-  onBalanceQuery: (symbol: string) => void;
-}
-
-type Props = OwnProps & StateProps;
-
 // ----------
 
-const BalanceLine: React.FC<Props> = ({ symbol, lite, balance, isQueryingBalance, onBalanceQuery }) => {
+const BalanceLine: React.FC<Props> = ({ symbol, lite }) => {
+  const dispatch = useDispatch();
+
+  const balance = useShallowEqualSelector((state: AppState) => getBalance(symbol, state.token));
+  const isQueryingBalance = useShallowEqualSelector((state: AppState) => getIsQueryingBalance(symbol, state.token));
+
   useEffect(() => {
-    onBalanceQuery(symbol);
-  }, [onBalanceQuery, symbol]);
+    dispatch({ type: types.token.balance.requested, payload: { symbol } });
+  }, [symbol, dispatch]);
 
   const { displayName, currencySymbol } = tokens[symbol as TokenSymbol];
 

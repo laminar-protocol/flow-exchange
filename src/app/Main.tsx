@@ -2,19 +2,17 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router';
 import styled from 'styled-components';
 
-import * as theme from 'theme';
-
-import Menu from 'app/menu/menu.connect';
-import Header from 'app/header/header';
-import Dashboard from 'app/dashboard/dashboard';
-import Lending from 'app/lending/lending.connect';
-import Margin from 'app/margin/margin.connect';
-import Swap from 'app/swap/swap.connect';
-import Liquidity from 'app/liquidity/liquidity.connect';
-import ConnectModal from 'app/connectModal/connectModal.connect';
-import NetworkGuardModal from 'app/networkGuardModal/networkGuardModal.connect';
-
-import { Container, SideBar, Prime, SideColumn, PrimeColumn } from 'components';
+import * as theme from '../theme';
+import Menu from './menu/menu';
+import Dashboard from './dashboard/dashboard';
+import Lending from './lending/lending';
+import Margin from './margin/margin';
+import Swap from './swap/swap';
+import Liquidity from './liquidity/liquidity';
+import Header from './Header';
+import ConnectModal from './ConnectModal';
+import NetworkGuardModal from './NetworkGuardModal';
+import { Container, SideBar, Prime, SideColumn, PrimeColumn } from '../components';
 
 const Content = styled.div`
   margin: 3rem;

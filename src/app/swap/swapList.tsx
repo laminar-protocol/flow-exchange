@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import gql from 'graphql-tag';
 import { useSubscription } from '@apollo/react-hooks';
 
-import { Spinner, Text } from 'components';
-
+import { Spinner, Text } from '../../components';
+import { AppState } from '../../reducers';
+import { useShallowEqualSelector } from '../../hooks';
 import SwapItem from './swapItem';
 
 // ----------
@@ -54,7 +55,11 @@ export interface StateProps {
 
 // ----------
 
-const SwapList: React.FC<StateProps> = ({ account }) => {
+const SwapList: React.FC = () => {
+  const account = useShallowEqualSelector<AppState, StateProps>(({ ethereum: { account } }: AppState) => ({
+    account,
+  }));
+
   const { loading: isLoading, data } = useSubscription(listQuery, {
     variables: {
       user: account,

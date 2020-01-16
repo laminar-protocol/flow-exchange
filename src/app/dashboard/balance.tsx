@@ -1,32 +1,40 @@
 import React, { useEffect } from 'react';
 
-import { BalanceCell } from 'components';
-import { fromWei } from 'helpers/unitHelper';
-import { tokens } from 'config';
+import { BalanceCell } from '../../components';
+import { fromWei } from '../../helpers/unitHelper';
+import { tokens } from '../../config';
+import types from '../../types';
+import { AppState } from '../../reducers';
+import { getBalance, getIsQueryingBalance } from '../../reducers/token.reducer';
+import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 // ----------
 // Interface
 // ----------
 
-export interface OwnProps {
+export type Props = {
   symbol: string;
   label?: string;
-}
+};
 
-export interface StateProps {
+export type StateProps = {
   balance: string;
   isQueryingBalance: boolean;
-  onBalanceQuery: (symbol: string) => void;
-}
-
-type Props = OwnProps & StateProps;
+};
 
 // ----------
 
-const Balance: React.FC<Props> = ({ symbol, label, balance, isQueryingBalance, onBalanceQuery }) => {
+const Balance: React.FC<Props> = ({ symbol, label }) => {
+  const dispatch = useDispatch();
+
+  const { balance, isQueryingBalance } = useShallowEqualSelector<AppState, StateProps>(({ token }: AppState) => ({
+    balance: getBalance(symbol, token),
+    isQueryingBalance: getIsQueryingBalance(symbol, token),
+  }));
+
   useEffect(() => {
-    onBalanceQuery(symbol);
-  }, [onBalanceQuery, symbol]);
+    dispatch({ type: types.token.balance.requested, payload: { symbol } });
+  }, [dispatch, symbol]);
 
   const { icon, currencySymbol, name } = tokens[symbol as keyof typeof tokens];
 

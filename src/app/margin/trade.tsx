@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -10,12 +10,13 @@ import {
   SegmentedControlItem,
   InputNumber,
   Notice,
-} from 'components';
-import { usePriceRate } from 'hooks/useOraclePrice';
-import { tradingSymbols, tradingPairs, liquidityPools } from 'config';
-import { FormatRate } from 'components/format';
-import * as theme from 'theme';
-
+} from '../../components';
+import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
+import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
+import { FormatRate } from '../../components/format';
+import * as theme from '../../theme';
+import { actions } from '../../types';
+import { AppState } from '../../reducers';
 import { calculateRate } from './rate';
 
 const Container = styled.div``;
@@ -97,22 +98,21 @@ const BuyButton = styled(SolidButton)`
 // Interface
 // ----------
 
-export interface OwnProps {
+export type Props = {
   symbol: string;
   pool: string;
-}
+};
 
-export interface StateProps {
+export type StateProps = {
   isEnabled: boolean;
   isOpening: boolean;
-  onOpenPosition: (name?: string, amount?: number, pool?: string) => void;
-}
-
-type Props = OwnProps & StateProps;
+};
 
 // ----------
 
-const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosition }) => {
+const Trade: React.FC<Props> = ({ symbol, pool }) => {
+  const dispatch = useDispatch();
+
   // TODO: Fix type
   const tradingSymbol = (tradingSymbols as any)[symbol];
   const liquidityPool = (liquidityPools as any)[pool];
@@ -121,6 +121,26 @@ const Trade: React.FC<Props> = ({ symbol, pool, isEnabled, isOpening, onOpenPosi
   const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);
   const [amount, setAmount] = useState(20 as number | undefined);
   const [displayMode, setModePosition] = useState('basic' as string);
+
+  const { isEnabled, isOpening } = useShallowEqualSelector<AppState, StateProps>(
+    ({ margin: { allowance, openPosition } }: AppState) => {
+      const allowanceValue = allowance.value || 0;
+      return {
+        isEnabled: allowanceValue > 0,
+        isOpening: openPosition.loading,
+      };
+    },
+  );
+
+  const onOpenPosition = useCallback(
+    (name?: string, amount?: number, pool?: string) => {
+      if (name === undefined || amount === undefined || pool === undefined) {
+        return;
+      }
+      dispatch(actions.margin.openPosition.requested({ params: { name, amount, pool } }));
+    },
+    [dispatch],
+  );
 
   const renderAdvanced = () => {
     if (displayMode === 'basic') {

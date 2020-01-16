@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import InputGroup from 'antd/lib/input/Group';
 
 import { CurrencySelect, Input } from 'components';
-import GrantSwitch from 'app/grantSwitch/grantSwitch.connect';
+import GrantSwitch from 'app/GrantSwitch';
 import * as theme from 'theme';
 
 const Container = styled.div``;

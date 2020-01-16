@@ -51,6 +51,7 @@ module.exports = {
     'no-console': 'off', // TODO: drop this and replace console.log with a logger
     'function-paren-newline': 'off', // fix conflicts with prittier
     'arrow-parens': ['error', 'as-needed'], // fix conflicts with prittier
+    'no-shadow': 'off',
   },
   settings: {
     'import/resolver': {

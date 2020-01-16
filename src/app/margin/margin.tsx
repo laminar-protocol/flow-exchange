@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
-import { Text, Panel, Switch } from 'components';
-import * as theme from 'theme';
-import { tradingSymbols } from 'config';
-
-import BalanceLine from 'app/balanceLine/balanceLine.connect';
-import ChartWidget from 'app/chartWidget/chartWidget';
-
+import { Text, Panel, Switch } from '../../components';
+import * as theme from '../../theme';
+import { tradingSymbols } from '../../config';
+import BalanceLine from '../BalanceLine';
+import ChartWidget from '../chartWidget/chartWidget';
 import SymbolList from './symbolList';
-import Trade from './trade.connect';
-import TradeList from './tradeList.connect';
+import Trade from './trade';
+import TradeList from './tradeList';
+import { actions } from '../../types';
+import { AppState } from '../../reducers';
+import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -143,19 +144,45 @@ const TradeControl = styled(Panel)`
 // Interface
 // ----------
 
-interface Props {
+export type StateProps = {
   currentTheme: string;
 
   isEnabled: boolean;
   isLoadingAllowance: boolean;
   isGranting: boolean;
-
-  onGrant: (enable: boolean) => void;
-}
+};
 
 // ----------
 
-const Margin: React.FC<Props> = ({ currentTheme, isEnabled, isLoadingAllowance, isGranting, onGrant }) => {
+const Margin: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const { currentTheme, isEnabled, isLoadingAllowance, isGranting } = useShallowEqualSelector<AppState, StateProps>(
+    ({ margin: { allowance, trading }, setting: { currentTheme } }: AppState) => {
+      const allowanceValue = allowance.value || 0;
+      return {
+        currentTheme,
+        isEnabled: allowanceValue > 0,
+        isLoadingAllowance: allowance.loading,
+        isGranting: trading.loading,
+      };
+    },
+  );
+
+  useEffect(() => {
+    dispatch(actions.margin.allowance.requested());
+    return () => {
+      dispatch(actions.margin.allowance.cancelled());
+    };
+  }, []);
+
+  const onGrant = useCallback(
+    (enable: boolean) => {
+      dispatch(actions.margin.toggleTrading.requested({ params: enable }));
+    },
+    [dispatch],
+  );
+
   // ----------
   // URL
   // ----------
@@ -167,6 +194,7 @@ const Margin: React.FC<Props> = ({ currentTheme, isEnabled, isLoadingAllowance, 
   if (!pool) {
     pool = 'POOL1';
   }
+
   const tradingSymbol = (tradingSymbols as any)[symbol];
 
   return (

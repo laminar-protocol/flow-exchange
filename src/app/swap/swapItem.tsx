@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { Text, FormatBalance } from 'components';
-import { tokens, TokenSymbol, explorer } from 'config';
-import * as theme from 'theme';
+import { Text, FormatBalance } from '../../components';
+import { tokens, TokenSymbol, explorer } from '../../config';
+import * as theme from '../../theme';
 
 const Line = styled.div`
   margin: 0.75rem 0;
