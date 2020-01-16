@@ -31,3 +31,12 @@ export const available: Epic = createEpic(actions.liquidityPool.available, async
 
   return fromWei(new BN(amount).mul(new BN(ratio + 1)));
 });
+
+export const allowed_tokens: Epic = createEpic(actions.liquidityPool.allowed_tokens, async poolAddr => {
+  const contract = ethereum.getLiquidityPoolContract(poolAddr);
+
+  return ['XAU', 'EUR']; // TODO: call contract
+  const allowed_tokens = await contract.methods.getAllowedTokens().call();
+
+  return allowed_tokens;
+});

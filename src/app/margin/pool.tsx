@@ -58,7 +58,7 @@ const LiquidityPool: React.FC<Props> = ({ symbol, poolId, poolName, poolAvailabi
         <div className="symbol">{poolName}</div>
         <div className="ask">
           {poolAvailability && !poolAvailability.loading ? (
-            <FormatBalance value={poolAvailability.value} options={{ currencySymbol: '$' }} />
+            <FormatBalance value={poolAvailability.value} options={{ currencySymbol: '$', output: 'currency' }} />
           ) : (
             <Spinner loading />
           )}

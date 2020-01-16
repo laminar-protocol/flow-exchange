@@ -23,6 +23,7 @@ const POOLS_INITIAL_STATE = {
 const reducer = combineReducers({
   spread: createReducer(actions.liquidityPool.spread),
   availables: createReducer(actions.liquidityPool.available),
+  allowed_tokens: createReducer(actions.liquidityPool.allowed_tokens),
   pools: (state = POOLS_INITIAL_STATE) => state,
 });
 
