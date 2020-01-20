@@ -90,7 +90,7 @@ const SymbolList: React.FC = () => {
     for (const poolId of pools.allIds) {
       dispatch(actions.liquidityPool.available.requested({ id: pools.byId[poolId].address }));
     }
-  }, [dispatch, ...pools.allIds]);
+  }, [dispatch, pools.allIds, pools.byId]);
 
   if (!selectedSymbol || !selectedPool) {
     return null;
