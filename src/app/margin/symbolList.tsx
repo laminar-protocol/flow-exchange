@@ -87,9 +87,9 @@ const SymbolList: React.FC = () => {
   const { tradingSymbol: selectedSymbol, pool: selectedPool } = useParams();
 
   useLayoutEffect(() => {
-    for (const poolId of pools.allIds) {
+    pools.allIds.forEach((poolId: string) => {
       dispatch(actions.liquidityPool.available.requested({ id: pools.byId[poolId].address }));
-    }
+    });
   }, [dispatch, pools.allIds, pools.byId]);
 
   if (!selectedSymbol || !selectedPool) {
