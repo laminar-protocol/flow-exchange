@@ -1,11 +1,11 @@
 import BN from 'bn.js';
-
-import ethereum from '../services/ethereum';
-import { actions } from '../types';
-import { Epic } from '../reducers';
-import { createEpic } from '../helpers/apiLoadable';
-import { fromWei } from '../helpers/unitHelper';
-import { addresses, tokens } from '../config';
+import _ from 'lodash';
+import ethereum from 'services/ethereum';
+import { actions } from 'types';
+import { Epic } from 'reducers';
+import { createEpic } from 'helpers/apiLoadable';
+import { fromWei } from 'helpers/unitHelper';
+import { addresses, tokens } from 'config';
 
 export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poolAddr, tokenAddr]) => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
@@ -21,7 +21,7 @@ export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poo
   };
 });
 
-export const available: Epic = createEpic(actions.liquidityPool.available, async poolAddr => {
+export const liquidity: Epic = createEpic(actions.liquidityPool.liquidity, async poolAddr => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
 
   const [ratio, amount] = await Promise.all<number, string>([
@@ -32,16 +32,13 @@ export const available: Epic = createEpic(actions.liquidityPool.available, async
   return fromWei(new BN(amount).mul(new BN(ratio + 1)));
 });
 
-export const allowed_tokens: Epic = createEpic(actions.liquidityPool.allowed_tokens, async poolAddr => {
+export const allowedTokens: Epic = createEpic(actions.liquidityPool.allowedTokens, async poolAddr => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
 
-  let allowed_tokens = [];
-  for (let token of Object.values(tokens).filter(i => i.isBaseToken === false)) {
-    const spread = await contract.methods.getBidSpread(token.address).call();
-    if (spread !== 0) {
-      allowed_tokens.push(token.name);
-    }
-  }
-
-  return allowed_tokens;
+  // TODO: update this when contract provides a list of allowed tokens
+  const baseTokens = Object.values(tokens).filter(i => i.isBaseToken === false);
+  const spreads = await Promise.all(baseTokens.map(token => contract.methods.getBidSpread(token.address).call()));
+  return _.zip(baseTokens, spreads)
+    .filter(([, spread]) => spread !== 0)
+    .map(([token]) => (token as { name: string }).name);
 });

@@ -48,8 +48,8 @@ const margin = moduleActions('margin', {
 
 const liquidityPool = moduleActions('liquidityPool', {
   spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
-  available: apiActionTypes<PartialStateWithId<string, string>>(),
-  allowed_tokens: apiActionTypes<PartialStateWithId<Array<string>, string>>(),
+  liquidity: apiActionTypes<PartialStateWithId<string, string>>(),
+  allowedTokens: apiActionTypes<PartialStateWithId<Array<string>, string>>(),
 });
 
 const faucet = moduleActions('faucet', {

@@ -82,13 +82,13 @@ const SymbolList: React.FC = () => {
 
   const symbols = Object.keys(tradingSymbols);
   const pools = useSelector<AppState, any>(state => state.liquidityPool.pools);
-  const poolAvailables = useSelector<AppState, any>(state => state.liquidityPool.availables);
+  const poolsLiquidity = useSelector<AppState, any>(state => state.liquidityPool.liquidity);
 
   const { tradingSymbol: selectedSymbol, pool: selectedPool } = useParams();
 
   useLayoutEffect(() => {
     for (const poolId of pools.allIds) {
-      dispatch(actions.liquidityPool.available.requested({ id: pools.byId[poolId].address }));
+      dispatch(actions.liquidityPool.liquidity.requested({ id: pools.byId[poolId].address }));
     }
   }, [dispatch, ...pools.allIds]);
 
@@ -118,7 +118,7 @@ const SymbolList: React.FC = () => {
             key={poolId}
             poolId={poolId}
             poolName={pools.byId[poolId].name}
-            poolAvailability={poolAvailables.states[pools.byId[poolId].address]}
+            poolAvailability={poolsLiquidity.states[pools.byId[poolId].address]}
             symbol={selectedSymbol}
           />
         ))}
