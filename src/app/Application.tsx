@@ -8,7 +8,6 @@ import { useDispatch, useShallowEqualSelector } from '../hooks';
 import { actions } from '../types';
 import Main from './Main';
 import GlobalStyle from '../theme/globalStyle';
-import { AppState } from '../reducers';
 
 library.add(fas);
 

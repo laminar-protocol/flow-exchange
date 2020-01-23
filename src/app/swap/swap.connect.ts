@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux';
 
 import types, { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { addresses, tokens, isTokenSymbol, isBaseTokenSymbol } from '../../config';
 import { caculate } from '../../helpers/exchangeRateHelper';
 

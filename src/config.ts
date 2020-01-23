@@ -174,14 +174,17 @@ export const tradingSymbols: { [key in TradingSymbol]: Trading } = {
   },
 };
 
+// TODO: remove this, use app state instead
 export const liquidityPools: { [key: string]: Pool } = {
   POOL1: {
+    id: '0x8b205c597602ebf442857D4714d996B343fFa20c',
     key: 'POOL1',
     address: addresses.pool,
     name: 'Laminar',
     spread: 0.003, // TODO: Read from contract
   },
   POOL2: {
+    id: '0x6582204488d330ffAf464592179936EA1E8A3c1f',
     key: 'POOL2',
     address: addresses.pool2,
     name: 'ACME',

@@ -6,7 +6,6 @@ import { findTradingPairByAddress, findTradingInfoByPairAddress, explorer } from
 import * as theme from '../../theme';
 import { calculateRate } from './rate';
 import { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
 
 // ----------

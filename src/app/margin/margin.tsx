@@ -11,7 +11,6 @@ import SymbolList from './symbolList';
 import Trade from './trade';
 import TradeList from './tradeList';
 import { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Container = styled.div`

@@ -6,7 +6,6 @@ import { Text } from 'components';
 import { truncate } from '../../helpers/stringHelper';
 import MenuItem from './item';
 import { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Address = styled(Text)`

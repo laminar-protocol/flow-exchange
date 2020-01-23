@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import { StateWithId } from '../../helpers/apiLoadable';
 import { FormatBalance, Spinner } from '../../components';
 import * as theme from '../../theme';
 

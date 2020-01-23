@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Modal, Text } from '../components';
 import { network as requiredNetwork } from '../config';
-import { AppState } from '../reducers';
 import { useShallowEqualSelector } from '../hooks';
 
 const Container = styled.div`

@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import * as theme from 'theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isTokenSymbol, tokens } from 'config';
+import { tokens } from 'config';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 // ----------

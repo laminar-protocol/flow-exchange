@@ -6,7 +6,6 @@ import { Text, FormatBalance } from '../components';
 import { tokens } from '../config';
 import { fromWei } from '../helpers/unitHelper';
 import types from '../types';
-import { AppState } from '../reducers';
 import { getBalance, getIsQueryingBalance } from '../reducers/token.reducer';
 
 const Line = styled.div`

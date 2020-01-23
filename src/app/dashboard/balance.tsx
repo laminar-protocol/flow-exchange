@@ -4,7 +4,6 @@ import { BalanceCell } from '../../components';
 import { fromWei } from '../../helpers/unitHelper';
 import { tokens } from '../../config';
 import types from '../../types';
-import { AppState } from '../../reducers';
 import { getBalance, getIsQueryingBalance } from '../../reducers/token.reducer';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 

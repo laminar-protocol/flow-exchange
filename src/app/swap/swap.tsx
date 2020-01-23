@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { swapDispatcher, swapSelector } from './swap.connect';
 import { Text, Separator, PrimaryButton } from '../../components';
 import BalanceLine from '../BalanceLine';
-import { AppState } from '../../reducers';
 import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
 
 import {

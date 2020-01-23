@@ -43,7 +43,7 @@ const LiquidityProvider: React.FC<{ pool: Pool; tradingSymbol?: TradingSymbol }>
   const liquidity = useSelector(selectors.liquidityPool.liquidity(pool.address));
   const allowedTokens = useSelector(selectors.liquidityPool.allowedTokens(pool.address));
   return (
-    <Provider key={pool.key}>
+    <Provider key={pool.id}>
       <Item>
         <Text size="l" weight="bold">
           {pool.name}

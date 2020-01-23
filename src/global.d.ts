@@ -1,6 +1,50 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Action as ReduxAction } from 'redux';
+import { reducer } from 'reducers';
+import { Epic as ReduxEpic } from 'redux-observable';
 
 declare global {
+  /** */
+  export interface StateWithId<T, I = string, P = void, E = any> extends ApiLoadableState<T, P, E> {
+    id?: I;
+  }
+
+  export type PartialStateWithId<T, I = string, P = void, E = any> = Partial<StateWithId<T, I, P, E>>;
+
+  export interface MultiState<T, I = string, P = void, E = any> {
+    states: Record<string | number, StateWithId<T, I, P, E>>;
+    lastId?: I;
+  }
+
+  export interface ApiLoadableState<T, P = void, E = any> {
+    value?: T;
+    loading: boolean;
+    params?: P;
+    error?: E;
+  }
+
+  export type PartialState<T, P = void, E = any> = Partial<ApiLoadableState<T, P, E>>;
+
+  export interface ApiLodableAction<T> extends Action<T> {
+    error?: boolean;
+  }
+
+  export interface Action<T> extends ReduxAction<string> {
+    payload?: T;
+  }
+
+  export type ActionCreator<T> = (payload?: T) => Action<T>;
+
+  export type ApiActionTypesRecord<P> = Record<typeof ApiActionTypes[number], ActionCreator<P>>;
+  export type ChangedActionTypesRecord<P> = Record<typeof ChangedActionTypes[number], ActionCreator<P>>;
+  export type ToggledActionTypesRecord<P> = Record<typeof ToggledActionTypes[number], ActionCreator<P>>;
+  export type TriggerActionTypesRecord<P> = Record<typeof TriggerActionTypes[number], ActionCreator<P>>;
+
+  export type AppState = ReturnType<ReturnType<typeof reducer>>;
+
+  export type Epic = ReduxEpic<any, any, AppState>;
+
+  /** */
   export type Address = string;
 
   export type TokenSymbol = 'DAI' | 'fEUR' | 'fJPY' | 'fXAU' | 'fAAPL';
@@ -46,10 +90,11 @@ declare global {
   }
 
   export interface Pool {
+    id: string;
     key: string;
     address: Address;
     name: string;
-    spread: number;
+    spread?: number;
   }
 
   export interface PriceData {

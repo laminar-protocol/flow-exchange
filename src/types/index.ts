@@ -7,9 +7,6 @@ import {
   triggerActionTypes,
 } from 'helpers/typeCreator';
 
-import { PartialState } from 'helpers/apiLoadableSingle';
-import { PartialStateWithId } from 'helpers/apiLoadable';
-
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),
   theme: changedActionTypes<string>(),

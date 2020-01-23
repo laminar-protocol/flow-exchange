@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { AppState } from '../reducers';
 import { Indicator, Text } from '../components';
 import { useShallowEqualSelector } from '../hooks';
 

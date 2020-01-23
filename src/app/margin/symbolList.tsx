@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Panel } from '../../components';
 import * as theme from '../../theme';
 import { tradingSymbols } from '../../config';
-import { AppState } from '../../reducers';
 import { actions } from '../../types';
 import Symbol from './symbol';
 import Pool from './pool';

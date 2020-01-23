@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { Modal, SolidButton, Button, Separator, Text } from '../components';
 import { useDispatch, useShallowEqualSelector } from '../hooks';
 import { actions } from '../types';
-import { AppState } from '../reducers';
 
 const Container = styled.div`
   display: flex;

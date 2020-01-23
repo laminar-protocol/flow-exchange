@@ -1,8 +1,6 @@
-import _ from 'lodash';
 import { createSelector } from 'reselect';
-import { AppState } from 'reducers';
 
-export const pools = createSelector<AppState, any, any>(
+export const pools = createSelector<AppState, AppState['liquidityPool']['pools'], Pool[]>(
   state => state.liquidityPool.pools,
   pools => {
     if (!pools) return [];
@@ -11,19 +9,19 @@ export const pools = createSelector<AppState, any, any>(
 );
 
 export const liquidity = (address: string) =>
-  createSelector<AppState, any, { loading: boolean; value: string }>(
+  createSelector<AppState, AppState['liquidityPool']['liquidity'], ApiLoadableState<string>>(
     state => state.liquidityPool.liquidity,
-    liquidity => _.get(liquidity, `states.${address}`),
+    liquidity => liquidity.states[address],
   );
 
 export const allowedTokens = (address: string) =>
-  createSelector<AppState, any, { loading: boolean; value: string[] }>(
+  createSelector<AppState, AppState['liquidityPool']['allowedTokens'], ApiLoadableState<string[]>>(
     state => state.liquidityPool.allowedTokens,
-    allowedTokens => _.get(allowedTokens, `states.${address}`),
+    allowedTokens => allowedTokens.states[address],
   );
 
 export const spread = (poolAddr: string, tokenAddr: string) =>
-  createSelector<AppState, any, any>(
+  createSelector<AppState, AppState['liquidityPool']['spread'], ApiLoadableState<{ ask: number; bid: number }>>(
     state => state.liquidityPool.spread,
-    spread => _.get(spread, `states.${poolAddr},${tokenAddr}`),
+    spread => spread.states[`${poolAddr},${tokenAddr}`],
   );

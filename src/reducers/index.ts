@@ -1,4 +1,3 @@
-import { Epic as ReduxEpic } from 'redux-observable';
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 
@@ -9,7 +8,7 @@ import token from './token.reducer';
 import margin from './margin.reducer';
 import liquidityPool from './liquidityPool.reducer';
 
-const reducer = (history: any) =>
+export const reducer = (history: any) =>
   combineReducers({
     router: connectRouter(history),
     ethereum,
@@ -21,7 +20,3 @@ const reducer = (history: any) =>
   });
 
 export default reducer;
-
-export type AppState = ReturnType<ReturnType<typeof reducer>>;
-
-export type Epic = ReduxEpic<any, any, AppState>;

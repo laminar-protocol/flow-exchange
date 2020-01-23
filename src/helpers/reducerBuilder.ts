@@ -1,6 +1,5 @@
 import { mergeDeepRight } from 'ramda';
 import { Reducer } from 'redux';
-import { Action, ActionCreator } from './typeCreator';
 
 type StateReducer<S, P = any> = (state: S, action: Action<P>) => Partial<S>;
 

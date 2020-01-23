@@ -2,7 +2,6 @@ import BN from 'bn.js';
 import _ from 'lodash';
 import ethereum from 'services/ethereum';
 import { actions } from 'types';
-import { Epic } from 'reducers';
 import { createEpic } from 'helpers/apiLoadable';
 import { fromWei } from 'helpers/unitHelper';
 import { addresses, tokens } from 'config';
