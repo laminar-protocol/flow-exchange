@@ -4,6 +4,8 @@ import { Text, FormatBalance, Spinner } from 'components';
 import { useSelector } from 'react-redux';
 import selectors from 'selectors';
 import * as theme from 'theme';
+import { TradingSymbol, Pool } from 'config';
+import Spread from './spread';
 
 const Provider = styled.div`
   display: flex;
@@ -32,13 +34,17 @@ const Item = styled.div`
   div {
     margin: 0.5rem 0;
   }
+
+  .ant-spin {
+    margin: 2px;
+  }
 `;
 
-const LiquidityProvider = ({ pool }: { pool: any }) => {
+const LiquidityProvider: React.FC<{ pool: Pool; tradingSymbol?: TradingSymbol }> = ({ pool, tradingSymbol }) => {
   const liquidity = useSelector(selectors.liquidityPool.liquidity(pool.address));
   const allowedTokens = useSelector(selectors.liquidityPool.allowedTokens(pool.address));
   return (
-    <Provider key={pool.poolId}>
+    <Provider key={pool.key}>
       <Item>
         <Text size="l" weight="bold">
           {pool.name}
@@ -61,33 +67,34 @@ const LiquidityProvider = ({ pool }: { pool: any }) => {
             Liquidity Available
           </Text>
         </div>
-        <div>
-          {liquidity && !liquidity.loading ? (
+        {liquidity && !liquidity.loading ? (
+          <div>
             <Text size="l">
               <FormatBalance value={liquidity.value} options={{ currencySymbol: '$', output: 'currency' }} />
             </Text>
+          </div>
+        ) : (
+          <Spinner loading />
+        )}
+      </Item>
+      {tradingSymbol ? (
+        <Spread poolAddr={pool.address} tradingSymbol={tradingSymbol} />
+      ) : (
+        <Item>
+          <div>
+            <Text size="s" light>
+              Market
+            </Text>
+          </div>
+          {allowedTokens && !allowedTokens.loading ? (
+            <div>
+              <Text size="l">{allowedTokens.value && allowedTokens.value.join(', ')}</Text>
+            </div>
           ) : (
             <Spinner loading />
           )}
-        </div>
-      </Item>
-
-      <Item>
-        <div>
-          <Text size="s" light>
-            Market
-          </Text>
-        </div>
-        <div>
-          <Text size="l">
-            {allowedTokens && !allowedTokens.loading ? (
-              <Text size="l">{allowedTokens.value && allowedTokens.value.join(', ')}</Text>
-            ) : (
-              <Spinner loading />
-            )}
-          </Text>
-        </div>
-      </Item>
+        </Item>
+      )}
     </Provider>
   );
 };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Text, FormatBalance } from '../../components';
-import { tokens, TokenSymbol, explorer } from '../../config';
+import { tokens, explorer } from '../../config';
 import * as theme from '../../theme';
 
 const Line = styled.div`
@@ -65,7 +65,7 @@ export interface StateProps {
 // ----------
 
 const SwapItem: React.FC<StateProps> = ({ tx, kind, baseTokenAmount, flowTokenAmount, timestamp, symbol }) => {
-  const { name, currencySymbol } = tokens[symbol as TokenSymbol];
+  const { name, currencySymbol } = tokens[symbol];
   const { name: baseTokenName, currencySymbol: baseTokenCurrencySymbol } = tokens.DAI;
   const date = new Date(timestamp * 1000);
   const isMint = kind === 'Minted';

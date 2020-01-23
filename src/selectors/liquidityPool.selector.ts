@@ -21,3 +21,9 @@ export const allowedTokens = (address: string) =>
     state => state.liquidityPool.allowedTokens,
     allowedTokens => _.get(allowedTokens, `states.${address}`),
   );
+
+export const spread = (poolAddr: string, tokenAddr: string) =>
+  createSelector<AppState, any, any>(
+    state => state.liquidityPool.spread,
+    spread => _.get(spread, `states.${poolAddr},${tokenAddr}`),
+  );

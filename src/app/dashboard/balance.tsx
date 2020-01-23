@@ -36,7 +36,7 @@ const Balance: React.FC<Props> = ({ symbol, label }) => {
     dispatch({ type: types.token.balance.requested, payload: { symbol } });
   }, [dispatch, symbol]);
 
-  const { icon, currencySymbol, name } = tokens[symbol as keyof typeof tokens];
+  const { icon, currencySymbol, name } = tokens[symbol];
 
   return (
     <BalanceCell

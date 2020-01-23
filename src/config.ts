@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import ERC20Detailed from 'flow-protocol/artifacts/abi/ERC20Detailed.json';
@@ -22,7 +23,43 @@ if (!deployment[network]) {
 export const addresses = deployment[network];
 export const explorer = 'https://kovan.etherscan.io';
 
-export const tokens = {
+export type TokenSymbol = string;
+export type TradingSymbol = string;
+export interface Token {
+  name: string;
+  displayName: string;
+  address: string;
+  currencySymbol: string;
+  icon: IconProp;
+  isBaseToken: boolean;
+}
+
+export interface TradingPair {
+  symbol: string;
+  base: TokenSymbol;
+  quote: TokenSymbol;
+  leverage: number;
+  address: string;
+  name: string;
+}
+export interface TradingSymbolDetail {
+  name: string;
+  long: string;
+  short: string;
+  chartSymbol: string;
+  inverted: boolean;
+  leverage: number;
+  precision: number;
+}
+
+export interface Pool {
+  key: string;
+  address: string;
+  name: string;
+  spread: number;
+}
+
+export const tokens: { [key in TokenSymbol]: Token } = {
   DAI: {
     name: 'DAI',
     displayName: 'DAI',
@@ -67,10 +104,8 @@ export const tokens = {
 
 // TODO: Refactor these
 
-export type TokenSymbol = keyof typeof tokens;
-
-export const isTokenSymbol = (symbol: string): symbol is TokenSymbol => (tokens as any)[symbol] != null;
-export const isBaseTokenSymbol = (symbol: string): symbol is TokenSymbol => {
+export const isTokenSymbol = (symbol: TokenSymbol): symbol is TokenSymbol => (tokens as any)[symbol] != null;
+export const isBaseTokenSymbol = (symbol: TokenSymbol): symbol is TokenSymbol => {
   const token = (tokens as any)[symbol];
   if (token === null) {
     return false;
@@ -78,7 +113,7 @@ export const isBaseTokenSymbol = (symbol: string): symbol is TokenSymbol => {
   return token.isBaseToken;
 };
 
-export const tradingPairs = {
+export const tradingPairs: { [key in TradingSymbol]: TradingPair } = {
   l10USDEUR: {
     symbol: 'l10USDEUR',
     base: 'DAI' as TokenSymbol,
@@ -145,14 +180,7 @@ export const tradingPairs = {
   },
 };
 
-// TODO: Refactor these
-
-export const findTradingPairByAddress = (address: string) => {
-  const pairs = Object.values(tradingPairs);
-  return pairs.find(pair => pair.address.toLocaleLowerCase() === address.toLocaleLowerCase());
-};
-
-export const tradingSymbols = {
+export const tradingSymbols: { [key: string]: TradingSymbolDetail } = {
   EURUSD: {
     name: 'EURUSD',
     long: 'l10USDEUR',
@@ -184,12 +212,17 @@ export const tradingSymbols = {
 
 // TODO: Refactor these
 
-export type TradingSymbol = keyof typeof tradingSymbols;
-export const isTradingSymbol = (symbol: string): symbol is TradingSymbol => (tradingSymbols as any)[symbol] != null;
-export const findTradingSybmolByPairAddress = (address: string) => {
+export const findTradingPairByAddress = (address: string): TradingPair | undefined => {
+  const pairs = Object.values(tradingPairs);
+  return pairs.find(pair => pair.address.toLocaleLowerCase() === address.toLocaleLowerCase());
+};
+
+export const findTradingSybmolByPairAddress = (
+  address: string,
+): { symbol: TradingSymbolDetail; direction: 'long' | 'short' } | undefined => {
   const pair = findTradingPairByAddress(address);
   if (!pair) {
-    return null;
+    return undefined;
   }
 
   const symbols = Object.values(tradingSymbols);
@@ -202,28 +235,34 @@ export const findTradingSybmolByPairAddress = (address: string) => {
     };
   }
 
-  return null;
+  return undefined;
 };
 
-export const liquidityPools = {
+export const getTradingPairFromTradingSymbol = (symbol: TradingSymbol): TradingPair | undefined => {
+  const trading = _.get(tradingSymbols, symbol);
+  return _.get(tradingPairs, trading.long) || _.get(tradingPairs, trading.short);
+};
+
+export const getQuoteTokenFromTradingSymbol = (symbol: TradingSymbol): Token | undefined => {
+  const pair = getTradingPairFromTradingSymbol(symbol);
+  if (!pair) return undefined;
+  return _.get(tokens, `${pair.quote}`);
+};
+
+export const liquidityPools: { [key: string]: Pool } = {
   POOL1: {
     key: 'POOL1',
     address: addresses.pool,
     name: 'Laminar',
-    availability: 12000, // TODO: Read from contract
     spread: 0.003, // TODO: Read from contract
   },
   POOL2: {
     key: 'POOL2',
     address: addresses.pool2,
     name: 'ACME',
-    availability: 10000, // TODO: Read from contract
     spread: 0.0031, // TODO: Read from contract
   },
 };
-
-export type LiquidityPool = keyof typeof liquidityPools;
-export const isLiquidityPool = (pool: string): pool is LiquidityPool => (liquidityPools as any)[pool] != null;
 
 export const abi = {
   ERC20: ERC20Detailed as any,

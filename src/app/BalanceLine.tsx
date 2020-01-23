@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { useDispatch, useShallowEqualSelector } from '../hooks';
 import { Text, FormatBalance } from '../components';
-import { tokens, TokenSymbol } from '../config';
+import { tokens } from '../config';
 import { fromWei } from '../helpers/unitHelper';
 import types from '../types';
 import { AppState } from '../reducers';
@@ -38,7 +38,7 @@ const BalanceLine: React.FC<Props> = ({ symbol, lite }) => {
     dispatch({ type: types.token.balance.requested, payload: { symbol } });
   }, [symbol, dispatch]);
 
-  const { displayName, currencySymbol } = tokens[symbol as TokenSymbol];
+  const { displayName, currencySymbol } = tokens[symbol];
 
   if (lite) {
     return (
