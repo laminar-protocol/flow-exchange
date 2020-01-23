@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { LightButton, FormatProfit, FormatRate } from '../../components';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from '../../config';
+import { findTradingPairByAddress, findTradingInfoByPairAddress, explorer } from '../../config';
 import * as theme from '../../theme';
 import { calculateRate } from './rate';
 import { actions } from '../../types';
@@ -94,7 +94,7 @@ const OpenTrade: React.FC<Props> = ({
 
   // TODO: Fix type
   const tradingPair: any = findTradingPairByAddress(pair);
-  const symbolInfo: any = findTradingSybmolByPairAddress(pair);
+  const symbolInfo: any = findTradingInfoByPairAddress(pair);
 
   const { symbol: tradingSymbol, direction } = symbolInfo;
   const { data: rate } = usePriceRate(tradingPair.quote, tradingPair.base);

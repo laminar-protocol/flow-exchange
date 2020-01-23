@@ -4,7 +4,6 @@ import { Text, FormatBalance, Spinner } from 'components';
 import { useSelector } from 'react-redux';
 import selectors from 'selectors';
 import * as theme from 'theme';
-import { TradingSymbol, Pool } from 'config';
 import Spread from './spread';
 
 const Provider = styled.div`

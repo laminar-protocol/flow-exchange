@@ -23,42 +23,6 @@ if (!deployment[network]) {
 export const addresses = deployment[network];
 export const explorer = 'https://kovan.etherscan.io';
 
-export type TokenSymbol = string;
-export type TradingSymbol = string;
-export interface Token {
-  name: string;
-  displayName: string;
-  address: string;
-  currencySymbol: string;
-  icon: IconProp;
-  isBaseToken: boolean;
-}
-
-export interface TradingPair {
-  symbol: string;
-  base: TokenSymbol;
-  quote: TokenSymbol;
-  leverage: number;
-  address: string;
-  name: string;
-}
-export interface TradingSymbolDetail {
-  name: string;
-  long: string;
-  short: string;
-  chartSymbol: string;
-  inverted: boolean;
-  leverage: number;
-  precision: number;
-}
-
-export interface Pool {
-  key: string;
-  address: string;
-  name: string;
-  spread: number;
-}
-
 export const tokens: { [key in TokenSymbol]: Token } = {
   DAI: {
     name: 'DAI',
@@ -113,7 +77,7 @@ export const isBaseTokenSymbol = (symbol: TokenSymbol): symbol is TokenSymbol =>
   return token.isBaseToken;
 };
 
-export const tradingPairs: { [key in TradingSymbol]: TradingPair } = {
+export const tradingPairs: { [key in TradingPairSymbol]: TradingPair } = {
   l10USDEUR: {
     symbol: 'l10USDEUR',
     base: 'DAI' as TokenSymbol,
@@ -180,7 +144,7 @@ export const tradingPairs: { [key in TradingSymbol]: TradingPair } = {
   },
 };
 
-export const tradingSymbols: { [key: string]: TradingSymbolDetail } = {
+export const tradingSymbols: { [key in TradingSymbol]: Trading } = {
   EURUSD: {
     name: 'EURUSD',
     long: 'l10USDEUR',
@@ -210,16 +174,39 @@ export const tradingSymbols: { [key: string]: TradingSymbolDetail } = {
   },
 };
 
-// TODO: Refactor these
+export const liquidityPools: { [key: string]: Pool } = {
+  POOL1: {
+    key: 'POOL1',
+    address: addresses.pool,
+    name: 'Laminar',
+    spread: 0.003, // TODO: Read from contract
+  },
+  POOL2: {
+    key: 'POOL2',
+    address: addresses.pool2,
+    name: 'ACME',
+    spread: 0.0031, // TODO: Read from contract
+  },
+};
 
-export const findTradingPairByAddress = (address: string): TradingPair | undefined => {
+/**
+ * Find trading pair by address
+ * @param address trading pair address
+ * @returns tradingPair or undefined
+ */
+export const findTradingPairByAddress = (address: Address): TradingPair | undefined => {
   const pairs = Object.values(tradingPairs);
   return pairs.find(pair => pair.address.toLocaleLowerCase() === address.toLocaleLowerCase());
 };
 
-export const findTradingSybmolByPairAddress = (
-  address: string,
-): { symbol: TradingSymbolDetail; direction: 'long' | 'short' } | undefined => {
+/**
+ * Find trading info by address
+ * @param address trading pair address
+ * @returns trading info or undefined
+ */
+export const findTradingInfoByPairAddress = (
+  address: Address,
+): { symbol: Trading; direction: 'long' | 'short' } | undefined => {
   const pair = findTradingPairByAddress(address);
   if (!pair) {
     return undefined;
@@ -238,30 +225,36 @@ export const findTradingSybmolByPairAddress = (
   return undefined;
 };
 
+/**
+ * Find trading pair from symbol
+ * @param symbol TradingSymbol
+ * @returns trading pair or undefined
+ */
 export const getTradingPairFromTradingSymbol = (symbol: TradingSymbol): TradingPair | undefined => {
   const trading = _.get(tradingSymbols, symbol);
   return _.get(tradingPairs, trading.long) || _.get(tradingPairs, trading.short);
 };
 
+/**
+ * Find quote token from trading symbol
+ * @param symbol TradingSymbol
+ * @returns quote token or undefined
+ */
 export const getQuoteTokenFromTradingSymbol = (symbol: TradingSymbol): Token | undefined => {
   const pair = getTradingPairFromTradingSymbol(symbol);
   if (!pair) return undefined;
   return _.get(tokens, `${pair.quote}`);
 };
 
-export const liquidityPools: { [key: string]: Pool } = {
-  POOL1: {
-    key: 'POOL1',
-    address: addresses.pool,
-    name: 'Laminar',
-    spread: 0.003, // TODO: Read from contract
-  },
-  POOL2: {
-    key: 'POOL2',
-    address: addresses.pool2,
-    name: 'ACME',
-    spread: 0.0031, // TODO: Read from contract
-  },
+/**
+ * Find base token from trading symbol
+ * @param symbol TradingSymbol
+ * @returns base token or undefined
+ */
+export const getBaseTokenFromTradingSymbol = (symbol: TradingSymbol): Token | undefined => {
+  const pair = getTradingPairFromTradingSymbol(symbol);
+  if (!pair) return undefined;
+  return _.get(tokens, `${pair.base}`);
 };
 
 export const abi = {

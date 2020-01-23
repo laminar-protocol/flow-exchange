@@ -1,8 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { swapDispatcher, swapSelector } from './swap.connect';
-import { TokenSymbol } from '../../config';
 import { Text, Separator, PrimaryButton } from '../../components';
 import BalanceLine from '../BalanceLine';
 import { AppState } from '../../reducers';

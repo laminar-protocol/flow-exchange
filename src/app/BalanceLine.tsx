@@ -22,7 +22,7 @@ const Line = styled.div`
 // ----------
 
 export interface Props {
-  symbol: string;
+  symbol: TokenSymbol;
   lite?: boolean;
 }
 

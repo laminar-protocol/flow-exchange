@@ -13,7 +13,7 @@ import { useDispatch, useShallowEqualSelector } from '../../hooks';
 // ----------
 
 export type Props = {
-  symbol: string;
+  symbol: TokenSymbol;
   label?: string;
 };
 

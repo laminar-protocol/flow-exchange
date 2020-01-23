@@ -3,8 +3,8 @@ import validate from 'validate.js';
 import types from 'types';
 
 const INITIAL_STATE = {
-  fromSymbol: 'DAI',
-  toSymbol: 'fEUR',
+  fromSymbol: 'DAI' as TokenSymbol,
+  toSymbol: 'fEUR' as TokenSymbol,
   fromAmount: null,
   toAmount: null,
 

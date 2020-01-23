@@ -59,7 +59,7 @@ export interface StateProps {
   baseTokenAmount: string;
   flowTokenAmount: string;
   timestamp: number;
-  symbol: string;
+  symbol: TokenSymbol;
 }
 
 // ----------

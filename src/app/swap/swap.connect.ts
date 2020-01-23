@@ -16,8 +16,8 @@ export const swapSelector = ({
   // ----------
   // Common
   // ----------
-  const availableSymbols = Object.keys(tokens);
-  const isRedeem = !isBaseTokenSymbol(fromSymbol);
+  const availableSymbols = Object.keys(tokens) as TokenSymbol[];
+  const isRedeem = !isBaseTokenSymbol(fromSymbol as TokenSymbol);
 
   // ----------
   // Symbols
@@ -103,7 +103,7 @@ export const swapDispatcher = (dispatch: Dispatch) => ({
       dispatch({ type: types.swap.mint.requested });
     }
   },
-  onFetchLiquidityPoolSpread: (otherSymbol: string) => {
+  onFetchLiquidityPoolSpread: (otherSymbol: TokenSymbol) => {
     if (isTokenSymbol(otherSymbol)) {
       dispatch(actions.liquidityPool.spread.requested({ id: [defaultPool, tokens[otherSymbol].address] }));
     }

@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import selectors from 'selectors';
 import * as theme from 'theme';
 import { usePriceRate } from 'hooks';
-import { tradingSymbols, TradingSymbol, getQuoteTokenFromTradingSymbol, getTradingPairFromTradingSymbol } from 'config';
+import { tradingSymbols, getQuoteTokenFromTradingSymbol, getTradingPairFromTradingSymbol } from 'config';
 import _ from 'lodash';
 import { calculateRate } from 'app/margin/rate';
 import { actions } from 'types';
@@ -36,8 +36,8 @@ const Spread: React.FC<{ poolAddr: string; tradingSymbol: TradingSymbol }> = ({ 
   const pair = getTradingPairFromTradingSymbol(tradingSymbol);
   const { address: tokenAddr } = getQuoteTokenFromTradingSymbol(tradingSymbol) || { address: '' };
 
-  const quote = _.get(pair, 'quote', '');
-  const base = _.get(pair, 'base', '');
+  const quote = _.get(pair, 'quote', '') as TokenSymbol;
+  const base = _.get(pair, 'base', '') as TokenSymbol;
 
   // get rate and spread
   const rate = usePriceRate(quote, base);
