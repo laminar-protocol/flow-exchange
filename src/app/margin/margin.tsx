@@ -174,7 +174,7 @@ const Margin: React.FC = () => {
     return () => {
       dispatch(actions.margin.allowance.cancelled());
     };
-  }, []);
+  }, [dispatch]);
 
   const onGrant = useCallback(
     (enable: boolean) => {
