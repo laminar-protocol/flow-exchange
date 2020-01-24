@@ -1,11 +1,4 @@
 import { pipe, map, fromPairs, mapObjIndexed } from 'ramda';
-import { Action as ReduxAction } from 'redux';
-
-export interface Action<T> extends ReduxAction<string> {
-  payload?: T;
-}
-
-export type ActionCreator<T> = (payload?: T) => Action<T>;
 
 interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
   (prefix: string): Record<TActionTypeKeys, ActionCreator<TPayload>>;
@@ -54,8 +47,3 @@ export const apiActionTypes = getActionType(ApiActionTypes);
 export const changedActionTypes = getActionType(ChangedActionTypes);
 export const toggledActionTypes = getActionType(ToggledActionTypes);
 export const triggerActionTypes = getActionType(TriggerActionTypes);
-
-export type ApiActionTypesRecord<P> = Record<typeof ApiActionTypes[number], ActionCreator<P>>;
-export type ChangedActionTypesRecord<P> = Record<typeof ChangedActionTypes[number], ActionCreator<P>>;
-export type ToggledActionTypesRecord<P> = Record<typeof ToggledActionTypes[number], ActionCreator<P>>;
-export type TriggerActionTypesRecord<P> = Record<typeof TriggerActionTypes[number], ActionCreator<P>>;

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import * as theme from '../../theme';
 import { FormatProfit, FormatRate } from '../../components';
-import { findTradingPairByAddress, findTradingSybmolByPairAddress, explorer } from '../../config';
+import { findTradingPairByAddress, findTradingInfoByPairAddress, explorer } from '../../config';
 
 import { calculateRate } from './rate';
 // ----------
@@ -83,7 +83,7 @@ const OpenTrade: React.FC<Props> = ({
 }) => {
   // TODO: Fix type
   const tradingPair: any = findTradingPairByAddress(pair);
-  const symbolInfo: any = findTradingSybmolByPairAddress(pair);
+  const symbolInfo: any = findTradingInfoByPairAddress(pair);
 
   const { symbol: tradingSymbol, direction } = symbolInfo;
   const openRate = calculateRate(0, tradingSymbol.inverted, direction, Number(openPrice));

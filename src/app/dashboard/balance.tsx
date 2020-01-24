@@ -4,7 +4,6 @@ import { BalanceCell } from '../../components';
 import { fromWei } from '../../helpers/unitHelper';
 import { tokens } from '../../config';
 import types from '../../types';
-import { AppState } from '../../reducers';
 import { getBalance, getIsQueryingBalance } from '../../reducers/token.reducer';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
@@ -13,7 +12,7 @@ import { useDispatch, useShallowEqualSelector } from '../../hooks';
 // ----------
 
 export type Props = {
-  symbol: string;
+  symbol: TokenSymbol;
   label?: string;
 };
 
@@ -36,7 +35,7 @@ const Balance: React.FC<Props> = ({ symbol, label }) => {
     dispatch({ type: types.token.balance.requested, payload: { symbol } });
   }, [dispatch, symbol]);
 
-  const { icon, currencySymbol, name } = tokens[symbol as keyof typeof tokens];
+  const { icon, currencySymbol, name } = tokens[symbol];
 
   return (
     <BalanceCell

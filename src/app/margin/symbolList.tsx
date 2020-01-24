@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Panel } from '../../components';
 import * as theme from '../../theme';
 import { tradingSymbols } from '../../config';
-import { AppState } from '../../reducers';
 import { actions } from '../../types';
 import Symbol from './symbol';
 import Pool from './pool';
@@ -82,13 +81,13 @@ const SymbolList: React.FC = () => {
 
   const symbols = Object.keys(tradingSymbols);
   const pools = useSelector<AppState, any>(state => state.liquidityPool.pools);
-  const poolAvailables = useSelector<AppState, any>(state => state.liquidityPool.availables);
+  const poolsLiquidity = useSelector<AppState, any>(state => state.liquidityPool.liquidity);
 
   const { tradingSymbol: selectedSymbol, pool: selectedPool } = useParams();
 
   useLayoutEffect(() => {
     pools.allIds.forEach((poolId: string) => {
-      dispatch(actions.liquidityPool.available.requested({ id: pools.byId[poolId].address }));
+      dispatch(actions.liquidityPool.liquidity.requested({ id: pools.byId[poolId].address }));
     });
   }, [dispatch, pools.allIds, pools.byId]);
 
@@ -118,7 +117,7 @@ const SymbolList: React.FC = () => {
             key={poolId}
             poolId={poolId}
             poolName={pools.byId[poolId].name}
-            poolAvailability={poolAvailables.states[pools.byId[poolId].address]}
+            poolAvailability={poolsLiquidity.states[pools.byId[poolId].address]}
             symbol={selectedSymbol}
           />
         ))}

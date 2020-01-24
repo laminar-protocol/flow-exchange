@@ -1,9 +1,7 @@
 import { filter, mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-
 import ethereum from 'services/ethereum';
 import types from 'types';
-import { Epic } from 'reducers';
 
 const epic: Epic = (action$, state$) =>
   action$.pipe(

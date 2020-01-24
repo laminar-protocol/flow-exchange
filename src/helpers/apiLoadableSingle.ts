@@ -3,27 +3,13 @@ import { map, switchMap, takeUntil, catchError } from 'rxjs/operators';
 import { mapObjIndexed, equals } from 'ramda';
 import { ofType, Epic, StateObservable } from 'redux-observable';
 
-import { Action, ApiActionTypesRecord } from './typeCreator';
 import ReducerBuilder from './reducerBuilder';
 
-export interface State<T, P = void, E = any> {
-  value?: T;
-  loading: boolean;
-  params?: P;
-  error?: E;
-}
-
-export type PartialState<T, P = void, E = any> = Partial<State<T, P, E>>;
-
-export interface ApiLodableAction<T> extends Action<T> {
-  error?: boolean;
-}
-
-export const initialState = <T, P, E = any>(): State<T, P, E> => ({
+export const initialState = <T, P, E = any>(): ApiLoadableState<T, P, E> => ({
   loading: false,
 });
 
-export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>) {
+export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Partial<ApiLoadableState<T, P, E>>>) {
   return new ReducerBuilder(initialState<T, P, E>())
     .handle(apiAction.requested, (state, { payload }) => ({
       loading: true,
@@ -43,7 +29,7 @@ export function createReducer<T, P, E = any>(apiAction: ApiActionTypesRecord<Par
 }
 
 export function createEpic<S, T, P, E = any>(
-  apiAction: ApiActionTypesRecord<Partial<State<T, P, E>>>,
+  apiAction: ApiActionTypesRecord<Partial<ApiLoadableState<T, P, E>>>,
   run: (params: P, state: StateObservable<S>) => ObservableInput<T>,
   additionalTrigger?: Epic<any, any, S>,
 ): Epic<any, any, S> {

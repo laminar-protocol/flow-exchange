@@ -1,13 +1,7 @@
 import gql from 'graphql-tag';
 import { useSubscription, SubscriptionHookOptions } from '@apollo/react-hooks';
 import { useMemo } from 'react';
-import { TokenSymbol, tokens } from 'config';
-
-export interface PriceData {
-  id: string;
-  value: number;
-  updatedAt: number;
-}
+import { tokens } from 'config';
 
 interface QueryResult {
   priceEntities?: PriceData[];

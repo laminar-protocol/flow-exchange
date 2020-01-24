@@ -8,7 +8,6 @@ import * as theme from 'theme';
 
 import OpenTrade from './openTrade';
 import CloseTrade from './closeTrade';
-import { AppState } from '../../reducers';
 import { useShallowEqualSelector } from '../../hooks';
 
 // ----------

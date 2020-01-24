@@ -9,7 +9,6 @@ import LaminarLogo from '../../assets/laminar.svg';
 import Wallet from './wallet';
 import MenuItem from './item';
 import { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Container = styled.div`

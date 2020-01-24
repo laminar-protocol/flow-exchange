@@ -4,7 +4,6 @@ import gql from 'graphql-tag';
 import { useSubscription } from '@apollo/react-hooks';
 
 import { Spinner, Text } from '../../components';
-import { AppState } from '../../reducers';
 import { useShallowEqualSelector } from '../../hooks';
 import SwapItem from './swapItem';
 

@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 import * as theme from 'theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isTokenSymbol, tokens } from 'config';
+import { tokens } from 'config';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 // ----------
@@ -37,7 +37,7 @@ const Placeholder = () => <CustomPlaceholder>Select...</CustomPlaceholder>;
 
 const CustomSingleValue = styled.div``;
 
-const SingleValue: React.FC<any> = ({ innerProps, data }) => (
+const SingleValue: React.FC<{ innerProps: any; data: { symbol: TokenSymbol } }> = ({ innerProps, data }) => (
   <CustomSingleValue {...innerProps}>
     <Currency symbol={data.symbol} />
   </CustomSingleValue>
@@ -86,27 +86,20 @@ const CustomOption = styled.div`
   }
 `;
 
-const Option: React.FC<any> = ({ innerProps, data }) => (
+const Option: React.FC<{ innerProps: any; data: { symbol: TokenSymbol; isDisabled: boolean } }> = ({
+  innerProps,
+  data,
+}) => (
   <CustomOption {...innerProps}>
     <Currency symbol={data.symbol} isDisabled={data.isDisabled} />
   </CustomOption>
 );
 
-const symbolIcon = (symbol: string): IconProp => {
-  if (isTokenSymbol(symbol)) {
-    return tokens[symbol].icon;
-  }
-  return 'money-bill';
-};
+const symbolIcon = (symbol: TokenSymbol): IconProp => tokens[symbol].icon;
 
-const symbolName = (symbol: string) => {
-  if (isTokenSymbol(symbol)) {
-    return tokens[symbol].displayName;
-  }
-  return symbol;
-};
+const symbolName = (symbol: TokenSymbol) => tokens[symbol].displayName;
 
-const Currency: React.FC<any> = ({ symbol, isDisabled }) => (
+const Currency: React.FC<{ symbol: TokenSymbol; isDisabled?: boolean }> = ({ symbol, isDisabled = false }) => (
   <CustomCurrency isDisabled={isDisabled}>
     <div className="icon">
       <FontAwesomeIcon icon={symbolIcon(symbol)} />

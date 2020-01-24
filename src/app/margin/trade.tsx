@@ -16,7 +16,6 @@ import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks'
 import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
 import * as theme from '../../theme';
 import { actions } from '../../types';
-import { AppState } from '../../reducers';
 import { calculateRate } from './rate';
 
 const Container = styled.div``;

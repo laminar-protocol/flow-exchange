@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Text, Spinner } from '../components';
 import * as theme from '../theme';
 import types from '../types';
-import { AppState } from '../reducers';
 import { getAuthorization, getIsQueryingAuthorization, getIsGranting } from '../reducers/token.reducer';
 import { useDispatch, useShallowEqualSelector } from '../hooks';
 import { UINT256_MAX, UINT256_MIN } from '../helpers/unitHelper';

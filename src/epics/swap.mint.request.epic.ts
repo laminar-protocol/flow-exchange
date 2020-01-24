@@ -1,9 +1,7 @@
 import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
-
 import types from 'types';
-import { Epic } from 'reducers';
 import { toWei } from 'helpers/unitHelper';
 import { addresses } from 'config';
 

@@ -3,21 +3,7 @@ import { map, takeUntil, catchError, mergeMap, filter } from 'rxjs/operators';
 import { mapObjIndexed, equals } from 'ramda';
 import { ofType, Epic, StateObservable } from 'redux-observable';
 
-import { ApiActionTypesRecord } from './typeCreator';
 import ReducerBuilder from './reducerBuilder';
-
-import { State } from './apiLoadableSingle';
-
-export interface StateWithId<T, I = string, P = void, E = any> extends State<T, P, E> {
-  id?: I;
-}
-
-export type PartialStateWithId<T, I = string, P = void, E = any> = Partial<StateWithId<T, I, P, E>>;
-
-export interface MultiState<T, I = string, P = void, E = any> {
-  states: Record<string | number, StateWithId<T, I, P, E>>;
-  lastId?: I;
-}
 
 export function createReducer<T, I = string, P = void, E = any>(
   apiAction: ApiActionTypesRecord<Partial<StateWithId<T, I, P, E>>>,

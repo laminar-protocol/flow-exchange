@@ -1,8 +1,7 @@
 import { Dispatch } from 'redux';
 
 import types, { actions } from '../../types';
-import { AppState } from '../../reducers';
-import { addresses, tokens, isTokenSymbol, isBaseTokenSymbol, TokenSymbol } from '../../config';
+import { addresses, tokens, isTokenSymbol, isBaseTokenSymbol } from '../../config';
 import { caculate } from '../../helpers/exchangeRateHelper';
 
 const defaultPool = addresses.pool;
@@ -17,7 +16,7 @@ export const swapSelector = ({
   // Common
   // ----------
   const availableSymbols = Object.keys(tokens) as TokenSymbol[];
-  const isRedeem = !isBaseTokenSymbol(fromSymbol);
+  const isRedeem = !isBaseTokenSymbol(fromSymbol as TokenSymbol);
 
   // ----------
   // Symbols
@@ -103,7 +102,7 @@ export const swapDispatcher = (dispatch: Dispatch) => ({
       dispatch({ type: types.swap.mint.requested });
     }
   },
-  onFetchLiquidityPoolSpread: (otherSymbol: string) => {
+  onFetchLiquidityPoolSpread: (otherSymbol: TokenSymbol) => {
     if (isTokenSymbol(otherSymbol)) {
       dispatch(actions.liquidityPool.spread.requested({ id: [defaultPool, tokens[otherSymbol].address] }));
     }

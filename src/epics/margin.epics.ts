@@ -6,7 +6,6 @@ import ethereum from 'services/ethereum';
 import { fromWei, UINT256_MAX, UINT256_MIN, toWei } from 'helpers/unitHelper';
 import { createEpic } from 'helpers/apiLoadableSingle';
 import types, { actions } from 'types';
-import { AppState, Epic } from 'reducers';
 import { addresses } from 'config';
 
 export const changeAccount: Epic = action$ =>

@@ -2,9 +2,7 @@ import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
 import ethereum from 'services/ethereum';
-
 import types, { actions } from 'types';
-import { Epic } from 'reducers';
 
 const networkDecimalToString: any = {
   1: 'mainnet',

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 
-import { StateWithId } from '../../helpers/apiLoadable';
 import { FormatBalance, Spinner } from '../../components';
 import * as theme from '../../theme';
 
@@ -58,7 +57,7 @@ const LiquidityPool: React.FC<Props> = ({ symbol, poolId, poolName, poolAvailabi
         <div className="symbol">{poolName}</div>
         <div className="ask">
           {poolAvailability && !poolAvailability.loading ? (
-            <FormatBalance value={poolAvailability.value} options={{ currencySymbol: '$' }} />
+            <FormatBalance value={poolAvailability.value} options={{ currencySymbol: '$', output: 'currency' }} />
           ) : (
             <Spinner loading />
           )}

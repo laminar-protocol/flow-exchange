@@ -1,11 +1,10 @@
 import BN from 'bn.js';
-
-import ethereum from '../services/ethereum';
-import { actions } from '../types';
-import { Epic } from '../reducers';
-import { createEpic } from '../helpers/apiLoadable';
-import { fromWei } from '../helpers/unitHelper';
-import { addresses } from '../config';
+import _ from 'lodash';
+import ethereum from 'services/ethereum';
+import { actions } from 'types';
+import { createEpic } from 'helpers/apiLoadable';
+import { fromWei } from 'helpers/unitHelper';
+import { addresses, tokens } from 'config';
 
 export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poolAddr, tokenAddr]) => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
@@ -21,7 +20,7 @@ export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poo
   };
 });
 
-export const available: Epic = createEpic(actions.liquidityPool.available, async poolAddr => {
+export const liquidity: Epic = createEpic(actions.liquidityPool.liquidity, async poolAddr => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);
 
   const [ratio, amount] = await Promise.all<number, string>([
@@ -30,4 +29,15 @@ export const available: Epic = createEpic(actions.liquidityPool.available, async
   ]);
 
   return fromWei(new BN(amount).mul(new BN(ratio + 1)));
+});
+
+export const allowedTokens: Epic = createEpic(actions.liquidityPool.allowedTokens, async poolAddr => {
+  const contract = ethereum.getLiquidityPoolContract(poolAddr);
+
+  // TODO: update this when contract provides a list of allowed tokens
+  const baseTokens = Object.values(tokens).filter(i => i.isBaseToken === false);
+  const spreads = await Promise.all(baseTokens.map(token => contract.methods.getBidSpread(token.address).call()));
+  return _.zip(baseTokens, spreads)
+    .filter(([, spread]) => spread !== 0)
+    .map(([token]) => (token as { name: string }).name);
 });
