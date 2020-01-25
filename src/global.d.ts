@@ -49,7 +49,7 @@ declare global {
 
   export type TokenSymbol = 'DAI' | 'fEUR' | 'fJPY' | 'fXAU' | 'fAAPL';
 
-  export type TradingSymbol = 'EURUSD' | 'USDJPY' | 'XAUUSD';
+  export type TradingSymbol = 'EURUSD' | 'USDJPY' | 'XAUUSD' | 'USDAPPL';
 
   export type TradingPairSymbol =
     | 'l10USDEUR'

@@ -132,7 +132,7 @@ export const tradingPairs: { [key in TradingPairSymbol]: TradingPair } = {
     quote: 'fAAPL' as TokenSymbol,
     leverage: 5,
     address: addresses.l5USDAPPL,
-    name: 'AAPL 20× Long',
+    name: 'AAPL 5× Long',
   },
   s5USDAPPL: {
     symbol: 's5USDAPPL',
@@ -140,7 +140,7 @@ export const tradingPairs: { [key in TradingPairSymbol]: TradingPair } = {
     quote: 'fAAPL' as TokenSymbol,
     leverage: -5,
     address: addresses.s5USDAPPL,
-    name: 'AAPL 20× Short',
+    name: 'AAPL 5× Short',
   },
 };
 
@@ -170,6 +170,15 @@ export const tradingSymbols: { [key in TradingSymbol]: Trading } = {
     chartSymbol: 'XAUUSD',
     inverted: false,
     leverage: 20,
+    precision: 2,
+  },
+  USDAPPL: {
+    name: 'USDAPPL',
+    long: 'l5USDAPPL',
+    short: 'l5USDAPPL',
+    chartSymbol: 'USDAPPL',
+    inverted: false,
+    leverage: 5,
     precision: 2,
   },
 };
