@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { Text, FormatBalance, Spinner } from 'components';
-import { useSelector, useDispatch } from 'react-redux';
-import selectors from 'selectors';
-import * as theme from 'theme';
-import { usePriceRate } from 'hooks';
-import { tradingSymbols, getQuoteTokenFromTradingSymbol, getTradingPairFromTradingSymbol } from 'config';
-import _ from 'lodash';
 import { calculateRate } from 'app/margin/rate';
+import { FormatBalance, Spinner, Text } from 'components';
+import { getQuoteTokenFromTradingSymbol, getTradingPairFromTradingSymbol, tradingSymbols } from 'config';
+import { usePriceRate } from 'hooks';
+import _ from 'lodash';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import selectors from 'selectors';
+import styled from 'styled-components';
+import * as theme from 'theme';
 import { actions } from 'types';
 
 const Item = styled.div`

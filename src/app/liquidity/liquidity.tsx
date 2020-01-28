@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import {
-  Text,
-  Separator,
-  Panel,
-  PrimaryButton,
   Flex,
   Notice,
+  Panel,
+  PrimaryButton,
   SegmentedControl,
   SegmentedControlItem,
+  Separator,
+  Text,
 } from 'components';
-import { useSelector, useDispatch } from 'react-redux';
-import { actions } from 'types';
-import selectors from 'selectors';
 import { tradingSymbols } from 'config';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import selectors from 'selectors';
+import styled from 'styled-components';
+import { actions } from 'types';
+
 import LiquidityProvider from './liquidityProvider';
 
 const Container = styled.div``;
