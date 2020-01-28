@@ -1,14 +1,13 @@
+import { useSubscription } from '@apollo/react-hooks';
+import { Spinner, Text } from 'components';
+import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-
-import { Text, Spinner } from 'components';
 import * as theme from 'theme';
 
-import OpenTrade from './openTrade';
-import CloseTrade from './closeTrade';
 import { useShallowEqualSelector } from '../../hooks';
+import CloseTrade from './closeTrade';
+import OpenTrade from './openTrade';
 
 // ----------
 // Style
@@ -87,9 +86,7 @@ export type StateProps = {
 // ----------
 
 const TradeList: React.FC = () => {
-  const account = useShallowEqualSelector<AppState, StateProps>(({ ethereum: { account } }: AppState) => ({
-    account,
-  }));
+  const account = useShallowEqualSelector<AppState, StateProps>(({ ethereum: { account } }: AppState) => account);
 
   // TODO: Fix type
   const { loading: isLoading, data } = useSubscription(positionQuery, {
