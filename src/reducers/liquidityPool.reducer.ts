@@ -10,7 +10,6 @@ const POOLS_INITIAL_STATE = {
       id: 'POOL1',
       address: addresses.pool,
       name: 'Laminar',
-      spread: 0.003,
     } as Pool,
     POOL2: {
       id: 'POOL2',

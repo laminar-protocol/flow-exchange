@@ -1,9 +1,10 @@
+import { FormatBalance, Spinner, Text } from 'components';
 import React from 'react';
-import styled from 'styled-components';
-import { Text, FormatBalance, Spinner } from 'components';
 import { useSelector } from 'react-redux';
 import selectors from 'selectors';
+import styled from 'styled-components';
 import * as theme from 'theme';
+
 import Spread from './spread';
 
 const Provider = styled.div`
