@@ -129,7 +129,7 @@ export const tradingPairs: { [key in TradingPairSymbol]: TradingPair } = {
     base: 'DAI' as TokenSymbol,
     quote: 'fAAPL' as TokenSymbol,
     leverage: 5,
-    address: addresses.l5USDAPPL, // FIXME: typo on library
+    address: addresses.l5USDAAPL,
     name: 'AAPL 5× Long',
   },
   s5USDAAPL: {
@@ -137,7 +137,7 @@ export const tradingPairs: { [key in TradingPairSymbol]: TradingPair } = {
     base: 'DAI' as TokenSymbol,
     quote: 'fAAPL' as TokenSymbol,
     leverage: -5,
-    address: addresses.s5USDAPPL, // FIXME: typo on library
+    address: addresses.s5USDAAPL,
     name: 'AAPL 5× Short',
   },
 };

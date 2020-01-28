@@ -8037,7 +8037,7 @@ flow-parser@0.*:
 
 flow-protocol@laminar-protocol/flow-protocol-ethereum:
   version "0.0.2"
-  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/646cadfaf024ec37555f188f5e6c10a1d023a639"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/654e88d8e51cd860088256048c366fd5ca8c3738"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
