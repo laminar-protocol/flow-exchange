@@ -1,17 +1,15 @@
-import _ from 'lodash';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
 import ERC20Detailed from 'flow-protocol/artifacts/abi/ERC20Detailed.json';
-import FlowProtocol from 'flow-protocol/artifacts/abi/FlowProtocol.json';
-import LiquidityPoolInterface from 'flow-protocol/artifacts/abi/LiquidityPoolInterface.json';
-import MoneyMarket from 'flow-protocol/artifacts/abi/MoneyMarket.json';
-import FlowMarginProtocol from 'flow-protocol/artifacts/abi/FlowMarginProtocol.json';
-import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
-import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
-import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
 import FaucetInterface from 'flow-protocol/artifacts/abi/FaucetInterface.json';
-
+import FlowMarginProtocol from 'flow-protocol/artifacts/abi/FlowMarginProtocol.json';
+import FlowProtocol from 'flow-protocol/artifacts/abi/FlowProtocol.json';
+import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
+import LiquidityPoolInterface from 'flow-protocol/artifacts/abi/LiquidityPoolInterface.json';
+import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
+import MoneyMarket from 'flow-protocol/artifacts/abi/MoneyMarket.json';
+import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
 import deployment from 'flow-protocol/artifacts/deployment.json';
+import _ from 'lodash';
 
 // TODO: setup pipeline for mainnet
 export const network: keyof typeof deployment = process.env.REACT_APP_NETWORK || ('kovan' as any);
@@ -176,7 +174,7 @@ export const tradingSymbols: { [key in TradingSymbol]: Trading } = {
     name: 'USDAPPL',
     long: 'l5USDAPPL',
     short: 'l5USDAPPL',
-    chartSymbol: 'USDAPPL',
+    chartSymbol: 'APPL',
     inverted: false,
     leverage: 5,
     precision: 2,
