@@ -1,6 +1,6 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { Action as ReduxAction } from 'redux';
 import { reducer } from 'reducers';
+import { Action as ReduxAction } from 'redux';
 import { Epic as ReduxEpic } from 'redux-observable';
 
 declare global {
@@ -49,7 +49,7 @@ declare global {
 
   export type TokenSymbol = 'DAI' | 'fEUR' | 'fJPY' | 'fXAU' | 'fAAPL';
 
-  export type TradingSymbol = 'EURUSD' | 'USDJPY' | 'XAUUSD' | 'USDAPPL';
+  export type TradingSymbol = 'EURUSD' | 'USDJPY' | 'XAUUSD' | 'USDAAPL';
 
   export type TradingPairSymbol =
     | 'l10USDEUR'
@@ -58,8 +58,8 @@ declare global {
     | 's20USDJPY'
     | 'l20USDXAU'
     | 's20USDXAU'
-    | 'l5USDAPPL'
-    | 's5USDAPPL';
+    | 'l5USDAAPL'
+    | 's5USDAAPL';
 
   export interface Token {
     name: string;
