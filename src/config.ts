@@ -1,25 +1,60 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import ERC20Detailed from 'flow-protocol/artifacts/abi/ERC20Detailed.json';
-import FaucetInterface from 'flow-protocol/artifacts/abi/FaucetInterface.json';
-import FlowMarginProtocol from 'flow-protocol/artifacts/abi/FlowMarginProtocol.json';
-import FlowProtocol from 'flow-protocol/artifacts/abi/FlowProtocol.json';
-import FlowToken from 'flow-protocol/artifacts/abi/FlowToken.json';
-import LiquidityPoolInterface from 'flow-protocol/artifacts/abi/LiquidityPoolInterface.json';
-import MarginTradingPair from 'flow-protocol/artifacts/abi/MarginTradingPair.json';
-import MoneyMarket from 'flow-protocol/artifacts/abi/MoneyMarket.json';
-import PriceOracleInterface from 'flow-protocol/artifacts/abi/PriceOracleInterface.json';
 import deployment from 'flow-protocol/artifacts/deployment.json';
 import _ from 'lodash';
 
-// TODO: setup pipeline for mainnet
-export const network: keyof typeof deployment = process.env.REACT_APP_NETWORK || ('kovan' as any);
+export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'development';
 
-if (!deployment[network]) {
+export const abi = ((network: Network) => {
+  const ERC20Detailed = require(`flow-protocol/artifacts/abi/${network}/ERC20Detailed.json`);
+  const FaucetInterface = require(`flow-protocol/artifacts/abi/${network}/FaucetInterface.json`);
+  const FlowMarginProtocol = require(`flow-protocol/artifacts/abi/${network}/FlowMarginProtocol.json`);
+  const FlowProtocol = require(`flow-protocol/artifacts/abi/${network}/FlowProtocol.json`);
+  const FlowToken = require(`flow-protocol/artifacts/abi/${network}/FlowToken.json`);
+  const LiquidityPoolInterface = require(`flow-protocol/artifacts/abi/${network}/LiquidityPoolInterface.json`);
+  const MarginTradingPair = require(`flow-protocol/artifacts/abi/${network}/MarginTradingPair.json`);
+  const MoneyMarket = require(`flow-protocol/artifacts/abi/${network}/MoneyMarket.json`);
+  const PriceOracleInterface = require(`flow-protocol/artifacts/abi/${network}/PriceOracleInterface.json`);
+
+  return {
+    ERC20: ERC20Detailed,
+    FaucetInterface,
+    FlowMarginProtocol,
+    FlowProtocol,
+    FlowToken,
+    LiquidityPoolInterface,
+    MarginTradingPair,
+    MoneyMarket,
+    PriceOracleInterface,
+  };
+})(network);
+
+if (!Object.keys(deployment).includes(network)) {
   throw new Error(`Invalid network: ${network}`);
 }
 
-export const addresses = deployment[network];
-export const explorer = 'https://kovan.etherscan.io';
+export const addresses: { [key: string]: string } = (deployment as any)[network];
+
+export const explorer: string = ((network: Network) => {
+  switch (network) {
+    case 'mainnet':
+      return 'https://mainnet.etherscan.io';
+    case 'kovan':
+      return 'https://kovan.etherscan.io';
+    case 'development':
+      return 'localhost:8545';
+  }
+})(network);
+
+export const networkById = (id: number): Network => {
+  switch (id) {
+    case 1:
+      return 'mainnet';
+    case 42:
+      return 'kovan';
+    default:
+      return 'development';
+  }
+};
 
 export const tokens: { [key in TokenSymbol]: Token } = {
   DAI: {
@@ -184,14 +219,14 @@ export const tradingSymbols: { [key in TradingSymbol]: Trading } = {
 // TODO: remove this, use app state instead
 export const liquidityPools: { [key: string]: Pool } = {
   POOL1: {
-    id: '0x8b205c597602ebf442857D4714d996B343fFa20c',
+    id: addresses.pool1,
     key: 'POOL1',
     address: addresses.pool,
     name: 'Laminar',
     spread: 0.003, // TODO: Read from contract
   },
   POOL2: {
-    id: '0x6582204488d330ffAf464592179936EA1E8A3c1f',
+    id: addresses.pool2,
     key: 'POOL2',
     address: addresses.pool2,
     name: 'ACME',
@@ -267,20 +302,22 @@ export const getBaseTokenFromTradingSymbol = (symbol: TradingSymbol): Token | un
   return _.get(tokens, `${pair.base}`);
 };
 
-export const abi = {
-  ERC20: ERC20Detailed as any,
-  FlowProtocol: FlowProtocol as any,
-  LiquidityPoolInterface: LiquidityPoolInterface as any,
-  MoneyMarket: MoneyMarket as any,
-  FlowMarginProtocol: FlowMarginProtocol as any,
-  FlowToken: FlowToken as any,
-  MarginTradingPair: MarginTradingPair as any,
-  PriceOracleInterface: PriceOracleInterface as any,
-  FaucetInterface: FaucetInterface as any,
-};
-
-// TODO: make this configurable
-export const subgraphEndpoints = {
-  http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
-  ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
-};
+export const subgraphEndpoints = ((network: Network): { http: string; ws: string } => {
+  switch (network) {
+    case 'mainnet':
+      return {
+        http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+        ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+      };
+    case 'kovan':
+      return {
+        http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+        ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+      };
+    case 'development':
+      return {
+        http: 'http://localhost:8000/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+        ws: 'ws://localhost:8001/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+      };
+  }
+})(network);

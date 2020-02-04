@@ -1,9 +1,9 @@
+import { network } from 'config';
 import types from 'types';
-import { network } from '../config';
 
 const INITIAL_STATE = {
   account: null,
-  network: null,
+  network,
 
   isTestnet: true, // TODO: replace with config
 
@@ -17,9 +17,9 @@ const INITIAL_STATE = {
   isNetworkGuardModalActive: false,
 };
 
-const parseNetwork = (payload: any) => ({
+const parseNetwork = (payload: { network: Network }) => ({
   network: payload.network,
-  isTestnet: payload.network !== 'main',
+  isTestnet: payload.network !== 'mainnet',
 });
 
 const reducer = (state = INITIAL_STATE, { type, payload }: any) => {

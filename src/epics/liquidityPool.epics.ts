@@ -1,10 +1,10 @@
 import BN from 'bn.js';
+import { addresses, tokens } from 'config';
+import { createEpic } from 'helpers/apiLoadable';
+import { fromWei } from 'helpers/unitHelper';
 import _ from 'lodash';
 import ethereum from 'services/ethereum';
 import { actions } from 'types';
-import { createEpic } from 'helpers/apiLoadable';
-import { fromWei } from 'helpers/unitHelper';
-import { addresses, tokens } from 'config';
 
 export const spread: Epic = createEpic(actions.liquidityPool.spread, async ([poolAddr, tokenAddr]) => {
   const contract = ethereum.getLiquidityPoolContract(poolAddr);

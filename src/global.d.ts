@@ -45,6 +45,8 @@ declare global {
   export type Epic = ReduxEpic<any, any, AppState>;
 
   /** */
+  export type Network = 'mainnet' | 'kovan' | 'development';
+
   export type Address = string;
 
   export type TokenSymbol = 'DAI' | 'fEUR' | 'fJPY' | 'fXAU' | 'fAAPL';
