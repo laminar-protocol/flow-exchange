@@ -1,19 +1,19 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import deployment from 'flow-protocol/artifacts/deployment.json';
+import deployment from 'flow-protocol-ethereum/artifacts/deployment.json';
 import _ from 'lodash';
 
 export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'development';
 
 export const abi = ((network: Network) => {
-  const ERC20Detailed = require(`flow-protocol/artifacts/abi/${network}/ERC20Detailed.json`);
-  const FaucetInterface = require(`flow-protocol/artifacts/abi/${network}/FaucetInterface.json`);
-  const FlowMarginProtocol = require(`flow-protocol/artifacts/abi/${network}/FlowMarginProtocol.json`);
-  const FlowProtocol = require(`flow-protocol/artifacts/abi/${network}/FlowProtocol.json`);
-  const FlowToken = require(`flow-protocol/artifacts/abi/${network}/FlowToken.json`);
-  const LiquidityPoolInterface = require(`flow-protocol/artifacts/abi/${network}/LiquidityPoolInterface.json`);
-  const MarginTradingPair = require(`flow-protocol/artifacts/abi/${network}/MarginTradingPair.json`);
-  const MoneyMarket = require(`flow-protocol/artifacts/abi/${network}/MoneyMarket.json`);
-  const PriceOracleInterface = require(`flow-protocol/artifacts/abi/${network}/PriceOracleInterface.json`);
+  const ERC20Detailed = require(`flow-protocol-ethereum/artifacts/abi/${network}/ERC20Detailed.json`);
+  const FaucetInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/FaucetInterface.json`);
+  const FlowMarginProtocol = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowMarginProtocol.json`);
+  const FlowProtocol = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowProtocol.json`);
+  const FlowToken = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowToken.json`);
+  const LiquidityPoolInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/LiquidityPoolInterface.json`);
+  const MarginTradingPair = require(`flow-protocol-ethereum/artifacts/abi/${network}/MarginTradingPair.json`);
+  const MoneyMarket = require(`flow-protocol-ethereum/artifacts/abi/${network}/MoneyMarket.json`);
+  const PriceOracleInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/PriceOracleInterface.json`);
 
   return {
     ERC20: ERC20Detailed,
