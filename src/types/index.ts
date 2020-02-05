@@ -47,8 +47,6 @@ const liquidityPool = moduleActions('liquidityPool', {
   spread: apiActionTypes<PartialStateWithId<{ ask: number; bid: number }, [string, string]>>(),
   liquidity: apiActionTypes<PartialStateWithId<string, string>>(),
   allowedTokens: apiActionTypes<PartialStateWithId<Array<string>, string>>(),
-  deposit: apiActionTypes(),
-  withdraw: apiActionTypes(),
 });
 
 const faucet = moduleActions('faucet', {
