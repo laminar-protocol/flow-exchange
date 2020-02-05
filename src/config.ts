@@ -4,6 +4,9 @@ import _ from 'lodash';
 
 export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'development';
 
+/* eslint-disable import/no-dynamic-require  */
+/* eslint-disable @typescript-eslint/no-var-requires  */
+/* eslint-disable global-require  */
 export const abi = ((network: Network) => {
   const ERC20Detailed = require(`flow-protocol-ethereum/artifacts/abi/${network}/ERC20Detailed.json`);
   const FaucetInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/FaucetInterface.json`);
@@ -40,7 +43,7 @@ export const explorer: string = ((network: Network) => {
       return 'https://mainnet.etherscan.io';
     case 'kovan':
       return 'https://kovan.etherscan.io';
-    case 'development':
+    default:
       return 'localhost:8545';
   }
 })(network);
@@ -314,7 +317,7 @@ export const subgraphEndpoints = ((network: Network): { http: string; ws: string
         http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
         ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
       };
-    case 'development':
+    default:
       return {
         http: 'http://localhost:8000/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
         ws: 'ws://localhost:8001/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
