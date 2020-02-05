@@ -8,20 +8,20 @@ export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'd
 /* eslint-disable global-require  */
 
 export const abi = {
-  ERC20: require(`flow-protocol-ethereum/artifacts/abi/${network}/ERC20Detailed.json`),
-  FaucetInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/FaucetInterface.json`),
-  FlowMarginProtocol: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowMarginProtocol.json`),
-  FlowProtocol: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowProtocol.json`),
-  FlowToken: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowToken.json`),
-  LiquidityPoolInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/LiquidityPoolInterface.json`),
-  MarginTradingPair: require(`flow-protocol-ethereum/artifacts/abi/${network}/MarginTradingPair.json`),
-  MoneyMarket: require(`flow-protocol-ethereum/artifacts/abi/${network}/MoneyMarket.json`),
-  PriceOracleInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/PriceOracleInterface.json`),
+  ERC20: require(`flow-protocol-ethereum/artifacts/${network}/abi/ERC20Detailed.json`),
+  FaucetInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/FaucetInterface.json`),
+  FlowMarginProtocol: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowMarginProtocol.json`),
+  FlowProtocol: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowProtocol.json`),
+  FlowToken: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowToken.json`),
+  LiquidityPoolInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/LiquidityPoolInterface.json`),
+  MarginTradingPair: require(`flow-protocol-ethereum/artifacts/${network}/abi/MarginTradingPair.json`),
+  MoneyMarket: require(`flow-protocol-ethereum/artifacts/${network}/abi/MoneyMarket.json`),
+  PriceOracleInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/PriceOracleInterface.json`),
 };
 
 export const addresses: {
   [key: string]: string;
-} = require(`flow-protocol-ethereum/artifacts/abi/${network}/deployment.json`);
+} = require(`flow-protocol-ethereum/artifacts/${network}/deployment.json`);
 
 export const explorer: string = ((network: Network) => {
   switch (network) {
