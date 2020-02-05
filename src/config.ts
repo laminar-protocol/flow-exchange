@@ -1,5 +1,4 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import deployment from 'flow-protocol-ethereum/artifacts/deployment.json';
 import _ from 'lodash';
 
 export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'development';
@@ -7,35 +6,22 @@ export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'd
 /* eslint-disable import/no-dynamic-require  */
 /* eslint-disable @typescript-eslint/no-var-requires  */
 /* eslint-disable global-require  */
-export const abi = ((network: Network) => {
-  const ERC20Detailed = require(`flow-protocol-ethereum/artifacts/abi/${network}/ERC20Detailed.json`);
-  const FaucetInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/FaucetInterface.json`);
-  const FlowMarginProtocol = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowMarginProtocol.json`);
-  const FlowProtocol = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowProtocol.json`);
-  const FlowToken = require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowToken.json`);
-  const LiquidityPoolInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/LiquidityPoolInterface.json`);
-  const MarginTradingPair = require(`flow-protocol-ethereum/artifacts/abi/${network}/MarginTradingPair.json`);
-  const MoneyMarket = require(`flow-protocol-ethereum/artifacts/abi/${network}/MoneyMarket.json`);
-  const PriceOracleInterface = require(`flow-protocol-ethereum/artifacts/abi/${network}/PriceOracleInterface.json`);
 
-  return {
-    ERC20: ERC20Detailed,
-    FaucetInterface,
-    FlowMarginProtocol,
-    FlowProtocol,
-    FlowToken,
-    LiquidityPoolInterface,
-    MarginTradingPair,
-    MoneyMarket,
-    PriceOracleInterface,
-  };
-})(network);
+export const abi = {
+  ERC20: require(`flow-protocol-ethereum/artifacts/abi/${network}/ERC20Detailed.json`),
+  FaucetInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/FaucetInterface.json`),
+  FlowMarginProtocol: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowMarginProtocol.json`),
+  FlowProtocol: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowProtocol.json`),
+  FlowToken: require(`flow-protocol-ethereum/artifacts/abi/${network}/FlowToken.json`),
+  LiquidityPoolInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/LiquidityPoolInterface.json`),
+  MarginTradingPair: require(`flow-protocol-ethereum/artifacts/abi/${network}/MarginTradingPair.json`),
+  MoneyMarket: require(`flow-protocol-ethereum/artifacts/abi/${network}/MoneyMarket.json`),
+  PriceOracleInterface: require(`flow-protocol-ethereum/artifacts/abi/${network}/PriceOracleInterface.json`),
+};
 
-if (!Object.keys(deployment).includes(network)) {
-  throw new Error(`Invalid network: ${network}`);
-}
-
-export const addresses: { [key: string]: string } = (deployment as any)[network];
+export const addresses: {
+  [key: string]: string;
+} = require(`flow-protocol-ethereum/artifacts/abi/${network}/deployment.json`);
 
 export const explorer: string = ((network: Network) => {
   switch (network) {
