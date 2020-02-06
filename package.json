@@ -54,7 +54,7 @@
     "redux-observable": "^1.2.0",
     "reselect": "^4.0.0",
     "round-to": "^4.0.0",
-    "rxjs": "^6.5.3",
+    "rxjs": "^6.5.4",
     "styled-components": "^4.4.1",
     "styled-media-query": "^2.1.2",
     "styled-theming": "^2.2.0",
