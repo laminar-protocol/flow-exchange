@@ -8035,9 +8035,9 @@ flow-parser@0.*:
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.116.0.tgz#7c08e4559a37863d95870e3ffb5523c5fc3525b1"
   integrity sha512-sHiUjYI9U7H94diCN8BdzwYFJIkyCy2GN73UDFbKHTIuLdfROfZZwD6jAv2qWMl7lcPrBK9YAVeArLLbekxVeg==
 
-"flow-protocol-ethereum@https://github.com/laminar-protocol/flow-protocol-ethereum.git#feature/network_selection":
+flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum:
   version "0.0.2"
-  resolved "https://github.com/laminar-protocol/flow-protocol-ethereum.git#16589508f1e868f5426c62e43723bccd45cdfae4"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/460bc4d6f6f444075f991644a144a5e17d79ec38"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
