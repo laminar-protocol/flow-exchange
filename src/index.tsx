@@ -1,29 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
+import 'antd/dist/antd.css';
+
+import { ApolloProvider } from '@apollo/react-hooks';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { ApolloClient } from 'apollo-client';
+import * as Sentry from '@sentry/browser';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloProvider } from '@apollo/react-hooks';
+import { ApolloClient } from 'apollo-client';
 import { split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
-import * as Sentry from '@sentry/browser';
-
-import { subgraphEndpoints } from 'config';
 import Application from 'app/Application';
+import { subgraphEndpoints } from 'config';
+import { ConnectedRouter } from 'connected-react-router';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import * as serviceWorker from 'serviceWorker';
 
-import store, { history } from './store';
-import ethereum from './services/ethereum';
 import NoService from './app/common/NoService';
+import ethereum from './services/ethereum';
+import store, { history } from './store';
 
-import 'antd/dist/antd.css';
-
-Sentry.init({ dsn: 'https://d480bdd4a4314799a685468721b3e891@sentry.io/1814370' });
+if (process.env.NODE_ENV === 'production') {
+  Sentry.init({ dsn: 'https://d480bdd4a4314799a685468721b3e891@sentry.io/1814370' });
+}
 
 library.add(fas);
 

@@ -15,7 +15,7 @@ const Container = styled.div`
 
 export interface StateProps {
   isNetworkGuardModalActive?: boolean;
-  network?: string;
+  network: string;
 }
 
 const NetworkGuardModal: React.FC = () => {

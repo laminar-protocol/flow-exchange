@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
 
-const epicsContext = require.context('./', true, /\.epic\.(j|t)sx?$/);
-const multipleEpicsContext = require.context('./', true, /\.epics\.(j|t)sx?$/);
+const epicsContext = require.context('./', true, /\.epic\.(j|t)s?$/);
+const multipleEpicsContext = require.context('./', true, /\.epics\.(j|t)s?$/);
 
 const epics = [];
 

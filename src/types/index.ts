@@ -1,9 +1,9 @@
 import {
-  moduleActions,
-  appActions,
-  appActionTypes,
-  changedActionTypes,
   apiActionTypes,
+  appActionTypes,
+  appActions,
+  changedActionTypes,
+  moduleActions,
   triggerActionTypes,
 } from 'helpers/typeCreator';
 

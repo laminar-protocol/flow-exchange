@@ -43,6 +43,7 @@ const Item = styled.div`
 const LiquidityProvider: React.FC<{ pool: Pool; tradingSymbol?: TradingSymbol }> = ({ pool, tradingSymbol }) => {
   const liquidity = useSelector(selectors.liquidityPool.liquidity(pool.address));
   const allowedTokens = useSelector(selectors.liquidityPool.allowedTokens(pool.address));
+
   return (
     <Provider key={pool.id}>
       <Item>
