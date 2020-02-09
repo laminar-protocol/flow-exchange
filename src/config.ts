@@ -1,7 +1,7 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import _ from 'lodash';
 
-export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'development';
+export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'kovan';
 
 /* eslint-disable import/no-dynamic-require  */
 /* eslint-disable @typescript-eslint/no-var-requires  */

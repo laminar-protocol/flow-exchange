@@ -68,7 +68,7 @@
     "start": "react-scripts start",
     "start:kovan": "REACT_APP_NETWORK=kovan yarn start",
     "start:mainnet": "REACT_APP_NETWORK=mainnet yarn start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_NETWORK=kovan react-scripts build",
     "build:kovan": "REACT_APP_NETWORK=kovan yarn build",
     "build:mainnet": "REACT_APP_NETWORK=mainnet yarn build",
     "test": "react-scripts test",
