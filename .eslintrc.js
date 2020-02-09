@@ -21,6 +21,16 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'import', 'react-hooks'],
   rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        js: 'never',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
+      },
+    ],
     '@typescript-eslint/indent': ['error', 2],
     indent: 'off', // required as 'off' by @typescript-eslint/indent
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
