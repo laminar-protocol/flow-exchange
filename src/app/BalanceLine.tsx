@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { useDispatch, useShallowEqualSelector } from '../hooks';
-import { Text, FormatBalance } from '../components';
-import { tokens } from '../config';
-import { fromWei } from '../helpers/unitHelper';
-import types from '../types';
-import { getBalance, getIsQueryingBalance } from '../reducers/token.reducer';
+import { Amount, Text } from '../components';
+import { useApp, useTokens } from '../hooks';
+import { Token } from '../services/types';
 
-const Line = styled.div`
+const Container = styled.div`
   margin: 1rem 0;
   display: flex;
   flex-direction: row;
@@ -16,48 +13,45 @@ const Line = styled.div`
   align-items: center;
 `;
 
-// ----------
-// Interface
-// ----------
-
 export interface Props {
-  symbol: TokenSymbol;
+  token: Token;
   lite?: boolean;
 }
 
-// ----------
-
-const BalanceLine: React.FC<Props> = ({ symbol, lite }) => {
-  const dispatch = useDispatch();
-
-  const balance = useShallowEqualSelector((state: AppState) => getBalance(symbol, state.token));
-  const isQueryingBalance = useShallowEqualSelector((state: AppState) => getIsQueryingBalance(symbol, state.token));
+const BalanceLine: React.FC<Props> = ({ token, lite }) => {
+  const [loading, setLoading] = useState(false);
+  const api = useApp(state => state.provider && state.provider.api);
+  const currentAccount = useApp(state => state.currentAccount);
+  const balance = useTokens(state => state.currentBalances[token.name]);
+  const setBalance = useTokens(state => state.setCurrentBalance);
 
   useEffect(() => {
-    dispatch({ type: types.token.balance.requested, payload: { symbol } });
-  }, [symbol, dispatch]);
-
-  const { displayName, currencySymbol } = tokens[symbol];
+    if (currentAccount && api) {
+      setLoading(true);
+      api
+        .getBalance(currentAccount.address, token.name)
+        .then(result => {
+          setBalance(token.name, result);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [api, token, setBalance, currentAccount]);
 
   if (lite) {
-    return (
-      <Text weight="bold">
-        {isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} />}
-      </Text>
-    );
+    return <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>;
   }
 
   return (
-    <Line>
+    <Container>
       <div>
-        <Text>{displayName}</Text>
+        <Text>{token.displayName}</Text>
       </div>
       <div>
-        <Text weight="bold">
-          {isQueryingBalance ? '—' : <FormatBalance value={fromWei(balance)} options={{ prefix: currencySymbol }} />}
-        </Text>
+        <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>
       </div>
-    </Line>
+    </Container>
   );
 };
 

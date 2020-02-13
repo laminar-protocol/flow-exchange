@@ -1,9 +1,9 @@
-import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-import ethereum from 'services/ethereum';
+import { mergeMap } from 'rxjs/operators';
 import types from 'types';
-import { toWei } from 'helpers/unitHelper';
-import { addresses } from 'config';
+
+import { addresses } from '../config';
+import { accountSelector, apiSelector } from '../selectors/provider.selector';
 
 const epic: Epic = (action$, state$) =>
   action$.pipe(
@@ -12,16 +12,13 @@ const epic: Epic = (action$, state$) =>
       try {
         const {
           value: {
-            ethereum: { account },
             swap: { fromAmount, fromSymbol },
           },
         } = state$;
 
-        const from = ethereum.getTokenContract(fromSymbol);
-        const fromAmountWei = toWei(fromAmount);
-
-        const method = ethereum.flowProtocol.methods.redeem(from.options.address, addresses.pool, fromAmountWei);
-        const success = await method.send({ from: account });
+        const api = apiSelector(state$.value);
+        const account = accountSelector(state$.value);
+        const success = await api.redeem(account, addresses.pool, fromSymbol, fromAmount);
 
         return { type: types.swap.redeem.completed, payload: success };
       } catch (error) {

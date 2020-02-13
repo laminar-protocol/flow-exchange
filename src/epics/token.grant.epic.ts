@@ -1,8 +1,8 @@
-import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-import ethereum from 'services/ethereum';
-import { addresses } from 'config';
+import { mergeMap } from 'rxjs/operators';
 import types from 'types';
+
+import { accountSelector, apiSelector } from '../selectors/provider.selector';
 
 const epic: Epic = (action$, state$) =>
   action$.pipe(
@@ -12,13 +12,10 @@ const epic: Epic = (action$, state$) =>
         payload: { symbol, balance },
       } = action;
       try {
-        const {
-          value: {
-            ethereum: { account },
-          },
-        } = state$;
-        const contract = ethereum.getTokenContract(symbol);
-        await contract.methods.approve(addresses.protocol, balance).send({ from: account });
+        const api = apiSelector(state$.value);
+        const account = accountSelector(state$.value);
+
+        await api.grant(account, symbol, balance);
 
         return { type: types.token.grant.completed, payload: { symbol } };
       } catch (error) {

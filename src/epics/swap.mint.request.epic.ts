@@ -1,27 +1,24 @@
-import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-import ethereum from 'services/ethereum';
+import { mergeMap } from 'rxjs/operators';
 import types from 'types';
-import { toWei } from 'helpers/unitHelper';
-import { addresses } from 'config';
 
-const epic: Epic = (action$, state$) =>
+import { addresses } from '../config';
+import { accountSelector, apiSelector } from '../selectors/provider.selector';
+
+const mint: Epic = (action$, state$) =>
   action$.pipe(
     ofType(types.swap.mint.requested),
     mergeMap(async () => {
       try {
         const {
           value: {
-            ethereum: { account },
             swap: { fromAmount, toSymbol },
           },
         } = state$;
 
-        const to = ethereum.getTokenContract(toSymbol);
-        const fromAmountWei = toWei(fromAmount);
-
-        const method = ethereum.flowProtocol.methods.mint(to.options.address, addresses.pool, fromAmountWei);
-        const success = await method.send({ from: account });
+        const api = apiSelector(state$.value);
+        const account = accountSelector(state$.value);
+        const success = await api.mint(account, addresses.pool, toSymbol, fromAmount);
 
         return { type: types.swap.mint.completed, payload: success };
       } catch (error) {
@@ -30,4 +27,4 @@ const epic: Epic = (action$, state$) =>
     }),
   );
 
-export default epic;
+export default mint;

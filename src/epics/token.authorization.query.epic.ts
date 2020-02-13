@@ -1,12 +1,13 @@
+import { ofType } from 'redux-observable';
 import { combineLatest } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
-import { ofType } from 'redux-observable';
-import ethereum from 'services/ethereum';
 import types from 'types';
+
+import { accountSelector, apiSelector } from '../selectors/provider.selector';
 
 const epic: Epic = (action$, state$) =>
   combineLatest(
-    action$.pipe(ofType(types.ethereum.network.completed), take(1)),
+    action$.pipe(ofType(types.provider.network.completed), take(1)),
     action$.pipe(ofType(types.token.authorization.requested)),
   ).pipe(
     mergeMap(async ([, action]) => {
@@ -15,18 +16,14 @@ const epic: Epic = (action$, state$) =>
       } = action;
 
       try {
-        const {
-          value: {
-            ethereum: { account },
-          },
-        } = state$;
+        const api = apiSelector(state$.value);
+        const account = accountSelector(state$.value);
 
-        const grantAddress = address || ethereum.flowProtocol.options.address;
-        const contract = ethereum.getTokenContract(symbol);
-        const balance = await contract.methods.allowance(account, grantAddress).call();
+        const result = await api.getAuthorization(account, symbol, address);
+
         return {
           type: types.token.authorization.completed,
-          payload: { symbol, balance, address: grantAddress },
+          payload: result,
         };
       } catch (error) {
         return { type: types.token.authorization.failed, payload: { symbol }, error };

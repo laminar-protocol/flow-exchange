@@ -8,6 +8,7 @@ export * from './helpers';
 export * from './containers';
 export * from './form';
 export * from './navigation';
+export * from './icon';
 
 export { default as Notice } from './Notice';
 export { default as Modal } from './Modal';

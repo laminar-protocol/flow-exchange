@@ -3,6 +3,8 @@ import { reducer } from 'reducers';
 import { Action as ReduxAction } from 'redux';
 import { Epic as ReduxEpic } from 'redux-observable';
 
+import { IconProp } from './components';
+
 declare global {
   /** */
   export interface StateWithId<T, I = string, P = void, E = any> extends ApiLoadableState<T, P, E> {
@@ -104,4 +106,10 @@ declare global {
     value: number;
     updatedAt: number;
   }
+
+  export type Account = {
+    address: string;
+  };
+
+  export type IconProp = IconProp;
 }

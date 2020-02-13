@@ -78,7 +78,7 @@ export type StateProps = {
 
 const NetworkStatus: React.FC = () => {
   const { isConnected, isConnecting, isEnabling, network } = useShallowEqualSelector<AppState, StateProps>(
-    ({ ethereum: { isConnected, isConnecting, isEnabling, network } }: AppState) => ({
+    ({ provider: { isConnected, isConnecting, isEnabling, network } }: AppState) => ({
       isConnected,
       isConnecting,
       isEnabling,

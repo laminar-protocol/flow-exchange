@@ -20,7 +20,7 @@ export interface StateProps {
 
 const NetworkGuardModal: React.FC = () => {
   const { isNetworkGuardModalActive, network } = useShallowEqualSelector<AppState, StateProps>(
-    ({ ethereum: { isNetworkGuardModalActive, network } }: AppState) => ({
+    ({ provider: { isNetworkGuardModalActive, network } }: AppState) => ({
       isNetworkGuardModalActive,
       network,
     }),

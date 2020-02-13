@@ -1,7 +1,9 @@
+import { SubscriptionHookOptions, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { useSubscription, SubscriptionHookOptions } from '@apollo/react-hooks';
 import { useMemo } from 'react';
-import { tokens } from 'config';
+
+import { tokens } from '../config';
+import { Token } from '../services/types';
 
 interface QueryResult {
   priceEntities?: PriceData[];
@@ -19,19 +21,61 @@ const query = gql`
 
 export const useOraclePrice = (options?: SubscriptionHookOptions<QueryResult, {}>) => useSubscription(query, options);
 
+export const useEthereumPriceRate = (
+  fromSymbol?: Token,
+  toSymbol?: Token,
+  options?: SubscriptionHookOptions<QueryResult, {}>,
+) => {
+  const { loading, error, data } = useOraclePrice(options);
+
+  const rate = useMemo(() => {
+    if (!fromSymbol || !toSymbol) return;
+
+    if (fromSymbol.name === toSymbol.name) {
+      return 1;
+    }
+
+    if (data?.priceEntities) {
+      const fromAddress = fromSymbol.id?.toLocaleLowerCase();
+      const toAddress = toSymbol.id?.toLocaleLowerCase();
+      let fromRate = 1;
+      let toRate = 1;
+      for (const price of data.priceEntities) {
+        if (price.id === fromAddress) {
+          fromRate = price.value;
+        }
+        if (price.id === toAddress) {
+          toRate = price.value;
+        }
+      }
+      return fromRate / toRate;
+    }
+  }, [data, fromSymbol, toSymbol]);
+
+  return {
+    loading,
+    error,
+    data: rate,
+  };
+};
+
 export const usePriceRate = (
   fromSymbol: TokenSymbol,
   toSymbol: TokenSymbol,
   options?: SubscriptionHookOptions<QueryResult, {}>,
 ) => {
   const { loading, error, data } = useOraclePrice(options);
+
   const rate = useMemo(() => {
     if (fromSymbol === toSymbol) {
       return 1;
     }
+
+    console.log(data);
+
     if (data?.priceEntities) {
-      const fromAddress = tokens[fromSymbol].address.toLocaleLowerCase();
-      const toAddress = tokens[toSymbol].address.toLocaleLowerCase();
+      const fromAddress = tokens[fromSymbol].address?.toLocaleLowerCase();
+      const toAddress = tokens[toSymbol].address?.toLocaleLowerCase();
       let fromRate = 1;
       let toRate = 1;
       for (const price of data.priceEntities) {

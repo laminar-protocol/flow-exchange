@@ -1,8 +1,8 @@
-import { mergeMap } from 'rxjs/operators';
 import { ofType } from 'redux-observable';
-import ethereum from 'services/ethereum';
-import { toWei } from 'helpers/unitHelper';
+import { mergeMap } from 'rxjs/operators';
 import types from 'types';
+
+import { accountSelector, apiSelector } from '../selectors/provider.selector';
 
 const epic: Epic = (action$, state$) =>
   action$.pipe(
@@ -11,14 +11,12 @@ const epic: Epic = (action$, state$) =>
       const {
         payload: { symbol, amount },
       } = action;
+
       try {
-        const {
-          value: {
-            ethereum: { account },
-          },
-        } = state$;
-        const contract = ethereum.getFaucetContract(symbol);
-        await contract.methods.allocateTo(account, toWei(amount)).send({ from: account });
+        const api = apiSelector(state$.value);
+        const account = accountSelector(state$.value);
+
+        await api.daiFaucet(account, symbol, amount);
 
         return { type: types.faucet.dai.completed, payload: { amount } };
       } catch (error) {
