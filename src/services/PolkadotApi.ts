@@ -93,9 +93,12 @@ class PolkadotApi extends BaseApi {
 
   public redeem = async (account: string, poolId: string, fromToken: string, fromAmount: string) => {
     const token = this.getTokenDef(fromToken);
+
+    console.log('redeem:', fromToken);
+
     return new Promise(resolve => {
       this.api.tx.syntheticProtocol
-        .mint(poolId, token.id, toPrecision(fromAmount, token.precision), '1000000')
+        .redeem(poolId, token.id, toPrecision(fromAmount, token.precision), '1000000')
         .signAndSend(account, ({ status }) => {
           if (status.isFinalized) {
             resolve();
@@ -106,6 +109,8 @@ class PolkadotApi extends BaseApi {
 
   public mint = async (account: string, poolId: string, toToken: string, fromAmount: string) => {
     const token = this.getTokenDef(toToken);
+    console.log(toToken);
+
     return new Promise(resolve => {
       this.api.tx.syntheticProtocol
         .mint(poolId, token.id, toPrecision(fromAmount, token.precision), '1000000')
