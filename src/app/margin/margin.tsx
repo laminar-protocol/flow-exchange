@@ -1,17 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { Text, Panel, Switch } from '../../components';
-import * as theme from '../../theme';
+import { Panel, Switch, Text } from '../../components';
 import { tradingSymbols } from '../../config';
-import BalanceLine from '../BalanceLine';
+import { useDispatch, useShallowEqualSelector } from '../../hooks';
+import * as theme from '../../theme';
+import { actions } from '../../types';
 import ChartWidget from '../chartWidget/chartWidget';
 import SymbolList from './symbolList';
 import Trade from './trade';
 import TradeList from './tradeList';
-import { actions } from '../../types';
-import { useDispatch, useShallowEqualSelector } from '../../hooks';
 
 const Container = styled.div`
   display: flex;
@@ -207,9 +206,7 @@ const Margin: React.FC = () => {
             <div className="header">
               <Text light>Balance</Text>
             </div>
-            <div>
-              <BalanceLine symbol="DAI" lite />
-            </div>
+            <div>{/* <BalanceLine symbol="DAI" lite /> */}</div>
           </SummaryCell>
 
           <SummaryCell>

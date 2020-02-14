@@ -8,20 +8,20 @@ export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'k
 /* eslint-disable global-require  */
 
 export const abi = {
-  ERC20: require(`flow-protocol-ethereum/artifacts/${network}/abi/ERC20Detailed.json`),
-  FaucetInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/FaucetInterface.json`),
-  FlowMarginProtocol: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowMarginProtocol.json`),
-  FlowProtocol: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowProtocol.json`),
-  FlowToken: require(`flow-protocol-ethereum/artifacts/${network}/abi/FlowToken.json`),
-  LiquidityPoolInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/LiquidityPoolInterface.json`),
-  MarginTradingPair: require(`flow-protocol-ethereum/artifacts/${network}/abi/MarginTradingPair.json`),
-  MoneyMarket: require(`flow-protocol-ethereum/artifacts/${network}/abi/MoneyMarket.json`),
-  PriceOracleInterface: require(`flow-protocol-ethereum/artifacts/${network}/abi/PriceOracleInterface.json`),
+  ERC20: require('flow-protocol-ethereum/artifacts/abi/ERC20Detailed.json'),
+  FaucetInterface: require('flow-protocol-ethereum/artifacts/abi/FaucetInterface.json'),
+  FlowMarginProtocol: require('flow-protocol-ethereum/artifacts/abi/FlowMarginProtocol.json'),
+  FlowProtocol: require('flow-protocol-ethereum/artifacts/abi/FlowProtocol.json'),
+  FlowToken: require('flow-protocol-ethereum/artifacts/abi/FlowToken.json'),
+  LiquidityPoolInterface: require('flow-protocol-ethereum/artifacts/abi/LiquidityPoolInterface.json'),
+  MarginTradingPair: require('flow-protocol-ethereum/artifacts/abi/MarginTradingPair.json'),
+  MoneyMarket: require('flow-protocol-ethereum/artifacts/abi/MoneyMarket.json'),
+  PriceOracleInterface: require('flow-protocol-ethereum/artifacts/abi/PriceOracleInterface.json'),
 };
 
 export const addresses: {
   [key: string]: string;
-} = require(`flow-protocol-ethereum/artifacts/${network}/deployment.json`);
+} = require('flow-protocol-ethereum/artifacts/deployment.json').kovan;
 
 export const explorer: string = ((network: Network) => {
   switch (network) {
@@ -91,6 +91,7 @@ export const tokens: { [key in TokenSymbol]: Token } = {
 // TODO: Refactor these
 
 export const isTokenSymbol = (symbol: TokenSymbol): symbol is TokenSymbol => (tokens as any)[symbol] != null;
+
 export const isBaseTokenSymbol = (symbol: TokenSymbol): symbol is TokenSymbol => {
   const token = (tokens as any)[symbol];
   if (token === null) {
@@ -230,7 +231,7 @@ export const liquidityPools: { [key: string]: Pool } = {
  */
 export const findTradingPairByAddress = (address: Address): TradingPair | undefined => {
   const pairs = Object.values(tradingPairs);
-  return pairs.find(pair => pair.address.toLocaleLowerCase() === address.toLocaleLowerCase());
+  return pairs.find(pair => pair.address?.toLocaleLowerCase() === address?.toLocaleLowerCase());
 };
 
 /**

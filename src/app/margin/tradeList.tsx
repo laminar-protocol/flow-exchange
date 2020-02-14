@@ -86,7 +86,7 @@ export type StateProps = {
 // ----------
 
 const TradeList: React.FC = () => {
-  const account = useShallowEqualSelector<AppState, StateProps>(({ ethereum: { account } }: AppState) => account);
+  const account = useShallowEqualSelector<AppState, StateProps>(({ provider: { account } }: AppState) => account);
 
   // TODO: Fix type
   const { loading: isLoading, data } = useSubscription(positionQuery, {

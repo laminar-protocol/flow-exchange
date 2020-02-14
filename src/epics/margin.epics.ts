@@ -1,54 +1,32 @@
-import { of } from 'rxjs';
-import { take, map, mergeMap } from 'rxjs/operators';
-import { ofType, StateObservable } from 'redux-observable';
-import ethereum from 'services/ethereum';
-
-import { fromWei, UINT256_MAX, UINT256_MIN, toWei } from 'helpers/unitHelper';
 import { createEpic } from 'helpers/apiLoadableSingle';
+import { StateObservable, ofType } from 'redux-observable';
+import { of } from 'rxjs';
+import { map, mergeMap, take } from 'rxjs/operators';
+import { accountSelector, apiSelector } from 'selectors/provider.selector';
 import types, { actions } from 'types';
-import { addresses } from 'config';
 
 export const changeAccount: Epic = action$ =>
   action$.pipe(
-    ofType(types.ethereum.account.changed),
+    ofType(types.provider.account.changed),
     map(() => actions.margin.allowance.requested()),
   );
 
 export const allowance = createEpic(
   actions.margin.allowance,
-  async (_params, state: StateObservable<AppState>) => {
-    const {
-      value: {
-        ethereum: { account },
-      },
-    } = state;
-    if (!account) {
-      // TODO: improve this
-      return Promise.reject(new Error('No account'));
-    }
-    const protocolAddress = ethereum.flowMarginProtocol.options.address;
-    const result = await ethereum.tokens.DAI.methods.allowance(account, protocolAddress).call();
-    return Number(fromWei(result));
+  async (_params, state$: StateObservable<AppState>) => {
+    const api = apiSelector(state$.value);
+    const account = accountSelector(state$.value);
+    return api.getAllowance(account);
   },
-  action$ => action$.pipe(ofType(types.ethereum.network.completed), take(1)),
+  action$ => action$.pipe(ofType(types.provider.network.completed), take(1)),
 );
 
 export const toggleEnable = createEpic(
   actions.margin.toggleTrading,
-  async (enable, state: StateObservable<AppState>) => {
-    const {
-      value: {
-        ethereum: { account },
-      },
-    } = state;
-    if (!account) {
-      // TODO: improve this
-      return Promise.reject(new Error('No account'));
-    }
-    const protocolAddress = ethereum.flowMarginProtocol.options.address;
-    const amount = enable ? UINT256_MAX : UINT256_MIN;
-    await ethereum.tokens.DAI.methods.approve(protocolAddress, amount).send({ from: account });
-    return Number(fromWei(amount));
+  async (enable, state$: StateObservable<AppState>) => {
+    const api = apiSelector(state$.value);
+    const account = accountSelector(state$.value);
+    return api.toggleEnable(account, enable);
   },
 );
 
@@ -60,36 +38,18 @@ export const updateAllowance: Epic = action$ =>
 
 export const openPosition = createEpic(
   actions.margin.openPosition,
-  async ({ name, amount, pool }, state: StateObservable<AppState>) => {
-    const {
-      value: {
-        ethereum: { account },
-      },
-    } = state;
-    if (!account) {
-      // TODO: improve this
-      return Promise.reject(new Error('No account'));
-    }
-    const pairAddress = addresses[name as keyof typeof addresses];
-    await ethereum.flowMarginProtocol.methods
-      .openPosition(pairAddress, pool, toWei(amount.toString().toString()))
-      .send({ from: account });
+  async ({ name, amount, pool }, state$: StateObservable<AppState>) => {
+    const api = apiSelector(state$.value);
+    const account = accountSelector(state$.value);
+    return api.openPosition(account, { name, amount, pool });
   },
 );
 
 export const closePosition = createEpic(
   actions.margin.closePosition,
-  async ({ name, id }, state: StateObservable<AppState>) => {
-    const {
-      value: {
-        ethereum: { account },
-      },
-    } = state;
-    if (!account) {
-      // TODO: improve this
-      return Promise.reject(new Error('No account'));
-    }
-    const pairAddress = addresses[name as keyof typeof addresses];
-    await ethereum.flowMarginProtocol.methods.closePosition(pairAddress, id).send({ from: account });
+  async ({ name, id }, state$: StateObservable<AppState>) => {
+    const api = apiSelector(state$.value);
+    const account = accountSelector(state$.value);
+    return api.closePosition(account, { name, id });
   },
 );

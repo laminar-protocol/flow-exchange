@@ -26,11 +26,13 @@ module.exports = {
       'ignorePackages',
       {
         js: 'never',
+        mjs: 'never',
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
       },
     ],
+    '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/indent': ['error', 2],
     indent: 'off', // required as 'off' by @typescript-eslint/indent
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
@@ -62,6 +64,13 @@ module.exports = {
     'function-paren-newline': 'off', // fix conflicts with prittier
     'arrow-parens': ['error', 'as-needed'], // fix conflicts with prittier
     'no-shadow': 'off',
+    'no-param-reassign': 'off',
+    'prefer-destructuring': 'off',
+    'arrow-body-style': 'off',
+    'no-return-assign': 'off',
+    '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-misused-promises': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
   },
   settings: {
     'import/resolver': {

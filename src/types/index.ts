@@ -12,7 +12,7 @@ const app = moduleActions('app', {
   theme: changedActionTypes<string>(),
 });
 
-const ethereum = moduleActions('ethereum', {
+const provider = moduleActions('provider', {
   modalOpen: changedActionTypes(),
   modalClose: changedActionTypes(),
   enable: apiActionTypes<string>(),
@@ -55,7 +55,7 @@ const faucet = moduleActions('faucet', {
 
 export const actions = appActions('flow', {
   app,
-  ethereum,
+  provider,
   token,
   swap,
   margin,

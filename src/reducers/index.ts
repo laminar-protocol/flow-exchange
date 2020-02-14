@@ -1,17 +1,17 @@
-import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
+import { combineReducers } from 'redux';
 
-import ethereum from './ethereum.reducer';
+import liquidityPool from './liquidityPool.reducer';
+import margin from './margin.reducer';
+import provider from './provider.reducer';
 import setting from './setting.reducer';
 import swap from './swap.reducer';
 import token from './token.reducer';
-import margin from './margin.reducer';
-import liquidityPool from './liquidityPool.reducer';
 
 export const reducer = (history: any) =>
   combineReducers({
     router: connectRouter(history),
-    ethereum,
+    provider,
     setting,
     swap,
     token,

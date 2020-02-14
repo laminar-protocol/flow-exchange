@@ -1,38 +1,30 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router';
+import { Redirect, Route, Switch } from 'react-router';
 import styled from 'styled-components';
 
+import { Container, Prime, PrimeColumn, SideBar, SideColumn } from '../components';
+import Dashboard from '../pages/Dashboard';
+import Lending from '../pages/Deposit';
+import Swap from '../pages/Swap';
 import * as theme from '../theme';
-import Menu from './menu/menu';
-import Dashboard from './dashboard/dashboard';
-import Lending from './lending/lending';
-import Margin from './margin/margin';
-import Swap from './swap/swap';
-import Liquidity from './liquidity/liquidity';
 import Header from './Header';
-import ConnectModal from './ConnectModal';
+import Liquidity from './liquidity/liquidity';
+import Margin from './margin/margin';
+import Navigation from './navigation';
 import NetworkGuardModal from './NetworkGuardModal';
-import { Container, SideBar, Prime, SideColumn, PrimeColumn } from '../components';
 
-const Content = styled.div`
-  margin: 3rem;
-  ${theme.respondTo.sm`
-    margin: 1rem;
-  `}
-`;
-
-const Main: React.FC<{}> = () => (
-  <Container>
+const Main: React.FC = () => (
+  <ContainerWrapper>
     <SideColumn>
       <SideBar>
-        <Menu />
+        <Navigation />
       </SideBar>
     </SideColumn>
     <PrimeColumn>
       <Prime>
         <Header />
-        <Switch>
-          <Content>
+        <div className="main__content">
+          <Switch>
             <Route exact path="/">
               <Redirect to="/dashboard" />
             </Route>
@@ -54,13 +46,21 @@ const Main: React.FC<{}> = () => (
             <Route path="/swap">
               <Swap />
             </Route>
-          </Content>
-        </Switch>
+          </Switch>
+        </div>
         <NetworkGuardModal />
-        <ConnectModal />
       </Prime>
     </PrimeColumn>
-  </Container>
+  </ContainerWrapper>
 );
+
+const ContainerWrapper = styled(Container)`
+  .main__content {
+    margin: 3rem;
+    ${theme.respondTo.sm`
+      margin: 1rem;
+    `}
+  }
+`;
 
 export default Main;
