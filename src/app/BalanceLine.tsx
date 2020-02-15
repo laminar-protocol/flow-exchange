@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Amount, Text } from '../components';
 import { useApp, useTokens } from '../hooks';
-import { Token } from '../services/types';
+import { Token } from '../types';
 
 const Container = styled.div`
   margin: 1rem 0;

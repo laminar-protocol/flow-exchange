@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import * as theme from 'theme';
 
 import { CurrencySelect, Input, InputGroup } from '../../components';
-import { Token } from '../../services/types';
+import { Token } from '../../types';
 
 const options = (tokens: Token[], disabledTokens?: Token[]) => {
   if (tokens) {

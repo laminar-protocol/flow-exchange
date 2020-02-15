@@ -3,10 +3,10 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import BN from 'bn.js';
 
 import { IconProp } from '../components';
+import { CurrencyData, Pool, Token } from '../types';
 import { fromPrecision, toPrecision } from '../utils';
 import { BaseApi } from './BaseApi';
 import { Injected } from './PolkadotApi.types';
-import { CurrencyData, Pool, Token } from './types';
 
 class PolkadotApi extends BaseApi {
   public tokens: Token[] = [

@@ -1,7 +1,6 @@
 import { EthereumApi, PolkadotApi } from '../services';
-import { Account } from '../services/types';
+import { Account, EthereumProvider, Impl, PolkadotProvider } from '../types';
 import create, { GetState, SetState, State } from './createState';
-import { EthereumProvider, Impl, PolkadotProvider } from './types';
 
 export interface AppState extends State {
   provider: EthereumProvider | PolkadotProvider | null;
@@ -17,7 +16,7 @@ const checkAvailableProvider = () => {
   const anyWindow = window as any;
 
   const available = {
-    ethereum: !!(anyWindow.ethereum || anyWindow.web3.currentProvider),
+    ethereum: !!(anyWindow.ethereum || anyWindow.web3?.currentProvider),
     polkadot: !!anyWindow.injectedWeb3,
   };
 

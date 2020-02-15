@@ -10,7 +10,7 @@ import { ThemeProvider } from 'styled-components';
 
 import apolloClient from './apollo';
 import Main from './app/Main';
-import NoService from './app/NoService';
+import NoWallet from './app/NoWallet';
 import { useApp, useAppApi, useDispatch } from './hooks';
 import store, { history } from './reduxStore';
 import GlobalStyle from './theme/globalStyle';
@@ -44,7 +44,7 @@ const AppInit: React.FC = () => {
   }, [api]);
 
   if (!available.length) {
-    return <NoService />;
+    return <NoWallet />;
   }
 
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Amount, Text, TextCell } from '../../components';
 import { useApp, useTokens } from '../../hooks';
-import { Token } from '../../services/types';
+import { Token } from '../../types';
 
 export type BalanceProps = {
   token: Token;

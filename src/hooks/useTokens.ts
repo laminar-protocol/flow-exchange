@@ -1,6 +1,6 @@
 import BN from 'bn.js';
 
-import { Token } from '../services/types';
+import { Token } from '../types';
 import create, { GetState, SetState, State } from './createState';
 import { AppState, useAppApi } from './useApp';
 

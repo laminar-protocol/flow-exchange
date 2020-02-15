@@ -3,7 +3,7 @@ import Select from 'react-select';
 import styled from 'styled-components';
 import * as theme from 'theme';
 
-import { Token } from '../../services/types';
+import { Token } from '../../types';
 import { Icon } from '../icon';
 
 const CurrencySelect = styled(Select)`

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, LightButton, PrimaryButton, SolidButton } from '..';
+import { Button, LightButton, PrimaryButton, SolidButton } from '../';
 
 export default {
   title: 'Home',

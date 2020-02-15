@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NumberFormat, Spinner, Text } from '../../components';
-import { Token } from '../../services/types';
+import { Token } from '../../types';
 import { caculateExchangeRate } from '../../utils';
 
 export interface ExchangeRateProps {

@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { useMemo } from 'react';
 
 import { tokens } from '../config';
-import { Token } from '../services/types';
+import { Token } from '../types';
 
 interface QueryResult {
   priceEntities?: PriceData[];
