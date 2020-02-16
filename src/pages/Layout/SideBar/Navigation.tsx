@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import LaminarLogo from '../../assets/laminar.svg';
-import { Flex, Icon, Separator, Switch } from '../../components';
-import { useApp, useAppApi } from '../../hooks';
-import * as theme from '../../theme';
-import NetworkStatus from '../NetworkStatus';
+import NetworkStatus from '../../../app/NetworkStatus';
+import LaminarLogo from '../../../assets/laminar.svg';
+import { Flex, Icon, Separator, Switch } from '../../../components';
+import { useApp, useAppApi } from '../../../hooks';
+import { theme } from '../../../styles';
 import ConnectModal from './ConnectModal';
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';

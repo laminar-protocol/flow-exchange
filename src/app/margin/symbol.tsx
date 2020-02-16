@@ -1,12 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
-import { usePriceRate } from '../../hooks';
-import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
 import { FormatRate } from '../../components';
-import * as theme from '../../theme';
-
+import { liquidityPools, tradingPairs, tradingSymbols } from '../../config';
+import { usePriceRate } from '../../hooks';
+import { theme } from '../../styles';
 import { calculateRate } from './rate';
 
 interface RowProps {

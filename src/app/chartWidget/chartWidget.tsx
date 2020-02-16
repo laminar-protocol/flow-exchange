@@ -4,7 +4,7 @@ declare const TradingView: any;
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 const Widget = styled.div`
   flex: 1;

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import * as theme from 'theme';
+import { theme } from '../../styles';
 
 interface ContainerProps {
   padding?: number;

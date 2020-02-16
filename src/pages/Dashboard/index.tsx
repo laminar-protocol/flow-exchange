@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Separator, Text } from '../../components';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 import Balances from './Balances';
 import ChartTicker from './ChartTicker';
 import Links from './Links';

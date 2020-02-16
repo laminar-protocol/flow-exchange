@@ -1,5 +1,5 @@
-import { css } from 'styled-components';
 import { mapObjIndexed } from 'ramda';
+import { css } from 'styled-components';
 
 const breakpoints = {
   xs: '480px',

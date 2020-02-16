@@ -1,5 +1,3 @@
-import 'antd/dist/antd.css';
-
 import { ApolloProvider } from '@apollo/react-hooks';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -9,11 +7,11 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import apolloClient from './apollo';
-import Main from './app/Main';
 import NoWallet from './app/NoWallet';
 import { useApp, useAppApi, useDispatch } from './hooks';
+import Layout from './pages/Layout';
 import store, { history } from './reduxStore';
-import GlobalStyle from './theme/globalStyle';
+import { GlobalStyle } from './styles';
 import { actions } from './types';
 
 library.add(fas);
@@ -51,7 +49,7 @@ const AppInit: React.FC = () => {
     <ThemeProvider theme={{ mode: currentTheme }}>
       <>
         <GlobalStyle />
-        <Main />
+        <Layout />
       </>
     </ThemeProvider>
   );

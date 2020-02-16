@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import * as theme from 'theme';
+
+import { theme } from '../../styles';
 
 interface Props {
   size?: 's' | 'l' | 't' | 'h';

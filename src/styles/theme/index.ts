@@ -1,4 +1,5 @@
 import theme from 'styled-theming';
+
 import breakpoint from './breakpoint';
 
 // Responsive breakpoint

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 import { Panel, Text } from '../../components';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 export const Container = styled.div``;
 export const SwapContainer = styled(Panel)``;

@@ -3,9 +3,9 @@ import { Spinner, Text } from 'components';
 import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
 import { useShallowEqualSelector } from '../../hooks';
+import { theme } from '../../styles';
 import CloseTrade from './closeTrade';
 import OpenTrade from './openTrade';
 

@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import styled from 'styled-components';
 
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 const Component = styled(Button)`
   &.ant-btn,

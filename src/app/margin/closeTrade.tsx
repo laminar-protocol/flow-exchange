@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import * as theme from '../../theme';
 import { FormatProfit, FormatRate } from '../../components';
-import { findTradingPairByAddress, findTradingInfoByPairAddress, explorer } from '../../config';
-
+import { explorer, findTradingInfoByPairAddress, findTradingPairByAddress } from '../../config';
+import { theme } from '../../styles';
 import { calculateRate } from './rate';
+
 // ----------
 // Style
 // ----------

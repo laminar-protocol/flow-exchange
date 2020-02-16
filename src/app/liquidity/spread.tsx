@@ -7,8 +7,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import selectors from 'selectors';
 import styled from 'styled-components';
-import * as theme from 'theme';
 import { actions } from 'types';
+
+import { theme } from '../../styles';
 
 const Item = styled.div`
   width: 50%;

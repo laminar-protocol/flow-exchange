@@ -1,12 +1,11 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-import * as theme from 'theme';
-
-import Text from './Text';
+import { theme } from '../../styles';
 import { Spinner } from '../feedback';
+import Text from './Text';
 
 const Header = styled.div`
   text-transform: uppercase;

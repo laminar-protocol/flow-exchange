@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Icon } from '../../components';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 const Links: React.FC = () => {
   return (

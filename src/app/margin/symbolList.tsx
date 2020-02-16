@@ -1,14 +1,14 @@
 import React, { useLayoutEffect } from 'react';
-import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import { Panel } from '../../components';
-import * as theme from '../../theme';
 import { tradingSymbols } from '../../config';
+import { theme } from '../../styles';
 import { actions } from '../../types';
-import Symbol from './symbol';
 import Pool from './pool';
+import Symbol from './symbol';
 
 const Container = styled(Panel)`
   flex: 1;

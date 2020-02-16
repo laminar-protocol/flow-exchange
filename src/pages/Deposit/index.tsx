@@ -1,10 +1,10 @@
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
 import { Amount, Panel, Separator, Text } from '../../components';
 import { useApp, usePools, useTokens } from '../../hooks';
+import { theme } from '../../styles';
 
 const Deposit = () => {
   const api = useApp(state => state.provider?.api);

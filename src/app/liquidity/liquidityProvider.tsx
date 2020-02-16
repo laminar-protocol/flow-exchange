@@ -3,8 +3,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import selectors from 'selectors';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
+import { theme } from '../../styles';
 import Spread from './spread';
 
 const Provider = styled.div`

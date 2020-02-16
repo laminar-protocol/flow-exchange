@@ -1,8 +1,8 @@
+import { Icon, Spin } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { Spin, Icon } from 'antd';
 
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 const LoadingIcon = <Icon type="loading" spin />;
 const SpinIcon = styled(Spin)`

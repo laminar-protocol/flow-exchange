@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Icon, IconProp } from '../../components';
-import * as theme from '../../theme';
+import { Icon, IconProp } from '../../../components';
+import { theme } from '../../../styles';
 
 export interface MenuItemProps {
   icon: IconProp;

@@ -1,9 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { FormatBalance, Spinner } from '../../components';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 interface RowProps {
   highlight?: boolean;

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Modal, Separator, SolidButton, Text } from '../../components';
-import { useApp, useAppApi } from '../../hooks';
-import { Impl } from '../../types';
+import { Button, Modal, Separator, SolidButton, Text } from '../../../components';
+import { useApp, useAppApi } from '../../../hooks';
+import { Impl } from '../../../types';
 
 const ConnectModal: React.FC = ({ ...other }) => {
   const connectModalShow = useApp(state => state.connectModalShow);

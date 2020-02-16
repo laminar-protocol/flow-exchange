@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import * as theme from 'theme';
+
+import { theme } from '../../styles';
 
 interface IndicatorProps {
   size?: number;

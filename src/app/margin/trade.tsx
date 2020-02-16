@@ -1,20 +1,20 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 
 import {
-  Text,
-  SolidButton,
-  Separator,
+  FormatRate,
   Input,
-  SegmentedControl,
-  SegmentedControlItem,
   InputNumber,
   Notice,
-  FormatRate,
+  SegmentedControl,
+  SegmentedControlItem,
+  Separator,
+  SolidButton,
+  Text,
 } from '../../components';
-import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
-import { tradingSymbols, tradingPairs, liquidityPools } from '../../config';
-import * as theme from '../../theme';
+import { liquidityPools, tradingPairs, tradingSymbols } from '../../config';
+import { useDispatch, usePriceRate, useShallowEqualSelector } from '../../hooks';
+import { theme } from '../../styles';
 import { actions } from '../../types';
 import { calculateRate } from './rate';
 
