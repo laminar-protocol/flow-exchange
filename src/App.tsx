@@ -7,9 +7,9 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
 import apolloClient from './apollo';
-import NoWallet from './app/NoWallet';
 import { useApp, useAppApi, useDispatch } from './hooks';
 import Layout from './pages/Layout';
+import SelectWallet from './pages/SelectWallet';
 import store, { history } from './reduxStore';
 import { GlobalStyle } from './styles';
 import { actions } from './types';
@@ -42,7 +42,7 @@ const AppInit: React.FC = () => {
   }, [api]);
 
   if (!available.length) {
-    return <NoWallet />;
+    return <SelectWallet />;
   }
 
   return (

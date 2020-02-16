@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import { Amount, Text } from '../components';
-import { useApp, useTokens } from '../hooks';
-import { Token } from '../types';
+import { Amount, Text } from '../../components';
+import { useApp, useTokens } from '../../hooks';
+import { Token } from '../../types';
 
 const Container = styled.div`
   margin: 1rem 0;
