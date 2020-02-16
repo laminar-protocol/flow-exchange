@@ -1,5 +1,5 @@
-import React from 'react';
 import numbro from 'numbro';
+import React from 'react';
 
 const balanceFormatOptions = {
   thousandSeparated: true,

@@ -1,8 +1,8 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { Token } from '../../types';
-import { fromPrecision } from '../../utils';
+import { Token } from '../types';
+import { fromPrecision } from '../utils';
 
 function numberToAmount(
   number: BN,

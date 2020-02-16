@@ -2,8 +2,7 @@ import { types } from '@laminar/types';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import BN from 'bn.js';
 
-import { IconProp } from '../components';
-import { CurrencyData, Pool, Token } from '../types';
+import { CurrencyData, IconProp, Pool, Token } from '../types';
 import { fromPrecision, toPrecision } from '../utils';
 import { BaseApi } from './BaseApi';
 import { Injected } from './PolkadotApi.types';

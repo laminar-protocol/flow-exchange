@@ -1,6 +1,9 @@
-import { IconProp } from '../components/icon';
-import { EthereumApi, PolkadotApi } from '../services';
+import { IconProp as FontAwesomeIconProp } from '@fortawesome/fontawesome-svg-core';
 
+import EthereumApi from '../services/EthereumApi';
+import PolkadotApi from '../services/PolkadotApi';
+
+export type IconProp = FontAwesomeIconProp;
 export interface Account {
   address: string;
 }

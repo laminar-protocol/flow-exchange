@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { theme } from '../../styles';
 import { Token } from '../../types';
-import { Icon } from '../icon';
+import Icon from '../Icon';
 
 const CurrencySelect = styled(Select)`
   .react-select__control {

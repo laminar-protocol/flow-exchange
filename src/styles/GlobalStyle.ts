@@ -2,7 +2,7 @@ import 'antd/dist/antd.css';
 
 import { createGlobalStyle } from 'styled-components';
 
-import { theme } from './';
+import { theme } from '.';
 
 const GlobalStyle = createGlobalStyle`
   body {

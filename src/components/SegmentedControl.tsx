@@ -1,7 +1,7 @@
 import { Radio } from 'antd';
 import styled from 'styled-components';
 
-import { theme } from '../../styles';
+import { theme } from '../styles';
 
 const StyledRadioGroup = styled(Radio.Group)`
   /* &.ant-radio-group {

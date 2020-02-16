@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { theme } from '../../styles';
+import { theme } from '../styles';
 
 interface ContainerProps {
   size?: number;

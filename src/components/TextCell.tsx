@@ -1,10 +1,10 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import styled from 'styled-components';
 
-import { theme } from '../../styles';
-import { Spinner } from '../feedback';
+import { theme } from '../styles';
+import { IconProp } from '../types';
+import Icon from './Icon';
+import Spinner from './Spinner';
 import Text from './Text';
 
 const Header = styled.div`
@@ -31,7 +31,7 @@ const AccessorySpinner = styled(Spinner)`
   }
 `;
 
-const AccessoryIcon = styled(FontAwesomeIcon)`
+const AccessoryIcon = styled(Icon)`
   color: ${theme.fadeForegroundColor};
 `;
 

@@ -12,7 +12,7 @@ interface Props {
   className?: string;
 }
 
-const SideBar: React.FC<Props> = ({ children, className }) => (
+const SideBar: React.FC<Props> = ({ className }) => (
   <Container className={className}>
     <Sider width="100%" className="layout__sidebar">
       <Navigation />

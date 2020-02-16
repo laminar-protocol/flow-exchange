@@ -1,10 +1,9 @@
 import BN from 'bn.js';
 import _ from 'lodash';
 
-import { IconProp } from '../components';
 import { addresses, tokens } from '../config';
 import { UINT256_MAX, UINT256_MIN, fromWei, toWei } from '../helpers/unitHelper';
-import { CurrencyData, Pool, Token } from '../types';
+import { CurrencyData, IconProp, Pool, Token } from '../types';
 import { BaseApi } from './BaseApi';
 import Ethereum from './Ethereum';
 
