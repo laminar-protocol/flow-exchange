@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
 import { CurrencySelect, Input, InputGroup } from '../../components';
-import { Token } from '../../services/types';
+import { theme } from '../../styles';
+import { Token } from '../../types';
 
 const options = (tokens: Token[], disabledTokens?: Token[]) => {
   if (tokens) {

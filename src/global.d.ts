@@ -1,9 +1,8 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { reducer } from 'reducers';
 import { Action as ReduxAction } from 'redux';
 import { Epic as ReduxEpic } from 'redux-observable';
 
-import { IconProp } from './components';
+import { IconProp } from './types';
 
 declare global {
   /** */

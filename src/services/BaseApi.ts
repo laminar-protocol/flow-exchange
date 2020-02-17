@@ -2,7 +2,7 @@ import BN from 'bn.js';
 import EventEmitter from 'eventemitter3';
 import { BehaviorSubject } from 'rxjs';
 
-import { Account, CurrencyData, Pool, Token } from './types';
+import { Account, CurrencyData, Pool, Token } from '../types';
 
 export abstract class BaseApi {
   private _eventemitter = new EventEmitter();

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Panel, Switch, Text } from '../../components';
 import { tradingSymbols } from '../../config';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 import { actions } from '../../types';
 import ChartWidget from '../chartWidget/chartWidget';
 import SymbolList from './symbolList';

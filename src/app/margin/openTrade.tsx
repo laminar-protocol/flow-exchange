@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
-import { LightButton, FormatProfit, FormatRate } from '../../components';
-import { findTradingPairByAddress, findTradingInfoByPairAddress, explorer } from '../../config';
-import * as theme from '../../theme';
-import { calculateRate } from './rate';
+import { FormatProfit, FormatRate, LightButton } from '../../components';
+import { explorer, findTradingInfoByPairAddress, findTradingPairByAddress } from '../../config';
+import { useDispatch, usePriceRate, useShallowEqualSelector } from '../../hooks';
+import { theme } from '../../styles';
 import { actions } from '../../types';
-import { usePriceRate, useDispatch, useShallowEqualSelector } from '../../hooks';
+import { calculateRate } from './rate';
 
 // ----------
 // Style

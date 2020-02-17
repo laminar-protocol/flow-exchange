@@ -66,3 +66,5 @@ export const actions = appActions('flow', {
 const types = appActionTypes(actions);
 
 export default types;
+
+export * from './types';

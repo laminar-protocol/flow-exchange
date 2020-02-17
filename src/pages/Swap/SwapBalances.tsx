@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import BalanceLine from '../../app/BalanceLine';
 import { Panel, Separator, Text } from '../../components';
 import { useTokens } from '../../hooks';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
+import BalanceLine from './BalanceLine';
 
 export const Container = styled(Panel)`
   margin-right: 2rem;

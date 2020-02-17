@@ -68,6 +68,7 @@ module.exports = {
     'prefer-destructuring': 'off',
     'arrow-body-style': 'off',
     'no-return-assign': 'off',
+    'import/no-cycle': 'off', // typescript types import
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',

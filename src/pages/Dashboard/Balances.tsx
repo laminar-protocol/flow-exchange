@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Flex, Panel, Separator, Text } from '../../components';
 import { useTokens } from '../../hooks';
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 import Balance from './Balance';
 import Faucet from './Faucet';
 

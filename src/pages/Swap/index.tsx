@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
 import { Separator, Text } from '../../components';
+import { theme } from '../../styles';
 import Exchange from './Exchange';
 import SwapBalances from './SwapBalances';
 import SwapList from './SwapList';

@@ -1,12 +1,28 @@
 import { types } from '@laminar/types';
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { Signer } from '@polkadot/api/types';
 import BN from 'bn.js';
 
-import { IconProp } from '../components';
+import { CurrencyData, IconProp, Pool, Token } from '../types';
 import { fromPrecision, toPrecision } from '../utils';
 import { BaseApi } from './BaseApi';
-import { Injected } from './PolkadotApi.types';
-import { CurrencyData, Pool, Token } from './types';
+
+interface Injected {
+  readonly accounts: Accounts;
+  readonly signer: Signer;
+}
+
+interface Account {
+  readonly address: string;
+  readonly genesisHash?: string;
+  readonly name?: string;
+}
+
+// exposes accounts
+interface Accounts {
+  get: () => Promise<Account[]>;
+  subscribe: (cb: (accounts: Account[]) => any) => () => void;
+}
 
 class PolkadotApi extends BaseApi {
   public tokens: Token[] = [

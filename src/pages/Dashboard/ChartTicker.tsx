@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import * as theme from '../../theme';
+import { theme } from '../../styles';
 
 class ChartTicker extends Component {
   public chartRef: React.RefObject<any>;

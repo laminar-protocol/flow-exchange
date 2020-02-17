@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import * as theme from 'theme';
 
 import { FormatBalance, Icon, Text } from '../../components';
 import { explorer, tokens } from '../../config';
+import { theme } from '../../styles';
 
 const Line = styled.div`
   margin: 0.75rem 0;

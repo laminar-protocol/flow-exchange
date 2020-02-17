@@ -1,6 +1,6 @@
 import validate from 'validate.js';
 
-import { Token } from '../services/types';
+import { Token } from '../types';
 import { caculateExchangeRate } from '../utils';
 import create, { SetState, State } from './createState';
 import { TokensState, useTokensApi } from './useTokens';
