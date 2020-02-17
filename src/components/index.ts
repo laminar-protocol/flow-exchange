@@ -8,7 +8,6 @@ export { default as SegmentedControlItem } from './SegmentedControlItem';
 export { default as Switch } from './Switch';
 export { default as Separator } from './Separator';
 export { default as Indicator } from './Indicator';
-export { default as CurrencySelect } from './Selects/CurrencySelect';
 export { default as Notice } from './Notice';
 export { default as Modal } from './Modal';
 export { default as Icon } from './Icon';
