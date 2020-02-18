@@ -1,3 +1,5 @@
+import './scss/index.scss';
+
 import * as theme from './theme';
 
 export { theme };

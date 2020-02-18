@@ -68,3 +68,4 @@ const types = appActionTypes(actions);
 export default types;
 
 export * from './types';
+export * from './component';

@@ -8,20 +8,9 @@ export interface AppState extends State {
   availableProvider: Impl[];
   currentAccount: Account | null;
   connectModalShow: boolean;
-  init(): void;
   setProvider(impl: Impl): AppState['provider'];
+  checkAvailableProvider(): Impl[];
 }
-
-const checkAvailableProvider = () => {
-  const anyWindow = window as any;
-
-  const available = {
-    ethereum: !!(anyWindow.ethereum || anyWindow.web3?.currentProvider),
-    polkadot: !!anyWindow.injectedWeb3,
-  };
-
-  return (Object.keys(available) as Impl[]).filter(v => available[v]);
-};
 
 export const [useApp, useAppApi] = create<AppState>(
   (set: SetState<AppState>, get: GetState<AppState>): AppState => ({
@@ -30,10 +19,15 @@ export const [useApp, useAppApi] = create<AppState>(
     currentAccount: null,
     availableProvider: [],
     connectModalShow: true,
-    init() {
-      set(state => {
-        state.availableProvider = checkAvailableProvider();
-      });
+    checkAvailableProvider() {
+      const anyWindow = window as any;
+
+      const available = {
+        ethereum: !!(anyWindow.ethereum || anyWindow.web3?.currentProvider),
+        polkadot: !!anyWindow.injectedWeb3,
+      };
+
+      return (Object.keys(available) as Impl[]).filter(v => available[v]);
     },
     setProvider(impl) {
       set(state => {

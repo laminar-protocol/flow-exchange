@@ -1,19 +1,40 @@
 import { Layout as AntdLayout } from 'antd';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
+import { Spinner } from '../../components';
+import { useApp } from '../../hooks/useApp';
 import Prime from './Prime';
-import Routes from './Routes';
 import SideBar from './SideBar';
 
-const Layout: React.FC = () => {
+const Layout: React.FC = ({ children }) => {
+  const currentProvider = useApp(state => state.provider);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!currentProvider) {
+      console.log('history and currentProvider changed');
+      // history.push('/');
+    }
+  }, [history, currentProvider]);
+
   return (
-    <AntdLayout>
+    <Container>
       <SideBar />
       <Prime>
-        <Routes />
+        <Spinner size="large" className="layout__spinner" />
       </Prime>
-    </AntdLayout>
+    </Container>
   );
 };
+
+const Container = styled(AntdLayout)`
+  .layout__spinner {
+    margin-top: 300px;
+    display: flex;
+    justify-content: center;
+  }
+`;
 
 export default Layout;

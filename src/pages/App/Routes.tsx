@@ -5,13 +5,14 @@ import Liquidity from '../../app/liquidity/liquidity';
 import Margin from '../../app/margin/margin';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
+import Home from '../Home';
 import Swap from '../Swap';
 
 const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Redirect to="/dashboard" />
+        <Home />
       </Route>
       <Route path="/dashboard">
         <Dashboard />

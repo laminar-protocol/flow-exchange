@@ -3,21 +3,24 @@ import styled from 'styled-components';
 
 import { Separator, Text } from '../../components';
 import { theme } from '../../styles';
+import Layout from '../Layout';
 import Exchange from './Exchange';
 import SwapBalances from './SwapBalances';
 import SwapList from './SwapList';
 
 const Swap: React.FC = () => {
   return (
-    <Container>
-      <Text size="h">Spot Exchange</Text>
-      <Separator />
-      <Exchange />
-      <div className="swap-detail">
-        <SwapBalances />
-        <SwapList />
-      </div>
-    </Container>
+    <Layout>
+      <Container>
+        <Text size="h">Spot Exchange</Text>
+        <Separator />
+        <Exchange />
+        <div className="swap-detail">
+          <SwapBalances />
+          <SwapList />
+        </div>
+      </Container>
+    </Layout>
   );
 };
 

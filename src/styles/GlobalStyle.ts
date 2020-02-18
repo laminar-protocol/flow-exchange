@@ -10,8 +10,9 @@ const GlobalStyle = createGlobalStyle`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
       "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     font-weight: normal;
-    background-color: ${theme.backgroundColor} !important;
+    background-color: ${theme.backgroundColor};
   }
+
 
   #root {
     color: ${theme.foregroundColor};
@@ -24,11 +25,15 @@ const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: ${theme.foregroundColor} !important;
+    color: ${theme.foregroundColor};
+  }
+
+  .ant-layout {
+    background-color: ${theme.backgroundColor};
   }
 
   .ant-modal-mask {
-    background-color: rgba(0, 0, 0, 0.25) !important;
+    background-color: rgba(0, 0, 0, 0.25);
   }
 
   .ant-modal-content {
