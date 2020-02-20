@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
-import { useApp, useAppApi, useDispatch } from '../../hooks';
+import { useApp, useAppApi, useDispatch, useSetting } from '../../hooks';
 import store, { history } from '../../reduxStore';
 import { GlobalStyle } from '../../styles';
 import { actions } from '../../types';
@@ -17,31 +17,26 @@ import Routes from './Routes';
 library.add(fas);
 
 const AppInit: React.FC = () => {
-  const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
-  const currentTheme = useApp(state => state.currentTheme);
-  // const api = useApp(state => state.provider && state.provider.api);
-  // const dispatch = useDispatch();
+  const currentTheme = useSetting(state => state.setting.currentTheme);
+  const api = useApp(state => state.provider && state.provider.api);
+  const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   // @TODO remove
-  //   dispatch(actions.app.init.trigger());
-  // }, [dispatch]);
+  useEffect(() => {
+    // @TODO remove
+    dispatch(actions.app.init.trigger());
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (api) {
-  //     const s = api.accounts$.subscribe(accounts => {
-  //       useAppApi.setState(state => (state.currentAccount = accounts[0]));
-  //     });
+  useEffect(() => {
+    if (api) {
+      const s = api.accounts$.subscribe(accounts => {
+        useAppApi.setState(state => (state.currentAccount = accounts[0]));
+      });
 
-  //     return () => {
-  //       s.unsubscribe();
-  //     };
-  //   }
-  // }, [api]);
-
-  // if (!available.length) {
-  //   return <SelectWallet />;
-  // }
+      return () => {
+        s.unsubscribe();
+      };
+    }
+  }, [api]);
 
   return (
     <ThemeProvider theme={{ mode: currentTheme }}>

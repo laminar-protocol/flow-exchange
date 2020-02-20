@@ -7,15 +7,14 @@ import { Impl } from '../../../types';
 
 const ConnectModal: React.FC = ({ ...other }) => {
   const connectModalShow = useApp(state => state.connectModalShow);
-  const setProvider = useApp(state => state.setProvider);
+  const setProviderEnable = useApp(state => state.setProviderEnable);
   const [loading, setLoading] = useState('');
 
   const closeModal = () => useAppApi.setState(state => (state.connectModalShow = false));
 
   const handleConnect = async (impl: Impl) => {
     setLoading(impl);
-    const provider = setProvider(impl);
-    await provider?.api.enable();
+    const provider = setProviderEnable(impl);
     setLoading('');
     closeModal();
   };

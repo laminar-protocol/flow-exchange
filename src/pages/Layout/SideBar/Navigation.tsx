@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import NetworkStatus from '../../../app/NetworkStatus';
 import LaminarLogo from '../../../assets/laminar.svg';
 import { Flex, Icon, Separator, Switch } from '../../../components';
-import { useApp, useAppApi } from '../../../hooks';
+import { useSetting } from '../../../hooks';
 import { theme } from '../../../styles';
 import ConnectModal from './ConnectModal';
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
-  const currentTheme = useApp(state => state.currentTheme);
+  const currentTheme = useSetting(state => state.setting.currentTheme);
+  const setCurrentTheme = useSetting(state => state.setCurrentTheme);
 
   return (
     <Container>
@@ -50,7 +51,7 @@ const Navigation: React.FC = () => {
           <div className="theme-switch">
             <Switch
               onChange={() => {
-                useAppApi.setState(state => (state.currentTheme === 'light' ? 'dark' : 'light'));
+                setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
               }}
               checked={currentTheme === 'dark'}
             />
