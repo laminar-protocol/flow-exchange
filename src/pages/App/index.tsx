@@ -10,7 +10,6 @@ import { useApp, useAppApi, useDispatch, useSetting } from '../../hooks';
 import store, { history } from '../../reduxStore';
 import { GlobalStyle } from '../../styles';
 import { actions } from '../../types';
-import SelectWallet from '../Home';
 import apolloClient from './apollo';
 import Routes from './Routes';
 

@@ -14,7 +14,7 @@ const ConnectModal: React.FC = ({ ...other }) => {
 
   const handleConnect = async (impl: Impl) => {
     setLoading(impl);
-    const provider = setProviderEnable(impl);
+    await setProviderEnable(impl);
     setLoading('');
     closeModal();
   };

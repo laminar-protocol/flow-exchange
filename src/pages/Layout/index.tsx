@@ -22,7 +22,7 @@ const Layout: React.FC = ({ children }) => {
     const availableProvider = checkAvailableProvider();
 
     console.log('history and currentProvider changed');
-    console.log(currentProvider, setting.provider);
+
     if (currentProvider) {
       if (!availableProvider.includes(currentProvider.impl)) {
         history.push('/');
@@ -30,12 +30,12 @@ const Layout: React.FC = ({ children }) => {
     } else {
       if (setting.provider && availableProvider.includes(setting.provider)) {
         setLoadingProvider(true);
-        const provider = setProviderEnable(setting.provider).finally(() => {
+        setProviderEnable(setting.provider).finally(() => {
           setLoadingProvider(false);
         });
-      } else {
-        history.push('/');
       }
+
+      history.push('/');
     }
   }, [history, currentProvider, checkAvailableProvider, setProviderEnable, setting.provider]);
 

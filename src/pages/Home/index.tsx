@@ -34,7 +34,12 @@ const Home = () => {
             Polkadot
           </SolidButton>
         ) : (
-          <a href="https://github.com/polkadot-js/extension" target="_blank" className="select-provider__link">
+          <a
+            href="https://github.com/polkadot-js/extension"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="select-provider__link"
+          >
             Get Polkadot Extension
           </a>
         )}
@@ -48,7 +53,7 @@ const Home = () => {
             Metamask
           </SolidButton>
         ) : (
-          <a href="https://metamask.io/" target="_blank" className="select-provider__link">
+          <a href="https://metamask.io/" rel="noopener noreferrer" target="_blank" className="select-provider__link">
             Get Metamask
           </a>
         )}
