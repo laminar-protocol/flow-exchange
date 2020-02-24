@@ -197,7 +197,7 @@ class PolkadotApi extends BaseApi {
 
           return {
             id: `${id}`,
-            address: address,
+            address,
             name: address.slice(0, 12),
           };
         });

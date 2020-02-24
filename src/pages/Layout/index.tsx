@@ -28,6 +28,7 @@ const Layout: React.FC = ({ children }) => {
         history.push('/');
       }
     } else {
+      // eslint-disable-next-line
       if (setting.provider && availableProvider.includes(setting.provider)) {
         setLoadingProvider(true);
         setProviderEnable(setting.provider).finally(() => {
