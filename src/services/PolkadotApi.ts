@@ -171,11 +171,16 @@ class PolkadotApi extends BaseApi {
 
     return Promise.all(
       Array.from(Array(nextPoolId.toNumber()).keys()).map(id => {
-        return this.api.query.liquidityPools.owners(id).then(result => ({
-          id: `${id}`,
-          address: result.toJSON() as string,
-          name: (result.toJSON() as string).slice(0, 12),
-        }));
+        return this.api.query.liquidityPools.owners(id).then(result => {
+          // @TODO fixme
+          const address = (result.toJSON() && result.toJSON()) as string;
+
+          return {
+            id: `${id}`,
+            address: address,
+            name: address.slice(0, 12),
+          };
+        });
       }),
     );
   };
@@ -216,8 +221,10 @@ class PolkadotApi extends BaseApi {
 
   public getTokenLiquidity = async (pool: Pool, tokenId: string) => {
     await this.api.isReady;
-    const balance = (await this.api.query.tokens.balance(tokenId, pool.address)) as any;
-    const { additionalCollateralRatio } = await this.getCurrencyData(pool.id, tokenId);
+    const token = this.getTokenDef(tokenId);
+    console.log(pool);
+    const balance = (await this.getBalance(pool.address, token.name)) as any;
+    const { additionalCollateralRatio } = await this.getCurrencyData(pool.id, token.name);
     return balance.mul(new BN(1 + (additionalCollateralRatio || 0)));
   };
 }

@@ -72,6 +72,7 @@ module.exports = {
     '@typescript-eslint/require-await': 'off',
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/ban-ts-ignore': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/resolver': {
