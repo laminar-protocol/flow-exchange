@@ -1,5 +1,6 @@
 import { Text } from 'components';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { truncate } from '../../../helpers/stringHelper';
@@ -19,9 +20,17 @@ const accountName = (account: string) => {
 
 const Wallet: React.FC = ({ ...other }) => {
   const currentAccount = useApp(state => state.currentAccount);
+  const history = useHistory();
 
   return (
-    <MenuItem icon="wallet" noRoute {...other}>
+    <MenuItem
+      icon="wallet"
+      noRoute
+      {...other}
+      onClick={() => {
+        history.push('/');
+      }}
+    >
       <div>Wallet</div>
       <div>
         <Address size="s" light>

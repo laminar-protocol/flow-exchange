@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
+import App from './pages/App';
 
 library.add(fas);
 
@@ -17,9 +17,9 @@ const render = (App: React.ComponentType) => {
 render(App);
 
 if ((module as any).hot) {
-  (module as any).hot.accept('./App', () => {
+  (module as any).hot.accept('./pages/App', () => {
     // eslint-disable-next-line
-    const NextApp = require('./App').default;
+    const NextApp = require('./pages/App').default;
     render(NextApp);
   });
 }

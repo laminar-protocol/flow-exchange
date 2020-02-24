@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Amount, Panel, Separator, Text } from '../../components';
 import { useApp, usePools, useTokens } from '../../hooks';
 import { theme } from '../../styles';
+import Layout from '../Layout';
 
 const Deposit = () => {
   const api = useApp(state => state.provider?.api);
@@ -29,49 +30,52 @@ const Deposit = () => {
       });
     }
   }, [tokens, pool, api]);
-  return (
-    <Container>
-      <p>
-        <Text size="h">Deposit &amp; Earn</Text>
-      </p>
-      <Separator />
-      <Panel>
-        {tokens?.map(token => {
-          return (
-            <div className="provider" key={token.name}>
-              <div className="item">
-                <Text size="l" weight="bold">
-                  {token.name}
-                </Text>
-              </div>
-              <div className="item">
-                <div>
-                  <Text size="s" light>
-                    Market Size
-                  </Text>
-                </div>
-                <div>
-                  <Text size="l">
-                    {liquidities[token.name] && <Amount value={liquidities[token.name]} token={token} hasPrefix />}
-                  </Text>
-                </div>
-              </div>
 
-              <div className="item">
-                <div>
-                  <Text size="s" light>
-                    APR
+  return (
+    <Layout>
+      <Container>
+        <p>
+          <Text size="h">Deposit &amp; Earn</Text>
+        </p>
+        <Separator />
+        <Panel>
+          {tokens?.map(token => {
+            return (
+              <div className="provider" key={token.name}>
+                <div className="item">
+                  <Text size="l" weight="bold">
+                    {token.name}
                   </Text>
                 </div>
-                <div>
-                  <Text size="l">3%</Text>
+                <div className="item">
+                  <div>
+                    <Text size="s" light>
+                      Market Size
+                    </Text>
+                  </div>
+                  <div>
+                    <Text size="l">
+                      {liquidities[token.name] && <Amount value={liquidities[token.name]} token={token} hasPrefix />}
+                    </Text>
+                  </div>
+                </div>
+
+                <div className="item">
+                  <div>
+                    <Text size="s" light>
+                      APR
+                    </Text>
+                  </div>
+                  <div>
+                    <Text size="l">3%</Text>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </Panel>
-    </Container>
+            );
+          })}
+        </Panel>
+      </Container>
+    </Layout>
   );
 };
 

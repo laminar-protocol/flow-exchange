@@ -15,6 +15,7 @@ import selectors from 'selectors';
 import styled from 'styled-components';
 import { actions } from 'types';
 
+import Layout from '../../pages/Layout';
 import LiquidityProvider from './liquidityProvider';
 
 const Container = styled.div``;
@@ -43,38 +44,40 @@ const Liquidity: React.FC = () => {
   }, [dispatch, pools]);
 
   return (
-    <Container>
-      <p>
-        <Text size="h">Liquidity</Text>
-      </p>
-      <Notice weight="bold">Under Development</Notice>
-      <Separator />
-      <Panel>
-        <FilterSymbol>
-          <SegmentedControl
-            buttonStyle="solid"
-            value={filterMarket}
-            onChange={e => {
-              setFilterMarket(e.target.value);
-            }}
-          >
-            <SegmentedControlItem>Market</SegmentedControlItem>
-            {Object.keys(tradingSymbols).map(symbol => (
-              <SegmentedControlItem key={symbol} value={symbol}>
-                {symbol}
-              </SegmentedControlItem>
-            ))}
-          </SegmentedControl>
-        </FilterSymbol>
-        {pools.map((pool: any) => (
-          <LiquidityProvider key={pool.address} pool={pool} tradingSymbol={filterMarket} />
-        ))}
-      </Panel>
-      <Separator />
-      <Action>
-        <PrimaryButton disabled>Provide Liquidity</PrimaryButton>
-      </Action>
-    </Container>
+    <Layout>
+      <Container>
+        <p>
+          <Text size="h">Liquidity</Text>
+        </p>
+        <Notice weight="bold">Under Development</Notice>
+        <Separator />
+        <Panel>
+          <FilterSymbol>
+            <SegmentedControl
+              buttonStyle="solid"
+              value={filterMarket}
+              onChange={e => {
+                setFilterMarket(e.target.value);
+              }}
+            >
+              <SegmentedControlItem>Market</SegmentedControlItem>
+              {Object.keys(tradingSymbols).map(symbol => (
+                <SegmentedControlItem key={symbol} value={symbol}>
+                  {symbol}
+                </SegmentedControlItem>
+              ))}
+            </SegmentedControl>
+          </FilterSymbol>
+          {pools.map((pool: any) => (
+            <LiquidityProvider key={pool.address} pool={pool} tradingSymbol={filterMarket} />
+          ))}
+        </Panel>
+        <Separator />
+        <Action>
+          <PrimaryButton disabled>Provide Liquidity</PrimaryButton>
+        </Action>
+      </Container>
+    </Layout>
   );
 };
 

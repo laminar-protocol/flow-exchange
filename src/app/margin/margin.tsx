@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Panel, Switch, Text } from '../../components';
 import { tradingSymbols } from '../../config';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
+import Layout from '../../pages/Layout';
 import { theme } from '../../styles';
 import { actions } from '../../types';
 import ChartWidget from '../chartWidget/chartWidget';
@@ -196,54 +197,56 @@ const Margin: React.FC = () => {
   const tradingSymbol = (tradingSymbols as any)[symbol];
 
   return (
-    <Container>
-      <SummaryPanel>
-        <SummaryHeader>
-          <Text size="l">Margin Trading</Text>
-        </SummaryHeader>
-        <AccountSummary>
-          <SummaryCell>
-            <div className="header">
-              <Text light>Balance</Text>
-            </div>
-            <div>{/* <BalanceLine symbol="DAI" lite /> */}</div>
-          </SummaryCell>
+    <Layout>
+      <Container>
+        <SummaryPanel>
+          <SummaryHeader>
+            <Text size="l">Margin Trading</Text>
+          </SummaryHeader>
+          <AccountSummary>
+            <SummaryCell>
+              <div className="header">
+                <Text light>Balance</Text>
+              </div>
+              <div>{/* <BalanceLine symbol="DAI" lite /> */}</div>
+            </SummaryCell>
 
-          <SummaryCell>
-            <div className="header">
-              <Text light>Enable Trading</Text>
-            </div>
-            <div>
-              <Switch
-                checked={isEnabled}
-                disabled={isLoadingAllowance || isGranting}
-                onClick={() => {
-                  onGrant(!isEnabled);
-                }}
-              />
-            </div>
-          </SummaryCell>
-        </AccountSummary>
-      </SummaryPanel>
-      <MainPanel>
-        <MarketPanel>
-          <Chart>
-            <ChartWidget symbol={tradingSymbol.chartSymbol} currentTheme={currentTheme} />
-          </Chart>
-          <MarketList>
-            <SymbolList />
-          </MarketList>
-        </MarketPanel>
-        <TradePanel>
-          <TradeView>
-            <TradeList />
-          </TradeView>
-          <TradeControl>
-            <Trade symbol={symbol} pool={pool} />
-          </TradeControl>
-        </TradePanel>
-      </MainPanel>
-    </Container>
+            <SummaryCell>
+              <div className="header">
+                <Text light>Enable Trading</Text>
+              </div>
+              <div>
+                <Switch
+                  checked={isEnabled}
+                  disabled={isLoadingAllowance || isGranting}
+                  onClick={() => {
+                    onGrant(!isEnabled);
+                  }}
+                />
+              </div>
+            </SummaryCell>
+          </AccountSummary>
+        </SummaryPanel>
+        <MainPanel>
+          <MarketPanel>
+            <Chart>
+              <ChartWidget symbol={tradingSymbol.chartSymbol} currentTheme={currentTheme} />
+            </Chart>
+            <MarketList>
+              <SymbolList />
+            </MarketList>
+          </MarketPanel>
+          <TradePanel>
+            <TradeView>
+              <TradeList />
+            </TradeView>
+            <TradeControl>
+              <Trade symbol={symbol} pool={pool} />
+            </TradeControl>
+          </TradePanel>
+        </MainPanel>
+      </Container>
+    </Layout>
   );
 };
 

@@ -5,7 +5,7 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { subgraphEndpoints } from './config';
+import { subgraphEndpoints } from '../../config';
 
 const cache = new InMemoryCache();
 

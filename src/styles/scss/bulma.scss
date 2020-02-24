@@ -1,0 +1,23 @@
+@charset "utf-8";
+
+@import '~bulma/sass/utilities/initial-variables.sass';
+
+$family-sans-serif: Arial, sans-serif;
+$body-family: $family-sans-serif;
+$body-color: rgba(0, 0, 0, 0.87);
+
+// global
+
+$primary: #e6007a;
+$danger: #dd4b39;
+
+// navbar
+$navbar-item-hover-background-color: transparent;
+$navbar-item-color: $grey;
+$navbar-item-hover-color: $grey-lighter;
+$navbar-item-active-color: $grey-lighter;
+$navbar-breakpoint: 0;
+$card-header-shadow: none;
+$card-shadow: none;
+
+@import '~bulma/bulma.sass';

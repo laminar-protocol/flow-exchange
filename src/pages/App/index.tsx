@@ -6,28 +6,24 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 
+import { useApp, useAppApi, useDispatch, useSetting } from '../../hooks';
+import store, { history } from '../../reduxStore';
+import { GlobalStyle } from '../../styles';
+import { actions } from '../../types';
 import apolloClient from './apollo';
-import { useApp, useAppApi, useDispatch } from './hooks';
-import Layout from './pages/Layout';
-import SelectWallet from './pages/SelectWallet';
-import store, { history } from './reduxStore';
-import { GlobalStyle } from './styles';
-import { actions } from './types';
+import Routes from './Routes';
 
 library.add(fas);
 
 const AppInit: React.FC = () => {
-  const available = useApp(state => state.availableProvider);
-  const currentTheme = useApp(state => state.currentTheme);
+  const currentTheme = useSetting(state => state.setting.currentTheme);
   const api = useApp(state => state.provider && state.provider.api);
-  const init = useApp(state => state.init);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    init();
     // @TODO remove
     dispatch(actions.app.init.trigger());
-  }, [dispatch, init]);
+  }, [dispatch]);
 
   useEffect(() => {
     if (api) {
@@ -41,16 +37,10 @@ const AppInit: React.FC = () => {
     }
   }, [api]);
 
-  if (!available.length) {
-    return <SelectWallet />;
-  }
-
   return (
     <ThemeProvider theme={{ mode: currentTheme }}>
-      <>
-        <GlobalStyle />
-        <Layout />
-      </>
+      <GlobalStyle />
+      <Routes />
     </ThemeProvider>
   );
 };

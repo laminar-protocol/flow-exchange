@@ -7,13 +7,8 @@ import Navigation from './Navigation';
 
 const { Sider } = Layout;
 
-interface Props {
-  children?: React.ReactNode;
-  className?: string;
-}
-
-const SideBar: React.FC<Props> = ({ className }) => (
-  <Container className={className}>
+const SideBar: React.FC = () => (
+  <Container>
     <Sider width="100%" className="layout__sidebar">
       <Navigation />
     </Sider>

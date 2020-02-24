@@ -3,24 +3,27 @@ import styled from 'styled-components';
 
 import { Separator, Text } from '../../components';
 import { theme } from '../../styles';
+import Layout from '../Layout';
 import Balances from './Balances';
 import ChartTicker from './ChartTicker';
 import Links from './Links';
 
 const Dashboard = () => (
-  <Container>
-    <Text size="h">Dashboard</Text>
-    <Separator />
-    <div className="dashboard">
-      <Balances />
-      <div className="markets">
-        <Text size="l">Markets</Text>
-        <Separator />
-        <ChartTicker />
-        <Links />
+  <Layout>
+    <Container>
+      <Text size="h">Dashboard</Text>
+      <Separator />
+      <div className="dashboard">
+        <Balances />
+        <div className="markets">
+          <Text size="l">Markets</Text>
+          <Separator />
+          <ChartTicker />
+          <Links />
+        </div>
       </div>
-    </div>
-  </Container>
+    </Container>
+  </Layout>
 );
 
 const Container = styled.div`
