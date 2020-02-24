@@ -1,11 +1,4 @@
 {
   "javascript.updateImportsOnFileMove.enabled": "always",
-  "javascript.preferences.importModuleSpecifier": "non-relative",
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"]
 }
-

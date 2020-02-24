@@ -15,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setting = useSetting(state => state.setting);
 
-  const [loadingProvider, setLoadingProvider] = useState();
+  const [loadingProvider, setLoadingProvider] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -28,14 +28,15 @@ const Layout: React.FC = ({ children }) => {
         history.push('/');
       }
     } else {
+      // eslint-disable-next-line
       if (setting.provider && availableProvider.includes(setting.provider)) {
         setLoadingProvider(true);
         setProviderEnable(setting.provider).finally(() => {
           setLoadingProvider(false);
         });
+      } else {
+        history.push('/');
       }
-
-      history.push('/');
     }
   }, [history, currentProvider, checkAvailableProvider, setProviderEnable, setting.provider]);
 

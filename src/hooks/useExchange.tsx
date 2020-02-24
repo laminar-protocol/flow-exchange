@@ -67,12 +67,12 @@ export const [useExchange, useExchangeApi] = create<ExchangeState>(
     isSwapping: false,
     onFromTokenChange(token: Token) {
       set(state => {
-        [state.fromAmount, state.fromToken] = ['', token];
+        [state.fromAmount, state.toAmount, state.fromToken] = ['', '', token];
       });
     },
     onToTokenChange(token: Token) {
       set(state => {
-        [state.toAmount, state.toToken] = ['', token];
+        [state.toAmount, state.fromAmount, state.toToken] = ['', '', token];
       });
     },
     onFromAmountChange(amount: string, rate?: number, spread?: number) {
@@ -120,13 +120,11 @@ export const [useExchange, useExchangeApi] = create<ExchangeState>(
 useTokensApi.subscribe<TokensState['currentTokens']>(
   tokens => {
     if (tokens && tokens.length) {
-      const initFromToken = tokens.find(token => token.isBaseToken === true);
-      const initToToken = tokens.find(token => token.isBaseToken === false);
       useExchangeApi.setState(state => {
         state.baseTokens = tokens.filter(token => token.isBaseToken);
-        state.flowTokens = tokens.filter(token => !token.isBaseToken);
-        state.fromToken = initFromToken;
-        state.toToken = initToToken;
+        state.flowTokens = tokens.filter(token => !token.isBaseToken && !token.isNetworkToken);
+        state.fromToken = state.baseTokens[0];
+        state.toToken = state.flowTokens[0];
       });
     }
   },
