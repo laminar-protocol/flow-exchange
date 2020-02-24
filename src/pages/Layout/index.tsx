@@ -15,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setting = useSetting(state => state.setting);
 
-  const [loadingProvider, setLoadingProvider] = useState();
+  const [loadingProvider, setLoadingProvider] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -33,9 +33,9 @@ const Layout: React.FC = ({ children }) => {
         setProviderEnable(setting.provider).finally(() => {
           setLoadingProvider(false);
         });
+      } else {
+        history.push('/');
       }
-
-      history.push('/');
     }
   }, [history, currentProvider, checkAvailableProvider, setProviderEnable, setting.provider]);
 

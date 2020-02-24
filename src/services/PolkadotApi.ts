@@ -1,4 +1,5 @@
-import { types } from '@laminar/types';
+import { faBtc, faEthereum } from '@fortawesome/free-brands-svg-icons';
+import { options } from '@laminar/api';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { Signer } from '@polkadot/api/types';
 import BN from 'bn.js';
@@ -66,6 +67,26 @@ class PolkadotApi extends BaseApi {
       isNetworkToken: false,
       id: '3',
     },
+    {
+      name: 'FBTC',
+      displayName: 'BTC',
+      precision: 18,
+      currencySymbol: '',
+      icon: faBtc,
+      isBaseToken: false,
+      isNetworkToken: false,
+      id: '4',
+    },
+    {
+      name: 'FETH',
+      displayName: 'ETH',
+      precision: 18,
+      currencySymbol: '',
+      icon: faEthereum,
+      isBaseToken: false,
+      isNetworkToken: false,
+      id: '5',
+    },
   ];
 
   private api: ApiPromise;
@@ -74,12 +95,17 @@ class PolkadotApi extends BaseApi {
 
   constructor() {
     super();
-    this.api = new ApiPromise({ provider: new WsProvider('wss://testnet-node-1.laminar-chain.laminar.one/ws') });
-    this.api.registerTypes(types as any);
+    this.api = new ApiPromise(
+      options({
+        provider: new WsProvider(
+          'wss://node-6636393196323627008.jm.onfinality.io/ws?apikey=20cf0fa0-c7ee-4545-8227-4d488f71c6d2',
+        ),
+      }) as any,
+    );
   }
 
-  private getTokenDef(findName: string) {
-    const result = this.tokens.find(({ name }) => name === findName);
+  private getTokenDef(find: string) {
+    const result = this.tokens.find(({ name, id }) => name === find || id === find);
     if (!result) throw new Error('token name is undefined');
     return result;
   }
@@ -103,7 +129,7 @@ class PolkadotApi extends BaseApi {
     // @TODO remove isReady
     await this.api.isReady;
     const tokenDef = this.getTokenDef(token);
-    const result: any = await this.api.query.tokens.balance(tokenDef.id, address);
+    const result: any = await (this.api.derive as any).currencies.balance(address, tokenDef.name);
     return new BN(result.toString());
   };
 
@@ -114,7 +140,7 @@ class PolkadotApi extends BaseApi {
 
     return new Promise(resolve => {
       this.api.tx.syntheticProtocol
-        .redeem(poolId, token.id, toPrecision(fromAmount, token.precision), '1000000')
+        .redeem(poolId, token.name, toPrecision(fromAmount, token.precision), '1000000')
         .signAndSend(account, ({ status }) => {
           if (status.isFinalized) {
             resolve();
@@ -129,7 +155,7 @@ class PolkadotApi extends BaseApi {
 
     return new Promise(resolve => {
       this.api.tx.syntheticProtocol
-        .mint(poolId, token.id, toPrecision(fromAmount, token.precision), '1000000')
+        .mint(poolId, token.name, toPrecision(fromAmount, token.precision), '1000000')
         .signAndSend(account, ({ status }) => {
           if (status.isFinalized) {
             resolve();
@@ -155,7 +181,9 @@ class PolkadotApi extends BaseApi {
   };
 
   public getCurrencyData = async (poolId: string, tokenId: string): Promise<CurrencyData> => {
-    const data: any = await this.api.query.liquidityPools.liquidityPoolOptions(poolId, tokenId);
+    const token = this.getTokenDef(tokenId);
+
+    const data: any = await this.api.query.liquidityPools.liquidityPoolOptions(poolId, token.name);
     if (!data) {
       return {
         bidSpread: null,
@@ -181,7 +209,8 @@ class PolkadotApi extends BaseApi {
   public getOrcalePrice = async (tokenId: string) => {
     await this.api.isReady;
     const token = this.getTokenDef(tokenId);
-    const result = (await this.api.query.oracle.values(token.id)) as any;
+    const result = await (this.api.rpc as any).oracle.getValue(token.name);
+
     return result.value.get('value');
   };
 
