@@ -1,4 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
@@ -60,10 +61,21 @@ const Exchange: React.FC = () => {
         ? api.redeem(currentAccount.address, pool.id, fromToken.name, fromAmount)
         : api.mint(currentAccount.address, pool.id, toToken.name, fromAmount);
 
-      request.finally(() => {
-        useExchangeApi.setState(state => (state.isSwapping = false));
-        updateBalances();
-      });
+      request
+        .then(() => {
+          notification.success({
+            message: 'Swap Successful',
+          });
+        })
+        .catch(() => {
+          notification.error({
+            message: 'Swap Failed',
+          });
+        })
+        .finally(() => {
+          useExchangeApi.setState(state => (state.isSwapping = false));
+          updateBalances();
+        });
     }
   };
 

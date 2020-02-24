@@ -138,12 +138,22 @@ class PolkadotApi extends BaseApi {
 
     console.log('redeem:', fromToken);
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.api.tx.syntheticProtocol
         .redeem(poolId, token.name, toPrecision(fromAmount, token.precision), '1000000')
-        .signAndSend(account, ({ status }) => {
-          if (status.isFinalized) {
-            resolve();
+        .signAndSend(account, result => {
+          if (result.status.isFinalized || result.status.isInBlock) {
+            result.events
+              .filter(({ event: { section } }): boolean => section === 'system')
+              .forEach(({ event: { method } }): void => {
+                if (method === 'ExtrinsicFailed') {
+                  reject(result);
+                } else if (method === 'ExtrinsicSuccess') {
+                  resolve(result);
+                }
+              });
+          } else if (result.isError) {
+            reject(result);
           }
         });
     });
@@ -153,12 +163,22 @@ class PolkadotApi extends BaseApi {
     const token = this.getTokenDef(toToken);
     console.log(toToken);
 
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       this.api.tx.syntheticProtocol
         .mint(poolId, token.name, toPrecision(fromAmount, token.precision), '1000000')
-        .signAndSend(account, ({ status }) => {
-          if (status.isFinalized) {
-            resolve();
+        .signAndSend(account, result => {
+          if (result.status.isFinalized || result.status.isInBlock) {
+            result.events
+              .filter(({ event: { section } }): boolean => section === 'system')
+              .forEach(({ event: { method } }): void => {
+                if (method === 'ExtrinsicFailed') {
+                  reject(result);
+                } else if (method === 'ExtrinsicSuccess') {
+                  resolve(result);
+                }
+              });
+          } else if (result.isError) {
+            reject(result);
           }
         });
     });
