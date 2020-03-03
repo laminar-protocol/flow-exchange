@@ -90,6 +90,7 @@ const StyledRadioGroup = styled(Radio.Group)`
       display: block;
       padding: 0 2rem;
       text-align: center;
+      white-space: nowrap;
     }
   }
 

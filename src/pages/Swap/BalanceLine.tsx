@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { Amount, Text } from '../../components';
-import { useApp, useTokens } from '../../hooks';
-import { Token } from '../../types';
+import { useAccount, useApp } from '../../hooks';
+import { TokenInfo } from '../../services/Api';
 
 const Container = styled.div`
   margin: 1rem 0;
@@ -14,22 +14,22 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  token: Token;
+  token: TokenInfo;
   lite?: boolean;
 }
 
 const BalanceLine: React.FC<Props> = ({ token, lite }) => {
   const [loading, setLoading] = useState(false);
-  const api = useApp(state => state.provider && state.provider.api);
+  const api = useApp(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
-  const balance = useTokens(state => state.currentBalances[token.name]);
-  const setBalance = useTokens(state => state.setCurrentBalance);
+  const balance = useAccount(state => state.balances[token.name]);
+  const setBalance = useAccount(state => state.setBalance);
 
   useEffect(() => {
     if (currentAccount && api) {
       setLoading(true);
       api
-        .getBalance(currentAccount.address, token.name)
+        .getBalance(currentAccount.address, token.id)
         .then(result => {
           setBalance(token.name, result);
         })

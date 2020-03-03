@@ -27,11 +27,11 @@ export const numberToString = (arg: string | number) => {
 };
 
 export const fromPrecision = (
-  input: string | BN,
+  input: string | BN | number,
   precision: number,
   options: { pad?: boolean; commify?: boolean; minDigits?: number } = {},
 ) => {
-  let wei = typeof input === 'string' ? new BN(input) : input;
+  let wei = BN.isBN(input) ? input : new BN(input);
   const negative = wei.lt(zero);
 
   const base = getValueOfPrecision(precision);

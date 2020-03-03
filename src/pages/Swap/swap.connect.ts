@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 
 import { addresses, isBaseTokenSymbol, isTokenSymbol, tokens } from '../../config';
 import types, { actions } from '../../types';
-import { caculateExchangeRate } from '../../utils';
+import { calcExchangeRate } from '../../utils';
 
 const defaultPool = addresses.pool;
 
@@ -78,14 +78,14 @@ export const swapDispatcher = (dispatch: Dispatch) => ({
   onFromAmountChange: (amount: string, rate?: number, spread?: number) => {
     dispatch(actions.swap.fromAmount.changed(amount));
     if (rate && spread) {
-      const toAmount = caculateExchangeRate(Number(amount), spread, rate, 'bid');
+      const toAmount = calcExchangeRate(Number(amount), spread, rate, 'bid');
       dispatch(actions.swap.toAmount.changed(toAmount.toString()));
     }
   },
   onToAmountChange: (amount: string, rate?: number, spread?: number) => {
     dispatch(actions.swap.toAmount.changed(amount));
     if (rate && spread) {
-      const fromAmount = caculateExchangeRate(Number(amount), spread, rate, 'ask');
+      const fromAmount = calcExchangeRate(Number(amount), spread, rate, 'ask');
       dispatch(actions.swap.fromAmount.changed(fromAmount.toString()));
     }
   },

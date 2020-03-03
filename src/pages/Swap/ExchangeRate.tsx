@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { NumberFormat, Spinner, Text } from '../../components';
-import { Token } from '../../types';
-import { caculateExchangeRate } from '../../utils';
+import { TokenInfo } from '../../services/Api';
+import { calcExchangeRate } from '../../utils';
 
 export interface ExchangeRateProps {
   spread?: number;
   rate?: number;
   isLoading: boolean;
-  fromToken: Token;
-  toToken: Token;
+  fromToken: TokenInfo;
+  toToken: TokenInfo;
 }
 
 const ExchangeRate: React.FC<ExchangeRateProps> = ({ spread, rate, isLoading, fromToken, toToken }) => {
@@ -21,7 +21,7 @@ const ExchangeRate: React.FC<ExchangeRateProps> = ({ spread, rate, isLoading, fr
     return null;
   }
 
-  const value = caculateExchangeRate(1, spread, rate, 'bid');
+  const value = calcExchangeRate(1, spread, rate, 'bid');
 
   return (
     <Text light>

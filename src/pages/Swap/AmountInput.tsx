@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { CurrencySelect, Input, InputGroup } from '../../components';
+import { TokenInfo } from '../../services/Api';
 import { theme } from '../../styles';
-import { Token } from '../../types';
 
-const options = (tokens: Token[], disabledTokens?: Token[]) => {
+const options = (tokens: TokenInfo[], disabledTokens?: TokenInfo[]) => {
   if (tokens) {
     return tokens.map(token => ({ token, isDisabled: disabledTokens?.includes(token) }));
   }
@@ -14,13 +14,13 @@ const options = (tokens: Token[], disabledTokens?: Token[]) => {
 interface Props {
   className?: string;
   disabled: boolean;
-  tokens: Token[];
-  disabledTokens?: Token[];
-  selectedToken: Token;
+  tokens: TokenInfo[];
+  disabledTokens?: TokenInfo[];
+  selectedToken: TokenInfo;
   requireAuthorization?: boolean;
   value?: string;
 
-  onCurrencyChange: (token: Token) => void;
+  onCurrencyChange: (token: TokenInfo) => void;
   onAmountChange: (amount: string) => void;
 }
 

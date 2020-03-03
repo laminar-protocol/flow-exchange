@@ -1,6 +1,6 @@
 type Direction = 'bid' | 'ask';
 
-const caculateExchangeRate = (amount: number, spread: number, rate: number, direction: Direction, precision = 6) => {
+const calcExchangeRate = (amount: number, spread: number, rate: number, direction: Direction, precision = 6) => {
   const finalRate = rate * (1 - spread);
   let finalAmount;
   if (direction === 'bid') {
@@ -11,4 +11,4 @@ const caculateExchangeRate = (amount: number, spread: number, rate: number, dire
   return finalAmount.toFixed(precision);
 };
 
-export default caculateExchangeRate;
+export default calcExchangeRate;

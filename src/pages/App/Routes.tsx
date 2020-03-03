@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
-import Liquidity from '../../app/liquidity/liquidity';
 import Margin from '../../app/margin/margin';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
 import Home from '../Home';
+import Liquidity from '../Liquidity';
 import Swap from '../Swap';
 
 const Routes: React.FC = () => {

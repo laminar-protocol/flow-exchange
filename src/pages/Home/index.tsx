@@ -1,35 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { SolidButton } from '../../components';
 import { useApp } from '../../hooks/useApp';
-import { Impl } from '../../types';
+import { ChainType } from '../../services/Api';
 
 const Home = () => {
   const history = useHistory();
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
-  const setProviderEnable = useApp(state => state.setProviderEnable);
+  const setApiEnable = useApp(state => state.setApiEnable);
   const [loading, setLoading] = useState('');
-  const availableProvider = checkAvailableProvider();
+  const [availableProvider, setAvailableProvider] = useState<ChainType[]>([]);
 
-  const handleConnect = async (impl: Impl) => {
-    setLoading(impl);
-
-    await setProviderEnable(impl);
-
+  const handleConnect = async (chainType: ChainType) => {
+    setLoading(chainType);
+    await setApiEnable(chainType);
     setLoading('');
+
     history.push('./dashboard');
   };
+
+  useEffect(() => {
+    setAvailableProvider(checkAvailableProvider());
+
+    const timeId = setTimeout(() => {
+      setAvailableProvider(checkAvailableProvider());
+    }, 100);
+
+    return () => clearTimeout(timeId);
+  }, [checkAvailableProvider, setAvailableProvider]);
 
   return (
     <Container>
       <div className="select-provider">
-        {availableProvider.includes('polkadot') ? (
+        {availableProvider.includes('laminar') ? (
           <SolidButton
             className="select-provider__button"
-            loading={loading === 'polkadot'}
-            onClick={() => handleConnect('polkadot')}
+            loading={loading === 'laminar'}
+            onClick={() => handleConnect('laminar')}
           >
             Polkadot
           </SolidButton>

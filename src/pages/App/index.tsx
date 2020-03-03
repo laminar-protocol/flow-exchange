@@ -11,13 +11,14 @@ import store, { history } from '../../reduxStore';
 import { GlobalStyle } from '../../styles';
 import { actions } from '../../types';
 import apolloClient from './apollo';
+import Init from './Init';
 import Routes from './Routes';
 
 library.add(fas);
 
 const AppInit: React.FC = () => {
   const currentTheme = useSetting(state => state.setting.currentTheme);
-  const api = useApp(state => state.provider && state.provider.api);
+  const api = useApp(state => state.api);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,20 +26,9 @@ const AppInit: React.FC = () => {
     dispatch(actions.app.init.trigger());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (api) {
-      const s = api.accounts$.subscribe(accounts => {
-        useAppApi.setState(state => (state.currentAccount = accounts[0]));
-      });
-
-      return () => {
-        s.unsubscribe();
-      };
-    }
-  }, [api]);
-
   return (
     <ThemeProvider theme={{ mode: currentTheme }}>
+      <Init />
       <GlobalStyle />
       <Routes />
     </ThemeProvider>

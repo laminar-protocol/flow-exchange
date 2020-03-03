@@ -6,7 +6,6 @@ import LaminarLogo from '../../../assets/laminar.svg';
 import { Flex, Icon, Separator, Switch } from '../../../components';
 import { useSetting } from '../../../hooks';
 import { theme } from '../../../styles';
-import ConnectModal from './ConnectModal';
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';
 
@@ -59,7 +58,6 @@ const Navigation: React.FC = () => {
           </div>
         </Flex>
       </div>
-      <ConnectModal />
     </Container>
   );
 };

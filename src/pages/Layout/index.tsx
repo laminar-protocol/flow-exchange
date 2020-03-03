@@ -10,40 +10,40 @@ import Prime from './Prime';
 import SideBar from './SideBar';
 
 const Layout: React.FC = ({ children }) => {
-  const currentProvider = useApp(state => state.provider);
-  const setProviderEnable = useApp(state => state.setProviderEnable);
+  const currentApi = useApp(state => state.api);
+  const setApiEnable = useApp(state => state.setApiEnable);
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setting = useSetting(state => state.setting);
 
-  const [loadingProvider, setLoadingProvider] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
     const availableProvider = checkAvailableProvider();
 
-    console.log('history and currentProvider changed');
+    console.log('history and currentApi changed');
 
-    if (currentProvider) {
-      if (!availableProvider.includes(currentProvider.impl)) {
+    if (currentApi) {
+      if (!availableProvider.includes(currentApi.chainType)) {
         history.push('/');
       }
     } else {
       // eslint-disable-next-line
-      if (setting.provider && availableProvider.includes(setting.provider)) {
-        setLoadingProvider(true);
-        setProviderEnable(setting.provider).finally(() => {
-          setLoadingProvider(false);
+      if (setting.chainType && availableProvider.includes(setting.chainType)) {
+        setLoading(true);
+        setApiEnable(setting.chainType).finally(() => {
+          setLoading(false);
         });
       } else {
         history.push('/');
       }
     }
-  }, [history, currentProvider, checkAvailableProvider, setProviderEnable, setting.provider]);
+  }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType]);
 
   return (
     <Container>
       <SideBar />
-      <Prime>{loadingProvider ? <Spinner size="large" className="layout__spinner" /> : children}</Prime>
+      <Prime>{loading ? <Spinner size="large" className="layout__spinner" /> : children}</Prime>
     </Container>
   );
 };

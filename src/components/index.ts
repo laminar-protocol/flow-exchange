@@ -2,6 +2,7 @@ export * from './Buttons';
 export * from './Inputs';
 export * from './Selects';
 export * from './layouts';
+export * from './Tabs';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';

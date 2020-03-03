@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Flex, Panel, Separator, Text } from '../../components';
-import { useTokens } from '../../hooks';
+import { useApp } from '../../hooks';
 import { theme } from '../../styles';
 import Balance from './Balance';
 import Faucet from './Faucet';
 
 const Balances: React.FC = () => {
-  const tokens = useTokens(state => state.currentTokens);
+  const tokens = useApp(state => state.tokens);
 
   return (
     <Container>

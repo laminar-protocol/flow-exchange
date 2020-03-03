@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Panel, Separator, Text } from '../../components';
-import { useTokens } from '../../hooks';
+import { useApp } from '../../hooks';
 import { theme } from '../../styles';
 import BalanceLine from './BalanceLine';
 
@@ -17,7 +17,7 @@ export const Container = styled(Panel)`
 `;
 
 const SwapBalances: React.FC = () => {
-  const tokens = useTokens(state => state.currentTokens);
+  const tokens = useApp(state => state.tokens);
 
   return (
     <Container>

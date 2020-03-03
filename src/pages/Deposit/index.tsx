@@ -1,35 +1,26 @@
-import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { Amount, Panel, Separator, Text } from '../../components';
-import { useApp, usePools, useTokens } from '../../hooks';
+import { getTokenInfoMap, useApp } from '../../hooks/useApp';
+import { getPoolOptions, usePools } from '../../hooks/usePools';
 import { theme } from '../../styles';
+import { calcTokenLiquidity } from '../../utils';
 import Layout from '../Layout';
 
 const Deposit = () => {
-  const api = useApp(state => state.provider?.api);
+  const allTokens = useApp(getTokenInfoMap);
   const pool = usePools(state => state.defaultPool);
-  const tokens = useTokens(state => state.currentTokens);
-  const [liquidities, setLiquidities] = useState<Record<string, BN>>({});
+  const initPool = usePools(state => state.initPool);
+  const liquidity = usePools(state => (pool ? state.poolLiquidity[pool.id] : null));
+  const options = usePools(getPoolOptions);
+  const tokens = useMemo(() => Object.keys(options), [options]);
 
   useEffect(() => {
-    if (pool && api && tokens) {
-      Promise.all(
-        tokens.map(async token => ({
-          token: token.name,
-          liquidity: await api.getTokenLiquidity(pool, token.id),
-        })),
-      ).then(result => {
-        setLiquidities(
-          result.reduce((acc: any, curr) => {
-            acc[curr.token] = curr.liquidity;
-            return acc;
-          }, {}),
-        );
-      });
+    if (pool) {
+      initPool(pool.id);
     }
-  }, [tokens, pool, api]);
+  }, [pool]);
 
   return (
     <Layout>
@@ -39,7 +30,9 @@ const Deposit = () => {
         </p>
         <Separator />
         <Panel>
-          {tokens?.map(token => {
+          {tokens.map(tokenId => {
+            const token = allTokens[tokenId];
+
             return (
               <div className="provider" key={token.name}>
                 <div className="item">
@@ -55,7 +48,13 @@ const Deposit = () => {
                   </div>
                   <div>
                     <Text size="l">
-                      {liquidities[token.name] && <Amount value={liquidities[token.name]} token={token} hasPrefix />}
+                      {liquidity && options && (
+                        <Amount
+                          value={calcTokenLiquidity(liquidity, options[token.id].additionalCollateralRatio || 0)}
+                          token={token}
+                          hasPrefix
+                        />
+                      )}
                     </Text>
                   </div>
                 </div>

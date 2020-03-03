@@ -3,16 +3,18 @@ import { notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
-import { useApp, useExchange, useExchangeApi, usePools, useTokens } from '../../hooks';
+import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';
 import { EthereumOraclePrice, PolkadotOraclePrice } from './OraclePrice';
 import { ActionBar, Currency, Detail, Divider, Entry, ExchangeIcon, Label, SwapContainer } from './swap.style';
 
 const Exchange: React.FC = () => {
-  const provider = useApp(state => state.provider);
-  const api = useApp(state => state.provider?.api);
+  const api = useApp(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
+  const pool = usePools(state => state.defaultPool);
+  const updateBalances = useAccount(state => state.updateBalances);
+  const initPool = usePools(state => state.initPool);
 
   const isSwapping = useExchange(state => state.isSwapping);
   const isRedeem = useExchange(state => state.isRedeem);
@@ -30,18 +32,17 @@ const Exchange: React.FC = () => {
   const onSwapToken = useExchange(state => state.onSwapToken);
   const baseTokens = useExchange(state => state.baseTokens);
   const onFetchLiquidityPoolSpread = useExchange(state => state.onFetchLiquidityPoolSpread);
-  const pool = usePools(state => state.defaultPool);
-  const setCurrencyData = usePools(state => state.setCurrencyData);
-  const updateBalances = useTokens(state => state.updateBalances);
+
   const { askSpread, bidSpread }: { askSpread?: number; bidSpread?: number } = usePools(state => {
     if (pool && baseTokens?.[0]) {
       const token = baseTokens[0];
-      return state.getCurrencyData(pool.id, token.id) || {};
+      return state.getPoolTokenOptions(pool.id, token.id) || {};
     }
     return {};
   });
 
-  const [isLoadingSpread, setIsLoadingSpread] = useState(false);
+  const [isLoadingSpread, setIsLoadingSpread] = useState(true);
+
   const [{ loading: isLoadingRate, data: rate }, setRate] = useState<{
     loading: boolean;
     data?: number;
@@ -58,8 +59,8 @@ const Exchange: React.FC = () => {
       useExchangeApi.setState(state => (state.isSwapping = true));
 
       const request = isRedeem
-        ? api.redeem(currentAccount.address, pool.id, fromToken.name, fromAmount)
-        : api.mint(currentAccount.address, pool.id, toToken.name, fromAmount);
+        ? api.redeem(currentAccount.address, pool.id, fromToken.id, fromAmount)
+        : api.mint(currentAccount.address, pool.id, toToken.id, fromAmount);
 
       request
         .then(() => {
@@ -79,20 +80,12 @@ const Exchange: React.FC = () => {
     }
   };
 
+  // init
   useEffect(() => {
-    const token = baseTokens?.[0];
-    if (api && pool && token) {
-      setIsLoadingSpread(true);
-      api
-        .getCurrencyData(pool.id, token.id)
-        .then(data => {
-          setCurrencyData(pool.id, token.id, data);
-        })
-        .finally(() => {
-          setIsLoadingSpread(false);
-        });
+    if (pool) {
+      initPool(pool.id).finally(() => setIsLoadingSpread(false));
     }
-  }, [api, pool, baseTokens, setCurrencyData]);
+  }, [initPool, pool]);
 
   useEffect(() => {
     if (fromAmount && toAmount === undefined) {
@@ -118,7 +111,7 @@ const Exchange: React.FC = () => {
 
   return (
     <SwapContainer padding={2}>
-      {provider?.impl === 'polkadot' ? (
+      {api.chainType === 'laminar' ? (
         <PolkadotOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />
       ) : (
         <EthereumOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />

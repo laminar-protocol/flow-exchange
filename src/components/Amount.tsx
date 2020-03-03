@@ -1,8 +1,8 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { Token } from '../types';
-import { fromPrecision } from '../utils';
+import { TokenInfo } from '../services/Api';
+import { fromPrecision, getCurrencySymbol } from '../utils';
 
 function numberToAmount(
   number: BN,
@@ -26,8 +26,8 @@ function numberToAmount(
 }
 
 export default function Amount(props: {
-  value: BN;
-  token: Token;
+  value: BN | string | number;
+  token: TokenInfo;
   minDigits?: number;
   useGrouping?: boolean;
   hasPostfix?: boolean;
@@ -52,7 +52,9 @@ export default function Amount(props: {
   };
 
   if (hasPostfix) options.postfix = token.name;
-  if (hasPrefix) options.prefix = token.currencySymbol;
+  if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
 
-  return <Component {...other}>{numberToAmount(value, options)}</Component>;
+  const number = BN.isBN(value) ? value : new BN(value);
+
+  return <Component {...other}>{numberToAmount(number, options)}</Component>;
 }

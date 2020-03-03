@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import { Amount, Text, TextCell } from '../../components';
-import { useApp, useTokens } from '../../hooks';
-import { Token } from '../../types';
+import { useAccount, useApp } from '../../hooks';
+import { TokenInfo } from '../../services/Api';
+import { getTokenIcon } from '../../utils';
 
 export type BalanceProps = {
-  token: Token;
+  token: TokenInfo;
   label?: string;
 };
 
@@ -15,17 +16,17 @@ export type StateProps = {
 };
 
 const Balance: React.FC<BalanceProps> = ({ token, label }) => {
-  const api = useApp(state => state.provider && state.provider.api);
+  const api = useApp(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
-  const balance = useTokens(state => state.currentBalances[token.name]);
-  const setBalance = useTokens(state => state.setCurrentBalance);
+  const balance = useAccount(state => state.balances[token.name]);
+  const setBalance = useAccount(state => state.setBalance);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (currentAccount && api) {
       setLoading(true);
       api
-        .getBalance(currentAccount.address, token.name)
+        .getBalance(currentAccount.address, token.id)
         .then(result => {
           setBalance(token.name, result);
         })
@@ -36,7 +37,7 @@ const Balance: React.FC<BalanceProps> = ({ token, label }) => {
   }, [api, token, setBalance, currentAccount]);
 
   return (
-    <TextCell header={label || `${token.name} Balance`} accessory={token.icon} loading={loading}>
+    <TextCell header={label || `${token.name} Balance`} accessory={getTokenIcon(token.id)} loading={loading}>
       <Text weight="bold" size="l">
         {balance ? <Amount value={balance} token={token} hasPrefix /> : '-'}
       </Text>
