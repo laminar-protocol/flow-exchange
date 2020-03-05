@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { notification } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
 import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
+import { notificationHelper } from '../../utils';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';
 import { EthereumOraclePrice, PolkadotOraclePrice } from './OraclePrice';
@@ -54,29 +54,18 @@ const Exchange: React.FC = () => {
     spread = isRedeem ? bidSpread : askSpread;
   }
 
-  const onSwap = () => {
+  const onSwap = async () => {
     if (currentAccount && api && toToken && fromToken && pool) {
       useExchangeApi.setState(state => (state.isSwapping = true));
 
-      const request = isRedeem
-        ? api.redeem(currentAccount.address, pool.id, fromToken.id, fromAmount)
-        : api.mint(currentAccount.address, pool.id, toToken.id, fromAmount);
+      await notificationHelper(
+        isRedeem
+          ? api.redeem(currentAccount.address, pool.id, fromToken.id, fromAmount)
+          : api.mint(currentAccount.address, pool.id, toToken.id, fromAmount),
+      );
 
-      request
-        .then(() => {
-          notification.success({
-            message: 'Swap Successful',
-          });
-        })
-        .catch(() => {
-          notification.error({
-            message: 'Swap Failed',
-          });
-        })
-        .finally(() => {
-          useExchangeApi.setState(state => (state.isSwapping = false));
-          updateBalances();
-        });
+      useExchangeApi.setState(state => (state.isSwapping = false));
+      updateBalances();
     }
   };
 

@@ -1,24 +1,19 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import { ConnectedRouter } from 'connected-react-router';
-import React, { useEffect, useMemo } from 'react';
-import { ThemeProvider } from 'react-jss';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import { useDispatch, useSetting } from '../../hooks';
 import store, { history } from '../../reduxStore';
-import { GlobalStyle, makeTheme } from '../../styles';
 import { actions } from '../../types';
 import apolloClient from './apollo';
 import Init from './Init';
 import Routes from './Routes';
-
-library.add(fas);
+import ThemeProvider from './ThemeProvider';
 
 const AppInit: React.FC = () => {
-  const currentTheme = useSetting(state => state.setting.currentTheme);
+  const mode = useSetting(state => state.setting.currentTheme);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,15 +21,10 @@ const AppInit: React.FC = () => {
     dispatch(actions.app.init.trigger());
   }, [dispatch]);
 
-  const theme = useMemo(() => {
-    return makeTheme({ mode: currentTheme });
-  }, [currentTheme]);
-
   return (
-    <StyledThemeProvider theme={{ mode: currentTheme }}>
-      <ThemeProvider theme={theme}>
+    <StyledThemeProvider theme={{ mode }}>
+      <ThemeProvider mode={mode}>
         <Init />
-        <GlobalStyle />
         <Routes />
       </ThemeProvider>
     </StyledThemeProvider>

@@ -1,14 +1,10 @@
 import 'antd/dist/antd.css';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import * as Sentry from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './pages/App';
-
-library.add(fas);
 
 const render = (App: React.ComponentType) => {
   ReactDOM.render(<App />, document.getElementById('root'));
