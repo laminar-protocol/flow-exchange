@@ -1,7 +1,6 @@
 import BN from 'bn.js';
 import { abi, addresses, tokens, tradingPairs } from 'config';
 import EventEmitter from 'eventemitter3';
-import _ from 'lodash';
 import { mapObjIndexed } from 'ramda';
 import { BehaviorSubject } from 'rxjs';
 import Web3 from 'web3';
@@ -312,10 +311,18 @@ class EthereumApi {
 
     // TODO: update this when contract provides a list of allowed tokens
     const baseTokens = Object.values(tokens).filter(i => i.isBaseToken === false);
-    const spreads = await Promise.all(baseTokens.map(token => contract.methods.getBidSpread(token.address).call()));
-    return _.zip(baseTokens, spreads)
-      .filter(([, spread]) => spread !== 0)
-      .map(([token]) => (token as { name: string }).name);
+    const spreads = await Promise.all(
+      baseTokens.map(token =>
+        contract.methods
+          .getBidSpread(token.address)
+          .call()
+          .then((spread: number) => {
+            return [token, spread];
+          }),
+      ),
+    );
+
+    return spreads.filter(([, spread]) => spread !== 0).map(([token]) => (token as { name: string }).name);
   };
 
   public getBalance = async (address: string, tokenId: string) => {

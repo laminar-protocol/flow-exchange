@@ -3,6 +3,7 @@ export * from './Inputs';
 export * from './Selects';
 export * from './layouts';
 export * from './Tabs';
+export * from './Typography';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';
@@ -15,7 +16,5 @@ export { default as Icon } from './Icon';
 export { default as Spinner } from './Spinner';
 export { default as Amount } from './Amount';
 export { default as NumberFormat } from './NumberFormat';
-export { default as Text } from './Text';
-export { default as TextCell } from './TextCell';
 export { default as Panel } from './Panel';
 export * from './Format';

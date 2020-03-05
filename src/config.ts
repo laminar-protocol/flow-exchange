@@ -1,5 +1,4 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import _ from 'lodash';
 
 export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'kovan';
 
@@ -266,8 +265,8 @@ export const findTradingInfoByPairAddress = (
  * @returns trading pair or undefined
  */
 export const getTradingPairFromTradingSymbol = (symbol: TradingSymbol): TradingPair | undefined => {
-  const trading = _.get(tradingSymbols, symbol);
-  return _.get(tradingPairs, trading.long) || _.get(tradingPairs, trading.short);
+  const trading = tradingSymbols[symbol];
+  return tradingPairs[trading.long] || tradingPairs[trading.short];
 };
 
 /**
@@ -278,7 +277,7 @@ export const getTradingPairFromTradingSymbol = (symbol: TradingSymbol): TradingP
 export const getQuoteTokenFromTradingSymbol = (symbol: TradingSymbol): Token | undefined => {
   const pair = getTradingPairFromTradingSymbol(symbol);
   if (!pair) return undefined;
-  return _.get(tokens, `${pair.quote}`);
+  return tokens[pair.quote];
 };
 
 /**
@@ -289,7 +288,7 @@ export const getQuoteTokenFromTradingSymbol = (symbol: TradingSymbol): Token | u
 export const getBaseTokenFromTradingSymbol = (symbol: TradingSymbol): Token | undefined => {
   const pair = getTradingPairFromTradingSymbol(symbol);
   if (!pair) return undefined;
-  return _.get(tokens, `${pair.base}`);
+  return tokens[pair.base];
 };
 
 export const subgraphEndpoints = ((network: Network): { http: string; ws: string } => {
