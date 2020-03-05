@@ -9,13 +9,16 @@ import { useSetting } from '../../hooks/useSetting';
 import Prime from './Prime';
 import SideBar from './SideBar';
 
-const Layout: React.FC = ({ children }) => {
+type LayoutProps = {
+  loading?: boolean;
+};
+
+const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   const currentApi = useApp(state => state.api);
   const setApiEnable = useApp(state => state.setApiEnable);
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setting = useSetting(state => state.setting);
 
-  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -30,10 +33,7 @@ const Layout: React.FC = ({ children }) => {
     } else {
       // eslint-disable-next-line
       if (setting.chainType && availableProvider.includes(setting.chainType)) {
-        setLoading(true);
-        setApiEnable(setting.chainType).finally(() => {
-          setLoading(false);
-        });
+        setApiEnable(setting.chainType);
       } else {
         history.push('/');
       }

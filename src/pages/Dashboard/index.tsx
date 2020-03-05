@@ -11,7 +11,7 @@ const Dashboard = () => {
   const classes = useStyles();
 
   return (
-    <Layout>
+    <div>
       <Title type="page">Dashboard</Title>
       <Separator />
       <div className={classes.dashboard}>
@@ -23,7 +23,7 @@ const Dashboard = () => {
           <Links />
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import { useMemo } from 'react';
 
 import { tokens } from '../config';
+import { useApp } from '../hooks/useApp';
 import { TokenInfo } from '../services/Api';
 
 interface QueryResult {
@@ -36,8 +37,9 @@ export const useEthereumPriceRate = (
     }
 
     if (data?.priceEntities) {
-      const fromAddress = fromSymbol.id?.toLocaleLowerCase();
-      const toAddress = toSymbol.id?.toLocaleLowerCase();
+      const fromAddress = fromSymbol.address?.toLocaleLowerCase();
+      const toAddress = toSymbol.address?.toLocaleLowerCase();
+
       let fromRate = 1;
       let toRate = 1;
       for (const price of data.priceEntities) {

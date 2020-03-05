@@ -14,14 +14,14 @@ const notificationHelper = (request: Promise<ActionStatus>) => {
     .then(result => {
       notification.close(key);
       notification.success({
-        message: result.action ? `${result.action} success` : 'Success',
+        message: result && result.action ? `${result.action} success` : 'Success',
       });
       return result;
     })
     .catch(errorResult => {
       notification.close(key);
       notification.error({
-        message: errorResult.action ? `${errorResult.action} error` : 'Error',
+        message: errorResult && errorResult.action ? `${errorResult.action} error` : 'Error',
         description: errorResult && errorResult.message ? errorResult.message : '',
         duration: null,
       });

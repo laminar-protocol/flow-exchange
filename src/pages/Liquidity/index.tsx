@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
 import {
   Panel,
@@ -9,15 +9,15 @@ import {
   Separator,
   TabPane,
   Tabs,
-  Text,
+  Title,
 } from '../../components';
 import { getIsReady, useApp } from '../../hooks/useApp';
-import { getPoolOptions, usePools } from '../../hooks/usePools';
-import { theme } from '../../styles';
-import Layout from '../Layout';
+import { usePools } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
 
 const Liquidity: React.FC = () => {
+  const classes = useStyles();
+
   const [filterType, setFilterType] = useState<'swap' | 'trade'>('swap');
   const isReady = useApp(getIsReady);
   const tradingPairs = useApp(state => state.tradingPairs);
@@ -58,59 +58,55 @@ const Liquidity: React.FC = () => {
   }, [filterType, tokens, tradingPairs]);
 
   return (
-    <Layout>
-      <Container>
-        <p>
-          <Text size="h">Liquidity Pools</Text>
-        </p>
-        <Separator />
-        <Panel>
-          <div className="liquidity__control">
-            <div className="liquidity__radio">
-              <SegmentedControl buttonStyle="solid" value={filterType} onChange={e => setFilterType(e.target.value)}>
-                <SegmentedControlItem value="swap">fToken Swap</SegmentedControlItem>
-                <SegmentedControlItem value="trade">Margin Trade</SegmentedControlItem>
-              </SegmentedControl>
-            </div>
-
-            <Tabs
-              activeKey={activeTabKey}
-              onTabClick={(tabKey: any) => {
-                setActiveTabKey(tabKey);
-              }}
-            >
-              {tabs.map(({ name, key }) => (
-                <TabPane tab={name} key={key} />
-              ))}
-            </Tabs>
+    <div>
+      <Title type="page">Liquidity Pools</Title>
+      <Separator />
+      <Panel>
+        <div className={classes.control}>
+          <div className={classes.radio}>
+            <SegmentedControl buttonStyle="solid" value={filterType} onChange={e => setFilterType(e.target.value)}>
+              <SegmentedControlItem value="swap">fToken Swap</SegmentedControlItem>
+              <SegmentedControlItem value="trade">Margin Trade</SegmentedControlItem>
+            </SegmentedControl>
           </div>
-          {pools &&
-            activeTabKey &&
-            pools.map(pool => <LiquidityProvider key={pool.id} pool={pool} tokenId={activeTabKey} loading={loading} />)}
-        </Panel>
-        <Separator />
-        {/* <Action> */}
-        {/* <PrimaryButton disabled>Provide Liquidity</PrimaryButton> */}
-        {/* </Action> */}
-      </Container>
-    </Layout>
+
+          <Tabs
+            activeKey={activeTabKey}
+            onTabClick={(tabKey: any) => {
+              setActiveTabKey(tabKey);
+            }}
+          >
+            {tabs.map(({ name, key }) => (
+              <TabPane tab={name} key={key} />
+            ))}
+          </Tabs>
+        </div>
+        {pools &&
+          activeTabKey &&
+          pools.map(pool => <LiquidityProvider key={pool.id} pool={pool} tokenId={activeTabKey} loading={loading} />)}
+      </Panel>
+      <Separator />
+      {/* <Action> */}
+      <PrimaryButton disabled>Provide Liquidity</PrimaryButton>
+      {/* </Action> */}
+    </div>
   );
 };
 
-const Container = styled.div`
-  .liquidity__control {
-    display: flex;
-    margin-bottom: 30px;
-    ${theme.respondTo.lg`
-      flex-direction: column;
-      margin-bottom: 16px;
-    `}
-  }
-  .liquidity__radio {
-    max-width: 500px;
-    margin-top: 10px;
-    margin-right: 16px;
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  control: {
+    display: 'flex',
+    marginBottom: 30,
+    [theme.breakpoints.down('lg')]: {
+      flexdirection: 'column',
+      marginbottom: '16px',
+    },
+  },
+  radio: {
+    maxWidth: 500,
+    marginTop: 10,
+    marginRight: 16,
+  },
+}));
 
 export default Liquidity;

@@ -27,6 +27,7 @@ const useStyles = createUseStyles(theme => ({
     color: theme.foregroundColor,
     fontWeight: theme.normalWeight,
     margin: 0,
+    marginBottom: '2rem',
   },
 }));
 

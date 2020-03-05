@@ -1,39 +1,38 @@
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { Separator, Text } from '../../components';
-import { theme } from '../../styles';
+import { Separator, Title } from '../../components';
 import Layout from '../Layout';
 import Exchange from './Exchange';
 import SwapBalances from './SwapBalances';
 import SwapList from './SwapList';
 
 const Swap: React.FC = () => {
+  const classes = useStyles();
+
   return (
-    <Layout>
-      <Container>
-        <Text size="h">Spot Exchange</Text>
-        <Separator />
-        <Exchange />
-        <div className="swap-detail">
-          <SwapBalances />
-          <SwapList />
-        </div>
-      </Container>
-    </Layout>
+    <div>
+      <Title type="page">Spot Exchange</Title>
+      <Separator />
+      <Exchange />
+      <div className={classes.swapDetail}>
+        <SwapBalances />
+        <SwapList />
+      </div>
+    </div>
   );
 };
 
-const Container = styled.div`
-  .swap-detail {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    ${theme.respondTo.lg`
-    flex-direction: column;
-  `};
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  swapDetail: {
+    marginTop: '2rem',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('lg')]: {
+      flexDirection: 'column',
+    },
+  },
+}));
 
 export default Swap;

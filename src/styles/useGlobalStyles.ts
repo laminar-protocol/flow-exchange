@@ -10,6 +10,7 @@ const useGlobalStyles = createUseStyles(theme => ({
       backgroundColor: theme.backgroundColor,
     },
     '#root': {
+      height: '100%',
       color: theme.foregroundColor,
       lineHeight: '1',
       backgroundColor: theme.backgroundColor,

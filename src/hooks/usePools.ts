@@ -36,6 +36,7 @@ export const [usePools, usePoolsApi] = create<PoolsState>(
       set(state => {
         Object.assign(state.poolOptions, poolOptions);
         state.poolLiquidity[poolId] = liquidity;
+        console.log(JSON.stringify(state.poolOptions));
       });
     },
     getPoolTokenOptions(poolId, tokenId) {

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import NetworkStatus from '../../../app/NetworkStatus';
 import LaminarLogo from '../../../assets/laminar.svg';
-import { Flex, Icon, Separator, Switch } from '../../../components';
+import { Icon, Row, Separator, Switch } from '../../../components';
 import { useSetting } from '../../../hooks';
 import { theme } from '../../../styles';
 import MenuItem from './MenuItem';
@@ -43,7 +43,7 @@ const Navigation: React.FC = () => {
         </div>
       </div>
       <div>
-        <Flex>
+        <Row justify="space-between" align="middle">
           <div>
             <NetworkStatus />
           </div>
@@ -56,7 +56,7 @@ const Navigation: React.FC = () => {
             />
             <Icon className="navigation__icon" icon="adjust" />
           </div>
-        </Flex>
+        </Row>
       </div>
     </Container>
   );

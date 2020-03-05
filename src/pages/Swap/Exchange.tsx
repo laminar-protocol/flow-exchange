@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
 import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
-import { notificationHelper } from '../../utils';
+import { notificationHelper, toPrecision } from '../../utils';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';
 import { EthereumOraclePrice, PolkadotOraclePrice } from './OraclePrice';
@@ -34,8 +34,8 @@ const Exchange: React.FC = () => {
   const onFetchLiquidityPoolSpread = useExchange(state => state.onFetchLiquidityPoolSpread);
 
   const { askSpread, bidSpread }: { askSpread?: number; bidSpread?: number } = usePools(state => {
-    if (pool && baseTokens?.[0]) {
-      const token = baseTokens[0];
+    if (pool && fromToken && toToken) {
+      const token = fromToken.isBaseToken ? toToken : fromToken;
       return state.getPoolTokenOptions(pool.id, token.id) || {};
     }
     return {};
@@ -56,16 +56,27 @@ const Exchange: React.FC = () => {
 
   const onSwap = async () => {
     if (currentAccount && api && toToken && fromToken && pool) {
-      useExchangeApi.setState(state => (state.isSwapping = true));
+      useExchangeApi.setState(state => {
+        state.isSwapping = true;
+      });
 
-      await notificationHelper(
+      return notificationHelper(
         isRedeem
-          ? api.redeem(currentAccount.address, pool.id, fromToken.id, fromAmount)
-          : api.mint(currentAccount.address, pool.id, toToken.id, fromAmount),
-      );
-
-      useExchangeApi.setState(state => (state.isSwapping = false));
-      updateBalances();
+          ? api.redeem(currentAccount.address, pool.id, fromToken.id, toPrecision(fromAmount, fromToken.precision))
+          : api.mint(currentAccount.address, pool.id, toToken.id, toPrecision(fromAmount, fromToken.precision)),
+      )
+        .then(() => {
+          useExchangeApi.setState(state => {
+            state.fromAmount = '';
+            state.toAmount = '';
+          });
+        })
+        .finally(() => {
+          useExchangeApi.setState(state => {
+            state.isSwapping = false;
+          });
+          updateBalances();
+        });
     }
   };
 

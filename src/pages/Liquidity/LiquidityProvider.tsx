@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
 import { Amount, Spinner, Text } from '../../components';
 import { getBaseTokenInfo, useApp } from '../../hooks/useApp';
@@ -15,18 +15,19 @@ interface LiquidityProviderProps {
 }
 
 const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, loading }) => {
+  const classes = useStyles();
   const baseTokenInfo = useApp(getBaseTokenInfo);
   const poolLiquidity = usePools(state => state.poolLiquidity);
   const options = usePools(getPoolOptions);
 
   return (
-    <Container key={pool.id}>
-      <div className="lp__item" style={{ width: '15%' }}>
+    <div className={classes.root}>
+      <div style={{ width: '15%' }}>
         <Text size="l" weight="bold">
           {pool.name}
         </Text>
       </div>
-      <div className="lp__item">
+      <div>
         <div>
           <Text size="s" light>
             Pool Address
@@ -36,7 +37,7 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
           <Text size="l">{!loading ? pool.address : <Spinner loading />}</Text>
         </div>
       </div>
-      <div className="lp__item">
+      <div>
         <div>
           <Text size="s" light>
             Liquidity
@@ -55,40 +56,24 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
           <Spinner loading />
         )}
       </div>
-    </Container>
+    </div>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  ::after {
-    content: '';
-    width: 100%;
-    height: 1px;
-    background: ${theme.separatorColor};
-    margin: 2rem 0;
-  }
-  :last-child::after {
-    content: none;
-  }
-  .lp__provider {
-    width: 25%;
-    ${theme.respondTo.lg`
-      width: 50%;
-    `}
-
-    div {
-      margin: 0.5rem 0;
-    }
-
-    .ant-spin {
-      margin: 2px;
-    }
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    paddingBottom: '2rem',
+    paddingTop: '2rem',
+    borderBottom: `solid 1px ${theme.separatorColor}`,
+    '&:last-child': {
+      borderBottom: 'none',
+    },
+  },
+}));
 
 export default LiquidityProvider;

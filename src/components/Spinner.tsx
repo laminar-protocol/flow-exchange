@@ -1,26 +1,50 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
+import clsx from 'clsx';
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../styles';
 import { BaseProps } from '../types';
 
 interface SpinnerProps {
   loading?: boolean;
   size?: 'small' | 'default' | 'large';
+  type?: 'full' | 'normal';
 }
 
 const LoadingOutlinedSpin = <LoadingOutlined spin />;
 
-const Spinner: React.FC<SpinnerProps & BaseProps> = ({ loading = true, size = 'default', ...other }) => (
-  <SpinIcon indicator={LoadingOutlinedSpin} spinning={loading} size={size} {...other} />
-);
+const Spinner: React.FC<SpinnerProps & BaseProps> = ({
+  loading = true,
+  size = 'default',
+  type = 'normal',
+  ...other
+}) => {
+  const classes = useStyles({ type });
+  return (
+    <Spin
+      className={clsx(classes.root, {
+        [classes.fullWidth]: type === 'full',
+      })}
+      indicator={LoadingOutlinedSpin}
+      spinning={loading}
+      size={size}
+      {...other}
+    />
+  );
+};
 
-const SpinIcon = styled(Spin)`
-  &.ant-spin {
-    color: ${theme.foregroundColor};
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  root: {
+    '&.ant-spin': {
+      color: theme.foregroundColor,
+    },
+  },
+  fullWidth: {
+    marginTop: '20px',
+    marginBottom: '20px',
+    width: '100%',
+  },
+}));
 
 export default Spinner;

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { Amount, Text } from '../../components';
-import { useAccount, useApp } from '../../hooks';
+import { useAccount } from '../../hooks/useAccount';
 import { TokenInfo } from '../../services/Api';
 
 const Container = styled.div`
@@ -16,28 +16,13 @@ const Container = styled.div`
 export interface Props {
   token: TokenInfo;
   lite?: boolean;
+  loading?: boolean;
 }
 
-const BalanceLine: React.FC<Props> = ({ token, lite }) => {
-  const [loading, setLoading] = useState(false);
-  const api = useApp(state => state.api);
-  const currentAccount = useApp(state => state.currentAccount);
-  const balance = useAccount(state => state.balances[token.name]);
-  const setBalance = useAccount(state => state.setBalance);
+const BalanceLine: React.FC<Props> = ({ token, lite, loading = false }) => {
+  const balance = useAccount(state => state.balances[token.id]);
 
-  useEffect(() => {
-    if (currentAccount && api) {
-      setLoading(true);
-      api
-        .getBalance(currentAccount.address, token.id)
-        .then(result => {
-          setBalance(token.name, result);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [api, token, setBalance, currentAccount]);
+  if (!balance) return null;
 
   if (lite) {
     return <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>;

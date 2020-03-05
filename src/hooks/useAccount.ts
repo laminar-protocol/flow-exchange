@@ -19,7 +19,7 @@ export const [useAccount, useAccountApi] = create<AccountState>(
     async updateBalances() {
       const { api, currentAccount, tokens } = useAppApi.getState();
       const { setBalance } = get();
-
+      console.log(api, currentAccount, tokens);
       if (api && currentAccount && tokens && setBalance) {
         await Promise.all(
           tokens.map(token => {
