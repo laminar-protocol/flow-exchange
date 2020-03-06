@@ -24,8 +24,6 @@ const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   useEffect(() => {
     const availableProvider = checkAvailableProvider();
 
-    console.log('history and currentApi changed');
-
     if (currentApi) {
       if (!availableProvider.includes(currentApi.chainType)) {
         history.push('/');

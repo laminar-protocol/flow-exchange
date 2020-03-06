@@ -14,7 +14,6 @@ import Swap from '../Swap';
 const Routes: React.FC = () => {
   const api = useApp(state => state.api);
 
-  console.log('api', api);
   return (
     <Switch>
       <Route exact path="/">
