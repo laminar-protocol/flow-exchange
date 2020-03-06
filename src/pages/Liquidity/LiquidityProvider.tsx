@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { Amount, SolidButton, Spinner, Text } from '../../components';
 import { baseTokenInfoSelector, useApp } from '../../hooks/useApp';
-import { poolOptionsSelector, usePools } from '../../hooks/usePools';
+import { poolOptionsSelector, usePools, useStoreSelector } from '../../hooks/usePools';
 import { PoolInfo, TokenId } from '../../services/Api';
 import { calcTokenLiquidity } from '../../utils';
 
@@ -20,7 +20,11 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
   const baseTokenInfo = useApp(baseTokenInfoSelector);
   const poolLiquidity = usePools(state => state.poolLiquidity);
 
-  const options = usePools(useCallback(state => poolOptionsSelector(state, pool.id), [pool.id]));
+  const options = useStoreSelector(state => poolOptionsSelector(state, pool.id), [pool.id]);
+
+  useEffect(() => {
+    console.log('options', pool.id);
+  }, [options]);
 
   return (
     <div className={classes.root}>
