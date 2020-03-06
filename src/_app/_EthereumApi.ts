@@ -5,8 +5,8 @@ import { mapObjIndexed } from 'ramda';
 import { BehaviorSubject } from 'rxjs';
 import Web3 from 'web3';
 
-import { UINT256_MAX, UINT256_MIN, fromWei, toWei } from '../_app/helpers/unitHelper';
 import { IconProp } from '../types';
+import { UINT256_MAX, UINT256_MIN, fromWei, toWei } from './helpers/unitHelper';
 
 // workaround to get types that are not exposed directly from web3
 export type Eth = Web3['eth'];

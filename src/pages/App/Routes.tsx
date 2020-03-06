@@ -13,7 +13,6 @@ import Swap from '../Swap';
 
 const Routes: React.FC = () => {
   const api = useApp(state => state.api);
-  const LoadingLayout = <Layout loading={true} />;
 
   console.log('api', api);
   return (

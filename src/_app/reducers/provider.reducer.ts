@@ -1,7 +1,7 @@
 import { network } from '_app/config';
 import types from 'types';
 
-import EthereumApi from '../../services/_EthereumApi';
+import EthereumApi from '../_EthereumApi';
 
 const INITIAL_STATE = {
   api: new EthereumApi(),

@@ -5,16 +5,14 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { subgraphEndpoints } from '../../_app/config';
-
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
-  uri: subgraphEndpoints.http,
+  uri: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
 });
 
 const wsLink = new WebSocketLink({
-  uri: subgraphEndpoints.ws,
+  uri: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
   options: {
     reconnect: true,
   },
