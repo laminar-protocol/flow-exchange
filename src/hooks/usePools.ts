@@ -14,7 +14,7 @@ export interface PoolsState extends State {
   getPoolTokenOptions(poolId: PoolInfo['id'], tokenId: TokenInfo['id']): PoolOptions | null;
 }
 
-export const [usePools, usePoolsApi, useStoreSelector] = create<PoolsState>(
+export const [usePools, usePoolsApi, usePoolsSelector] = create<PoolsState>(
   (set: SetState<PoolsState>, get: GetState<PoolsState>): PoolsState => ({
     defaultPool: null,
     poolOptions: {},
@@ -60,25 +60,40 @@ export const [usePools, usePoolsApi, useStoreSelector] = create<PoolsState>(
   }),
 );
 
-export const getPoolLiquidity = (poolId: string | null | undefined, allOptions: PoolsState['poolOptions']) => {
+export const getPoolInfo = (
+  poolId: string | null | undefined,
+  allOptions: PoolsState['poolOptions'],
+  poolLiquidity: PoolsState['poolLiquidity'],
+) => {
   const initValue = {} as Record<string, PoolOptions>;
-  return Object.keys(allOptions)
+  const options = Object.keys(allOptions)
     .filter(key => key.split('//')[0] === poolId)
     .reduce((result, key) => {
       const value = allOptions[key];
       result[value.tokenId] = value;
       return result;
     }, initValue);
+
+  if (!poolId || !poolLiquidity[poolId]) return null;
+
+  return {
+    liquidity: poolLiquidity[poolId],
+    options,
+  };
 };
 
-export const defaultPoolOptionsSelector = createSelector(
+export const defaultPoolInfoSelector = createSelector(
   (state: PoolsState) => state.defaultPool && state.defaultPool.id,
   (state: PoolsState) => state.poolOptions,
-  getPoolLiquidity,
+  (state: PoolsState) => state.poolLiquidity,
+  getPoolInfo,
 );
 
-export const poolOptionsSelector = createSelector(
-  (state: PoolsState, id: string) => id,
-  (state: PoolsState) => state.poolOptions,
-  getPoolLiquidity,
-);
+export const poolInfoSelector = (id: string) => {
+  return createSelector(
+    (state: PoolsState) => id,
+    (state: PoolsState) => state.poolOptions,
+    (state: PoolsState) => state.poolLiquidity,
+    getPoolInfo,
+  );
+};

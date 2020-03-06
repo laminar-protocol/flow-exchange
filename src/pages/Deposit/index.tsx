@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import { Amount, Panel, Separator, Text, Title } from '../../components';
 import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
-import { defaultPoolOptionsSelector, usePools } from '../../hooks/usePools';
+import { defaultPoolInfoSelector, usePools } from '../../hooks/usePools';
 import { calcTokenLiquidity } from '../../utils';
 
 const Deposit = () => {
@@ -11,9 +11,7 @@ const Deposit = () => {
   const allTokens = useApp(tokenInfoMapSelector);
   const pool = usePools(state => state.defaultPool);
   const initPool = usePools(state => state.initPool);
-  const liquidity = usePools(state => (pool ? state.poolLiquidity[pool.id] : null));
-  const options = usePools(defaultPoolOptionsSelector);
-  const tokens = useMemo(() => Object.keys(options), [options]);
+  const poolInfo = usePools(defaultPoolInfoSelector);
 
   useEffect(() => {
     pool && initPool(pool.id);
@@ -24,37 +22,41 @@ const Deposit = () => {
       <Title type="page">Deposit &amp; Earn</Title>
       <Separator />
       <Panel>
-        {tokens.map(tokenId => {
-          const token = allTokens[tokenId];
+        {poolInfo &&
+          Object.keys(poolInfo.options).map(tokenId => {
+            const token = allTokens[tokenId];
 
-          return (
-            <div className={classes.provider} key={token.name}>
-              <div className={classes.item}>
-                <Text size="l" weight="bold">
-                  {token.name}
-                </Text>
-              </div>
-              <div className="item">
-                <div>
-                  <Text size="s" light>
-                    Market Size
+            return (
+              <div className={classes.provider} key={token.name}>
+                <div className={classes.item}>
+                  <Text size="l" weight="bold">
+                    {token.name}
                   </Text>
                 </div>
-                <div>
-                  <Text size="l">
-                    {liquidity && options && (
-                      <Amount
-                        value={calcTokenLiquidity(liquidity, options[token.id].additionalCollateralRatio || 0)}
-                        token={token}
-                        hasPrefix
-                      />
-                    )}
-                  </Text>
+                <div className="item">
+                  <div>
+                    <Text size="s" light>
+                      Market Size
+                    </Text>
+                  </div>
+                  <div>
+                    <Text size="l">
+                      {poolInfo && (
+                        <Amount
+                          value={calcTokenLiquidity(
+                            poolInfo.liquidity || 0,
+                            poolInfo.options[token.id].additionalCollateralRatio || 0,
+                          )}
+                          token={token}
+                          hasPrefix
+                        />
+                      )}
+                    </Text>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </Panel>
     </div>
   );

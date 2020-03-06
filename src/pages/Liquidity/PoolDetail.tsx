@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Descriptions, Panel, Separator, Title } from '../../components';
-import { poolOptionsSelector, usePools, useStoreSelector } from '../../hooks/usePools';
+import { poolInfoSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
 
 const PoolDetail: React.FC = () => {
   const params = useParams<{ poolId: string }>();
   const initPool = usePools(state => state.initPool);
-  const options = useStoreSelector(state => poolOptionsSelector(state, params.poolId), [params.poolId]);
+  const liquidity = usePools(state => state.poolLiquidity[params.poolId]);
+  const options = usePoolsSelector(poolInfoSelector(params.poolId), [params.poolId]);
 
   useEffect(() => {
     initPool(params.poolId);

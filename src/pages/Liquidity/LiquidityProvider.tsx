@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Amount, SolidButton, Spinner, Text } from '../../components';
 import { baseTokenInfoSelector, useApp } from '../../hooks/useApp';
-import { poolOptionsSelector, usePools, useStoreSelector } from '../../hooks/usePools';
+import { poolInfoSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
 import { PoolInfo, TokenId } from '../../services/Api';
 import { calcTokenLiquidity } from '../../utils';
 
@@ -19,7 +19,7 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
   const baseTokenInfo = useApp(baseTokenInfoSelector);
   const poolLiquidity = usePools(state => state.poolLiquidity);
 
-  const options = useStoreSelector(state => poolOptionsSelector(state, pool.id), [pool.id]);
+  const poolInfo = usePoolsSelector(poolInfoSelector(pool.id), [pool.id]);
 
   return (
     <div className={classes.root}>
@@ -44,11 +44,11 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
             Liquidity
           </Text>
         </div>
-        {!loading && baseTokenInfo && poolLiquidity && options[tokenId] ? (
+        {!loading && baseTokenInfo && poolInfo && poolInfo.options[tokenId] ? (
           <div>
             <Text size="l">
               <Amount
-                value={calcTokenLiquidity(poolLiquidity[pool.id], options[tokenId].additionalCollateralRatio || 0)}
+                value={calcTokenLiquidity(poolInfo.liquidity, poolInfo.options[tokenId].additionalCollateralRatio || 0)}
                 token={baseTokenInfo}
               />
             </Text>
