@@ -1385,16 +1385,21 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.16":
-  version "0.2.0-beta.16"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.16.tgz#3dc5976a5630fdc3b7276ec90bddfe631e9750a7"
-  integrity sha512-va0CpvaS/gipg3QoPBPXeED9baw1p9yRdz4gRoTwR83a7furAo2SP41Vj9c4aH6bK1MT2BBezFPsbYAJXUqzfQ==
+"@laminar/api@^0.2.0-beta.27":
+  version "0.2.0-beta.27"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.27.tgz#363d96049a90debdff809e6a7bd3652159f19625"
+  integrity sha512-IXIUS8Gtnq9KNP4N0sKLyqr24gjMyH31RmV7U11cnhKxNNvQ2JCORjTZHbwyMWI89SwTuT1+QGOgGDgwGYEa0Q==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@laminar/types" beta
     "@orml/api-derive" beta
     "@orml/jsonrpc" beta
     "@polkadot/api" beta
+    flow-protocol-ethereum laminar-protocol/flow-protocol-ethereum#aa4fa650c05fc2a885a8461ee87f40c55976146c
+    web3 "1.2.6"
+    web3-core "1.2.6"
+    web3-eth-contract "1.2.6"
+    web3-utils "1.2.6"
 
 "@laminar/types@beta":
   version "0.2.0-beta.15"
@@ -7312,6 +7317,10 @@ flow-parser@0.*:
 flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum:
   version "0.0.2"
   resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/460bc4d6f6f444075f991644a144a5e17d79ec38"
+
+flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum#aa4fa650c05fc2a885a8461ee87f40c55976146c:
+  version "0.0.2"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/aa4fa650c05fc2a885a8461ee87f40c55976146c"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
@@ -17303,7 +17312,7 @@ web3-utils@1.2.6:
     underscore "1.9.1"
     utf8 "3.0.0"
 
-web3@*, web3@^1.2.1:
+web3@*, web3@1.2.6, web3@^1.2.1:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/web3/-/web3-1.2.6.tgz#c497dcb14cdd8d6d9fb6b445b3b68ff83f8ccf68"
   integrity sha512-tpu9fLIComgxGrFsD8LUtA4s4aCZk7px8UfcdEy6kS2uDi/ZfR07KJqpXZMij7Jvlq+cQrTAhsPSiBVvoMaivA==
