@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { PoolInfo, PoolOptions, TokenInfo } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
-import { AppState, useApp, useAppApi } from './useApp';
+import { useAppApi } from './useApp';
 
 export interface PoolsState extends State {
   defaultPool: PoolInfo | null;
@@ -36,7 +36,6 @@ export const [usePools, usePoolsApi, useStoreSelector] = create<PoolsState>(
       set(state => {
         Object.assign(state.poolOptions, poolOptions);
         state.poolLiquidity[poolId] = liquidity;
-        console.log(JSON.stringify(state.poolOptions));
       });
     },
     getPoolTokenOptions(poolId, tokenId) {

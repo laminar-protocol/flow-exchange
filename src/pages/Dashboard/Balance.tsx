@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Amount, Text, TextCell } from '../../components';
 import { useAccount } from '../../hooks/useAccount';

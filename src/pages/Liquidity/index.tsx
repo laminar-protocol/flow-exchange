@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import {
-  Panel,
-  PrimaryButton,
-  SegmentedControl,
-  SegmentedControlItem,
-  Separator,
-  TabPane,
-  Tabs,
-  Title,
-} from '../../components';
+import { Panel, SegmentedControl, SegmentedControlItem, Separator, TabPane, Tabs, Title } from '../../components';
 import { isReadySelector, useApp } from '../../hooks/useApp';
 import { usePools } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
@@ -31,7 +22,6 @@ const Liquidity: React.FC = () => {
 
   useEffect(() => {
     if (tokens && tokens.length) {
-      // console.log(tokens)
       setActiveTabKey(tokens[0].id);
     }
   }, [tokens, setActiveTabKey]);
@@ -42,7 +32,7 @@ const Liquidity: React.FC = () => {
       setLoading(true);
       updatePoolTokenOptionsByToken(activeTabKey).finally(() => setLoading(false));
     }
-  }, [activeTabKey, filterType, isReady]);
+  }, [activeTabKey, filterType, isReady, updatePoolTokenOptionsByToken]);
 
   useEffect(() => {
     if (filterType === 'swap') {

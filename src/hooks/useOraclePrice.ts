@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 import { useMemo } from 'react';
 
 import { tokens } from '../_app/config';
-import { useApp } from '../hooks/useApp';
 import { TokenInfo } from '../services/Api';
 
 interface QueryResult {

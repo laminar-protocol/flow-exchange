@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Amount, Panel, Separator, Spinner, Text, Title } from '../../components';
+import { Amount, Panel, Separator, Text, Title } from '../../components';
 import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
 import { defaultPoolOptionsSelector, usePools } from '../../hooks/usePools';
 import { calcTokenLiquidity } from '../../utils';
-import Layout from '../Layout';
 
 const Deposit = () => {
   const classes = useStyles();
@@ -18,7 +17,7 @@ const Deposit = () => {
 
   useEffect(() => {
     pool && initPool(pool.id);
-  }, [pool]);
+  }, [pool, initPool]);
 
   return (
     <div>

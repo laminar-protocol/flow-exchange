@@ -13,7 +13,7 @@ const Init: React.FC = () => {
       state.defaultPool = defaultPools ? defaultPools[0] : null;
       state.pools = defaultPools;
     });
-  }, [defaultPools, api, usePoolsApi]);
+  }, [defaultPools, api]);
 
   return null;
 };

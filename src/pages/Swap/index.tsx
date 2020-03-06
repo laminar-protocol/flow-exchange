@@ -2,7 +2,6 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Separator, Title } from '../../components';
-import Layout from '../Layout';
 import Exchange from './Exchange';
 import SwapBalances from './SwapBalances';
 import SwapList from './SwapList';

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
 import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
@@ -30,7 +30,6 @@ const Exchange: React.FC = () => {
   const onFromAmountChange = useExchange(state => state.onFromAmountChange);
   const onToAmountChange = useExchange(state => state.onToAmountChange);
   const onSwapToken = useExchange(state => state.onSwapToken);
-  const baseTokens = useExchange(state => state.baseTokens);
   const onFetchLiquidityPoolSpread = useExchange(state => state.onFetchLiquidityPoolSpread);
 
   const { askSpread, bidSpread }: { askSpread?: number; bidSpread?: number } = usePools(state => {

@@ -2,7 +2,6 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Separator, Text, Title } from '../../components';
-import Layout from '../Layout';
 import Balances from './Balances';
 import ChartTicker from './ChartTicker';
 import Links from './Links';

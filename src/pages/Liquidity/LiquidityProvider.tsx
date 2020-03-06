@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { Amount, SolidButton, Spinner, Text } from '../../components';
@@ -21,10 +20,6 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
   const poolLiquidity = usePools(state => state.poolLiquidity);
 
   const options = useStoreSelector(state => poolOptionsSelector(state, pool.id), [pool.id]);
-
-  useEffect(() => {
-    console.log('options', pool.id);
-  }, [options]);
 
   return (
     <div className={classes.root}>

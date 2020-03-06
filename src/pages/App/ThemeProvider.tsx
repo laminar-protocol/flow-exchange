@@ -3,7 +3,7 @@ import 'antd/dist/antd.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import React, { useMemo } from 'react';
-import withStyles, { ThemeProvider as JSSThemeProvider } from 'react-jss';
+import { ThemeProvider as JSSThemeProvider } from 'react-jss';
 
 import { makeTheme, useGlobalStyles } from '../../styles';
 

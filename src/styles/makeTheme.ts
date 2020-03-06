@@ -1,5 +1,3 @@
-import { Classes } from 'jss';
-
 import createBreakpoints from './createBreakpoints';
 
 type themeMode = 'light' | 'dark';
