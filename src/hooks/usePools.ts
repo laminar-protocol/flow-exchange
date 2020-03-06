@@ -5,7 +5,7 @@ import create, { GetState, SetState, State } from './createState';
 import { AppState, useApp, useAppApi } from './useApp';
 
 export interface PoolsState extends State {
-  defaultPool?: PoolInfo | null;
+  defaultPool: PoolInfo | null;
   pools?: PoolInfo[];
   poolLiquidity: Record<string, string>;
   poolOptions: Record<string, PoolOptions>;
@@ -16,7 +16,7 @@ export interface PoolsState extends State {
 
 export const [usePools, usePoolsApi] = create<PoolsState>(
   (set: SetState<PoolsState>, get: GetState<PoolsState>): PoolsState => ({
-    defaultPool: undefined,
+    defaultPool: null,
     poolOptions: {},
     poolLiquidity: {},
     async initPool(poolId) {
@@ -61,25 +61,25 @@ export const [usePools, usePoolsApi] = create<PoolsState>(
   }),
 );
 
-export const getPoolOptions = createSelector(
-  (state: PoolsState) => state.defaultPool,
+export const getPoolLiquidity = (poolId: string | null | undefined, allOptions: PoolsState['poolOptions']) => {
+  const initValue = {} as Record<string, PoolOptions>;
+  return Object.keys(allOptions)
+    .filter(key => key.split('//')[0] === poolId)
+    .reduce((result, key) => {
+      const value = allOptions[key];
+      result[value.tokenId] = value;
+      return result;
+    }, initValue);
+};
+
+export const defaultPoolOptionsSelector = createSelector(
+  (state: PoolsState) => state.defaultPool && state.defaultPool.id,
   (state: PoolsState) => state.poolOptions,
-  (defaultPool, allOptions) => {
-    const initValue = {} as Record<string, PoolOptions>;
-    if (!defaultPool) return initValue;
-    return Object.keys(allOptions)
-      .filter(key => key.split('//')[0] === defaultPool.id)
-      .reduce((result, key) => {
-        const value = allOptions[key];
-        result[value.tokenId] = value;
-        return result;
-      }, initValue);
-  },
+  getPoolLiquidity,
 );
 
-// useAppApi.subscribe<AppState['defaultPools']>(
-//   async defaultPools => {
-//     usePoolsApi.setState(state => (state.defaultPool = defaultPools ? defaultPools[0] : null));
-//   },
-//   state => state.defaultPools,
-// );
+export const poolOptionsSelector = createSelector(
+  (state: PoolsState, id: string) => id,
+  (state: PoolsState) => state.poolOptions,
+  getPoolLiquidity,
+);

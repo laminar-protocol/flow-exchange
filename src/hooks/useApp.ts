@@ -63,7 +63,7 @@ export const [useApp, useAppApi] = create<AppState>(
   }),
 );
 
-export const getTokenInfoMap = createSelector(
+export const tokenInfoMapSelector = createSelector(
   (state: AppState) => state.tokens,
   tokens => {
     return tokens.reduce((result, curr) => {
@@ -73,14 +73,14 @@ export const getTokenInfoMap = createSelector(
   },
 );
 
-export const getBaseTokenInfo = createSelector(
+export const baseTokenInfoSelector = createSelector(
   (state: AppState) => state.tokens,
   tokens => {
     return tokens.find(token => token.isBaseToken);
   },
 );
 
-export const getIsReady = createSelector(
+export const isReadySelector = createSelector(
   (state: AppState) => state.api,
   api => {
     return !!api;

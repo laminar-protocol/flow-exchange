@@ -11,7 +11,7 @@ import {
   Tabs,
   Title,
 } from '../../components';
-import { getIsReady, useApp } from '../../hooks/useApp';
+import { isReadySelector, useApp } from '../../hooks/useApp';
 import { usePools } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
 
@@ -19,7 +19,7 @@ const Liquidity: React.FC = () => {
   const classes = useStyles();
 
   const [filterType, setFilterType] = useState<'swap' | 'trade'>('swap');
-  const isReady = useApp(getIsReady);
+  const isReady = useApp(isReadySelector);
   const tradingPairs = useApp(state => state.tradingPairs);
   const tokens = useApp(state => state.tokens);
   const pools = usePools(state => state.pools);
@@ -86,9 +86,6 @@ const Liquidity: React.FC = () => {
           pools.map(pool => <LiquidityProvider key={pool.id} pool={pool} tokenId={activeTabKey} loading={loading} />)}
       </Panel>
       <Separator />
-      {/* <Action> */}
-      <PrimaryButton disabled>Provide Liquidity</PrimaryButton>
-      {/* </Action> */}
     </div>
   );
 };

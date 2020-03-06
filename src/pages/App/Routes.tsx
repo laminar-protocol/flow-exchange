@@ -8,6 +8,7 @@ import Lending from '../Deposit';
 import Home from '../Home';
 import Layout from '../Layout';
 import Liquidity from '../Liquidity';
+import PoolDetail from '../Liquidity/PoolDetail';
 import Swap from '../Swap';
 
 const Routes: React.FC = () => {
@@ -36,9 +37,14 @@ const Routes: React.FC = () => {
       <Route path="/margin/:pool/:tradingSymbol">
         <Margin />
       </Route>
-      <Route path="/liquidity">
+      <Route exact path="/liquidity">
         <Layout loading={!api}>
           <Liquidity />
+        </Layout>
+      </Route>
+      <Route path="/liquidity/:poolId">
+        <Layout loading={!api}>
+          <PoolDetail />
         </Layout>
       </Route>
       <Route path="/swap">

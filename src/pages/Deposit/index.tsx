@@ -2,18 +2,18 @@ import React, { useEffect, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Panel, Separator, Spinner, Text, Title } from '../../components';
-import { getTokenInfoMap, useApp } from '../../hooks/useApp';
-import { getPoolOptions, usePools } from '../../hooks/usePools';
+import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
+import { defaultPoolOptionsSelector, usePools } from '../../hooks/usePools';
 import { calcTokenLiquidity } from '../../utils';
 import Layout from '../Layout';
 
 const Deposit = () => {
   const classes = useStyles();
-  const allTokens = useApp(getTokenInfoMap);
+  const allTokens = useApp(tokenInfoMapSelector);
   const pool = usePools(state => state.defaultPool);
   const initPool = usePools(state => state.initPool);
   const liquidity = usePools(state => (pool ? state.poolLiquidity[pool.id] : null));
-  const options = usePools(getPoolOptions);
+  const options = usePools(defaultPoolOptionsSelector);
   const tokens = useMemo(() => Object.keys(options), [options]);
 
   useEffect(() => {

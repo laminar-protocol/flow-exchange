@@ -4,6 +4,7 @@ export * from './Selects';
 export * from './layouts';
 export * from './Tabs';
 export * from './Typography';
+export * from './Descriptions';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';

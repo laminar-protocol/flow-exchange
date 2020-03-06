@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Amount, Spinner, Text } from '../../components';
-import { getBaseTokenInfo, useApp } from '../../hooks/useApp';
-import { getPoolOptions, usePools } from '../../hooks/usePools';
+import { Amount, SolidButton, Spinner, Text } from '../../components';
+import { baseTokenInfoSelector, useApp } from '../../hooks/useApp';
+import { poolOptionsSelector, usePools } from '../../hooks/usePools';
 import { PoolInfo, TokenId } from '../../services/Api';
-import { theme } from '../../styles';
 import { calcTokenLiquidity } from '../../utils';
 
 interface LiquidityProviderProps {
@@ -16,9 +17,10 @@ interface LiquidityProviderProps {
 
 const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, loading }) => {
   const classes = useStyles();
-  const baseTokenInfo = useApp(getBaseTokenInfo);
+  const baseTokenInfo = useApp(baseTokenInfoSelector);
   const poolLiquidity = usePools(state => state.poolLiquidity);
-  const options = usePools(getPoolOptions);
+
+  const options = usePools(useCallback(state => poolOptionsSelector(state, pool.id), [pool.id]));
 
   return (
     <div className={classes.root}>
@@ -55,6 +57,11 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
         ) : (
           <Spinner loading />
         )}
+      </div>
+      <div>
+        <SolidButton>
+          <Link to={`/liquidity/${pool.id}`}>Details</Link>
+        </SolidButton>
       </div>
     </div>
   );
