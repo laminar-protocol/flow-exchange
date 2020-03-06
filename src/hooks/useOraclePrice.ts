@@ -2,7 +2,7 @@ import { SubscriptionHookOptions, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useMemo } from 'react';
 
-import { tokens } from '../config';
+import { tokens } from '../_app/config';
 import { useApp } from '../hooks/useApp';
 import { TokenInfo } from '../services/Api';
 

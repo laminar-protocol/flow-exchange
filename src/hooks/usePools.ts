@@ -14,7 +14,7 @@ export interface PoolsState extends State {
   getPoolTokenOptions(poolId: PoolInfo['id'], tokenId: TokenInfo['id']): PoolOptions | null;
 }
 
-export const [usePools, usePoolsApi] = create<PoolsState>(
+export const [usePools, usePoolsApi, useStoreSelector] = create<PoolsState>(
   (set: SetState<PoolsState>, get: GetState<PoolsState>): PoolsState => ({
     defaultPool: null,
     poolOptions: {},

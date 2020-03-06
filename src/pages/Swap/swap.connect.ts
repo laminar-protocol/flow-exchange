@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { addresses, isBaseTokenSymbol, isTokenSymbol, tokens } from '../../config';
+import { addresses, isBaseTokenSymbol, isTokenSymbol, tokens } from '../../_app/config';
 import types, { actions } from '../../types';
 import { calcExchangeRate } from '../../utils';
 

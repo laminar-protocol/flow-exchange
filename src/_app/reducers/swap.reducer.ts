@@ -1,6 +1,5 @@
-import validate from 'validate.js';
-
 import types from 'types';
+import validate from 'validate.js';
 
 const INITIAL_STATE = {
   fromSymbol: 'DAI' as TokenSymbol,

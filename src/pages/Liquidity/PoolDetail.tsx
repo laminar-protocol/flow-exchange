@@ -12,15 +12,17 @@ import {
   Separator,
   Title,
 } from '../../components';
-import { poolOptionsSelector, usePools } from '../../hooks/usePools';
+import { poolOptionsSelector, usePools, useStoreSelector } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
 
 const PoolDetail: React.FC = () => {
   const params = useParams<{ poolId: string }>();
   const initPool = usePools(state => state.initPool);
-  const options = usePools(useCallback(state => poolOptionsSelector(state, params.poolId), [params.poolId]));
+  const options = useStoreSelector(state => poolOptionsSelector(state, params.poolId), [params.poolId]);
 
-  // const options = usePools(getPoolOptions);
+  useEffect(() => {
+    console.log('options', params.poolId);
+  }, [options]);
 
   useEffect(() => {
     initPool(params.poolId);

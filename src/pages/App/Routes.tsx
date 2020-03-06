@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
-import Margin from '../../app/margin/margin';
+import Margin from '../../_app/margin/margin';
 import { useApp } from '../../hooks/useApp';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';

@@ -1,8 +1,8 @@
+import rootEpic from '_app/epics';
+import { errorLogger } from '_app/middleware';
+import createRootReducer from '_app/reducers';
 import { routerMiddleware } from 'connected-react-router';
-import rootEpic from 'epics';
 import { createBrowserHistory } from 'history';
-import { errorLogger } from 'middleware';
-import createRootReducer from 'reducers';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { createEpicMiddleware } from 'redux-observable';
 

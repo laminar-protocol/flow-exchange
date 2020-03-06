@@ -1,7 +1,7 @@
-import { of, ObservableInput, from, combineLatest } from 'rxjs';
-import { map, takeUntil, catchError, mergeMap, filter } from 'rxjs/operators';
-import { mapObjIndexed, equals } from 'ramda';
-import { ofType, Epic, StateObservable } from 'redux-observable';
+import { equals, mapObjIndexed } from 'ramda';
+import { Epic, StateObservable, ofType } from 'redux-observable';
+import { ObservableInput, combineLatest, from, of } from 'rxjs';
+import { catchError, filter, map, mergeMap, takeUntil } from 'rxjs/operators';
 
 import ReducerBuilder from './reducerBuilder';
 

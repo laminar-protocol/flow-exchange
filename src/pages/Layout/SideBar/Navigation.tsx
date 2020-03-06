@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import NetworkStatus from '../../../app/NetworkStatus';
+import NetworkStatus from '../../../_app/NetworkStatus';
 import LaminarLogo from '../../../assets/laminar.svg';
 import { Icon, Row, Separator, Switch } from '../../../components';
 import { useSetting } from '../../../hooks';

@@ -2,10 +2,10 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 import { FormatProfit, FormatRate, LightButton } from '../../components';
-import { explorer, findTradingInfoByPairAddress, findTradingPairByAddress } from '../../config';
 import { useDispatch, usePriceRate, useShallowEqualSelector } from '../../hooks';
 import { theme } from '../../styles';
 import { actions } from '../../types';
+import { explorer, findTradingInfoByPairAddress, findTradingPairByAddress } from '../config';
 import { calculateRate } from './rate';
 
 // ----------

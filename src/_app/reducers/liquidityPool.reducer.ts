@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 
+import { actions } from '../../types';
 import { addresses } from '../config';
 import { createReducer } from '../helpers/apiLoadable';
-import { actions } from '../types';
 
 const POOLS_INITIAL_STATE = {
   byId: {

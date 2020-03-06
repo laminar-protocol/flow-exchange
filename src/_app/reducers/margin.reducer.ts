@@ -1,7 +1,7 @@
-import { combineReducers, Reducer } from 'redux';
-import { DeepReadonly } from 'utility-types';
-import { createReducer } from 'helpers/apiLoadableSingle';
+import { createReducer } from '_app/helpers/apiLoadableSingle';
+import { Reducer, combineReducers } from 'redux';
 import { actions } from 'types';
+import { DeepReadonly } from 'utility-types';
 
 export type State = DeepReadonly<{
   allowance: ApiLoadableState<number>;

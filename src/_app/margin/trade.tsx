@@ -12,10 +12,10 @@ import {
   SolidButton,
   Text,
 } from '../../components';
-import { liquidityPools, tradingPairs, tradingSymbols } from '../../config';
 import { useDispatch, usePriceRate, useShallowEqualSelector } from '../../hooks';
 import { theme } from '../../styles';
 import { actions } from '../../types';
+import { liquidityPools, tradingPairs, tradingSymbols } from '../config';
 import { calculateRate } from './rate';
 
 const Container = styled.div``;

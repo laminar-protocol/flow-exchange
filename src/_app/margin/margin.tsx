@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Panel, Switch, Text } from '../../components';
-import { tradingSymbols } from '../../config';
 import { useDispatch, useShallowEqualSelector } from '../../hooks';
 import Layout from '../../pages/Layout';
 import { theme } from '../../styles';
 import { actions } from '../../types';
 import ChartWidget from '../chartWidget/chartWidget';
+import { tradingSymbols } from '../config';
 import SymbolList from './symbolList';
 import Trade from './trade';
 import TradeList from './tradeList';

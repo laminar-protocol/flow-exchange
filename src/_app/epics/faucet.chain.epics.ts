@@ -1,15 +1,15 @@
-import { mergeMap } from 'rxjs/operators';
+import { notification } from 'antd';
 import { ofType } from 'redux-observable';
 import { empty, of } from 'rxjs';
-import { notification } from 'antd';
+import { mergeMap } from 'rxjs/operators';
 import types, { actions } from 'types';
 
 export const notificationEpic: Epic = action$ =>
   action$.pipe(
-    ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
+    ofType(types.faucet.dai.completed),
     mergeMap(() => {
       notification.success({
-        message: 'Order Successful',
+        message: 'Mint Successful',
       });
       return empty();
     }),
@@ -17,6 +17,6 @@ export const notificationEpic: Epic = action$ =>
 
 export const refreshEpic: Epic = action$ =>
   action$.pipe(
-    ofType(types.margin.openPosition.completed, types.margin.closePosition.completed),
+    ofType(types.faucet.dai.completed),
     mergeMap(() => of(actions.token.balance.requested({ symbol: 'DAI' }))),
   );

@@ -3,7 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { truncate } from '../../../helpers/stringHelper';
+import { truncate } from '../../../_app/helpers/stringHelper';
 import { useApp } from '../../../hooks';
 import MenuItem from './MenuItem';
 

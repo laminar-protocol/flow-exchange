@@ -1,7 +1,7 @@
-import { mergeMap } from 'rxjs/operators';
+import { notification } from 'antd';
 import { ofType } from 'redux-observable';
 import { empty } from 'rxjs';
-import { notification } from 'antd';
+import { mergeMap } from 'rxjs/operators';
 import types from 'types';
 
 const epic: Epic = action$ =>

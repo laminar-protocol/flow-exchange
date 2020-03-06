@@ -1,6 +1,5 @@
-import { DeepReadonly } from 'utility-types';
-
 import types from 'types';
+import { DeepReadonly } from 'utility-types';
 
 const INITIAL_STATE = {
   balances: {} as any,

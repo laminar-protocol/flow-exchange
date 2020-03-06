@@ -4,8 +4,8 @@ import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
+import store, { history } from '../../_app/reduxStore';
 import { useDispatch, useSetting } from '../../hooks';
-import store, { history } from '../../reduxStore';
 import { actions } from '../../types';
 import apolloClient from './apollo';
 import Init from './Init';

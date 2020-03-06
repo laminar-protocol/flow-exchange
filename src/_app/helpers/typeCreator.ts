@@ -1,4 +1,4 @@
-import { pipe, map, fromPairs, mapObjIndexed } from 'ramda';
+import { fromPairs, map, mapObjIndexed, pipe } from 'ramda';
 
 interface GetActionTypeResult<TActionTypeKeys extends string, TPayload> {
   (prefix: string): Record<TActionTypeKeys, ActionCreator<TPayload>>;

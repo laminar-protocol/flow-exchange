@@ -3,9 +3,9 @@ import { Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { FormatRate } from '../../components';
-import { liquidityPools, tradingPairs, tradingSymbols } from '../../config';
 import { usePriceRate } from '../../hooks';
 import { theme } from '../../styles';
+import { liquidityPools, tradingPairs, tradingSymbols } from '../config';
 import { calculateRate } from './rate';
 
 interface RowProps {

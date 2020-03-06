@@ -1,4 +1,4 @@
-import { reducer } from 'reducers';
+import { reducer } from '_app/reducers';
 import { Action as ReduxAction } from 'redux';
 import { Epic as ReduxEpic } from 'redux-observable';
 

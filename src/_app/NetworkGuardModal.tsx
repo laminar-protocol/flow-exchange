@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Modal, Text } from '../components';
-import { network as requiredNetwork } from '../config';
 import { useShallowEqualSelector } from '../hooks';
+import { network as requiredNetwork } from './config';
 
 const Container = styled.div`
   display: flex;

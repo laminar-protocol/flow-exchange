@@ -1,11 +1,11 @@
+import { abi, addresses, tokens, tradingPairs } from '_app/config';
 import BN from 'bn.js';
-import { abi, addresses, tokens, tradingPairs } from 'config';
 import EventEmitter from 'eventemitter3';
 import { mapObjIndexed } from 'ramda';
 import { BehaviorSubject } from 'rxjs';
 import Web3 from 'web3';
 
-import { UINT256_MAX, UINT256_MIN, fromWei, toWei } from '../helpers/unitHelper';
+import { UINT256_MAX, UINT256_MIN, fromWei, toWei } from '../_app/helpers/unitHelper';
 import { IconProp } from '../types';
 
 // workaround to get types that are not exposed directly from web3

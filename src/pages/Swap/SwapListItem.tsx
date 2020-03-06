@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import { explorer, tokens } from '../../_app/config';
 import { FormatBalance, Icon, Text } from '../../components';
-import { explorer, tokens } from '../../config';
 import { theme } from '../../styles';
 
 const Line = styled.div`

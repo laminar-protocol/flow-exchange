@@ -1,4 +1,4 @@
-import { tokens } from 'config';
+import { tokens } from '_app/config';
 import { ofType } from 'redux-observable';
 import { of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';

@@ -1,8 +1,8 @@
-import { createEpic } from 'helpers/apiLoadableSingle';
+import { createEpic } from '_app/helpers/apiLoadableSingle';
+import { accountSelector, apiSelector } from '_app/selectors/provider.selector';
 import { StateObservable, ofType } from 'redux-observable';
 import { of } from 'rxjs';
 import { map, mergeMap, take } from 'rxjs/operators';
-import { accountSelector, apiSelector } from 'selectors/provider.selector';
 import types, { actions } from 'types';
 
 export const changeAccount: Epic = action$ =>

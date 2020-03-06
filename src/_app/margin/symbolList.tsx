@@ -4,9 +4,9 @@ import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Panel } from '../../components';
-import { tradingSymbols } from '../../config';
 import { theme } from '../../styles';
 import { actions } from '../../types';
+import { tradingSymbols } from '../config';
 import Pool from './pool';
 import Symbol from './symbol';
 
