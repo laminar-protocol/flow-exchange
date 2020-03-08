@@ -7321,10 +7321,6 @@ flow-parser@0.*:
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.118.0.tgz#81671a7649789dccd932aa24f9e4727dc80afa00"
   integrity sha512-PM3aKA5K3e5kK2hJPsSVdQD4/SVZUQni9qfB0+JHBCjqoAS5mSe3SlhLR9TlH3WDQccL0H2b6zpP8LjOzx9Wtg==
 
-flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum#460bc4d6f6f444075f991644a144a5e17d79ec38:
-  version "0.0.2"
-  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/460bc4d6f6f444075f991644a144a5e17d79ec38"
-
 flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum#aa4fa650c05fc2a885a8461ee87f40c55976146c:
   version "0.0.2"
   resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/aa4fa650c05fc2a885a8461ee87f40c55976146c"

@@ -7,20 +7,20 @@ export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'k
 /* eslint-disable global-require  */
 
 export const abi = {
-  ERC20: require('flow-protocol-ethereum/artifacts/abi/ERC20Detailed.json'),
-  FaucetInterface: require('flow-protocol-ethereum/artifacts/abi/FaucetInterface.json'),
-  FlowMarginProtocol: require('flow-protocol-ethereum/artifacts/abi/FlowMarginProtocol.json'),
-  FlowProtocol: require('flow-protocol-ethereum/artifacts/abi/FlowProtocol.json'),
-  FlowToken: require('flow-protocol-ethereum/artifacts/abi/FlowToken.json'),
-  LiquidityPoolInterface: require('flow-protocol-ethereum/artifacts/abi/LiquidityPoolInterface.json'),
-  MarginTradingPair: require('flow-protocol-ethereum/artifacts/abi/MarginTradingPair.json'),
-  MoneyMarket: require('flow-protocol-ethereum/artifacts/abi/MoneyMarket.json'),
-  PriceOracleInterface: require('flow-protocol-ethereum/artifacts/abi/PriceOracleInterface.json'),
+  ERC20: require('flow-protocol-ethereum/artifacts/kovan/abi/ERC20Detailed.json'),
+  FaucetInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/FaucetInterface.json'),
+  FlowMarginProtocol: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowMarginProtocol.json'),
+  FlowProtocol: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowProtocol.json'),
+  FlowToken: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowToken.json'),
+  LiquidityPoolInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/LiquidityPoolInterface.json'),
+  MarginTradingPair: require('flow-protocol-ethereum/artifacts/kovan/abi/MarginTradingPair.json'),
+  MoneyMarket: require('flow-protocol-ethereum/artifacts/kovan/abi/MoneyMarket.json'),
+  PriceOracleInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/PriceOracleInterface.json'),
 };
 
 export const addresses: {
   [key: string]: string;
-} = require('flow-protocol-ethereum/artifacts/deployment.json').kovan;
+} = require('flow-protocol-ethereum/artifacts/kovan/deployment.json').kovan;
 
 export const explorer: string = ((network: Network) => {
   switch (network) {

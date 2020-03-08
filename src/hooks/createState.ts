@@ -154,19 +154,4 @@ export function create<TState extends State>(
   return [useStore, api, useSelector];
 }
 
-export const immer = <T>(config: StateCreator<T>) => {
-  return (set: SetState<T>, get: GetState<T>, api: StoreApi<T>) =>
-    config(
-      fn =>
-        set(
-          produce(
-            // @ts-ignore
-            fn,
-          ),
-        ),
-      get,
-      api,
-    );
-};
-
 export default create;

@@ -26,6 +26,7 @@ class Api implements FlowApi {
   public withdrawLiquidity: FlowApi['withdrawLiquidity'];
   public depositLiquidity: FlowApi['depositLiquidity'];
   public getPoolAddress: FlowApi['getPoolAddress'];
+  public createPool: FlowApi['createPool'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;
@@ -59,6 +60,7 @@ class Api implements FlowApi {
     this.withdrawLiquidity = this.provider.withdrawLiquidity;
     this.depositLiquidity = this.provider.depositLiquidity;
     this.getPoolAddress = this.provider.getPoolAddress;
+    this.createPool = this.provider.createPool;
   }
 
   private ethereumIsReady = async () => {

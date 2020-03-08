@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import { Link } from 'react-router-dom';
 
 import {
   Col,
@@ -39,8 +40,6 @@ const Liquidity: React.FC = () => {
   const [activeTabKey, setActiveTabKey] = useState<typeof tokens[number]['id'] | ''>('');
   const [loading, setLoading] = useState(false);
   const [addPoolVisible, setAddPoolVisible] = useState(false);
-
-  console.log(pools);
 
   useEffect(() => {
     if (tokens && tokens.length) {
@@ -100,8 +99,15 @@ const Liquidity: React.FC = () => {
           ))}
       </Panel>
       <Separator />
-      <Row justify="end">
-        <SolidButton onClick={() => setAddPoolVisible(true)}>Add Existing Pool</SolidButton>
+      <Row justify="end" gutter={24}>
+        <Col>
+          <SolidButton onClick={() => setAddPoolVisible(true)}>
+            <Link to={`/liquidity/new`}>Create A Pool</Link>
+          </SolidButton>
+        </Col>
+        <Col>
+          <SolidButton onClick={() => setAddPoolVisible(true)}>Add Existing Pool</SolidButton>
+        </Col>
       </Row>
       <RenderAddPool
         visible={addPoolVisible}
