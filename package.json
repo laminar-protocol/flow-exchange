@@ -9,7 +9,7 @@
     "@fortawesome/free-brands-svg-icons": "^5.12.1",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.6",
-    "@laminar/api": "^0.2.0-beta.27",
+    "@laminar/api": "^0.2.0-beta.28",
     "@material-ui/styles": "^4.9.0",
     "@sentry/browser": "^5.7.1",
     "@types/bn.js": "^4.11.5",
@@ -67,8 +67,7 @@
     "typescript": "^3.8.2",
     "utility-types": "^3.9.0",
     "validate.js": "^0.13.1",
-    "web3": "^1.2.1",
-    "zustand": "^2.2.2"
+    "web3": "^1.2.1"
   },
   "scripts": {
     "start": "react-scripts start",
