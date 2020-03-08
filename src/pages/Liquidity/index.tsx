@@ -1,24 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Panel, SegmentedControl, SegmentedControlItem, Separator, TabPane, Tabs, Title } from '../../components';
+import {
+  Col,
+  Panel,
+  Row,
+  SegmentedControl,
+  SegmentedControlItem,
+  Separator,
+  SolidButton,
+  TabPane,
+  Tabs,
+  Title,
+} from '../../components';
 import { isReadySelector, useApp } from '../../hooks/useApp';
-import { usePools } from '../../hooks/usePools';
+import { poolsSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
+import RenderAddPool from './RenderAddPool';
 
 const Liquidity: React.FC = () => {
   const classes = useStyles();
+
+  const sss = useCallback(
+    (state: any) => {
+      return poolsSelector(state);
+    },
+    [poolsSelector],
+  );
 
   const [filterType, setFilterType] = useState<'swap' | 'trade'>('swap');
   const isReady = useApp(isReadySelector);
   const tradingPairs = useApp(state => state.tradingPairs);
   const tokens = useApp(state => state.tokens);
-  const pools = usePools(state => state.pools);
+  const pools = usePools(sss);
   const updatePoolTokenOptionsByToken = usePools(state => state.updatePoolTokenOptionsByToken);
 
   const [tabs, setTabs] = useState<{ name: string; key: string }[]>([]);
   const [activeTabKey, setActiveTabKey] = useState<typeof tokens[number]['id'] | ''>('');
   const [loading, setLoading] = useState(false);
+  const [addPoolVisible, setAddPoolVisible] = useState(false);
+
+  console.log(pools);
 
   useEffect(() => {
     if (tokens && tokens.length) {
@@ -73,9 +95,23 @@ const Liquidity: React.FC = () => {
         </div>
         {pools &&
           activeTabKey &&
-          pools.map(pool => <LiquidityProvider key={pool.id} pool={pool} tokenId={activeTabKey} loading={loading} />)}
+          pools.map(pool => (
+            <LiquidityProvider key={pool.id + pool.name} pool={pool} tokenId={activeTabKey} loading={loading} />
+          ))}
       </Panel>
       <Separator />
+      <Row justify="end">
+        <SolidButton onClick={() => setAddPoolVisible(true)}>Add Existing Pool</SolidButton>
+      </Row>
+      <RenderAddPool
+        visible={addPoolVisible}
+        onCancel={() => {
+          setAddPoolVisible(false);
+        }}
+        onOk={() => {
+          setAddPoolVisible(false);
+        }}
+      />
     </div>
   );
 };

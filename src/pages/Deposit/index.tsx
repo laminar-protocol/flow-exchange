@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import { Amount, Panel, Separator, Text, Title } from '../../components';
 import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
-import { defaultPoolInfoSelector, usePools } from '../../hooks/usePools';
+import { defaultPoolDetailSelector, usePools } from '../../hooks/usePools';
 import { calcTokenLiquidity } from '../../utils';
 
 const Deposit = () => {
@@ -11,7 +11,7 @@ const Deposit = () => {
   const allTokens = useApp(tokenInfoMapSelector);
   const pool = usePools(state => state.defaultPool);
   const initPool = usePools(state => state.initPool);
-  const poolInfo = usePools(defaultPoolInfoSelector);
+  const poolInfo = usePools(defaultPoolDetailSelector);
 
   useEffect(() => {
     pool && initPool(pool.id);

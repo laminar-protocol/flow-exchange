@@ -28,10 +28,14 @@ const useGlobalStyles = createUseStyles(theme => ({
       backgroundColor: 'rgba(0, 0, 0, 0.25)',
     },
     '.ant-modal-content': {
-      backgroundColor: `${theme.backgroundColor} !important`,
+      backgroundColor: `${theme.backgroundColor}`,
       boxShadow: '0px 0px 50px rgba(0, 0, 0, 0.05) !important',
       color: theme.foregroundColor,
-      borderRadius: '0.5rem !important',
+      borderRadius: '0.5rem',
+    },
+    '.ant-modal-header': {
+      backgroundColor: `${theme.backgroundColor}`,
+      borderRadius: '0.5rem',
     },
     '.ant-notification-notice-description': {
       wordBreak: 'break-all',
