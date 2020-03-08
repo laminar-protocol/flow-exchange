@@ -17,7 +17,7 @@ export interface AppState extends State {
   checkAvailableProvider(): ChainType[];
 }
 
-export const [useApp, useAppApi] = create<AppState>(
+export const [useApp, useAppApi, useAppSelector] = create<AppState>(
   (set: SetState<AppState>, get: GetState<AppState>): AppState => ({
     api: null as any,
     currentAccount: null,
@@ -76,7 +76,9 @@ export const tokenInfoMapSelector = createSelector(
 export const baseTokenInfoSelector = createSelector(
   (state: AppState) => state.tokens,
   tokens => {
-    return tokens.find(token => token.isBaseToken);
+    const result = tokens.find(token => token.isBaseToken);
+    if (!result) throw new Error('Base token not found');
+    return result;
   },
 );
 

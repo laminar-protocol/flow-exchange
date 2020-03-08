@@ -25,7 +25,9 @@ const BalanceLine: React.FC<Props> = ({ token, lite, loading = false }) => {
   if (!balance) return null;
 
   if (lite) {
-    return <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>;
+    return (
+      <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} tokenId={token.id} hasPrefix />}</Text>
+    );
   }
 
   return (
@@ -34,7 +36,7 @@ const BalanceLine: React.FC<Props> = ({ token, lite, loading = false }) => {
         <Text>{token.displayName}</Text>
       </div>
       <div>
-        <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>
+        <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} tokenId={token.id} hasPrefix />}</Text>
       </div>
     </Container>
   );

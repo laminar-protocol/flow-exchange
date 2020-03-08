@@ -49,7 +49,7 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
             <Text size="l">
               <Amount
                 value={calcTokenLiquidity(poolInfo.liquidity, poolInfo.options[tokenId].additionalCollateralRatio || 0)}
-                token={baseTokenInfo}
+                tokenId={baseTokenInfo.id}
               />
             </Text>
           </div>

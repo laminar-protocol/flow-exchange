@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { BaseProps } from '../types';
+import { BaseProps } from '../../types';
 
 interface SpinnerProps {
   loading?: boolean;

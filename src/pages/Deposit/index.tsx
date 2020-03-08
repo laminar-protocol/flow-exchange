@@ -47,7 +47,7 @@ const Deposit = () => {
                             poolInfo.liquidity || 0,
                             poolInfo.options[token.id].additionalCollateralRatio || 0,
                           )}
-                          token={token}
+                          tokenId={token.id}
                           hasPrefix
                         />
                       )}

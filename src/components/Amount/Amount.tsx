@@ -1,8 +1,10 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { TokenInfo } from '../services/Api';
-import { fromPrecision, getCurrencySymbol } from '../utils';
+import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
+import { TokenInfo } from '../../services/Api';
+import { fromPrecision, getCurrencySymbol } from '../../utils';
+import { Spinner } from '../Spinner';
 
 function numberToAmount(
   number: BN,
@@ -25,9 +27,9 @@ function numberToAmount(
   return `${prefix}${value}${postfix ? ' ' : ''}${postfix}`;
 }
 
-export default function Amount(props: {
+function Amount(props: {
   value: BN | string | number;
-  token: TokenInfo;
+  tokenId: TokenInfo['id'];
   minDigits?: number;
   useGrouping?: boolean;
   hasPostfix?: boolean;
@@ -36,7 +38,7 @@ export default function Amount(props: {
 }) {
   const {
     value,
-    token,
+    tokenId,
     minDigits = 3,
     useGrouping = true,
     hasPostfix = false,
@@ -44,6 +46,11 @@ export default function Amount(props: {
     component: Component = 'span',
     ...other
   } = props;
+
+  const tokens = useApp(tokenInfoMapSelector);
+  const token = tokens[tokenId];
+
+  if (!tokens[tokenId]) return <Spinner />;
 
   const options: any = {
     precision: token.precision,
@@ -58,3 +65,5 @@ export default function Amount(props: {
 
   return <Component {...other}>{numberToAmount(number, options)}</Component>;
 }
+
+export default Amount;

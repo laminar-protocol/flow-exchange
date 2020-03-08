@@ -19,7 +19,7 @@ const Balance: React.FC<BalanceProps> = ({ token, label, loading = false }) => {
   return (
     <TextCell header={label || `${token.name} Balance`} accessory={getTokenIcon(token.id)} loading={loading}>
       <Text weight="bold" size="l">
-        {balance ? <Amount value={balance} token={token} hasPrefix /> : '-'}
+        {balance ? <Amount value={balance} tokenId={token.id} hasPrefix /> : '-'}
       </Text>
     </TextCell>
   );

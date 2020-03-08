@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { theme } from '../../styles';
 import { IconProp } from '../../types';
 import Icon from '../Icon';
-import Spinner from '../Spinner';
+import { Spinner } from '../Spinner';
 import Text from './Text';
 
 const Header = styled.div`
