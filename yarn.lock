@@ -1418,10 +1418,10 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.28":
-  version "0.2.0-beta.28"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.28.tgz#9cb57fab3051dcbe11540c9523d296fa93afc906"
-  integrity sha512-bQPCP5sNGCwgGhDOOTdHeXqF5ewJTwAQyJTQdq+sgMrCPI8MyM/+bKK46iLAKoq4jEXFcBcqf73oCv8HMBpOzQ==
+"@laminar/api@^0.2.0-beta.29":
+  version "0.2.0-beta.29"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.29.tgz#01690134afdc5ed62253588dd83d0ad63f5debd5"
+  integrity sha512-0oOzwKWggoopxHUrmhpSRtntLofQyZnBbFwkbStKWozJWy6n6Bg9cpRGXoYL0OW9u6fVZUhPg4KVnpSYNQJ9yA==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@laminar/types" beta
@@ -7311,7 +7311,6 @@ flow-parser@0.*:
 
 flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum, flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum#aa4fa650c05fc2a885a8461ee87f40c55976146c:
   version "0.0.2"
-  uid aa4fa650c05fc2a885a8461ee87f40c55976146c
   resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/aa4fa650c05fc2a885a8461ee87f40c55976146c"
 
 flush-write-stream@^1.0.0:
