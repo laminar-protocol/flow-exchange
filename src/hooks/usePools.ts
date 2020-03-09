@@ -42,7 +42,9 @@ export const [usePools, usePoolsApi, usePoolsSelector] = create<PoolsState>(
         ),
       );
       set(state => {
-        Object.assign(state.poolOptions, poolOptions);
+        for (const id of Object.keys(poolOptions)) {
+          state.poolOptions[id] = poolOptions[id];
+        }
         state.poolLiquidity[poolId] = liquidity;
       });
     },
@@ -118,7 +120,7 @@ export const getPoolDetail = (
 
   if (!poolInfo) return null;
   if (!poolId || !poolLiquidity[poolId]) return null;
-
+  console.log(poolLiquidity[poolId], 'getPoolDetail');
   return {
     liquidity: poolLiquidity[poolId],
     options,

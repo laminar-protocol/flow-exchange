@@ -50,13 +50,13 @@ export function create<TState extends State>(
   let state: TState;
   let listeners: Set<() => void> = new Set();
 
-  const setState: SetState<TState> = produce(partial => {
-    const partialState = typeof partial === 'function' ? partial(state) : partial;
+  const setState: SetState<TState> = partial => {
+    const partialState = typeof partial === 'function' ? produce(state, partial) : partial;
     if (partialState !== state) {
       state = Object.assign({}, state, partialState);
       listeners.forEach(listener => listener());
     }
-  });
+  };
 
   const getState: GetState<TState> = () => state;
 
@@ -80,6 +80,7 @@ export function create<TState extends State>(
       // https://github.com/react-spring/zustand/pull/37
       try {
         const newStateSlice = subscriber.selector(state);
+        console.log(newStateSlice, 111);
         if (!subscriber.equalityFn(subscriber.currentSlice, newStateSlice)) {
           subscriber.listener((subscriber.currentSlice = newStateSlice));
         }
@@ -123,12 +124,12 @@ export function create<TState extends State>(
     // The selector or equalityFn need to be called during the render phase if
     // they change. We also want legitimate errors to be visible so we re-run
     // them if they errored in the subscriber.
-    // if (subscriber.selector !== selector || subscriber.equalityFn !== equalityFn || subscriber.errored) {
-    // if (subscriber.equalityFn !== equalityFn || subscriber.errored) {
-    // Using local variables to avoid mutations in the render phase.
-    newStateSlice = selector(state);
-    hasNewStateSlice = !equalityFn(subscriber.currentSlice, newStateSlice);
-    // }
+    if (subscriber.selector !== selector || subscriber.equalityFn !== equalityFn || subscriber.errored) {
+      // if (subscriber.equalityFn !== equalityFn || subscriber.errored) {
+      // Using local variables to avoid mutations in the render phase.
+      newStateSlice = selector(state);
+      hasNewStateSlice = !equalityFn(subscriber.currentSlice, newStateSlice);
+    }
 
     // Syncing changes in useEffect.
     useIsoLayoutEffect(() => {
