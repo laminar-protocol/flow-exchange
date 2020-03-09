@@ -20,7 +20,7 @@ export const abi = {
 
 export const addresses: {
   [key: string]: string;
-} = require('flow-protocol-ethereum/artifacts/kovan/deployment.json').kovan;
+} = require('flow-protocol-ethereum/artifacts/kovan/deployment.json');
 
 export const explorer: string = ((network: Network) => {
   switch (network) {

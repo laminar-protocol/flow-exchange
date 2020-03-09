@@ -124,11 +124,11 @@ export function create<TState extends State>(
     // they change. We also want legitimate errors to be visible so we re-run
     // them if they errored in the subscriber.
     // if (subscriber.selector !== selector || subscriber.equalityFn !== equalityFn || subscriber.errored) {
-    if (subscriber.equalityFn !== equalityFn || subscriber.errored) {
-      // Using local variables to avoid mutations in the render phase.
-      newStateSlice = selector(state);
-      hasNewStateSlice = !equalityFn(subscriber.currentSlice, newStateSlice);
-    }
+    // if (subscriber.equalityFn !== equalityFn || subscriber.errored) {
+    // Using local variables to avoid mutations in the render phase.
+    newStateSlice = selector(state);
+    hasNewStateSlice = !equalityFn(subscriber.currentSlice, newStateSlice);
+    // }
 
     // Syncing changes in useEffect.
     useIsoLayoutEffect(() => {

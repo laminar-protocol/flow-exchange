@@ -39,7 +39,7 @@
     "clsx": "^1.1.0",
     "connected-react-router": "^6.5.2",
     "eventemitter3": "^4.0.0",
-    "flow-protocol-ethereum": "laminar-protocol/flow-protocol-ethereum#aa4fa650c05fc2a885a8461ee87f40c55976146c",
+    "flow-protocol-ethereum": "laminar-protocol/flow-protocol-ethereum",
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "history": "^4.10.1",

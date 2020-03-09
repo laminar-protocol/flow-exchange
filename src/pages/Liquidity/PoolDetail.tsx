@@ -14,7 +14,7 @@ const PoolDetail: React.FC = () => {
   const baseToken = useAppSelector(baseTokenInfoSelector);
   const initPool = usePools(state => state.initPool);
   const deleteCustomPool = usePools(state => state.deleteCustomPool);
-  const poolDetail = usePoolsSelector(poolDetailSelector(params.poolId), [params.poolId]);
+  const poolDetail = usePoolsSelector(state => poolDetailSelector(params.poolId)(state), [params.poolId]);
   const [loading, setLoading] = useState(false);
   const [withdrawVisible, setWithdrawVisible] = useState(false);
   const [depositVisible, setDepositVisible] = useState(false);
@@ -30,7 +30,7 @@ const PoolDetail: React.FC = () => {
       setLoading(false);
     });
   }, [init]);
-  console.log(poolDetail?.name);
+
   return (
     <div>
       <Title type="page">Liquidity Pool</Title>
