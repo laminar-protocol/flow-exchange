@@ -1,8 +1,9 @@
 import { Descriptions as AntdDescriptions } from 'antd';
-import { DescriptionsProps as AntdDescriptionsProps } from 'antd/es/Descriptions';
 import React from 'react';
 
-const Descriptions: React.FC<AntdDescriptionsProps> = ({ ...other }) => {
+type DescriptionsProps = React.ComponentProps<typeof AntdDescriptions>;
+
+const Descriptions: React.FC<DescriptionsProps> = ({ ...other }) => {
   return <AntdDescriptions {...other} />;
 };
 
