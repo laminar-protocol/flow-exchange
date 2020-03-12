@@ -1,7 +1,7 @@
 import { List } from 'antd';
 import React, { useCallback } from 'react';
 
-import { Col, Modal, Row, Separator, SolidButton } from '../../../components';
+import { Modal } from '../../../components';
 import { useApp, useAppApi } from '../../../hooks/useApp';
 
 type SwitchAccountProps = {

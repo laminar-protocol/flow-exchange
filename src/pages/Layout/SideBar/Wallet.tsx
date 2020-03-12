@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { truncate } from '../../../_app/helpers/stringHelper';
-import { useApp } from '../../../hooks';
+import { apiSelector, useApp, useAppSelector } from '../../../hooks/useApp';
 import MenuItem from './MenuItem';
 import SwitchAccount from './SwitchAccount';
 
@@ -20,6 +20,7 @@ const accountName = (account: string) => {
 };
 
 const Wallet: React.FC = ({ ...other }) => {
+  const api = useAppSelector(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
   const history = useHistory();
   const [switchAccountVisible, setSwitchAccountVisible] = useState(false);
@@ -41,16 +42,20 @@ const Wallet: React.FC = ({ ...other }) => {
           </Address>
         </div>
       </MenuItem>
-      <MenuItem icon="wallet" noRoute {...other} onClick={() => setSwitchAccountVisible(true)}>
-        <div>Switch Account</div>
-      </MenuItem>
-      <SwitchAccount
-        visible={switchAccountVisible}
-        onCancel={() => setSwitchAccountVisible(false)}
-        onOk={() => {
-          setSwitchAccountVisible(false);
-        }}
-      />
+      {api && api.chainType === 'laminar' ? (
+        <>
+          <MenuItem icon="wallet" noRoute {...other} onClick={() => setSwitchAccountVisible(true)}>
+            <div>Switch Account</div>
+          </MenuItem>
+          <SwitchAccount
+            visible={switchAccountVisible}
+            onCancel={() => setSwitchAccountVisible(false)}
+            onOk={() => {
+              setSwitchAccountVisible(false);
+            }}
+          />
+        </>
+      ) : null}
     </>
   );
 };
