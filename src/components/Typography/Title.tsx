@@ -6,6 +6,7 @@ import { BaseProps } from '../../types';
 
 type TitleProps = {
   type: 'page';
+  ellipsisi?: boolean;
 };
 
 const Title: React.FC<TitleProps & BaseProps> = ({ component: Component = 'h2', type, className, ...other }) => {

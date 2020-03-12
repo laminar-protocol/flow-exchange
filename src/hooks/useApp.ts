@@ -1,6 +1,14 @@
 import { createSelector } from 'reselect';
 
-import Api, { Account, ChainType, PoolInfo, TokenInfo, TradingPair } from '../services/Api';
+import Api, {
+  Account,
+  AppEthereumApi,
+  AppLaminarApi,
+  ChainType,
+  PoolInfo,
+  TokenInfo,
+  TradingPair,
+} from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 import { useSettingApi } from './useSetting';
 
@@ -61,6 +69,19 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
       return api;
     },
   }),
+);
+
+export const apiSelector = createSelector(
+  (state: AppState) => state.api,
+  api => {
+    if (!api) throw new Error('unexpected error');
+    if (api.chainType === 'ethereum') {
+      return api as AppEthereumApi;
+    } else if (api.chainType === 'laminar') {
+      return api as AppLaminarApi;
+    }
+    throw new Error('unexpected chaintype');
+  },
 );
 
 export const tokenInfoMapSelector = createSelector(

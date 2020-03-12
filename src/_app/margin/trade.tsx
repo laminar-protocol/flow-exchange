@@ -31,7 +31,7 @@ const TradeLine = styled.div`
 const TradeButton = styled.div`
   display: flex;
   flex-direction: row;
-  ${SolidButton} {
+  .trade-button {
     text-transform: uppercase;
     flex: 1;
     &:first-child {
@@ -47,7 +47,7 @@ const TradePrice = styled.div`
   margin-top: 0.5rem;
   display: flex;
   flex-direction: row;
-  ${Text} {
+  .trade-price__text {
     text-align: center;
     text-transform: uppercase;
     font-variant-numeric: tabular-nums;
@@ -221,6 +221,7 @@ const Trade: React.FC<Props> = ({ symbol, pool }) => {
 
       <TradeButton>
         <BuyButton
+          className="trade-button"
           onClick={() => onOpenPosition(tradingSymbol.long, amount, liquidityPool.address)}
           loading={isOpening}
           disabled={!isEnabled}
@@ -228,6 +229,7 @@ const Trade: React.FC<Props> = ({ symbol, pool }) => {
           Buy
         </BuyButton>
         <SellButton
+          className="trade-button"
           onClick={() => onOpenPosition(tradingSymbol.short, amount, liquidityPool.address)}
           loading={isOpening}
           disabled={!isEnabled}
@@ -237,13 +239,13 @@ const Trade: React.FC<Props> = ({ symbol, pool }) => {
       </TradeButton>
 
       <TradePrice>
-        <Text weight="bold">
+        <Text className="trade-price__text" weight="bold">
           <FormatRate
             value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'ask', rate)}
             options={{ mantissa: tradingSymbol.precision }}
           />
         </Text>
-        <Text weight="bold">
+        <Text className="trade-price__text" weight="bold">
           <FormatRate
             value={calculateRate(liquidityPool.spread, tradingSymbol.inverted, 'bid', rate)}
             options={{ mantissa: tradingSymbol.precision }}

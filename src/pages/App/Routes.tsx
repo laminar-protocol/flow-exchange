@@ -13,7 +13,7 @@ import PoolDetail from '../Liquidity/PoolDetail';
 import Swap from '../Swap';
 
 const Routes: React.FC = () => {
-  const api = useApp(state => state.api);
+  const currentApi = useApp(state => state.api);
 
   return (
     <Switch>
@@ -21,12 +21,12 @@ const Routes: React.FC = () => {
         <Home />
       </Route>
       <Route path="/dashboard">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <Dashboard />
         </Layout>
       </Route>
       <Route path="/lending">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <Lending />
         </Layout>
       </Route>
@@ -37,22 +37,22 @@ const Routes: React.FC = () => {
         <Margin />
       </Route>
       <Route exact path="/liquidity">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <Liquidity />
         </Layout>
       </Route>
       <Route path="/liquidity/new">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <LiquidityCreate />
         </Layout>
       </Route>
       <Route path="/liquidity/:poolId">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <PoolDetail />
         </Layout>
       </Route>
       <Route path="/swap">
-        <Layout loading={!api}>
+        <Layout loading={!currentApi}>
           <Swap />
         </Layout>
       </Route>

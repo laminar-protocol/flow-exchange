@@ -22,20 +22,32 @@ const LiquidityProvider: React.FC<LiquidityProviderProps> = ({ pool, tokenId, lo
 
   return (
     <Row className={classes.root}>
-      <Col span={6} style={{ width: '15%' }}>
-        <Text size="l" weight="bold">
+      <Col span={4} style={{ width: '15%' }}>
+        <Text size="l" weight="bold" ellipsisi>
           {pool.name}
         </Text>
       </Col>
-      <Col span={10}>
+      <Col span={6}>
         <div>
           <Text size="s" light>
-            Pool Address
+            Pool ID
           </Text>
         </div>
         <div>
-          <Text style={{ wordBreak: 'break-all' }} size="s">
-            {!loading ? pool.address : <Spinner loading />}
+          <Text size="s" ellipsisi>
+            {!loading ? pool.id : <Spinner loading />}
+          </Text>
+        </div>
+      </Col>
+      <Col span={6}>
+        <div>
+          <Text size="s" light>
+            Owner
+          </Text>
+        </div>
+        <div>
+          <Text size="s" ellipsisi>
+            {!loading ? pool.owner : <Spinner loading />}
           </Text>
         </div>
       </Col>

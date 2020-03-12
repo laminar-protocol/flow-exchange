@@ -9,17 +9,18 @@ import Balance from './Balance';
 const Balances: React.FC = () => {
   const classes = useStyles();
   const tokens = useApp(state => state.tokens);
+  const currentAccount = useApp(state => state.currentAccount);
   const updateBalances = useAccount(state => state.updateBalances);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (updateBalances) {
+    if (updateBalances && currentAccount?.address) {
       setLoading(true);
-      updateBalances().finally(() => {
+      updateBalances(currentAccount.address).finally(() => {
         setLoading(false);
       });
     }
-  }, [updateBalances]);
+  }, [currentAccount?.address]);
 
   return (
     <Panel className={classes.root}>

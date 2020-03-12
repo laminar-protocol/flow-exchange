@@ -61,7 +61,6 @@ export const [usePools, usePoolsApi, usePoolsSelector] = create<PoolsState>(
       });
     },
     deleteCustomPool(poolId, poolName) {
-      console.log(poolId, poolName);
       const { getCustomPoolKey, queryCustomPools } = get();
       const preCustomPools = queryCustomPools();
       const customPools = preCustomPools.filter(({ id, name }) => {

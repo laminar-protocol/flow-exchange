@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 
 import { PrimaryButton, Separator, Text } from '../../components';
 import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
+import { apiSelector } from '../../hooks/useApp';
 import { notificationHelper, toPrecision } from '../../utils';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';
@@ -10,7 +11,7 @@ import { EthereumOraclePrice, PolkadotOraclePrice } from './OraclePrice';
 import { ActionBar, Currency, Detail, Divider, Entry, ExchangeIcon, Label, SwapContainer } from './swap.style';
 
 const Exchange: React.FC = () => {
-  const api = useApp(state => state.api);
+  const api = useApp(apiSelector);
   const currentAccount = useApp(state => state.currentAccount);
   const pool = usePools(state => state.defaultPool);
   const updateBalances = useAccount(state => state.updateBalances);
@@ -74,7 +75,7 @@ const Exchange: React.FC = () => {
           useExchangeApi.setState(state => {
             state.isSwapping = false;
           });
-          updateBalances();
+          updateBalances(currentAccount?.address);
         });
     }
   };

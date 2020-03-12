@@ -110,7 +110,7 @@ export const [useExchange, useExchangeApi] = create<ExchangeState>(
     },
     onFetchLiquidityPoolSpread(otherToken: TokenInfo) {
       set(() => {
-        console.log(otherToken);
+        // console.log(otherToken);
         // dispatch(actions.liquidityPool.spread.requested({ id: [defaultPool, tokens[otherToken].address] }));
       });
     },

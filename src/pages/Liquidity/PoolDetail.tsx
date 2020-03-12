@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Amount, Card, Col, Row, Separator, SolidButton, Table, Text, Title } from '../../components';
-import { baseTokenInfoSelector, tokenInfoMapSelector, useAppSelector } from '../../hooks/useApp';
+import { baseTokenInfoSelector, tokenInfoMapSelector, useApp, useAppSelector } from '../../hooks/useApp';
 import { poolDetailSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
 import RenderDeposit from './RenderDeposit';
 import RenderWithdraw from './RenderWithdraw';
@@ -12,6 +12,7 @@ const PoolDetail: React.FC = () => {
   const params = useParams<{ poolId: string }>();
   const tokens = useAppSelector(tokenInfoMapSelector);
   const baseToken = useAppSelector(baseTokenInfoSelector);
+  const currentAccount = useApp(state => state.currentAccount);
   const initPool = usePools(state => state.initPool);
   const deleteCustomPool = usePools(state => state.deleteCustomPool);
   const poolDetail = usePoolsSelector(poolDetailSelector(params.poolId), [params.poolId]);
@@ -47,9 +48,11 @@ const PoolDetail: React.FC = () => {
           <Col>
             <SolidButton onClick={() => setDepositVisible(true)}>Deposit</SolidButton>
           </Col>
-          <Col>
-            <SolidButton onClick={() => setWithdrawVisible(true)}>Withdraw</SolidButton>
-          </Col>
+          {poolDetail && currentAccount && currentAccount?.address === poolDetail.owner ? (
+            <Col>
+              <SolidButton onClick={() => setWithdrawVisible(true)}>Withdraw</SolidButton>
+            </Col>
+          ) : null}
         </Row>
       </Card>
       {poolDetail ? (

@@ -23,12 +23,12 @@ const RenderAddPool: React.FC<RenderAddPoolProps> = ({ visible, onCancel, onOk }
   const onSubmit = async () => {
     if (api && poolId && name) {
       setSubmitting(true);
-      const result = await api.getPoolAddress(poolId);
+      const result = await api.getPoolOwner(poolId);
       if (result) {
         addCustomPool({
           id: poolId,
           name: name,
-          address: result,
+          owner: result,
           isDefault: false,
         });
         handleOk();

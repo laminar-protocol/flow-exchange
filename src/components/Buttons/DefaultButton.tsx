@@ -7,19 +7,19 @@ const useStyles = createUseStyles(theme => ({
   root: {
     '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
       border: `1px solid ${theme.borderColor}`,
-      fontWeight: theme.normalWeight,
+      fontWeight: theme.boldWeight,
       color: theme.foregroundColor,
-      backgroundColor: theme.whiteForegroundColor,
+      backgroundColor: theme.lightBackgroundColor,
     },
   },
 }));
 
-type LightButtonProps = React.ComponentProps<typeof Button>;
+type DefaultButtonProps = React.ComponentProps<typeof Button>;
 
-const LightButton: React.FC<LightButtonProps> = ({ className, ...other }) => {
+const DefaultButton: React.FC<DefaultButtonProps> = ({ className, ...other }) => {
   const classes = useStyles();
 
   return <Button className={clsx(className, classes.root)} {...other} />;
 };
 
-export default LightButton;
+export default DefaultButton;

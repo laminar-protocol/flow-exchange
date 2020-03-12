@@ -9,15 +9,18 @@ import BalanceLine from './BalanceLine';
 const SwapBalances: React.FC = () => {
   const classes = useStyles();
   const tokens = useApp(state => state.tokens);
+  const currentAccount = useApp(state => state.currentAccount);
   const updateBalances = useAccount(state => state.updateBalances);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    updateBalances().finally(() => {
-      setLoading(false);
-    });
-  }, [updateBalances]);
+    if (currentAccount?.address) {
+      setLoading(true);
+      updateBalances(currentAccount.address).finally(() => {
+        setLoading(false);
+      });
+    }
+  }, [updateBalances, currentAccount?.address]);
 
   return (
     <Panel className={classes.root}>

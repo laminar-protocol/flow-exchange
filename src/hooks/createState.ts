@@ -80,7 +80,6 @@ export function create<TState extends State>(
       // https://github.com/react-spring/zustand/pull/37
       try {
         const newStateSlice = subscriber.selector(state);
-        console.log(newStateSlice, 111);
         if (!subscriber.equalityFn(subscriber.currentSlice, newStateSlice)) {
           subscriber.listener((subscriber.currentSlice = newStateSlice));
         }

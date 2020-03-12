@@ -1,26 +1,22 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-
+import { protocols } from '@laminar/api';
 export const network: Network = (process.env.REACT_APP_NETWORK as Network) || 'kovan';
 
-/* eslint-disable import/no-dynamic-require  */
-/* eslint-disable @typescript-eslint/no-var-requires  */
-/* eslint-disable global-require  */
-
 export const abi = {
-  ERC20: require('flow-protocol-ethereum/artifacts/kovan/abi/ERC20Detailed.json'),
-  FaucetInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/FaucetInterface.json'),
-  FlowMarginProtocol: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowMarginProtocol.json'),
-  FlowProtocol: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowProtocol.json'),
-  FlowToken: require('flow-protocol-ethereum/artifacts/kovan/abi/FlowToken.json'),
-  LiquidityPoolInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/LiquidityPoolInterface.json'),
-  MarginTradingPair: require('flow-protocol-ethereum/artifacts/kovan/abi/MarginTradingPair.json'),
-  MoneyMarket: require('flow-protocol-ethereum/artifacts/kovan/abi/MoneyMarket.json'),
-  PriceOracleInterface: require('flow-protocol-ethereum/artifacts/kovan/abi/PriceOracleInterface.json'),
+  ERC20: protocols.kovan.abis.ERC20,
+  FaucetInterface: protocols.kovan.abis.FaucetInterface,
+  FlowMarginProtocol: protocols.kovan.abis.FlowMarginProtocol,
+  FlowProtocol: protocols.kovan.abis.FlowProtocol,
+  FlowToken: protocols.kovan.abis.FlowToken,
+  LiquidityPoolInterface: protocols.kovan.abis.LiquidityPoolInterface,
+  MarginTradingPair: protocols.kovan.abis.MarginTradingPair,
+  MoneyMarket: protocols.kovan.abis.MoneyMarket,
+  PriceOracleInterface: protocols.kovan.abis.PriceOracleInterface,
 };
 
 export const addresses: {
   [key: string]: string;
-} = require('flow-protocol-ethereum/artifacts/kovan/deployment.json');
+} = protocols.kovan.addresses;
 
 export const explorer: string = ((network: Network) => {
   switch (network) {

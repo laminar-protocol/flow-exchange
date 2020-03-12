@@ -8,6 +8,9 @@ export interface Account {
   address: string;
 }
 
+export type AppEthereumApi = Api & EthereumApi;
+export type AppLaminarApi = Api & LaminarApi;
+
 class Api implements FlowApi {
   private injected: any;
   private provider: EthereumApi | LaminarApi;
@@ -25,7 +28,7 @@ class Api implements FlowApi {
   public getTradingPairs: FlowApi['getTradingPairs'];
   public withdrawLiquidity: FlowApi['withdrawLiquidity'];
   public depositLiquidity: FlowApi['depositLiquidity'];
-  public getPoolAddress: FlowApi['getPoolAddress'];
+  public getPoolOwner: FlowApi['getPoolOwner'];
   public createPool: FlowApi['createPool'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
@@ -59,7 +62,7 @@ class Api implements FlowApi {
     this.getTradingPairs = this.provider.getTradingPairs;
     this.withdrawLiquidity = this.provider.withdrawLiquidity;
     this.depositLiquidity = this.provider.depositLiquidity;
-    this.getPoolAddress = this.provider.getPoolAddress;
+    this.getPoolOwner = this.provider.getPoolOwner;
     this.createPool = this.provider.createPool;
   }
 

@@ -3,20 +3,20 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Amount, Col, LightButton, Row, SolidButton, Spinner, Text } from '../../components';
-import { useApp } from '../../hooks/useApp';
+import { apiSelector, useApp } from '../../hooks/useApp';
 import { notificationHelper } from '../../utils';
 
 const { Step } = Steps;
 
 const LiquidityCreate: React.FC = () => {
-  const api = useApp(state => state.api);
+  const api = useApp(apiSelector);
   const currentAccount = useApp(state => state.currentAccount);
   const history = useHistory();
 
   const [loading, setLoading] = useState<number | null>(null);
 
   const deploy = async () => {
-    if (api && currentAccount) {
+    if (currentAccount) {
       setLoading(0);
       notificationHelper(api.createPool(currentAccount.address)).finally(() => {
         setLoading(null);
