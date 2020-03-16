@@ -1418,16 +1418,17 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.31":
-  version "0.2.0-beta.31"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.31.tgz#bc8af975e4432f86468c5d9727c06acd3b75cdf3"
-  integrity sha512-iFoXKAXje051+7JjD+zhBstKRaVvarptrUfaGqekjieUlkVoBqSLXnyg9uHHlko5eGxo/UgFBDDi74A1Om77Lw==
+"@laminar/api@^0.2.0-beta.32":
+  version "0.2.0-beta.32"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.32.tgz#2c8b3870b51198da5a31213840620e45dda6034f"
+  integrity sha512-yIgqyKwr10/W4O/M2WFtsUb6rcbAfRCl2Y5RrYwFHlKXskelJqgSBdQq6DPioFFwc+iipnGr/Tb8cBRGD2BtZQ==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@laminar/types" beta
     "@orml/api-derive" beta
     "@orml/jsonrpc" beta
     "@polkadot/api" beta
+    flow-protocol-ethereum laminar-protocol/flow-protocol-ethereum
     web3 "1.2.6"
     web3-core "1.2.6"
     web3-eth-contract "1.2.6"
@@ -7307,6 +7308,10 @@ flow-parser@0.*:
   version "0.120.1"
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.120.1.tgz#26781130575fee4a45ecae0240b9d037e2746b72"
   integrity sha512-t5y9QoOegJuY+LCIjh0p6SGF7ItsxG5ycQApTSqWloutUZQ2gC0f6wMu91dab0/SSj2vH41bu5pDTLuvtP49ng==
+
+flow-protocol-ethereum@laminar-protocol/flow-protocol-ethereum:
+  version "0.0.2"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/4a541b47d1d462ae9844af076826a544f23be634"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
