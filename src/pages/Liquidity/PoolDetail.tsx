@@ -1,14 +1,17 @@
 import { message } from 'antd';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Amount, Card, Col, Row, Separator, SolidButton, Table, Text, Title } from '../../components';
-import { baseTokenInfoSelector, tokenInfoMapSelector, useApp, useAppSelector } from '../../hooks/useApp';
+import { apiSelector, baseTokenInfoSelector, tokenInfoMapSelector, useApp, useAppSelector } from '../../hooks/useApp';
 import { poolDetailSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
+import { notificationHelper } from '../../utils';
 import RenderDeposit from './RenderDeposit';
 import RenderWithdraw from './RenderWithdraw';
 
 const PoolDetail: React.FC = () => {
+  const api = useApp(apiSelector);
+
   const params = useParams<{ poolId: string }>();
   const tokens = useAppSelector(tokenInfoMapSelector);
   const baseToken = useAppSelector(baseTokenInfoSelector);
@@ -20,6 +23,9 @@ const PoolDetail: React.FC = () => {
   const [withdrawVisible, setWithdrawVisible] = useState(false);
   const [depositVisible, setDepositVisible] = useState(false);
   const history = useHistory();
+  const [allowance, setAllowance] = useState();
+  const [allowanceLoading, setAllowanceLoading] = useState(false);
+  const [forceUpdateAllowanceSignal, forceUpdateAllowance] = useReducer(x => x + 1, 0);
 
   const init = useCallback(() => {
     return initPool(params.poolId);
@@ -31,6 +37,28 @@ const PoolDetail: React.FC = () => {
       setLoading(false);
     });
   }, [init]);
+
+  useEffect(() => {
+    if (api.getPoolAllowance && currentAccount && poolDetail) {
+      api.getPoolAllowance(currentAccount.address, poolDetail.id).then((value: any) => {
+        setAllowance(value);
+      });
+    }
+  }, [api, currentAccount, poolDetail, forceUpdateAllowanceSignal]);
+
+  const enable = async () => {
+    if (currentAccount && poolDetail && api.liquidityPoolGrant) {
+      setAllowanceLoading(true);
+      //@ts-ignore
+      return notificationHelper(api.liquidityPoolGrant(currentAccount.address, poolDetail.id))
+        .then(() => {
+          forceUpdateAllowance();
+        })
+        .finally(() => {
+          setAllowanceLoading(false);
+        });
+    }
+  };
 
   return (
     <div>
@@ -46,9 +74,15 @@ const PoolDetail: React.FC = () => {
             ) : null}
           </Col>
           <Col>
-            <SolidButton onClick={() => setDepositVisible(true)}>Deposit</SolidButton>
+            {allowance === '0' ? (
+              <SolidButton onClick={() => enable()} loading={allowanceLoading} disabled={allowanceLoading}>
+                Enable
+              </SolidButton>
+            ) : (
+              <SolidButton onClick={() => setDepositVisible(true)}>Deposit</SolidButton>
+            )}
           </Col>
-          {poolDetail && currentAccount && currentAccount?.address === poolDetail.owner ? (
+          {poolDetail && currentAccount && currentAccount.address === poolDetail.owner ? (
             <Col>
               <SolidButton onClick={() => setWithdrawVisible(true)}>Withdraw</SolidButton>
             </Col>

@@ -31,6 +31,11 @@ class Api implements FlowApi {
   public getPoolOwner: FlowApi['getPoolOwner'];
   public createPool: FlowApi['createPool'];
 
+  public getTokenAllowance?: EthereumApi['getTokenAllowance'];
+  public getPoolAllowance?: EthereumApi['getPoolAllowance'];
+  public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
+  public liquidityPoolGrant?: EthereumApi['liquidityPoolGrant'];
+
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;
 
@@ -64,6 +69,13 @@ class Api implements FlowApi {
     this.depositLiquidity = this.provider.depositLiquidity;
     this.getPoolOwner = this.provider.getPoolOwner;
     this.createPool = this.provider.createPool;
+    if (this.chainType === 'ethereum') {
+      const provider = this.provider as EthereumApi;
+      this.getTokenAllowance = provider.getTokenAllowance;
+      this.getPoolAllowance = provider.getPoolAllowance;
+      this.flowProtocolGrant = provider.flowProtocolGrant;
+      this.liquidityPoolGrant = provider.liquidityPoolGrant;
+    }
   }
 
   private ethereumIsReady = async () => {

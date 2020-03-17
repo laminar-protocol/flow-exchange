@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
-import { PrimaryButton, Separator, Text } from '../../components';
+import { PrimaryButton, Separator, SolidButton, Text } from '../../components';
 import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
 import { apiSelector } from '../../hooks/useApp';
 import { notificationHelper, toPrecision } from '../../utils';
@@ -32,6 +32,9 @@ const Exchange: React.FC = () => {
   const onToAmountChange = useExchange(state => state.onToAmountChange);
   const onSwapToken = useExchange(state => state.onSwapToken);
   const onFetchLiquidityPoolSpread = useExchange(state => state.onFetchLiquidityPoolSpread);
+  const [allowance, setAllowance] = useState<Record<string, string>>({});
+  const [allowanceLoading, setAllowanceLoading] = useState(false);
+  const [forceUpdateAllowanceSignal, forceUpdateAllowance] = useReducer(x => x + 1, 0);
 
   const { askSpread, bidSpread }: { askSpread?: number; bidSpread?: number } = usePools(state => {
     if (pool && fromToken && toToken) {
@@ -55,7 +58,7 @@ const Exchange: React.FC = () => {
   }
 
   const onSwap = async () => {
-    if (currentAccount && api && toToken && fromToken && pool) {
+    if (currentAccount && toToken && fromToken && pool) {
       useExchangeApi.setState(state => {
         state.isSwapping = true;
       });
@@ -79,6 +82,31 @@ const Exchange: React.FC = () => {
         });
     }
   };
+
+  const enable = async () => {
+    if (currentAccount && fromToken && pool && api.flowProtocolGrant) {
+      setAllowanceLoading(true);
+
+      return notificationHelper(api.flowProtocolGrant(currentAccount.address, fromToken.id))
+        .then(() => {
+          forceUpdateAllowance();
+        })
+        .finally(() => {
+          setAllowanceLoading(false);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (fromToken?.id && api.chainType === 'ethereum' && api.getTokenAllowance && currentAccount) {
+      api.getTokenAllowance(currentAccount.address, fromToken.id).then((value: any) => {
+        setAllowance(state => ({
+          [fromToken.id]: value,
+          ...state,
+        }));
+      });
+    }
+  }, [api, currentAccount, fromToken, forceUpdateAllowanceSignal]);
 
   // init
   useEffect(() => {
@@ -164,16 +192,29 @@ const Exchange: React.FC = () => {
         <Detail>
           <ExchangeRate isLoading={isLoading} spread={spread} rate={rate} fromToken={fromToken} toToken={toToken} />
         </Detail>
-        <PrimaryButton
-          size="large"
-          loading={isSwapping}
-          onClick={() => {
-            onSwap();
-          }}
-          disabled={!isValid || isSwapping}
-        >
-          Exchange
-        </PrimaryButton>
+        {api.chainType === 'ethereum' && fromToken && allowance[fromToken.id] === '0' ? (
+          <SolidButton
+            size="large"
+            onClick={() => {
+              enable();
+            }}
+            loading={allowanceLoading}
+            disabled={allowanceLoading}
+          >
+            Enable
+          </SolidButton>
+        ) : (
+          <PrimaryButton
+            size="large"
+            loading={isSwapping}
+            onClick={() => {
+              onSwap();
+            }}
+            disabled={!isValid || isSwapping}
+          >
+            Exchange
+          </PrimaryButton>
+        )}
       </ActionBar>
     </SwapContainer>
   );
