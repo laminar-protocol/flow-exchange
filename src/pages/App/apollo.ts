@@ -8,11 +8,11 @@ import { getMainDefinition } from 'apollo-utilities';
 const cache = new InMemoryCache();
 
 const httpLink = new HttpLink({
-  uri: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+  uri: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+  uri: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
   options: {
     reconnect: true,
   },

@@ -296,13 +296,13 @@ export const subgraphEndpoints = ((network: Network): { http: string; ws: string
       };
     case 'kovan':
       return {
-        http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
-        ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+        http: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+        ws: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
       };
     default:
       return {
-        http: 'http://localhost:8000/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
-        ws: 'ws://localhost:8001/subgraphs/name/laminar-protocol/flow-protocol-subgraph',
+        http: 'http://localhost:8000/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+        ws: 'ws://localhost:8001/subgraphs/name/laminar-protocol/flow-protocol-kovan',
       };
   }
 })(network);
