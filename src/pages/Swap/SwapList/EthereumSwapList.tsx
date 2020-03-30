@@ -1,15 +1,13 @@
 import { useSubscription } from '@apollo/react-hooks';
+import clsx from 'clsx';
 import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { Panel, Spinner, Text } from '../../components';
-import { useApp } from '../../hooks';
+import { Panel, Spinner, Text } from '../../../components';
+import { useApp } from '../../../hooks';
 import SwapItem from './SwapListItem';
 
-// ----------
-// GQL
-// ----------
 const listQuery = gql`
   subscription eventEntities($user: Bytes!) {
     eventEntities(first: 20, orderBy: timestamp, orderDirection: desc, where: { user: $user }) {
@@ -33,6 +31,7 @@ const listQuery = gql`
 
 const SwapList: React.FC = () => {
   const account = useApp(state => state.currentAccount);
+  const classes = useStyles();
 
   const { loading: isLoading, data } = useSubscription(listQuery, {
     variables: {
@@ -44,23 +43,24 @@ const SwapList: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Container className="is-center">
+      <Panel className="is-center">
         <Spinner />
-      </Container>
+      </Panel>
     );
   }
 
   if (!positions || (positions as Array<any>).length <= 0) {
     return (
-      <Container className="is-center">
+      <Panel className={clsx(classes.root, classes.isCenter)}>
         <Text light size="l">
           No Transaction
         </Text>
-      </Container>
+      </Panel>
     );
   }
+
   return (
-    <Container>
+    <Panel className={clsx(classes.root, classes.isCenter)}>
       {positions.map((position: any) => (
         <SwapItem
           tx={position.txhash}
@@ -72,20 +72,22 @@ const SwapList: React.FC = () => {
           symbol={position.token.symbol}
         />
       ))}
-    </Container>
+    </Panel>
   );
 };
 
-const Container = styled(Panel)`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-self: stretch;
-  &.is-center {
-    align-items: center;
-    justify-content: center;
-  }
-`;
+const useStyles = createUseStyles({
+  root: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignSelf: 'stretch',
+  },
+  isCenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 export default SwapList;

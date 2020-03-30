@@ -6,12 +6,6 @@ type themeMode = 'light' | 'dark';
 
 declare module 'react-jss' {
   interface DefaultTheme extends AppTheme {}
-  interface CreateUseStylesOptions {}
-
-  export function createUseStyles<Theme = DefaultTheme, C extends string = string>(
-    styles: Record<C, any> | ((theme: Theme) => Record<C, any>),
-    options?: CreateUseStylesOptions,
-  ): (data?: unknown) => Classes<C>;
 }
 
 interface AppTheme {

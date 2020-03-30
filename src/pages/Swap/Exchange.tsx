@@ -141,9 +141,9 @@ const Exchange: React.FC = () => {
     <SwapContainer padding={2}>
       {api.chainType === 'laminar' ? (
         <PolkadotOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />
-      ) : (
+      ) : api.chainType === 'ethereum' ? (
         <EthereumOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />
-      )}
+      ) : null}
       <Entry>
         <Currency>
           <Label>

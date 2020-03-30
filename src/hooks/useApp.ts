@@ -109,3 +109,5 @@ export const isReadySelector = createSelector(
     return !!api;
   },
 );
+
+export default useApp;

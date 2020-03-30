@@ -1,31 +1,51 @@
 import { ApolloProvider } from '@apollo/react-hooks';
-import { ConnectedRouter } from 'connected-react-router';
-import React, { useEffect } from 'react';
-import { Provider } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
-import store, { history } from '../../_app/reduxStore';
-import { useDispatch, useSetting } from '../../hooks';
-import { actions } from '../../types';
-import apolloClient from './apollo';
+import { useSetting } from '../../hooks';
+import { useApp } from '../../hooks/useApp';
+import createApolloClient from './apollo';
 import Init from './Init';
 import Routes from './Routes';
 import ThemeProvider from './ThemeProvider';
 
 const AppInit: React.FC = () => {
+  const api = useApp(state => state.api);
   const mode = useSetting(state => state.setting.currentTheme);
-  const dispatch = useDispatch();
+
+  const [client, setClient] = useState<any>(null);
 
   useEffect(() => {
-    // @TODO remove
-    dispatch(actions.app.init.trigger());
-  }, [dispatch]);
+    if (api && api.chainType === 'laminar') {
+      const client = createApolloClient({
+        httpUri: 'https://indexer.laminar-chain.laminar.one/v1/graphql',
+        wsUri: 'wss://indexer.laminar-chain.laminar.one/v1/graphql',
+      });
+      setClient(client);
+    } else {
+      const client = createApolloClient({
+        httpUri: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+        wsUri: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+      });
+      setClient(client);
+    }
+  }, [api]);
 
   return (
     <StyledThemeProvider theme={{ mode }}>
       <ThemeProvider mode={mode}>
-        <Init />
-        <Routes />
+        {client ? (
+          <ApolloProvider client={client}>
+            <Init />
+            <Routes />
+          </ApolloProvider>
+        ) : (
+          <>
+            <Init />
+            <Routes />
+          </>
+        )}
       </ThemeProvider>
     </StyledThemeProvider>
   );
@@ -33,13 +53,9 @@ const AppInit: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <ApolloProvider client={apolloClient}>
-          <AppInit />
-        </ApolloProvider>
-      </ConnectedRouter>
-    </Provider>
+    <Router>
+      <AppInit />
+    </Router>
   );
 };
 

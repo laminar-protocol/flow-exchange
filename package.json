@@ -46,7 +46,7 @@
     "ramda": "^0.26.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
-    "react-jss": "^10.0.4",
+    "react-jss": "^10.1.1",
     "react-number-format": "^4.3.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
@@ -112,7 +112,6 @@
     "husky": "^4.0.1",
     "import-sort-style-module": "^6.0.0",
     "prettier": "^1.19.1",
-    "prettier-plugin-import-sort": "^0.0.3",
     "pretty-quick": "^2.0.1",
     "react-test-renderer": "^16.12.0",
     "storybook": "^5.3.4"
@@ -120,12 +119,6 @@
   "husky": {
     "hooks": {
       "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "importSort": {
-    ".js, .jsx, .ts, .tsx": {
-      "style": "module",
-      "parser": "typescript"
     }
   }
 }

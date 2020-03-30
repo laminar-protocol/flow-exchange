@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { explorer, tokens } from '../../_app/config';
-import { FormatBalance, Icon, Text } from '../../components';
-import { theme } from '../../styles';
+import { explorer, tokens } from '../../../_app/config';
+import { FormatBalance, Icon, Text } from '../../../components';
+import { theme } from '../../../styles';
 
 const Line = styled.div`
   margin: 0.75rem 0;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -68,6 +69,7 @@ const SwapItem: React.FC<StateProps> = ({ tx, kind, baseTokenAmount, flowTokenAm
   const { name: baseTokenName, currencySymbol: baseTokenCurrencySymbol } = tokens.DAI;
   const date = new Date(timestamp * 1000);
   const isMint = kind === 'Minted';
+
   return (
     <Line>
       <Symbol>

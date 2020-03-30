@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import NetworkStatus from '../../../_app/NetworkStatus';
 import LaminarLogo from '../../../assets/laminar.svg';
 import { Icon, Row, Separator, Switch } from '../../../components';
 import { useSetting } from '../../../hooks';
@@ -28,9 +27,6 @@ const Navigation: React.FC = () => {
             Dashboard
           </MenuItem>
           <Separator />
-          <MenuItem icon="chart-line" to="/margin">
-            Margin Trading
-          </MenuItem>
           <MenuItem icon="exchange-alt" to="/swap">
             Swap
           </MenuItem>
@@ -44,9 +40,6 @@ const Navigation: React.FC = () => {
       </div>
       <div>
         <Row justify="space-between" align="middle">
-          <div>
-            <NetworkStatus />
-          </div>
           <div className="theme-switch">
             <Switch
               onChange={() => {
