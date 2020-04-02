@@ -1,101 +1,88 @@
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
 import LaminarLogo from '../../../assets/laminar.svg';
-import { Icon, Row, Separator, Switch } from '../../../components';
-import { useSetting } from '../../../hooks';
-import { theme } from '../../../styles';
+import { Row, Separator } from '../../../components';
+import { ExchangeIcon, MenuDashboardIcon, MenuSwapIcon, MenuLiquidityIcon, MenuDepositIcon } from '../../../icons';
+
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
-  const currentTheme = useSetting(state => state.setting.currentTheme);
-  const setCurrentTheme = useSetting(state => state.setCurrentTheme);
+  const classes = useStyle();
 
   return (
-    <Container>
+    <div className={classes.root}>
       <div>
-        <div className="logo-container">
-          <img className="logo" src={LaminarLogo} alt="laminar" />
-          <div className="logo-text">Flow Exchange</div>
-        </div>
-        <Separator />
-        <div>
+        <Row className={classes.logoContainer}>
+          <img className={classes.logo} src={LaminarLogo} alt="laminar" />
+          <div className={classes.logoText}>FLOW EXCHANGE</div>
+        </Row>
+        <Row justify="end" className={classes.switchNetwork}>
+          <div className={classes.switchNetworkBtn}>
+            <ExchangeIcon className={classes.switchNetworkIcon} />
+            Ethereum
+          </div>
+        </Row>
+        <div className={classes.menuContainer}>
           <Wallet />
-          <Separator />
-          <MenuItem icon="home" to="/dashboard">
+          <MenuItem iconComponent={MenuDashboardIcon} to="/dashboard">
             Dashboard
           </MenuItem>
-          <Separator />
-          <MenuItem icon="exchange-alt" to="/swap">
+          <MenuItem iconComponent={MenuSwapIcon} to="/swap">
             Swap
           </MenuItem>
-          <MenuItem icon="landmark" to="/lending">
+          <MenuItem iconComponent={MenuDepositIcon} to="/lending">
             Deposit &amp; Earn
           </MenuItem>
-          <MenuItem icon="hand-holding-usd" to="/liquidity">
+          <MenuItem iconComponent={MenuLiquidityIcon} to="/liquidity">
             Liquidity Provider
           </MenuItem>
         </div>
       </div>
-      <div>
-        <Row justify="space-between" align="middle">
-          <div className="theme-switch">
-            <Switch
-              onChange={() => {
-                setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light');
-              }}
-              checked={currentTheme === 'dark'}
-            />
-            <Icon className="navigation__icon" icon="adjust" />
-          </div>
-        </Row>
-      </div>
-    </Container>
+    </div>
   );
 };
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+const useStyle = createUseStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
+  logoContainer: {
+    paddingTop: '1rem',
+  },
+  logo: {
+    width: '3.5rem',
+    marginRight: '0.75rem',
+  },
+  logoText: {
+    fontSize: '1.2rem',
+    verticalAlign: 'middle',
+    fontWeight: theme.boldWeight,
+    color: theme.foregroundColor,
+  },
+  switchNetwork: {
+    marginTop: '0.75rem',
+  },
+  switchNetworkBtn: {
+    fontSize: '0.875rem',
+    textTransform: 'uppercase',
+    color: '#0155ff',
+    padding: '4px 8px',
+    borderRadius: 11.5,
+    boxShadow: '0 0 4px 0 rgba(6, 35, 96, 0.06)',
+    border: 'solid 1px rgba(1, 85, 255, 0.2)',
+  },
+  switchNetworkIcon: {
+    width: '0.875rem',
+    marginRight: '0.25rem',
+  },
+  menuContainer: {
+    margin: '2rem 0',
+  },
+}));
 
-  .logo-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    height: 1.2rem;
-    margin-right: 0.5rem;
-  }
-
-  .logo-text {
-    font-size: 1.25rem;
-    vertical-align: middle;
-    font-weight: ${theme.boldWeight};
-    color: ${theme.foregroundColor};
-    text-transform: uppercase;
-    background: linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .navigation__icon {
-    font-size: ${theme.textNormalSize};
-    color: ${theme.lightForegroundColor};
-  }
-
-  .theme-switch {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    .icon {
-      margin-left: 1rem;
-    }
-  }
-`;
 export default Navigation;

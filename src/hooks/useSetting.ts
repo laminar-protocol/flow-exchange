@@ -52,3 +52,5 @@ export const [useSetting, useSettingApi] = create<SettingState>(
     };
   },
 );
+
+export default useSetting;

@@ -5,8 +5,21 @@ import { HttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-const createApolloClient = ({ httpUri, wsUri }: { httpUri: string; wsUri: string }) => {
+const linkConfig = {
+  laminar: {
+    httpUri: 'https://indexer.laminar-chain.laminar.one/v1/graphql',
+    wsUri: 'wss://indexer.laminar-chain.laminar.one/v1/graphql',
+  },
+  ethereum: {
+    httpUri: 'https://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+    wsUri: 'wss://api.thegraph.com/subgraphs/name/laminar-protocol/flow-protocol-kovan',
+  },
+};
+
+const createApolloClient = (type: keyof typeof linkConfig) => {
   const cache = new InMemoryCache();
+
+  const { httpUri, wsUri } = linkConfig[type];
 
   const httpLink = new HttpLink({
     uri: httpUri,

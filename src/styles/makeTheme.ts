@@ -49,6 +49,9 @@ interface AppTheme {
   indicatorYellowColor: string;
   indicatorGrayColor: string;
   breakpoints: ReturnType<typeof createBreakpoints>;
+
+  // style
+  linearGradientBorder: any;
 }
 
 const switchMode = (mode: themeMode, value: { light: string; dark: string }) => value[mode];
@@ -151,12 +154,12 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
   }),
 
   // Side bar
-  sideBarWidth: 300,
+  sideBarWidth: 270,
 
   // Font weight
   lightWeight: 150,
   normalWeight: 300,
-  boldWeight: 600,
+  boldWeight: 500,
   blackWeight: 900,
 
   // Font size
@@ -183,6 +186,11 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
   }),
 
   breakpoints: createBreakpoints(),
+
+  linearGradientBorder: {
+    borderImageSource: 'linear-gradient(to bottom, #004fff, #fe0000)',
+    borderImageSlice: 1,
+  },
 });
 
 export default makeTheme;

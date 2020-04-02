@@ -1,9 +1,11 @@
-import 'antd/dist/antd.css';
+import React from 'react';
 
 import * as Sentry from '@sentry/browser';
-import React from 'react';
 import ReactDOM from 'react-dom';
 
+import 'antd/dist/antd.css';
+
+import './i18n';
 import App from './pages/App';
 
 const render = (App: React.ComponentType) => {

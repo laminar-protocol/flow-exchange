@@ -7,6 +7,7 @@ import { truncate } from '../../../_app/helpers/stringHelper';
 import { apiSelector, useApp, useAppSelector } from '../../../hooks/useApp';
 import MenuItem from './MenuItem';
 import SwitchAccount from './SwitchAccount';
+import { MenuWalletIcon } from '../../../icons';
 
 const Address = styled(Text)`
   text-overflow: ellipsis;
@@ -28,11 +29,12 @@ const Wallet: React.FC = ({ ...other }) => {
   return (
     <>
       <MenuItem
-        icon="wallet"
+        iconComponent={MenuWalletIcon}
         noRoute
         {...other}
         onClick={() => {
-          history.push('/');
+          if (!api || api.chainType !== 'laminar') return false;
+          setSwitchAccountVisible(true);
         }}
       >
         <div>Wallet</div>
@@ -42,20 +44,13 @@ const Wallet: React.FC = ({ ...other }) => {
           </Address>
         </div>
       </MenuItem>
-      {api && api.chainType === 'laminar' ? (
-        <>
-          <MenuItem icon="wallet" noRoute {...other} onClick={() => setSwitchAccountVisible(true)}>
-            <div>Switch Account</div>
-          </MenuItem>
-          <SwitchAccount
-            visible={switchAccountVisible}
-            onCancel={() => setSwitchAccountVisible(false)}
-            onOk={() => {
-              setSwitchAccountVisible(false);
-            }}
-          />
-        </>
-      ) : null}
+      <SwitchAccount
+        visible={switchAccountVisible}
+        onCancel={() => setSwitchAccountVisible(false)}
+        onOk={() => {
+          setSwitchAccountVisible(false);
+        }}
+      />
     </>
   );
 };

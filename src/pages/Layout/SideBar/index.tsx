@@ -1,42 +1,42 @@
-import { Layout } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
+import { Layout } from 'antd';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../../../styles';
 import Navigation from './Navigation';
 
 const { Sider } = Layout;
 
-const SideBar: React.FC = () => (
-  <Container>
-    <Sider width="100%" className="layout__sidebar">
-      <Navigation />
-    </Sider>
-  </Container>
-);
+const SideBar: React.FC = () => {
+  const classes = useStyles();
 
-const Container = styled(Layout)`
-  &.ant-layout {
-    position: fixed;
-    left: 0;
+  return (
+    <Layout className={classes.root}>
+      <Sider width="100%" className="layout__sidebar">
+        <Navigation />
+      </Sider>
+    </Layout>
+  );
+};
 
-    height: 100vh;
-    width: ${theme.sideBarWidth}px;
-
-    background-color: ${theme.lightBackgroundColor};
-    border-right: 1px solid ${theme.borderColor};
-
-    padding: 1.5rem;
-    ${theme.respondTo.sm`
-      display: none;
-    `}
-
-    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
-  }
-
-  .layout__sidebar.ant-layout-sider {
-    background-color: transparent;
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  root: {
+    '&.ant-layout': {
+      position: 'fixed',
+      left: 0,
+      height: '100vh',
+      width: `${theme.sideBarWidth}px`,
+      backgroundColor: `${theme.lightBackgroundColor}`,
+      borderRight: `1px solid ${theme.borderColor}`,
+      padding: '1rem',
+      [theme.breakpoints.down('sm')]: {
+        display: 'none',
+      },
+      boxShadow: '0 20px 20px 0 rgba(13, 28, 90, 0.1)',
+    },
+    '& .layout__sidebar.ant-layout-sider': {
+      backgroundColor: 'transparent',
+    },
+  },
+}));
 
 export default SideBar;
