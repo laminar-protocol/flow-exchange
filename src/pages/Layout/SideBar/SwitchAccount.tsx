@@ -2,7 +2,7 @@ import { List } from 'antd';
 import React, { useCallback } from 'react';
 
 import { Modal } from '../../../components';
-import { useApp, useAppApi } from '../../../hooks/useApp';
+import useApp, { useAppApi } from '../../../hooks/useApp';
 
 type SwitchAccountProps = {
   visible: boolean;
@@ -42,7 +42,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
   return (
     <Modal
       transitionName="none"
-      title="Select Account"
+      title="Choose different account"
       visible={visible}
       onCancel={() => handleCancel()}
       footer={null}

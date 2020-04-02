@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
+import { useHistory } from 'react-router-dom';
 
 import LaminarLogo from '../../../assets/laminar.svg';
-import { Row, Separator } from '../../../components';
+import { Row } from '../../../components';
 import { ExchangeIcon, MenuDashboardIcon, MenuSwapIcon, MenuLiquidityIcon, MenuDepositIcon } from '../../../icons';
+import useApp from '../../../hooks/useApp';
 
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
   const classes = useStyle();
+  const api = useApp(state => state.api);
+  const history = useHistory();
+
+  const networkName = useMemo(() => {
+    if (api) {
+      if (api.chainType === 'ethereum') {
+        return 'ethereum';
+      }
+      if (api.chainType === 'laminar') {
+        return 'laminar';
+      }
+    }
+    return 'Select';
+  }, [api]);
 
   return (
     <div className={classes.root}>
@@ -19,9 +35,14 @@ const Navigation: React.FC = () => {
           <div className={classes.logoText}>FLOW EXCHANGE</div>
         </Row>
         <Row justify="end" className={classes.switchNetwork}>
-          <div className={classes.switchNetworkBtn}>
+          <div
+            className={classes.switchNetworkBtn}
+            onClick={() => {
+              history.push('/');
+            }}
+          >
             <ExchangeIcon className={classes.switchNetworkIcon} />
-            Ethereum
+            {networkName}
           </div>
         </Row>
         <div className={classes.menuContainer}>
@@ -69,6 +90,7 @@ const useStyle = createUseStyles(theme => ({
   },
   switchNetworkBtn: {
     fontSize: '0.875rem',
+    cursor: 'pointer',
     textTransform: 'uppercase',
     color: '#0155ff',
     padding: '4px 8px',

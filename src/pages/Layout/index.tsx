@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Spinner } from '../../components';
-import { apiSelector, useApp } from '../../hooks/useApp';
+import { useApp } from '../../hooks/useApp';
 import { useSetting } from '../../hooks/useSetting';
 import Prime from './Prime';
 import SideBar from './SideBar';

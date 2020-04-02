@@ -18,7 +18,9 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Layout>
+          <Home />
+        </Layout>
       </Route>
       <Route path="/dashboard">
         <Layout loading={!currentApi}>
