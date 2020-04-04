@@ -1,6 +1,6 @@
 import { Layout as AntdLayout } from 'antd';
 import React, { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { Spinner } from '../../components';
@@ -20,9 +20,12 @@ const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   const setting = useSetting(state => state.setting);
 
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     const availableProvider = checkAvailableProvider();
+
+    if (location.pathname === '/') return;
 
     if (currentApi) {
       if (!availableProvider.includes(currentApi.chainType)) {
@@ -36,7 +39,7 @@ const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
         history.push('/');
       }
     }
-  }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType]);
+  }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType, location]);
 
   return (
     <Container>

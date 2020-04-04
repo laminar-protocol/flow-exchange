@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 
-import { Text, Row, Col } from '../../components';
+import { Text, Row, Col, Spinner } from '../../components';
 import useApp from '../../hooks/useApp';
 import { ChainType } from '../../services/Api';
 
@@ -26,9 +26,15 @@ const Home = () => {
   const { t } = useTranslation();
 
   const handleConnect = async (chainType: ChainType) => {
+    if (loading) return;
+
     setLoading(chainType);
-    await setApiEnable(chainType);
-    setLoading('');
+
+    try {
+      await setApiEnable(chainType);
+    } finally {
+      setLoading('');
+    }
 
     history.push('./dashboard');
   };
@@ -62,11 +68,16 @@ const Home = () => {
             rel="noopener noreferrer"
             target="_blank"
             onClick={event => {
+              if (!availableProvider.includes('laminar')) return;
               handleConnect('laminar');
               event.preventDefault();
             }}
           >
-            <img src={walletPolkadot} alt="Polkadot Extension" />
+            {loading === 'laminar' ? (
+              <Spinner className={classes.loading} />
+            ) : (
+              <img src={walletPolkadot} alt="Polkadot Extension" />
+            )}
             {`Polkadot Extension`}
           </a>
           <div className={clsx(classes.walletItem, classes.disabled)}>
@@ -85,11 +96,16 @@ const Home = () => {
             rel="noopener noreferrer"
             target="_blank"
             onClick={event => {
+              if (!availableProvider.includes('ethereum')) return;
               handleConnect('ethereum');
               event.preventDefault();
             }}
           >
-            <img src={walletMetamask} alt="Metamask" />
+            {loading === 'ethereum' ? (
+              <Spinner className={classes.loading} />
+            ) : (
+              <img src={walletMetamask} alt="Metamask" />
+            )}
             {`Metamask`}
           </a>
           <div className={clsx(classes.walletItem, classes.disabled)}>
@@ -143,6 +159,14 @@ const useStyles = createUseStyles(theme => ({
       width: '1rem',
       marginLeft: '1.75rem',
       marginRight: '1rem',
+    },
+  },
+  loading: {
+    marginLeft: '1.75rem',
+    marginRight: '1rem',
+    color: theme.foregroundColor,
+    '& .ant-spin-dot': {
+      fontSize: '1rem',
     },
   },
   disabled: {},
