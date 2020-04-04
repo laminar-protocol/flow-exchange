@@ -21,6 +21,10 @@ const useGlobalStyles = createUseStyles(theme => ({
     a: {
       color: theme.foregroundColor,
     },
+    'h1, h2, h3, h4, h5, h6': {
+      marginTop: 0,
+      marginBottom: 0,
+    },
     '.ant-layout': {
       backgroundColor: theme.backgroundColor,
     },

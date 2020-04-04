@@ -30,6 +30,7 @@ const useStyles = createUseStyles(theme => ({
       }
     },
     color: (props: any) => (props.light ? theme.lightForegroundColor : theme.foregroundColor),
+    textAlign: (props: any) => props.align,
   },
   ellipsisi: {
     textOverflow: 'ellipsis',
@@ -45,13 +46,24 @@ type TextProps = {
   weight?: 'bold' | 'black';
   light?: boolean;
   ellipsisi?: boolean;
+  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
+  component?: React.ElementType;
 };
 
-const Text: React.FC<BaseProps & TextProps> = ({ ellipsisi, className, light, ...other }) => {
-  const classes = useStyles(other);
+const Text: React.FC<BaseProps & TextProps> = ({
+  component: Component = 'span',
+  ellipsisi,
+  className,
+  light,
+  size,
+  weight,
+  align = 'inherit',
+  ...other
+}) => {
+  const classes = useStyles({ size, weight, light, align });
 
   return (
-    <span
+    <Component
       {...other}
       className={clsx(classes.root, className, {
         [classes.ellipsisi]: ellipsisi,

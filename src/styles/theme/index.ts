@@ -7,7 +7,7 @@ export const respondTo = breakpoint;
 
 // Background colors
 export const backgroundColor = theme('mode', {
-  light: '#f5f5fa',
+  light: '#f8f9fd',
   dark: '#21212e',
 });
 
@@ -101,7 +101,7 @@ export const buyColor = theme('mode', {
 });
 
 // Side bar
-export const sideBarWidth = 300;
+export const sideBarWidth = 270;
 
 // Font weight
 export const lightWeight = 150;

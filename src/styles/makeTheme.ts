@@ -60,7 +60,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
   // Background colors
 
   backgroundColor: switchMode(mode, {
-    light: '#f5f5fa',
+    light: '#f8f9fd',
     dark: '#21212e',
   }),
 
