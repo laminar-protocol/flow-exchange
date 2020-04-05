@@ -1,7 +1,7 @@
 import { List } from 'antd';
 import React, { useCallback } from 'react';
 
-import { Modal } from '../../../components';
+import { Dialog } from '../../../components';
 import useApp, { useAppApi } from '../../../hooks/useApp';
 
 type SwitchAccountProps = {
@@ -40,24 +40,17 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
   if (!currentAccount) return null;
 
   return (
-    <Modal
-      transitionName="none"
-      maskTransitionName="none"
+    <Dialog
       title="Choose different account"
       visible={visible}
+      onOk={() => {}}
       onCancel={() => handleCancel()}
-      footer={null}
-      maskClosable={true}
       style={{ top: 200 }}
     >
       <div>
-        <List
-          bordered
-          dataSource={accountList}
-          renderItem={item => <List.Item onClick={() => handleSubmit(item.address)}>{item.address}</List.Item>}
-        />
+        <List bordered dataSource={accountList} renderItem={item => <List.Item>{item.address}</List.Item>} />
       </div>
-    </Modal>
+    </Dialog>
   );
 };
 

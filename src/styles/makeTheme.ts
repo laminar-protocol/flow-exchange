@@ -97,8 +97,8 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   // Theme colors
   keyColorBlue: switchMode(mode, {
-    light: 'rgba(0,85,255,1)',
-    dark: 'rgba(0,85,255,1)',
+    light: '#0155ff',
+    dark: '#0155ff',
   }),
 
   keyColorRed: switchMode(mode, {
