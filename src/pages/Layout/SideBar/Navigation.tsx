@@ -12,6 +12,7 @@ import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
   const classes = useStyle();
+
   const api = useApp(state => state.api);
   const history = useHistory();
 

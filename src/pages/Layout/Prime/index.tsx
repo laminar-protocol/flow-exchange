@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Layout } from 'antd';
+import { Layout } from '../../../components';
 
 const Prime: React.FC = ({ children }) => {
   const classes = useStyles();

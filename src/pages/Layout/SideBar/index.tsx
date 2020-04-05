@@ -1,10 +1,8 @@
 import React from 'react';
-import { Layout } from 'antd';
 import { createUseStyles } from 'react-jss';
 
+import { Layout, Sider } from '../../../components';
 import Navigation from './Navigation';
-
-const { Sider } = Layout;
 
 const SideBar: React.FC = () => {
   const classes = useStyles();

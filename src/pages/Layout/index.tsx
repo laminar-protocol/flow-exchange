@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
 import { useHistory, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
 
-import { Layout as AntdLayout } from 'antd';
-import { Spinner } from '../../components';
+import { Spinner, Layout } from '../../components';
 import { useApp } from '../../hooks/useApp';
 import { useSetting } from '../../hooks/useSetting';
 import Prime from './Prime';
@@ -13,7 +12,9 @@ type LayoutProps = {
   loading?: boolean;
 };
 
-const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
+const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
+  const classes = useStyles();
+
   const currentApi = useApp(state => state.api);
   const setApiEnable = useApp(state => state.setApiEnable);
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
@@ -42,19 +43,19 @@ const Layout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType, location]);
 
   return (
-    <Container>
+    <Layout>
       <SideBar />
-      <Prime>{loading ? <Spinner size="large" className="layout__spinner" /> : children}</Prime>
-    </Container>
+      <Prime>{loading ? <Spinner size="large" className={classes.spinner} /> : children}</Prime>
+    </Layout>
   );
 };
 
-const Container = styled(AntdLayout)`
-  .layout__spinner {
-    margin-top: 300px;
-    display: flex;
-    justify-content: center;
-  }
-`;
+const useStyles = createUseStyles({
+  spinner: {
+    marginTop: '300px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
 
-export default Layout;
+export default PageLayout;

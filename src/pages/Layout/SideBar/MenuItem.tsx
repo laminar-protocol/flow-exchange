@@ -14,8 +14,9 @@ export interface MenuItemProps {
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({ iconComponent: IconComponent, noRoute, to, onClick, children }) => {
-  const Element = noRoute ? 'a' : Link;
   const classes = useStyles();
+
+  const Element = noRoute ? 'a' : Link;
 
   return (
     <Element to={to || ''} onClick={onClick}>
