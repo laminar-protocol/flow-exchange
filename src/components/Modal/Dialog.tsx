@@ -108,7 +108,7 @@ const useStyles = createUseStyles(theme => ({
       border: 0,
       fontWeight: theme.boldWeight,
       color: theme.foregroundColor,
-      background: '#ecf0f2',
+      background: theme.keyColorGrey,
     },
   },
   confirmButton: {

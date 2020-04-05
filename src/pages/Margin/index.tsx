@@ -1,20 +1,9 @@
 import React from 'react';
-import { createUseStyles } from 'react-jss';
-import { useTranslation } from 'react-i18next';
 
-import { Panel, Title } from '../../components';
+import MarginHeader from './MarginHeader';
 
 const Margin = () => {
-  const classes = useStyles();
-  const { t } = useTranslation();
-
-  return (
-    <Panel>
-      <Title type="panel">{t('Margin Trading')}</Title>
-    </Panel>
-  );
+  return <MarginHeader />;
 };
-
-const useStyles = createUseStyles(theme => ({}));
 
 export default Margin;

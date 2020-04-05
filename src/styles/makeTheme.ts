@@ -20,6 +20,7 @@ interface AppTheme {
   // Theme colors
   keyColorBlue: string;
   keyColorRed: string;
+  keyColorGrey: string;
   // Text colors
   foregroundColor: string;
   lightForegroundColor: string;
@@ -106,6 +107,11 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
     dark: 'rgba(255,0,0,1)',
   }),
 
+  keyColorGrey: switchMode(mode, {
+    light: '#ecf0f2',
+    dark: 'rgba(255, 255, 255, 0.20)',
+  }),
+
   // Text colors
   foregroundColor: switchMode(mode, {
     light: '#3c3d61',
@@ -164,7 +170,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   // Font size
   textNormalSize: '1rem',
-  textSmallSize: '0.8rem',
+  textSmallSize: '0.75rem',
   textLargeSize: '1.25rem',
   textTitleSize: '1.5rem',
   textHeaderSize: '2rem',
