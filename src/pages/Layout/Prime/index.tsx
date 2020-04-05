@@ -11,7 +11,7 @@ const Prime: React.FC = ({ children }) => {
 const useStyles = createUseStyles(theme => ({
   root: {
     marginLeft: theme.sideBarWidth,
-    padding: '3rem',
+    padding: '2rem 2.5rem',
 
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,

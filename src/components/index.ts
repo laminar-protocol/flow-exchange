@@ -12,6 +12,8 @@ export * from './Card';
 export * from './Amount';
 export * from './Spinner';
 export * from './Modal';
+export * from './Panel';
+export * from './Format';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';
@@ -21,5 +23,3 @@ export { default as Indicator } from './Indicator';
 export { default as Notice } from './Notice';
 export { default as Icon } from './Icon';
 export { default as NumberFormat } from './NumberFormat';
-export { default as Panel } from './Panel';
-export * from './Format';

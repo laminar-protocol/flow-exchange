@@ -76,7 +76,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   // Border colors
   darkBorderColor: switchMode(mode, {
-    light: '#c6c6cb',
+    light: '#ebeef5',
     dark: 'rgba(255, 255, 255, 0.20)',
   }),
 

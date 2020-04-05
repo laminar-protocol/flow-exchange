@@ -4,3 +4,4 @@ export { default as MenuSwapIcon } from './MenuSwapIcon';
 export { default as MenuDashboardIcon } from './MenuDashboardIcon';
 export { default as MenuLiquidityIcon } from './MenuLiquidityIcon';
 export { default as MenuDepositIcon } from './MenuDepositIcon';
+export { default as MenuMarginIcon } from './MenuMarginIcon';

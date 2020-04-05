@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 
-import Margin from '../../_app/margin/margin';
 import { useApp } from '../../hooks/useApp';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
@@ -11,6 +10,7 @@ import Liquidity from '../Liquidity';
 import LiquidityCreate from '../Liquidity/LiquidityCreate';
 import PoolDetail from '../Liquidity/PoolDetail';
 import Swap from '../Swap';
+import Margin from '../Margin';
 
 const Routes: React.FC = () => {
   const currentApi = useApp(state => state.api);
@@ -22,6 +22,11 @@ const Routes: React.FC = () => {
           <Home />
         </Layout>
       </Route>
+      <Route path="/margin">
+        <Layout loading={!currentApi}>
+          <Margin />
+        </Layout>
+      </Route>
       <Route path="/dashboard">
         <Layout loading={!currentApi}>
           <Dashboard />
@@ -31,12 +36,6 @@ const Routes: React.FC = () => {
         <Layout loading={!currentApi}>
           <Lending />
         </Layout>
-      </Route>
-      <Route exact path="/margin">
-        <Redirect to="/margin/POOL1/EURUSD" />
-      </Route>
-      <Route path="/margin/:pool/:tradingSymbol">
-        <Margin />
       </Route>
       <Route exact path="/liquidity">
         <Layout loading={!currentApi}>

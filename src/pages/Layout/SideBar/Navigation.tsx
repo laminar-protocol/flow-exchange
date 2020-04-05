@@ -1,10 +1,18 @@
 import React, { useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import LaminarLogo from '../../../assets/laminar.svg';
 import { Row } from '../../../components';
-import { ExchangeIcon, MenuDashboardIcon, MenuSwapIcon, MenuLiquidityIcon, MenuDepositIcon } from '../../../icons';
+import {
+  ExchangeIcon,
+  MenuDashboardIcon,
+  MenuSwapIcon,
+  MenuLiquidityIcon,
+  MenuDepositIcon,
+  MenuMarginIcon,
+} from '../../../icons';
 import useApp from '../../../hooks/useApp';
 
 import MenuItem from './MenuItem';
@@ -12,6 +20,7 @@ import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
   const classes = useStyle();
+  const { t } = useTranslation();
 
   const api = useApp(state => state.api);
   const history = useHistory();
@@ -49,16 +58,19 @@ const Navigation: React.FC = () => {
         <div className={classes.menuContainer}>
           <Wallet />
           <MenuItem iconComponent={MenuDashboardIcon} to="/dashboard">
-            Dashboard
+            {t('Dashboard')}
+          </MenuItem>
+          <MenuItem iconComponent={MenuMarginIcon} to="/margin">
+            {t('Margin Trading')}
           </MenuItem>
           <MenuItem iconComponent={MenuSwapIcon} to="/swap">
-            Swap
+            {t('Swap')}
           </MenuItem>
           <MenuItem iconComponent={MenuDepositIcon} to="/lending">
-            Deposit &amp; Earn
+            {t('Deposit & Earn')}
           </MenuItem>
           <MenuItem iconComponent={MenuLiquidityIcon} to="/liquidity">
-            Liquidity Provider
+            {t('Liquidity Provider')}
           </MenuItem>
         </div>
       </div>
