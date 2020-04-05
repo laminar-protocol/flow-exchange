@@ -18,6 +18,8 @@ const Dialog: React.FC<AntdModalProps & DialogProps> = ({
   okText,
   cancelText,
   onCancel,
+  okButtonProps,
+  cancelButtonProps,
   className,
   ...other
 }) => {
@@ -27,29 +29,30 @@ const Dialog: React.FC<AntdModalProps & DialogProps> = ({
   const [loading, setLoading] = useState(false);
 
   const handleCancel = useCallback(() => {
-    onOk();
-  }, []);
+    onCancel();
+  }, [onCancel]);
 
   const handleOk = useCallback(async () => {
     setLoading(true);
     try {
-      await onCancel();
+      await onOk();
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [onOk]);
 
   return (
     <AntdModal
       transitionName="none"
       maskTransitionName="none"
-      {...other}
       width="30rem"
+      onCancel={() => handleCancel()}
+      onOk={() => handleOk()}
       className={clsx(classes.root, className)}
       footer={[
-        <DefaultButton key="cancel" className={classes.cancelButton} onClick={handleCancel}>
+        <DefaultButton key="cancel" className={classes.cancelButton} onClick={handleCancel} {...cancelButtonProps}>
           {okText || t('Cancel')}
         </DefaultButton>,
         <DefaultButton
@@ -58,10 +61,12 @@ const Dialog: React.FC<AntdModalProps & DialogProps> = ({
           type="primary"
           loading={loading}
           onClick={handleOk}
+          {...okButtonProps}
         >
           {okText || t('Confirm')}
         </DefaultButton>,
       ]}
+      {...other}
     />
   );
 };
@@ -70,6 +75,9 @@ const useStyles = createUseStyles(theme => ({
   root: {
     background: theme.lightBackgroundColor,
     borderRadius: 2,
+    '& .ant-modal-content': {
+      background: theme.lightBackgroundColor,
+    },
     '&.ant-modal': {
       padding: 0,
     },
