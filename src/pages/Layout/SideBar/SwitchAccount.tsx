@@ -42,6 +42,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
   return (
     <Modal
       transitionName="none"
+      maskTransitionName="none"
       title="Choose different account"
       visible={visible}
       onCancel={() => handleCancel()}

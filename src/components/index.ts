@@ -1,7 +1,7 @@
 export * from './Buttons';
 export * from './Inputs';
 export * from './Selects';
-export * from './layouts';
+export * from './Layouts';
 export * from './Tabs';
 export * from './Typography';
 export * from './Descriptions';
@@ -11,6 +11,7 @@ export * from './Statistic';
 export * from './Card';
 export * from './Amount';
 export * from './Spinner';
+export * from './Modal';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';
@@ -18,7 +19,6 @@ export { default as Switch } from './Switch';
 export { default as Separator } from './Separator';
 export { default as Indicator } from './Indicator';
 export { default as Notice } from './Notice';
-export { default as Modal } from './Modal';
 export { default as Icon } from './Icon';
 export { default as NumberFormat } from './NumberFormat';
 export { default as Panel } from './Panel';

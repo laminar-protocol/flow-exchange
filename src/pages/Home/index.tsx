@@ -46,7 +46,9 @@ const Home = () => {
       setAvailableProvider(checkAvailableProvider());
     }, 100);
 
-    return () => clearTimeout(timeId);
+    return () => {
+      clearTimeout(timeId);
+    };
   }, [checkAvailableProvider, setAvailableProvider]);
 
   return (

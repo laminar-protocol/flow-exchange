@@ -1,17 +1,12 @@
-import { Text } from 'components';
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
+import { Text } from '../../../components';
+import { useApp, useAppSelector } from '../../../hooks/useApp';
+import { MenuWalletIcon } from '../../../icons';
 import { truncate } from '../../../_app/helpers/stringHelper';
-import { apiSelector, useApp, useAppSelector } from '../../../hooks/useApp';
 import MenuItem from './MenuItem';
 import SwitchAccount from './SwitchAccount';
-import { MenuWalletIcon } from '../../../icons';
-
-const Address = styled(Text)`
-  text-overflow: ellipsis;
-`;
 
 const accountName = (account: string) => {
   if (account) {
@@ -21,9 +16,10 @@ const accountName = (account: string) => {
 };
 
 const Wallet: React.FC = ({ ...other }) => {
+  const classes = useStyles();
+
   const api = useAppSelector(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
-  const history = useHistory();
   const [switchAccountVisible, setSwitchAccountVisible] = useState(false);
 
   return (
@@ -39,9 +35,9 @@ const Wallet: React.FC = ({ ...other }) => {
       >
         <div>Wallet</div>
         <div>
-          <Address size="s" light>
+          <Text size="s" light className={classes.address}>
             {currentAccount ? accountName(currentAccount.address) : 'Please connect your wallet'}
-          </Address>
+          </Text>
         </div>
       </MenuItem>
       <SwitchAccount
@@ -54,5 +50,11 @@ const Wallet: React.FC = ({ ...other }) => {
     </>
   );
 };
+
+const useStyles = createUseStyles({
+  address: {
+    textOverflow: 'hidden',
+  },
+});
 
 export default Wallet;

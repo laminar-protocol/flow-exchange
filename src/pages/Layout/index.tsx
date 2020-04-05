@@ -1,8 +1,8 @@
-import { Layout as AntdLayout } from 'antd';
 import React, { useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+import { Layout as AntdLayout } from 'antd';
 import { Spinner } from '../../components';
 import { useApp } from '../../hooks/useApp';
 import { useSetting } from '../../hooks/useSetting';
