@@ -53,6 +53,14 @@ interface AppTheme {
 
   // style
   linearGradientBorder: any;
+  linearGradientRadiusBorder: any;
+
+  textColor: {
+    greyColor1: string;
+    greyColor2: string;
+    greyColor3: string;
+    greyColor4: string;
+  };
 }
 
 const switchMode = (mode: themeMode, value: { light: string; dark: string }) => value[mode];
@@ -164,7 +172,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   // Font weight
   lightWeight: 150,
-  normalWeight: 300,
+  normalWeight: 400,
   boldWeight: 500,
   blackWeight: 900,
 
@@ -196,6 +204,23 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
   linearGradientBorder: {
     borderImageSource: 'linear-gradient(to bottom, #004fff, #fe0000)',
     borderImageSlice: 1,
+  },
+
+  textColor: {
+    greyColor1: '#212121',
+    greyColor2: '#333333',
+    greyColor3: '#666666',
+    greyColor4: '#999999',
+  },
+
+  linearGradientRadiusBorder: {
+    'border-style': 'solid',
+    'border-width': '1px',
+    'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
+    'border-image-slice': 1,
+    'background-image': 'linear-gradient(to bottom, #ffffff, #ffffff), linear-gradient(to right, #004eff, #fa0000)',
+    'background-origin': 'border-box',
+    'background-clip': 'content-box, border-box',
   },
 });
 

@@ -9,7 +9,7 @@ const MarginHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <Panel>
+    <Panel padding="0.75rem 2rem">
       <Row align="middle" justify="space-between">
         <Title type="panel" className={classes.title}>
           {t('Margin Trading')}

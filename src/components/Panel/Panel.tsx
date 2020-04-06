@@ -5,8 +5,8 @@ import clsx from 'clsx';
 import { BaseProps } from '../../types';
 
 type PanelProps = {
-  padding?: number;
-  radius?: number;
+  padding?: number | string;
+  radius?: number | string;
 };
 
 const Panel: React.FC<BaseProps & PanelProps> = ({ className, radius, padding, ...other }) => {
@@ -21,7 +21,7 @@ const Panel: React.FC<BaseProps & PanelProps> = ({ className, radius, padding, .
 const useStyles = createUseStyles(theme => ({
   root: {
     border: `1px solid ${theme.borderColor}`,
-    padding: (props: any) => props.padding || '0.75rem 2rem',
+    padding: (props: any) => props.padding || '0',
     borderRadius: (props: any) => props.radius || '0.75rem',
     boxShadow: '0 1px 20px 0 rgba(23, 65, 212, 0.02)',
     backgroundColor: theme.lightBackgroundColor,

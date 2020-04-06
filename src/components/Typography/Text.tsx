@@ -4,6 +4,39 @@ import { createUseStyles } from 'react-jss';
 
 import { BaseProps } from '../../types';
 
+type TextProps = {
+  size?: 's' | 'l' | 't' | 'n';
+  weight?: 'bold' | 'black';
+  light?: boolean;
+  ellipsisi?: boolean;
+  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
+  component?: React.ElementType;
+  color?: 'greyColor1' | 'greyColor2' | 'greyColor3' | 'greyColor4';
+};
+
+const Text: React.FC<BaseProps & TextProps> = ({
+  component: Component = 'span',
+  ellipsisi,
+  className,
+  light,
+  size,
+  weight,
+  color,
+  align = 'inherit',
+  ...other
+}) => {
+  const classes = useStyles({ size, weight, light, align, color });
+
+  return (
+    <Component
+      {...other}
+      className={clsx(classes.root, className, {
+        [classes.ellipsisi]: ellipsisi,
+      })}
+    />
+  );
+};
+
 const useStyles = createUseStyles(theme => ({
   root: {
     fontSize: (props: any) => {
@@ -29,7 +62,8 @@ const useStyles = createUseStyles(theme => ({
           return theme.normalWeight;
       }
     },
-    color: (props: any) => (props.light ? theme.lightForegroundColor : theme.foregroundColor),
+    color: (props: TextProps) =>
+      props.light ? theme.lightForegroundColor : theme.textColor[props.color || 'greyColor1'],
     textAlign: (props: any) => props.align,
   },
   ellipsisi: {
@@ -40,36 +74,5 @@ const useStyles = createUseStyles(theme => ({
     whitespace: 'nowrap',
   },
 }));
-
-type TextProps = {
-  size?: 's' | 'l' | 't' | 'n';
-  weight?: 'bold' | 'black';
-  light?: boolean;
-  ellipsisi?: boolean;
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  component?: React.ElementType;
-};
-
-const Text: React.FC<BaseProps & TextProps> = ({
-  component: Component = 'span',
-  ellipsisi,
-  className,
-  light,
-  size,
-  weight,
-  align = 'inherit',
-  ...other
-}) => {
-  const classes = useStyles({ size, weight, light, align });
-
-  return (
-    <Component
-      {...other}
-      className={clsx(classes.root, className, {
-        [classes.ellipsisi]: ellipsisi,
-      })}
-    />
-  );
-};
 
 export default Text;
