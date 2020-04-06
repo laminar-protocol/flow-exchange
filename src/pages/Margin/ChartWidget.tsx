@@ -3,13 +3,16 @@ declare const TradingView: any;
 
 import React, { useEffect, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
+import clsx from 'clsx';
+
+import { BaseProps } from '../../types';
 
 type ChartWidgetProps = {
   symbol: string;
   currentTheme?: string;
 };
 
-const ChartWidget: React.FC<ChartWidgetProps> = ({ symbol, currentTheme }) => {
+const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol, currentTheme }) => {
   const classes = useStyles();
 
   const loadChart = useCallback((symbol: string, currentTheme = 'light') => {
@@ -32,32 +35,15 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({ symbol, currentTheme }) => {
     loadChart(symbol, currentTheme);
   }, [symbol, currentTheme]);
 
-  return (
-    <div className={classes.root}>
-      <div id="trading_view_widget" />
-    </div>
-  );
+  return <div id="trading_view_widget" className={clsx(classes.root, className)} />;
 };
 
 const useStyles = createUseStyles(theme => ({
   root: {
-    flex: 1,
-    'align-self': 'stretch',
-    position: 'relative',
-    overflow: 'hidden',
-
-    border: `1px solid ${theme.borderColor}`,
-    'border-radius': '0.5rem',
-    'box-shadow': '0 0 20px rgba(0, 0, 0, 0.05)',
-    'background-color': '${theme.lightBackgroundColor}',
-
-    '& #trading_view_widget': {
-      position: 'absolute',
-      top: '-1px',
-      left: '-1px',
-      right: '-1px',
-      bottom: '-1px !important',
-    },
+    'margin-left': '-1px',
+    'margin-top': '-1px',
+    'margin-right': '-1px',
+    'margin-bottom': '-1px',
   },
 }));
 

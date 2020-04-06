@@ -58,11 +58,9 @@ const MarginPositions: React.FC = () => {
   ];
 
   return (
-    <Panel>
-      <Row justify="space-between" align="middle">
-        <Title type="panel" className={classes.title}>
-          {t('My Positions / Orders')}
-        </Title>
+    <Panel
+      title={t('My Positions / Orders')}
+      actions={
         <div className={classes.tabs}>
           <div
             className={clsx(classes.tabItem, { [classes.activeTab]: activeTab === 'open' })}
@@ -85,7 +83,8 @@ const MarginPositions: React.FC = () => {
             {t('Closed')}
           </div>
         </div>
-      </Row>
+      }
+    >
       <Table
         columns={columns}
         className={classes.table}
@@ -106,10 +105,6 @@ const MarginPositions: React.FC = () => {
 
 const useStyles = createUseStyles(theme => ({
   root: {},
-  title: {
-    margin: '1.25rem 1rem',
-    'font-size': '1.25rem',
-  },
   table: {
     '& .ant-table': {
       'border-radius': '0.75rem',

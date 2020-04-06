@@ -43,9 +43,9 @@ const MarginPools = () => {
   return (
     <div>
       <MarginHeader />
-      <Row align="middle" justify="space-between" gutter={[0, 16]} className={classes.poolList}>
+      <Row align="middle" justify="space-between" className={classes.poolList}>
         <Col>
-          <Row gutter={[0, 16]}>
+          <Row>
             <Col>
               <Panel className={clsx(classes.card, classes.all)}>
                 <div>
@@ -121,7 +121,8 @@ const MarginPools = () => {
 
 const useStyles = createUseStyles(theme => ({
   poolList: {
-    marginTop: '1.5rem',
+    'margin-top': '1.5rem',
+    'margin-bottom': '1.5rem',
   },
   tableWrap: {
     marginBottom: '1.5rem',

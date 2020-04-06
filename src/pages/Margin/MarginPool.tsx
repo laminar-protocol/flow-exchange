@@ -3,188 +3,35 @@ import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
+import MarginHeader from './MarginHeader';
+import MarginPositions from './MarginPositions';
+import ChartWidget from './ChartWidget';
 import { Panel, Table, Row, Col, Text, Description } from '../../components';
 import { IdentityIcon } from '../../icons';
-import ChartWidget from './ChartWidget';
 
-const MarginPool = () => {
+const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const columns: any[] = [
-    {
-      title: t('SYMBOL'),
-      dataIndex: 'symbol',
-    },
-    {
-      title: t('BID'),
-      dataIndex: 'bid',
-    },
-    {
-      title: t('ASK'),
-      dataIndex: 'ask',
-    },
-    {
-      title: t('ENP'),
-      dataIndex: 'enp',
-    },
-    {
-      title: t('ELL'),
-      dataIndex: 'ell',
-    },
-    {
-      title: t('POOL'),
-      dataIndex: 'pool',
-      align: 'right',
-    },
-  ];
-
   return (
-    <div className={classes.container}>
-      <ChartWidget symbol="BTC" />
-      <Row align="middle" justify="space-between" gutter={[0, 16]}>
-        <Col>
-          <Row gutter={[0, 16]}>
-            <Col>
-              <Panel className={clsx(classes.card, classes.all)}>
-                <div>
-                  <Text className={classes.text}>{t('All Pools')}</Text>
-                </div>
-              </Panel>
-            </Col>
-            <Col>
-              <Panel className={classes.card}>
-                <Row style={{ height: '100%' }}>
-                  <div className={classes.poolIcon}>
-                    <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
-                  </div>
-                  <Description
-                    label={
-                      <div>
-                        <Text size="n">Laminar</Text>
-                        <Text size="s" style={{ paddingLeft: '0.25rem' }}>
-                          AVAILABLE
-                        </Text>
-                      </div>
-                    }
-                    className={classes.pool}
-                  >
-                    188
-                  </Description>
-                </Row>
-              </Panel>
-            </Col>
-          </Row>
+    <div>
+      <MarginHeader />
+      <Row>
+        <Col span={14}>
+          <Panel title={t('Price Chart')} className={classes.chart}>
+            <ChartWidget symbol="BTC" className={classes.chartWidget} />
+          </Panel>
         </Col>
-        <Col>
-          <Row style={{ marginRight: '2rem' }}>
-            <Description label={t('Margin Call ENP')} align="flex-end">
-              55%
-            </Description>
-            <div className={classes.separateWrap}>
-              <div className={classes.separateItem1}></div>
-              <div className={classes.separateItem2}></div>
-            </div>
-            <Description label={t('ELL')}>20%</Description>
-            <div className={classes.separate} />
-            <Description label={t('Force Closure ENP')} align="flex-end">
-              20%
-            </Description>
-            <div className={classes.separateWrap}>
-              <div className={classes.separateItem1}></div>
-              <div className={classes.separateItem2}></div>
-            </div>
-            <Description label={t('ELL')}>1%</Description>
-          </Row>
-        </Col>
+        <Col span={10}></Col>
       </Row>
-      <Panel className={classes.tableWrap}>
-        <Table
-          columns={columns}
-          dataSource={[
-            {
-              symbol: 'USDUSD',
-              bid: 'xxx',
-              ask: 'xxx',
-              enp: 'xxx',
-              ell: 'xxx',
-              pool: 'Laminar',
-            },
-          ]}
-        />
-      </Panel>
+      <MarginPositions />
     </div>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
-  container: {
-    marginTop: '1.5rem',
-    marginBottom: '1.5rem',
-  },
-  tableWrap: {
-    padding: '1rem 0',
-  },
-  all: {},
-  text: {},
-  pool: {
-    flex: 1,
-    'margin-left': '1rem',
-    height: '100%',
-  },
-  poolIcon: {
-    height: '100%',
-    display: 'flex',
-    'align-items': 'center',
-    padding: '0.5rem',
-    borderRight: `1px solid ${theme.borderColor}`,
-  },
-  separate: {
-    width: 1,
-    height: '2.5rem',
-    marginLeft: '1rem',
-    marginRight: '1rem',
-    borderLeft: `solid 1px ${theme.keyColorGrey}`,
-  },
-  separateWrap: {
-    display: 'flex',
-    'flex-direction': 'column',
-    'justify-content': 'space-between',
-    marginLeft: '0.5rem',
-    marginRight: '0.5rem',
-    marginTop: '0.20rem',
-    marginBottom: '0.24rem',
-  },
-  separateItem1: {
-    height: '0.6rem',
-    borderLeft: `solid 1px ${theme.textColor.greyColor4}`,
-  },
-  separateItem2: {
-    height: '0.75rem',
-    borderLeft: `solid 1px ${theme.textColor.greyColor1}`,
-  },
-  card: {
-    width: '13.125rem',
-    marginRight: '1rem',
-    height: '4rem',
-    background: theme.lightBackgroundColor,
-    cursor: 'pointer',
-    '&:hover': {
-      'box-shadow': '0 1px 20px 0 rgba(23, 65, 212, 0.18)',
-      '& $text': {
-        color: '#0155ff',
-      },
-      extend: theme.linearGradientRadiusBorder,
-    },
-    '&$all': {
-      display: 'flex',
-      'align-items': 'center',
-      'justify-content': 'center',
-      '& $text': {
-        fontSize: '1.25rem',
-      },
-    },
-  },
+  chart: { 'margin-bottom': '1.5rem', 'margin-top': '1.5rem', width: '100%' },
+  chartWidget: { height: '37.5rem' },
 }));
 
-export default MarginPool;
+export default MarginPools;
