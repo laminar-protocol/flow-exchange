@@ -3,62 +3,115 @@ import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
-import { Panel, Title, Row, Text, Switch } from '../../components';
+import { Panel, Table, Row, Col, Text, Description } from '../../components';
+import { IdentityIcon } from '../../icons';
 
 const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
+  const columns: any[] = [
+    {
+      title: t('SYMBOL'),
+      dataIndex: 'symbol',
+    },
+    {
+      title: t('BID'),
+      dataIndex: 'bid',
+    },
+    {
+      title: t('ASK'),
+      dataIndex: 'ask',
+    },
+    {
+      title: t('ENP'),
+      dataIndex: 'enp',
+    },
+    {
+      title: t('ELL'),
+      dataIndex: 'ell',
+    },
+    {
+      title: t('POOL'),
+      dataIndex: 'pool',
+      align: 'right',
+    },
+  ];
+
   return (
     <div className={classes.container}>
-      <Row>
-        <Panel className={clsx(classes.card, classes.all)}>
-          <div>
-            <Text className={classes.text}>All Pools</Text>
-          </div>
-        </Panel>
-        <Panel className={classes.card}>
-          <div className={classes.pool}>
-            <div className={classes.poolName}>
-              <Text>Laminar</Text>
-              <Text>AVAILABLE</Text>
+      <Row align="middle" justify="space-between" gutter={[0, 16]}>
+        <Col>
+          <Row gutter={[0, 16]}>
+            <Col>
+              <Panel className={clsx(classes.card, classes.all)}>
+                <div>
+                  <Text className={classes.text}>{t('All Pools')}</Text>
+                </div>
+              </Panel>
+            </Col>
+            <Col>
+              <Panel className={classes.card}>
+                <Row style={{ height: '100%' }}>
+                  <div className={classes.poolIcon}>
+                    <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
+                  </div>
+                  <Description
+                    label={
+                      <div>
+                        <Text size="n">Laminar</Text>
+                        <Text size="s" style={{ paddingLeft: '0.25rem' }}>
+                          AVAILABLE
+                        </Text>
+                      </div>
+                    }
+                    className={classes.pool}
+                  >
+                    188
+                  </Description>
+                </Row>
+              </Panel>
+            </Col>
+          </Row>
+        </Col>
+        <Col>
+          <Row style={{ marginRight: '2rem' }}>
+            <Description label={t('Margin Call ENP')} align="flex-end">
+              55%
+            </Description>
+            <div className={classes.separateWrap}>
+              <div className={classes.separateItem1}></div>
+              <div className={classes.separateItem2}></div>
             </div>
-            <div className={classes.available}>188</div>
-          </div>
-        </Panel>
-        <Panel className={classes.card}>All Pools</Panel>
+            <Description label={t('ELL')}>20%</Description>
+            <div className={classes.separate} />
+            <Description label={t('Force Closure ENP')} align="flex-end">
+              20%
+            </Description>
+            <div className={classes.separateWrap}>
+              <div className={classes.separateItem1}></div>
+              <div className={classes.separateItem2}></div>
+            </div>
+            <Description label={t('ELL')}>1%</Description>
+          </Row>
+        </Col>
       </Row>
+      <Panel className={classes.tableWrap}>
+        <Table
+          columns={columns}
+          dataSource={[
+            {
+              symbol: 'USDUSD',
+              bid: 'xxx',
+              ask: 'xxx',
+              enp: 'xxx',
+              ell: 'xxx',
+              pool: 'Laminar',
+            },
+          ]}
+        />
+      </Panel>
     </div>
-    // <Panel>
-    //   <Row align="middle" justify="space-between">
-    //     <Title type="panel" className={classes.title}>
-    //       {t('Margin Trading')}
-    //     </Title>
-    //     <Row>
-    //       <div className={classes.item}>
-    //         <div className={classes.label}>
-    //           <Text size="s" className={classes.label} light>
-    //             {t('TOTAL BALANCE')}
-    //           </Text>
-    //         </div>
-    //         <div className={classes.content}>
-    //           <Text>111100.000 LAMI</Text>
-    //         </div>
-    //       </div>
-    //       <div className={classes.separate}></div>
-    //       <div className={classes.item}>
-    //         <div className={classes.label}>
-    //           <Text size="s" light>
-    //             {t('ENABLE TRADING')}
-    //           </Text>
-    //         </div>
-    //         <div className={classes.content}>
-    //           <Switch className={classes.switch} checked={true} onClick={() => {}} />
-    //         </div>
-    //       </div>
-    //     </Row>
-    //   </Row>
-    // </Panel>
   );
 };
 
@@ -66,17 +119,47 @@ const useStyles = createUseStyles(theme => ({
   container: {
     marginTop: '1.5rem',
   },
+  tableWrap: {
+    padding: '1rem 0',
+  },
   all: {},
   text: {},
   pool: {
+    flex: 1,
+    'margin-left': '1rem',
+    height: '100%',
+  },
+  poolIcon: {
+    height: '100%',
+    display: 'flex',
+    'align-items': 'center',
+    padding: '0.5rem',
+    borderRight: `1px solid ${theme.borderColor}`,
+  },
+  separate: {
+    width: 1,
+    height: '2.5rem',
+    marginLeft: '1rem',
+    marginRight: '1rem',
+    borderLeft: `solid 1px ${theme.keyColorGrey}`,
+  },
+  separateWrap: {
     display: 'flex',
     'flex-direction': 'column',
-    'align-items': 'center',
-    height: '100%',
-    'justify-content': 'center',
+    'justify-content': 'space-between',
+    marginLeft: '0.5rem',
+    marginRight: '0.5rem',
+    marginTop: '0.20rem',
+    marginBottom: '0.24rem',
   },
-  available: {},
-  poolName: {},
+  separateItem1: {
+    height: '0.6rem',
+    borderLeft: `solid 1px ${theme.textColor.greyColor4}`,
+  },
+  separateItem2: {
+    height: '0.75rem',
+    borderLeft: `solid 1px ${theme.textColor.greyColor1}`,
+  },
   card: {
     width: '13.125rem',
     marginRight: '1rem',
@@ -99,23 +182,6 @@ const useStyles = createUseStyles(theme => ({
       },
     },
   },
-  // gradientInner
-  // title: {
-  //   paddingTop: '0.5rem',
-  //   paddingBottom: '0.5rem',
-  // },
-  // label: {},
-  // content: {},
-  // separate: {
-  //   width: 1,
-  //   height: '2.25rem',
-  //   marginLeft: '1.5rem',
-  //   marginRight: '1.5rem',
-  //   borderLeft: `solid 1px ${theme.keyColorGrey}`,
-  // },
-  // switch: {
-  //   marginTop: '0.125rem',
-  // },
 }));
 
 export default MarginPools;

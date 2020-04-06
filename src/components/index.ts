@@ -4,7 +4,7 @@ export * from './Selects';
 export * from './Layouts';
 export * from './Tabs';
 export * from './Typography';
-export * from './Descriptions';
+export * from './Description';
 export * from './Skeleton';
 export * from './Table';
 export * from './Statistic';
