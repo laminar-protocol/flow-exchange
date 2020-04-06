@@ -23,7 +23,7 @@ const Balances: React.FC = () => {
   }, [currentAccount?.address]);
 
   return (
-    <Panel className={classes.root}>
+    <Panel className={classes.root} padding="1.5rem">
       <Text size="l">Balances</Text>
       <Separator size={1} />
       {loading ? (

@@ -1,14 +1,19 @@
 import React from 'react';
 
-import MarginHeader from './MarginHeader';
 import MarginPools from './MarginPools';
+import MarginPool from './MarginPool';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 const Margin = () => {
   return (
-    <div>
-      <MarginHeader />
-      <MarginPools />
-    </div>
+    <Switch>
+      <Route exact path="/margin">
+        <MarginPools />
+      </Route>
+      <Route exact path="/margin/:pool/:symbol">
+        <MarginPool />
+      </Route>
+    </Switch>
   );
 };
 

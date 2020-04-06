@@ -3,12 +3,11 @@ import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
-import MarginHeader from './MarginHeader';
-import MarginPositions from './MarginPositions';
 import { Panel, Table, Row, Col, Text, Description } from '../../components';
 import { IdentityIcon } from '../../icons';
+import ChartWidget from './ChartWidget';
 
-const MarginPools = () => {
+const MarginPool = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -41,9 +40,9 @@ const MarginPools = () => {
   ];
 
   return (
-    <div>
-      <MarginHeader />
-      <Row align="middle" justify="space-between" gutter={[0, 16]} className={classes.poolList}>
+    <div className={classes.container}>
+      <ChartWidget symbol="BTC" />
+      <Row align="middle" justify="space-between" gutter={[0, 16]}>
         <Col>
           <Row gutter={[0, 16]}>
             <Col>
@@ -114,17 +113,16 @@ const MarginPools = () => {
           ]}
         />
       </Panel>
-      <MarginPositions />
     </div>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
-  poolList: {
+  container: {
     marginTop: '1.5rem',
+    marginBottom: '1.5rem',
   },
   tableWrap: {
-    marginBottom: '1.5rem',
     padding: '1rem 0',
   },
   all: {},
@@ -189,4 +187,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginPools;
+export default MarginPool;
