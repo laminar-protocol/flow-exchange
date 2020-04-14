@@ -2,10 +2,9 @@ import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useRouteMatch } from 'react-router-dom';
-
+import { Amount, Description, NumberFormat, Panel, PoolName, Row, Space, Switch, Title } from '../../components';
 import useApp, { AppState, useAppApi } from '../../hooks/useApp';
-import { useApiSelector, useAccountSelector } from '../../selectors';
-import { Description, Panel, Row, Switch, Title, Amount, PoolName, NumberFormat, Space } from '../../components';
+import { useAccountSelector, useApiSelector } from '../../selectors';
 
 type MarginHeaderProps = {
   poolInfo?: AppState['margin']['poolInfo']['string'];
@@ -34,7 +33,7 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
     });
 
     return () => subscription?.unsubscribe();
-  }, []);
+  }, [account.address, api]);
 
   return (
     <Panel padding="0.75rem 2rem">

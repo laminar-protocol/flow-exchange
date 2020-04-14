@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-
 import { Amount, Card, Col, Row, Separator, SolidButton, Table, Text, Title } from '../../components';
 import { apiSelector, baseTokenInfoSelector, tokenInfoMapSelector, useApp, useAppSelector } from '../../hooks/useApp';
 import { poolDetailSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
@@ -29,7 +28,7 @@ const PoolDetail: React.FC = () => {
 
   const init = useCallback(() => {
     return initPool(params.poolId);
-  }, [initPool, params.poolId, setLoading]);
+  }, [initPool, params.poolId]);
 
   useEffect(() => {
     setLoading(true);

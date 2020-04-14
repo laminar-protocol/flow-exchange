@@ -2,7 +2,7 @@ import { Steps } from 'antd';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Amount, Col, LightButton, Row, SolidButton, Spinner, Text } from '../../components';
+import { Col, LightButton, Row, SolidButton } from '../../components';
 import { apiSelector, useApp } from '../../hooks/useApp';
 import { notificationHelper } from '../../utils';
 

@@ -1,8 +1,8 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 
-import MarginPools from './MarginPools';
 import MarginPool from './MarginPool';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import MarginPools from './MarginPools';
 
 const Margin = () => {
   return (

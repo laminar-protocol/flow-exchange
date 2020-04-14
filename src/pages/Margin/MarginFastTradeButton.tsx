@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import useApp, { useAppApi, AppState } from '../../hooks/useApp';
 import { PrimaryButton } from '../../components';
+import { AppState } from '../../hooks/useApp';
 import MarginFastTradeModal from './MarginFastTradeModal';
 import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
 
@@ -58,7 +58,5 @@ const MarginFastTradeButton: React.FC<MarginFastTradeButtonProps> = ({ data, pai
     </div>
   );
 };
-
-const useStyles = createUseStyles(theme => ({}));
 
 export default MarginFastTradeButton;

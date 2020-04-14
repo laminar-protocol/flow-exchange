@@ -1,13 +1,12 @@
-import React, { useState, useLayoutEffect, useMemo } from 'react';
-import { createUseStyles } from 'react-jss';
+import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 import { useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import clsx from 'clsx';
+import gql from 'graphql-tag';
 
-import useApp, { useAppApi } from '../../hooks/useApp';
-import { useApiSelector, useAccountSelector, useMarginSymbolListSelector } from '../../selectors';
-import { Panel, Table, Date, TxHash, Row, Amount, DefaultButton } from '../../components';
+import { Amount, Date, DefaultButton, Panel, Table, TxHash } from '../../components';
+import { useAccountSelector, useApiSelector } from '../../selectors';
 import { getValueFromHex, notificationHelper } from '../../utils';
 
 const positionsOpenQuery = gql`

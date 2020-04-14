@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useLocation } from 'react-router-dom';
+
 import { Layout, Spinner } from '../../components';
 import { useApp } from '../../hooks/useApp';
 import { useSetting } from '../../hooks/useSetting';

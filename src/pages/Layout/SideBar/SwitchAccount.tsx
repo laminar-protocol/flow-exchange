@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
@@ -19,15 +19,6 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
   const accountList = useApp(state => state.accountList);
   const [selected, setSelected] = useState(currentAccount?.address);
 
-  const handleCancel = useCallback(() => {
-    return onCancel();
-  }, [onCancel]);
-
-  const handleSubmit = useCallback(() => {
-    selected && selectAccount(selected);
-    return onOk();
-  }, [onOk, selected]);
-
   const selectAccount = useCallback(
     accountAddress => {
       useAppApi.setState(state => {
@@ -36,8 +27,17 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
         state.currentAccount = account;
       });
     },
-    [useAppApi],
+    [useAppApi, accountList],
   );
+
+  const handleCancel = useCallback(() => {
+    return onCancel();
+  }, [onCancel]);
+
+  const handleSubmit = useCallback(() => {
+    selected && selectAccount(selected);
+    return onOk();
+  }, [onOk, selected, selectAccount]);
 
   if (!currentAccount) return null;
 

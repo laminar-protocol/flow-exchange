@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Panel, Separator, Text, Title } from '../../components';

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-
 import { Panel, Separator, Spinner, Text } from '../../components';
 import { useAccount } from '../../hooks/useAccount';
 import { useApp } from '../../hooks/useApp';
@@ -20,7 +19,7 @@ const Balances: React.FC = () => {
         setLoading(false);
       });
     }
-  }, [currentAccount?.address]);
+  }, [currentAccount, updateBalances]);
 
   return (
     <Panel className={classes.root} padding="1.5rem">

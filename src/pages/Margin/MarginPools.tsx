@@ -1,29 +1,17 @@
+import clsx from 'clsx';
 import React, { useLayoutEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { combineLatest } from 'rxjs';
-import clsx from 'clsx';
 
+import { Amount, Col, Description, NumberFormat, Panel, PoolName, Row, Space, Table, Text } from '../../components';
 import useApp, { useAppApi } from '../../hooks/useApp';
-import { useApiSelector, useAccountSelector, useMarginSymbolListSelector } from '../../selectors';
+import { IdentityIcon } from '../../icons';
+import { useApiSelector, useMarginSymbolListSelector } from '../../selectors';
+import MarginFastTradeButton from './MarginFastTradeButton';
 import MarginHeader from './MarginHeader';
 import MarginPositions from './MarginPositions';
-import MarginFastTradeButton from './MarginFastTradeButton';
-import {
-  Panel,
-  Table,
-  Row,
-  Col,
-  Text,
-  Description,
-  Space,
-  NumberFormat,
-  Amount,
-  PoolName,
-  PrimaryButton,
-} from '../../components';
-import { IdentityIcon } from '../../icons';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -33,7 +21,6 @@ const MarginPools = () => {
   const [active, setActive] = useState('');
 
   const api = useApiSelector();
-  const account = useAccountSelector();
   const symbolList = useMarginSymbolListSelector(active);
   const marginInfo = useApp(state => state.margin.marginInfo);
   const poolInfo = useApp(state => state.margin.poolInfo);
@@ -47,7 +34,7 @@ const MarginPools = () => {
     });
 
     return () => subscription?.unsubscribe();
-  }, []);
+  }, [api]);
 
   useLayoutEffect(() => {
     const subscription = api.margin?.allPoolIds().subscribe((result: any) => {
@@ -57,7 +44,7 @@ const MarginPools = () => {
     });
 
     return () => subscription?.unsubscribe();
-  }, []);
+  }, [api]);
 
   useLayoutEffect(() => {
     const subscription = combineLatest(
@@ -73,7 +60,7 @@ const MarginPools = () => {
     });
 
     return () => subscription?.unsubscribe();
-  }, [allPoolIds, useAppApi]);
+  }, [api, allPoolIds, useAppApi]);
 
   const columns: any[] = [
     {

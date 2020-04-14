@@ -1,22 +1,10 @@
-import React, { useState, useCallback, useMemo, useLayoutEffect } from 'react';
-import { createUseStyles } from 'react-jss';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
+import { createUseStyles } from 'react-jss';
 
-import {
-  Panel,
-  RadioGroup,
-  RadioButton,
-  Row,
-  Select,
-  AmountInput,
-  Text,
-  InputNumber,
-  Space,
-  DefaultButton,
-} from '../../components';
-import useApp, { useAppApi, AppState } from '../../hooks/useApp';
-import { useApiSelector, useAccountSelector, useMarginSymbolListSelector } from '../../selectors';
+import { AmountInput, DefaultButton, Panel, RadioButton, RadioGroup, Row, Select, Space, Text } from '../../components';
+import { AppState } from '../../hooks/useApp';
+import { useAccountSelector, useApiSelector } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
 type MarginTradeProps = {
@@ -41,7 +29,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
 
   const leverages = useMemo(() => {
     return getLeverageEnable(pairInfo.enabledTrades);
-  }, [pairInfo?.enabledTrades]);
+  }, [pairInfo.enabledTrades]);
 
   const openPosition = async (direction: 'short' | 'long') => {
     if (!api.margin || !poolInfo.poolId || !pairInfo.pair || !leverages[leverage][direction]) return;
@@ -51,7 +39,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
         api.margin.openPosition(
           account.address,
           poolInfo.poolId,
-          pairInfo.pair,
+          pairInfo.pair as any,
           leverages[leverage][direction] as any,
           toPrecision(amount),
           direction === 'long' ? toPrecision('10') : toPrecision('0'),

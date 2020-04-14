@@ -3,7 +3,6 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { BaseProps } from '../../types';
-import { truncate } from '../../utils';
 
 type TextProps = {
   size?: 's' | 'l' | 't' | 'n';

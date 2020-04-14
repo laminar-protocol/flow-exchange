@@ -1,9 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createUseStyles } from 'react-jss';
+
 import { Dialog, Space } from '../../components';
 import { AppState } from '../../hooks/useApp';
-import { useAccountSelector, useApiSelector } from '../../selectors';
 import MarginPoolDashboard from './MarginPoolDashboard';
 import MarginTrade from './MarginTrade';
 
@@ -26,10 +25,7 @@ export const MarginFastTradeModal: React.FC<MarginHandleModalProps> = ({
   data,
   pairId,
 }) => {
-  const classes = useStyles();
   const { t } = useTranslation();
-
-  const [amount, setAmount] = useState('');
 
   const handleCancel = useCallback(() => {
     return onCancel();
@@ -45,9 +41,6 @@ export const MarginFastTradeModal: React.FC<MarginHandleModalProps> = ({
       visible={visible}
       onOk={() => handleSubmit()}
       width="35rem"
-      okButtonProps={{
-        disabled: !amount,
-      }}
       onCancel={() => handleCancel()}
       footer={null}
     >
@@ -58,7 +51,5 @@ export const MarginFastTradeModal: React.FC<MarginHandleModalProps> = ({
     </Dialog>
   );
 };
-
-const useStyles = createUseStyles(theme => ({}));
 
 export default MarginFastTradeModal;

@@ -1,11 +1,10 @@
-import React, { useState, useLayoutEffect } from 'react';
-import { createUseStyles } from 'react-jss';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
+import { createUseStyles } from 'react-jss';
 
-import { Panel, Space, Row, NumberFormat, Text, Description, Amount } from '../../components';
-import useApp, { useAppApi, AppState } from '../../hooks/useApp';
-import { useApiSelector, useAccountSelector } from '../../selectors';
+import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
+import useApp, { AppState, useAppApi } from '../../hooks/useApp';
+import { useAccountSelector, useApiSelector } from '../../selectors';
 
 type MarginPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
