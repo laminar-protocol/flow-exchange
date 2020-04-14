@@ -16,9 +16,19 @@ const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol
   const classes = useStyles();
 
   const loadChart = useCallback((symbol: string, currentTheme = 'light') => {
+    const tradingSymbol = [
+      ['AUSD', 'USD'],
+      ['FEUR', 'EUR'],
+      ['FJPY', 'JPY'],
+      ['FBTC', 'BTC'],
+      ['FETH', 'ETH'],
+    ].reduce((result, curr) => {
+      return result.replace(curr[0], curr[1]);
+    }, symbol);
+
     new TradingView.widget({
       autosize: true,
-      symbol: symbol,
+      symbol: tradingSymbol,
       interval: 'D',
       timezone: 'Etc/UTC',
       theme: currentTheme,

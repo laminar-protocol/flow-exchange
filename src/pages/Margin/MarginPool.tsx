@@ -28,6 +28,7 @@ const MarginPools = () => {
   const api = useApiSelector();
 
   const poolInfo = useApp(state => state.margin.poolInfo[params.poolId]);
+
   useLayoutEffect(() => {
     if (params.poolId) {
       const subscription = api.margin?.poolInfo(params.poolId).subscribe((result: any) => {
@@ -48,7 +49,7 @@ const MarginPools = () => {
       <MarginHeader poolInfo={poolInfo} />
       <Row className={classes.container}>
         <Panel title={t('Price Chart')} className={classes.chartContainer}>
-          <ChartWidget symbol="BTC" className={classes.chartWidget} />
+          <ChartWidget symbol={params.pairId} className={classes.chartWidget} />
         </Panel>
         <Space direction="vertical" style={{ width: '27.25rem' }} size={24}>
           <MarginPoolDashboard
