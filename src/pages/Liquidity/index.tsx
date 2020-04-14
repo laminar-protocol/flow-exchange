@@ -15,19 +15,16 @@ import {
   Title,
 } from '../../components';
 import { isReadySelector, useApp } from '../../hooks/useApp';
-import { poolsSelector, usePools, usePoolsSelector } from '../../hooks/usePools';
+import { poolsSelector, usePools } from '../../hooks/usePools';
 import LiquidityProvider from './LiquidityProvider';
 import RenderAddPool from './RenderAddPool';
 
 const Liquidity: React.FC = () => {
   const classes = useStyles();
 
-  const sss = useCallback(
-    (state: any) => {
-      return poolsSelector(state);
-    },
-    [poolsSelector],
-  );
+  const sss = useCallback((state: any) => {
+    return poolsSelector(state);
+  }, []);
 
   const [filterType, setFilterType] = useState<'swap' | 'trade'>('swap');
   const isReady = useApp(isReadySelector);

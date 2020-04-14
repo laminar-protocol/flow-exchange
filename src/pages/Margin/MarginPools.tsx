@@ -46,7 +46,7 @@ const MarginPools = () => {
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
 
   useLayoutEffect(() => {
@@ -56,7 +56,7 @@ const MarginPools = () => {
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
 
   useLayoutEffect(() => {
@@ -72,7 +72,7 @@ const MarginPools = () => {
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, [allPoolIds, useAppApi]);
 
   const columns: any[] = [

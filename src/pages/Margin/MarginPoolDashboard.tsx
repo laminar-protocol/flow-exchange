@@ -29,7 +29,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, [api]);
 
   useLayoutEffect(() => {
@@ -39,7 +39,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, [api, account]);
 
   return (

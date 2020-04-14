@@ -1,10 +1,9 @@
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import React, { useCallback, useState } from 'react';
 
 import { Col, Input, LightButton, Modal, Row, SolidButton } from '../../components';
-import { baseTokenInfoSelector, useAppApi, useAppSelector } from '../../hooks/useApp';
+import { useAppApi } from '../../hooks/useApp';
 import { usePools } from '../../hooks/usePools';
-import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderAddPoolProps = {
   visible: boolean;
@@ -13,12 +12,11 @@ type RenderAddPoolProps = {
 };
 
 const RenderAddPool: React.FC<RenderAddPoolProps> = ({ visible, onCancel, onOk }) => {
-  const { api, currentAccount } = useAppApi.getState();
+  const { api } = useAppApi.getState();
   const addCustomPool = usePools(state => state.addCustomPool);
   const [name, setName] = useState<string | undefined>();
   const [poolId, setPoolId] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState<boolean>(false);
-  const baseToken = useAppSelector(baseTokenInfoSelector);
 
   const onSubmit = async () => {
     if (api && poolId && name) {

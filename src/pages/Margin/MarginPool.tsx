@@ -1,18 +1,18 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Panel, Row, Space } from '../../components';
+import useApp, { useAppApi } from '../../hooks/useApp';
+import { LeftArrowIcon } from '../../icons';
+import { useApiSelector } from '../../selectors';
 import ChartWidget from './ChartWidget';
+import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
 import MarginHeader from './MarginHeader';
 import MarginPoolDashboard from './MarginPoolDashboard';
 import MarginPositions from './MarginPositions';
 import MarginTrade from './MarginTrade';
-import { LeftArrowIcon } from '../../icons';
-import useApp, { AppState, useAppApi } from '../../hooks/useApp';
-import { useApiSelector } from '../../selectors';
-import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -36,7 +36,7 @@ const MarginPools = () => {
         });
       });
 
-      return () => subscription.unsubscribe();
+      return () => subscription?.unsubscribe();
     }
   }, [api, params.poolId]);
 
