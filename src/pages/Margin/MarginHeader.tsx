@@ -33,7 +33,7 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
       });
     });
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, []);
 
   return (
