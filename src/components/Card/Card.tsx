@@ -1,5 +1,5 @@
-import { Card as AntdCard } from 'antd';
 import React from 'react';
+import { Card as AntdCard } from 'antd';
 
 type CardProps = React.ComponentProps<typeof AntdCard>;
 

@@ -13,7 +13,7 @@ type PanelProps = {
   radius?: number | string;
 };
 
-const Panel: React.FC<BaseProps & PanelProps> = ({
+const Panel: React.FC<BaseProps & PanelProps & React.HTMLProps<HTMLDivElement>> = ({
   title,
   actions,
   className,

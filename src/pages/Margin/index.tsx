@@ -10,7 +10,7 @@ const Margin = () => {
       <Route exact path="/margin">
         <MarginPools />
       </Route>
-      <Route exact path="/margin/:pool/:symbol">
+      <Route exact path="/margin/:poolId/:pairId">
         <MarginPool />
       </Route>
     </Switch>

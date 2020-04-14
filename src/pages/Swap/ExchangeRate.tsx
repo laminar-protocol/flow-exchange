@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { NumberFormat, Spinner, Text } from '../../components';
+import { NumberInput, Spinner, Text } from '../../components';
 import { TokenInfo } from '../../services/Api';
 import { calcExchangeRate } from '../../utils';
 
@@ -29,7 +29,7 @@ const ExchangeRate: React.FC<ExchangeRateProps> = ({ spread, rate, isLoading, fr
       &nbsp;{fromToken.name}
       &nbsp;≈&nbsp;
       <strong>
-        <NumberFormat value={value} noPrefix />
+        <NumberInput value={value} noPrefix />
       </strong>
       &nbsp;{toToken.name}
     </Text>

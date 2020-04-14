@@ -90,7 +90,9 @@ const useStyles = createUseStyles(theme => ({
       fontSize: '1.25rem',
     },
     '& .ant-modal-header': {
+      backgroundColor: `${theme.alwaysWhiteForegroundColor}`,
       borderBottom: 'none',
+      'margin-bottom': '1rem',
     },
     '& .ant-modal-footer': {
       borderTop: 'none',

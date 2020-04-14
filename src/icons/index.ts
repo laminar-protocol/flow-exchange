@@ -6,3 +6,4 @@ export { default as MenuLiquidityIcon } from './MenuLiquidityIcon';
 export { default as MenuDepositIcon } from './MenuDepositIcon';
 export { default as MenuMarginIcon } from './MenuMarginIcon';
 export { default as IdentityIcon } from './IdentityIcon';
+export { default as LeftArrowIcon } from './LeftArrowIcon';

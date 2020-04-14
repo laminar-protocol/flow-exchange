@@ -1,129 +1,230 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
+import { combineLatest } from 'rxjs';
 import clsx from 'clsx';
 
+import useApp, { useAppApi } from '../../hooks/useApp';
+import { useApiSelector, useAccountSelector, useMarginSymbolListSelector } from '../../selectors';
 import MarginHeader from './MarginHeader';
 import MarginPositions from './MarginPositions';
-import { Panel, Table, Row, Col, Text, Description } from '../../components';
+import MarginFastTradeButton from './MarginFastTradeButton';
+import {
+  Panel,
+  Table,
+  Row,
+  Col,
+  Text,
+  Description,
+  Space,
+  NumberFormat,
+  Amount,
+  PoolName,
+  PrimaryButton,
+} from '../../components';
 import { IdentityIcon } from '../../icons';
 
 const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const [active, setActive] = useState('');
+
+  const api = useApiSelector();
+  const account = useAccountSelector();
+  const symbolList = useMarginSymbolListSelector(active);
+  const marginInfo = useApp(state => state.margin.marginInfo);
+  const poolInfo = useApp(state => state.margin.poolInfo);
+  const allPoolIds = useApp(state => state.margin.allPoolIds);
+
+  useLayoutEffect(() => {
+    const subscription = api.margin?.marginInfo().subscribe((result: any) => {
+      useAppApi.setState(state => {
+        state.margin.marginInfo = result;
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useLayoutEffect(() => {
+    const subscription = api.margin?.allPoolIds().subscribe((result: any) => {
+      useAppApi.setState(state => {
+        state.margin.allPoolIds = result;
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useLayoutEffect(() => {
+    const subscription = combineLatest(
+      allPoolIds.map(poolId => {
+        return api.margin?.poolInfo(poolId);
+      }),
+    ).subscribe((result: any) => {
+      result.map((poolInfo: any) => {
+        useAppApi.setState(state => {
+          state.margin.poolInfo[poolInfo.poolId] = poolInfo;
+        });
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [allPoolIds, useAppApi]);
 
   const columns: any[] = [
     {
       title: t('SYMBOL'),
-      dataIndex: 'symbol',
+      dataIndex: 'pairId',
+      render: (value: any, record: any) => {
+        return (
+          <div
+            className={classes.selectRow}
+            onClick={() => {
+              history.push(`/margin/${record.poolId}/${record.pairId}`);
+            }}
+          >
+            {value}
+          </div>
+        );
+      },
     },
     {
       title: t('BID'),
-      dataIndex: 'bid',
+      dataIndex: 'bidSpread',
+      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
     },
     {
       title: t('ASK'),
-      dataIndex: 'ask',
+      dataIndex: 'askSpread',
+      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
     },
     {
       title: t('ENP'),
       dataIndex: 'enp',
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
       title: t('ELL'),
       dataIndex: 'ell',
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
       title: t('POOL'),
-      dataIndex: 'pool',
+      dataIndex: 'poolId',
       align: 'right',
+      render: (value: string) => <PoolName value={value} />,
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      align: 'right',
+      render: (_: any, record: any) => {
+        return <MarginFastTradeButton data={record} pairId={record.pairId} />;
+      },
     },
   ];
 
   return (
-    <div>
+    <Space direction="vertical" size={24}>
       <MarginHeader />
-      <Row align="middle" justify="space-between" className={classes.poolList}>
+      <Row align="middle" justify="space-between">
         <Col>
           <Row>
             <Col>
-              <Panel className={clsx(classes.card, classes.all)}>
+              <Panel
+                className={clsx(classes.card, classes.all, { [classes.activeCard]: active === '' })}
+                onClick={() => setActive('')}
+              >
                 <div>
                   <Text className={classes.text}>{t('All Pools')}</Text>
                 </div>
               </Panel>
             </Col>
-            <Col>
-              <Panel className={classes.card}>
-                <Row style={{ height: '100%' }}>
-                  <div className={classes.poolIcon}>
-                    <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
-                  </div>
-                  <Description
-                    label={
-                      <div>
-                        <Text size="n">Laminar</Text>
-                        <Text size="s" style={{ paddingLeft: '0.25rem' }}>
-                          AVAILABLE
-                        </Text>
-                      </div>
-                    }
-                    className={classes.pool}
+            {allPoolIds.map(poolId => {
+              return (
+                <Col key={poolId}>
+                  <Panel
+                    className={clsx(classes.card, { [classes.activeCard]: active === poolId })}
+                    onClick={() => setActive(poolId)}
                   >
-                    188
-                  </Description>
-                </Row>
-              </Panel>
-            </Col>
+                    <Row style={{ height: '100%' }}>
+                      <div className={classes.poolIcon}>
+                        <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
+                      </div>
+                      <Description
+                        layout="vertical"
+                        label={
+                          <div>
+                            <Text size="n">
+                              <PoolName value={poolId} />
+                            </Text>
+                            <Text size="s" style={{ paddingLeft: '0.25rem' }}>
+                              AVAILABLE
+                            </Text>
+                          </div>
+                        }
+                        className={classes.pool}
+                      >
+                        <Amount value={poolInfo[poolId]?.balance} loading={!poolInfo[poolId]} />
+                      </Description>
+                    </Row>
+                  </Panel>
+                </Col>
+              );
+            })}
           </Row>
         </Col>
         <Col>
           <Row style={{ marginRight: '2rem' }}>
-            <Description label={t('Margin Call ENP')} align="flex-end">
-              55%
+            <Description layout="vertical" label={t('Margin Call ENP')} align="flex-end">
+              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
-            <Description label={t('ELL')}>20%</Description>
+            <Description layout="vertical" label={t('ELL')}>
+              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent />
+            </Description>
             <div className={classes.separate} />
-            <Description label={t('Force Closure ENP')} align="flex-end">
-              20%
+            <Description layout="vertical" label={t('Force Closure ENP')} align="flex-end">
+              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
-            <Description label={t('ELL')}>1%</Description>
+            <Description layout="vertical" label={t('ELL')}>
+              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent />
+            </Description>
           </Row>
         </Col>
       </Row>
       <Panel className={classes.tableWrap}>
         <Table
           columns={columns}
-          dataSource={[
-            {
-              symbol: 'USDUSD',
-              bid: 'xxx',
-              ask: 'xxx',
-              enp: 'xxx',
-              ell: 'xxx',
-              pool: 'Laminar',
-            },
-          ]}
+          dataSource={symbolList}
+          // rowClassName={classes.selectRow}
+          // onRow={(record: any) => {
+          //   return {
+          //     onClick: () => {
+          //       history.push(`/margin/${record.poolId}/${record.pairId}`);
+          //     },
+          //   };
+          // }}
+          rowKey={(record: any) => `${record.poolId}/${record.pairId}`}
         />
       </Panel>
       <MarginPositions />
-    </div>
+    </Space>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
-  poolList: {
-    'margin-top': '1.5rem',
-    'margin-bottom': '1.5rem',
-  },
   tableWrap: {
     marginBottom: '1.5rem',
     padding: '1rem 0',
@@ -173,11 +274,7 @@ const useStyles = createUseStyles(theme => ({
     background: theme.lightBackgroundColor,
     cursor: 'pointer',
     '&:hover': {
-      'box-shadow': '0 1px 20px 0 rgba(23, 65, 212, 0.18)',
-      '& $text': {
-        color: '#0155ff',
-      },
-      extend: theme.linearGradientRadiusBorder,
+      extend: '$activeCard',
     },
     '&$all': {
       display: 'flex',
@@ -187,6 +284,16 @@ const useStyles = createUseStyles(theme => ({
         fontSize: '1.25rem',
       },
     },
+  },
+  activeCard: {
+    'box-shadow': '0 1px 20px 0 rgba(23, 65, 212, 0.18)',
+    '& $text': {
+      color: '#0155ff',
+    },
+    extend: theme.linearGradientRadiusBorder,
+  },
+  selectRow: {
+    cursor: 'pointer',
   },
 }));
 

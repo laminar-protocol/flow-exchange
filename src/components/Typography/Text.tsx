@@ -3,14 +3,15 @@ import React from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { BaseProps } from '../../types';
+import { truncate } from '../../utils';
 
 type TextProps = {
   size?: 's' | 'l' | 't' | 'n';
   weight?: 'bold' | 'black';
+  truncate?: number;
   light?: boolean;
   ellipsisi?: boolean;
   align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  component?: React.ElementType;
   color?: 'greyColor1' | 'greyColor2' | 'greyColor3' | 'greyColor4';
 };
 

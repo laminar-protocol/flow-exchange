@@ -1,33 +1,140 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect, useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
+import { useSubscription } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 import clsx from 'clsx';
 
-import { Panel, Table, Title, Row } from '../../components';
+import useApp, { useAppApi } from '../../hooks/useApp';
+import { useApiSelector, useAccountSelector, useMarginSymbolListSelector } from '../../selectors';
+import { Panel, Table, Date, TxHash, Row, Amount, DefaultButton } from '../../components';
+import { getValueFromHex, notificationHelper } from '../../utils';
+
+const positionsOpenQuery = gql`
+  subscription positionsSubscription($signer: String!) {
+    Extrinsics(
+      where: {
+        section: { _eq: "marginProtocol" }
+        method: { _eq: "openPosition" }
+        result: { _eq: "ExtrinsicSuccess" }
+        signer: { _eq: $signer }
+      }
+      order_by: { blockNumber: desc }
+    ) {
+      args
+      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionOpened" } }, limit: 1) {
+        args
+      }
+      block {
+        timestamp
+      }
+      hash
+    }
+  }
+`;
+
+const positionsCloseQuery = gql`
+  subscription positionsSubscription($signer: String!) {
+    Extrinsics(
+      where: {
+        section: { _eq: "marginProtocol" }
+        method: { _eq: "closePosition" }
+        result: { _eq: "ExtrinsicSuccess" }
+        signer: { _eq: $signer }
+      }
+      order_by: { blockNumber: desc }
+    ) {
+      args
+      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionClosed" } }, limit: 1) {
+        args
+      }
+      block {
+        timestamp
+      }
+      hash
+    }
+  }
+`;
 
 const MarginPositions: React.FC = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
+  const [list, setList] = useState([]);
+  const api = useApiSelector();
+  const account = useAccountSelector();
+  const [actionLoading, setActionLoading] = useState('');
+
+  const { data: openedList } = useSubscription(positionsOpenQuery, {
+    variables: {
+      signer: account.address,
+    },
+  });
+
+  const { data: closedList } = useSubscription(positionsCloseQuery, {
+    variables: {
+      signer: account.address,
+    },
+  });
+
+  const closePosition = async (positionId: string) => {
+    if (!api.margin) return;
+    try {
+      setActionLoading(positionId);
+      await notificationHelper(api.margin.closePosition(account.address, positionId));
+    } finally {
+      setActionLoading('');
+    }
+  };
+
+  useLayoutEffect(() => {
+    if (openedList && closedList) {
+      const list = openedList.Extrinsics.map((data: any) => {
+        const positionId = data.events[0].args[1];
+
+        const closed = !!closedList.Extrinsics.find(({ args }: any) => {
+          return args.position_id === positionId;
+        });
+
+        return {
+          positionId,
+          hash: data.hash,
+          openedTime: data.block.timestamp,
+          isClosed: !!closed,
+          leverage: data.args.leverage,
+          openPrice: getValueFromHex(data.args.price),
+        };
+      });
+
+      setList(list);
+
+      return () => {};
+    }
+
+    return () => {};
+  }, [openedList, closedList]);
 
   const columns: any[] = [
     {
       title: t('TX HASH'),
-      dataIndex: 'symbol',
+      dataIndex: 'hash',
+      render: (value: string) => <TxHash value={value} maxLength={20} />,
     },
     {
       title: t('DATETIME'),
-      dataIndex: 'bid',
+      dataIndex: 'openedTime',
       align: 'right',
+      render: (value: number) => <Date value={value} />,
     },
     {
       title: t('L/S'),
-      dataIndex: 'ask',
+      dataIndex: 'L/S',
       align: 'right',
+      render: (value: number) => '-',
     },
     {
       title: t('LEVERAGE'),
-      dataIndex: 'enp',
+      dataIndex: 'leverage',
       align: 'right',
     },
     {
@@ -37,8 +144,9 @@ const MarginPositions: React.FC = () => {
     },
     {
       title: t('OPEN PRICE'),
-      dataIndex: 'pool',
+      dataIndex: 'openPrice',
       align: 'right',
+      render: (value: number) => <Amount value={value} />,
     },
     {
       title: t('CUR. PRICE'),
@@ -54,6 +162,19 @@ const MarginPositions: React.FC = () => {
       title: t('P&L'),
       dataIndex: 'pool',
       align: 'right',
+    },
+    {
+      title: '',
+      dataIndex: 'action',
+      align: 'right',
+      render: (_: any, record: any) => {
+        if (record.isClosed) return null;
+        return (
+          <DefaultButton loading={actionLoading === record.positionId} onClick={() => closePosition(record.positionId)}>
+            Close
+          </DefaultButton>
+        );
+      },
     },
   ];
 
@@ -85,20 +206,21 @@ const MarginPositions: React.FC = () => {
         </div>
       }
     >
-      <Table
-        columns={columns}
-        className={classes.table}
-        dataSource={[
-          {
-            symbol: 'USDUSD',
-            bid: 'xxx',
-            ask: 'xxx',
-            enp: 'xxx',
-            ell: 'xxx',
-            pool: 'Laminar',
-          },
-        ]}
-      />
+      {activeTab === 'closed' ? (
+        <Table
+          columns={columns}
+          className={classes.table}
+          dataSource={list.filter(({ isClosed }) => isClosed)}
+          rowKey="hash"
+        />
+      ) : (
+        <Table
+          columns={columns}
+          className={classes.table}
+          dataSource={list.filter(({ isClosed }) => !isClosed)}
+          rowKey="hash"
+        />
+      )}
     </Panel>
   );
 };

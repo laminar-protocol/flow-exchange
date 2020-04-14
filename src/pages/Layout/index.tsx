@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useLocation } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ type LayoutProps = {
 
 const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   const classes = useStyles();
+  const [availableProvider, setAvailableProvider] = useState();
 
   const currentApi = useApp(state => state.api);
   const setApiEnable = useApp(state => state.setApiEnable);

@@ -36,6 +36,8 @@ class Api implements FlowApi {
   public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
   public liquidityPoolGrant?: EthereumApi['liquidityPoolGrant'];
 
+  public margin?: LaminarApi['margin'];
+
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;
 
@@ -49,7 +51,7 @@ class Api implements FlowApi {
       if (!anyWindow.injectedWeb3['polkadot-js']) throw new Error('polkadot extensions not detect');
 
       this.provider = new LaminarApi({
-        provider: new WsProvider('wss://testnet-node-1.laminar-chain.laminar.one/ws'),
+        provider: new WsProvider('wss://dev-node.laminar-chain.laminar.one/ws'),
       });
     } else {
       throw new Error('chainType is either ethereum or laminar');
@@ -75,6 +77,10 @@ class Api implements FlowApi {
       this.getPoolAllowance = provider.getPoolAllowance;
       this.flowProtocolGrant = provider.flowProtocolGrant;
       this.liquidityPoolGrant = provider.liquidityPoolGrant;
+    }
+    if (this.chainType === 'laminar') {
+      const provider = this.provider as LaminarApi;
+      this.margin = provider.margin;
     }
   }
 

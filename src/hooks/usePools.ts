@@ -119,7 +119,6 @@ export const getPoolDetail = (
 
   if (!poolInfo) return null;
   if (!poolId || !poolLiquidity[poolId]) return null;
-  console.log(poolLiquidity[poolId], 'getPoolDetail');
   return {
     liquidity: poolLiquidity[poolId],
     options,
@@ -131,7 +130,6 @@ export const poolsSelector = createSelector(
   (state: PoolsState) => state.defaultPools,
   (state: PoolsState) => state.customPools,
   (defaultPools, customPools) => {
-    console.log('selector');
     return [...defaultPools, ...customPools];
   },
 );

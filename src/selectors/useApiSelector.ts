@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import useApp, { AppState } from '../hooks/useApp';
+import { AppState, useAppSelector } from '../hooks/useApp';
 
 import { AppEthereumApi, AppLaminarApi } from '../services/Api';
 
@@ -17,4 +17,4 @@ export const apiSelector = createSelector(
   },
 );
 
-export default () => useApp(apiSelector);
+export default () => useAppSelector(apiSelector);

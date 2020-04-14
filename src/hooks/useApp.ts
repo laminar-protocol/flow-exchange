@@ -5,9 +5,11 @@ import Api, {
   AppEthereumApi,
   AppLaminarApi,
   ChainType,
+  MarginInfo,
   PoolInfo,
   TokenInfo,
   TradingPair,
+  MarginPoolInfo,
 } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 import { useSettingApi } from './useSetting';
@@ -21,6 +23,20 @@ export interface AppState extends State {
   tokens: TokenInfo[];
   tradingPairs: TradingPair[];
   defaultPools?: PoolInfo[];
+  margin: {
+    balance: string;
+    marginInfo: MarginInfo;
+    allPoolIds: string[];
+    poolInfo: Record<string, MarginPoolInfo>;
+    traderInfo: {
+      equity: string;
+      freeMargin: string;
+      marginHeld: string;
+      marginLevel: string;
+      unrealizedPl: string;
+    };
+  };
+  // poolOptions: any,
   setApiEnable(chainType: ChainType): Promise<AppState['api']>;
   checkAvailableProvider(): ChainType[];
 }
@@ -34,6 +50,32 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
     connectModalShow: false,
     tokens: [],
     tradingPairs: [],
+    margin: {
+      balance: '0',
+      marginInfo: {
+        ellThreshold: {
+          marginCall: 0,
+          stopOut: 0,
+        },
+        enpThreshold: {
+          marginCall: 0,
+          stopOut: 0,
+        },
+        traderThreshold: {
+          marginCall: 0,
+          stopOut: 0,
+        },
+      },
+      allPoolIds: [],
+      poolInfo: {},
+      traderInfo: {
+        equity: '0',
+        freeMargin: '0',
+        marginHeld: '0',
+        marginLevel: '0',
+        unrealizedPl: '0',
+      },
+    },
     checkAvailableProvider() {
       const anyWindow = window as any;
 
@@ -48,14 +90,14 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
       const api = new Api({ chainType });
 
       await api.isReady();
-      const defaultPools = await api.getDefaultPools();
+      // const defaultPools = await api.getDefaultPools();
       const tradingPairs = await api.getTradingPairs();
       const tokens = await api.getTokens();
       const accounts = await api.getAccounts();
 
       set(state => {
         state.api = api;
-        state.defaultPools = defaultPools;
+        // state.defaultPools = defaultPools;
         state.tradingPairs = tradingPairs;
         state.tokens = tokens;
         state.currentAccount = accounts[0];

@@ -1,5 +1,5 @@
 import React from 'react';
-import NumberFormatComp from 'react-number-format';
+import NumberInputComp from 'react-number-format';
 
 interface Props {
   value?: number | string;
@@ -8,8 +8,8 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const NumberFormat: React.FC<Props> = ({ value, noPrefix, prefix, children }) => (
-  <NumberFormatComp
+const NumberInput: React.FC<Props> = ({ value, noPrefix, prefix, children }) => (
+  <NumberInputComp
     value={value}
     displayType="text"
     thousandSeparator
@@ -18,7 +18,7 @@ const NumberFormat: React.FC<Props> = ({ value, noPrefix, prefix, children }) =>
     fixedDecimalScale
   >
     {children}
-  </NumberFormatComp>
+  </NumberInputComp>
 );
 
-export default NumberFormat;
+export default NumberInput;

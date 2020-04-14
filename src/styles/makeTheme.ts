@@ -8,6 +8,7 @@ declare module 'react-jss' {
 
 interface AppTheme {
   backgroundColor: string;
+  backgroundHoverColor: string;
   lightBackgroundColor: string;
   sideBarColor: string;
   // Border colors
@@ -59,6 +60,8 @@ interface AppTheme {
     greyColor3: string;
     greyColor4: string;
   };
+
+  flexCenter: any;
 }
 
 const switchMode = (mode: themeMode, value: { light: string; dark: string }) => value[mode];
@@ -68,6 +71,11 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   backgroundColor: switchMode(mode, {
     light: '#f8f9fd',
+    dark: '#21212e',
+  }),
+
+  backgroundHoverColor: switchMode(mode, {
+    light: '#f2f5f7',
     dark: '#21212e',
   }),
 
@@ -219,6 +227,12 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
     'background-image': 'linear-gradient(to bottom, #ffffff, #ffffff), linear-gradient(to right, #004eff, #fa0000)',
     'background-origin': 'border-box',
     'background-clip': 'content-box, border-box',
+  },
+
+  flexCenter: {
+    'justify-content': 'center',
+    'align-items': 'center',
+    display: 'flex',
   },
 });
 

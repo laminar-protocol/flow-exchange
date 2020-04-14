@@ -5,11 +5,17 @@ import { createUseStyles } from 'react-jss';
 
 const useStyles = createUseStyles(theme => ({
   root: {
-    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+    '&.ant-btn': {
+      color: '#0155ff',
+      'border-style': 'solid',
+      'border-width': 1,
+      'border-image-slice': 1,
+      'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
+      'border-color': theme.keyColorGrey,
+    },
+    '&.ant-btn:hover': {
       background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
       color: '#fff',
-      border: 0,
-      fontWeight: theme.boldWeight,
     },
     '&.ant-btn[disabled], &.ant-btn[disabled]:hover': {
       opacity: 0.75,

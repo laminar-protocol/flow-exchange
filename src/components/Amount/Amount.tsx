@@ -5,6 +5,7 @@ import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
 import { TokenInfo } from '../../services/Api';
 import { fromPrecision, getCurrencySymbol } from '../../utils';
 import { Spinner } from '../Spinner';
+import { BaseProps } from '../../types';
 
 function numberToAmount(
   number: BN,
@@ -27,15 +28,17 @@ function numberToAmount(
   return `${prefix}${value}${postfix ? ' ' : ''}${postfix}`;
 }
 
-function Amount(props: {
-  value: BN | string | number;
-  tokenId: TokenInfo['id'];
-  minDigits?: number;
-  useGrouping?: boolean;
-  hasPostfix?: boolean;
-  hasPrefix?: boolean;
-  component?: React.ElementType;
-}) {
+function Amount(
+  props: {
+    value: BN | string | number;
+    tokenId?: TokenInfo['id'];
+    minDigits?: number;
+    useGrouping?: boolean;
+    hasPostfix?: boolean;
+    hasPrefix?: boolean;
+    loading?: boolean;
+  } & BaseProps,
+) {
   const {
     value,
     tokenId,
@@ -43,23 +46,30 @@ function Amount(props: {
     useGrouping = true,
     hasPostfix = false,
     hasPrefix = false,
+    loading = false,
     component: Component = 'span',
     ...other
   } = props;
 
   const tokens = useApp(tokenInfoMapSelector);
-  const token = tokens[tokenId];
 
-  if (!tokens[tokenId]) return <Spinner />;
+  if (loading) return <Spinner />;
 
   const options: any = {
-    precision: token.precision,
     useGrouping,
     minDigits,
+    precision: 18,
   };
 
-  if (hasPostfix) options.postfix = token.name;
-  if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
+  if (tokenId) {
+    if (!tokens[tokenId]) return <Spinner />;
+
+    const token = tokens[tokenId];
+
+    options.precision = token.precision;
+    if (hasPostfix) options.postfix = token.name;
+    if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
+  }
 
   const number = BN.isBN(value) ? value : new BN(value);
 
