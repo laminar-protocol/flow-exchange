@@ -5,7 +5,19 @@ import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { combineLatest } from 'rxjs';
 
-import { Amount, Col, Description, NumberFormat, Panel, PoolName, Row, Space, Table, Text } from '../../components';
+import {
+  Amount,
+  Col,
+  Description,
+  NumberFormat,
+  Panel,
+  PoolName,
+  Row,
+  Space,
+  Table,
+  Text,
+  Price,
+} from '../../components';
 import useApp, { useAppApi } from '../../hooks/useApp';
 import { IdentityIcon } from '../../icons';
 import { useApiSelector, useMarginSymbolListSelector } from '../../selectors';
@@ -25,6 +37,7 @@ const MarginPools = () => {
   const marginInfo = useApp(state => state.margin.marginInfo);
   const poolInfo = useApp(state => state.margin.poolInfo);
   const allPoolIds = useApp(state => state.margin.allPoolIds);
+  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
@@ -60,7 +73,17 @@ const MarginPools = () => {
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, useAppApi]);
+  }, [api, allPoolIds]);
+
+  useLayoutEffect(() => {
+    if (api.oracleValues) {
+      const subscription = api.oracleValues().subscribe((result: any) => {
+        setOracleValues(result);
+      });
+
+      return () => subscription.unsubscribe();
+    }
+  }, []);
 
   const columns: any[] = [
     {
@@ -82,21 +105,43 @@ const MarginPools = () => {
     {
       title: t('BID'),
       dataIndex: 'bidSpread',
-      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 5 }} />,
+      align: 'right',
+      render: (spread: any, record: any) => {
+        return poolInfo[record.poolId] ? (
+          <Price
+            spread={spread}
+            base={oracleValues[record.pair.base]}
+            quote={oracleValues[record.pair.quote]}
+            direction="bid"
+          />
+        ) : null;
+      },
     },
     {
       title: t('ASK'),
       dataIndex: 'askSpread',
-      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 5 }} />,
+      align: 'right',
+      render: (spread: any, record: any) => {
+        return poolInfo[record.poolId] ? (
+          <Price
+            spread={spread}
+            base={oracleValues[record.pair.base]}
+            quote={oracleValues[record.pair.quote]}
+            direction="ask"
+          />
+        ) : null;
+      },
     },
     {
       title: t('ENP'),
       dataIndex: 'enp',
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 5 }} percent precision />,
+      align: 'right',
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
       title: t('ELL'),
       dataIndex: 'ell',
+      align: 'right',
       render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
@@ -168,25 +213,25 @@ const MarginPools = () => {
         <Col>
           <Row style={{ marginRight: '2rem' }}>
             <Description layout="vertical" label={t('Margin Call ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent />
+              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent />
+              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('Force Closure ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent />
+              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent />
+              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
           </Row>
         </Col>

@@ -31,6 +31,7 @@ class Api implements FlowApi {
   public getPoolOwner: FlowApi['getPoolOwner'];
   public createPool: FlowApi['createPool'];
 
+  public oracleValues?: LaminarApi['oracleValues'];
   public getTokenAllowance?: EthereumApi['getTokenAllowance'];
   public getPoolAllowance?: EthereumApi['getPoolAllowance'];
   public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
@@ -80,6 +81,7 @@ class Api implements FlowApi {
     }
     if (this.chainType === 'laminar') {
       const provider = this.provider as LaminarApi;
+      this.oracleValues = provider.oracleValues;
       this.margin = provider.margin;
     }
   }

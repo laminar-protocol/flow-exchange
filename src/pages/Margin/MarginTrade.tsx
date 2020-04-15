@@ -1,6 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+import { combineLatest } from 'rxjs';
 
 import {
   AmountInput,
@@ -13,6 +14,7 @@ import {
   Space,
   Text,
   NumberFormat,
+  Price,
 } from '../../components';
 import { AppState } from '../../hooks/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
@@ -23,11 +25,18 @@ type MarginTradeProps = {
   pairId: string;
 };
 
+type OracleValue = {
+  timestamp: number;
+  value: string;
+};
+
 const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
+  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
+
   const [mode, setMode] = useState<'basic' | 'advanced'>('basic');
   const [leverage, setLeverage] = useState('');
   const [actionLoading, setActionLoading] = useState('');
@@ -35,12 +44,29 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
   const account = useAccountSelector();
 
   const pairInfo = useMemo(() => {
-    return poolInfo?.options[pairId] || {};
+    return poolInfo?.options[pairId];
   }, [poolInfo, pairId]);
 
   const leverages = useMemo(() => {
-    return getLeverageEnable(pairInfo.enabledTrades);
-  }, [pairInfo.enabledTrades]);
+    return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
+  }, [pairInfo]);
+
+  // set default leverage
+  useLayoutEffect(() => {
+    if (Object.keys(leverages).length && !leverage) {
+      setLeverage(Object.keys(leverages)[0]);
+    }
+  }, [leverages, leverage]);
+
+  useLayoutEffect(() => {
+    if (api.oracleValues) {
+      const subscription = api.oracleValues().subscribe((result: any) => {
+        setOracleValues(result);
+      });
+
+      return () => subscription.unsubscribe();
+    }
+  }, []);
 
   const openPosition = async (direction: 'short' | 'long') => {
     if (!api.margin || !poolInfo.poolId || !pairInfo.pair || !leverages[leverage][direction]) return;
@@ -80,7 +106,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             value={leverage}
             style={{ width: '12rem' }}
             onSelect={value => setLeverage(value as string)}
-            loading={!Object.keys(leverages).length}
+            disabled={!Object.keys(leverages).length}
           >
             {Object.keys(leverages).map(label => (
               <Select.Option value={label} key={label}>
@@ -105,7 +131,14 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Buy')}
             </DefaultButton>
-            <NumberFormat value={pairInfo.askSpread} options={{ mantissa: 5 }} />
+            {pairInfo ? (
+              <Price
+                base={oracleValues[pairInfo.pair.base]}
+                quote={oracleValues[pairInfo.pair.quote]}
+                spread={pairInfo.askSpread}
+                direction="ask"
+              />
+            ) : null}
           </div>
           <div className={classes.actionItem}>
             <DefaultButton
@@ -116,7 +149,14 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Sell')}
             </DefaultButton>
-            <NumberFormat value={pairInfo.bidSpread} options={{ mantissa: 5 }} />
+            {pairInfo ? (
+              <Price
+                base={oracleValues[pairInfo.pair.base]}
+                quote={oracleValues[pairInfo.pair.quote]}
+                spread={pairInfo.bidSpread}
+                direction="bid"
+              />
+            ) : null}
           </div>
         </div>
       </Space>

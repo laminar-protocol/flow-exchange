@@ -47,16 +47,16 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.marginCall} percent />
+            <NumberFormat value={marginInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.stopOut} percent />
+            <NumberFormat value={marginInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
           </Description>
         </Space>
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          <NumberFormat value={traderInfo.marginLevel} percent precision />
+          <NumberFormat value={traderInfo.marginLevel} percent precision options={{ mantissa: 2 }} />
         </Description>
       </Space>
       <Row className={classes.detail}>
@@ -82,7 +82,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
             {traderInfo.marginLevel ? (
               <NumberFormat
                 value={Number(traderInfo.marginHeld) / Number(traderInfo.marginLevel)}
-                options={{ mantissa: 5 }}
+                options={{ mantissa: 3 }}
               />
             ) : null}
           </Description>

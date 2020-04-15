@@ -5,9 +5,10 @@ import { useSubscription } from '@apollo/react-hooks';
 import clsx from 'clsx';
 import gql from 'graphql-tag';
 
-import { Amount, Date, DefaultButton, Panel, Table, TxHash } from '../../components';
+import { Amount, Date, DefaultButton, Panel, Table, TxHash, Price } from '../../components';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { getValueFromHex, notificationHelper } from '../../utils';
+import useApp from '../../hooks/useApp';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
@@ -63,6 +64,8 @@ const MarginPositions: React.FC = () => {
   const api = useApiSelector();
   const account = useAccountSelector();
   const [actionLoading, setActionLoading] = useState('');
+  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
+  const poolInfo = useApp(state => state.margin.poolInfo);
 
   const { data: openedList } = useSubscription(positionsOpenQuery, {
     variables: {
@@ -95,14 +98,20 @@ const MarginPositions: React.FC = () => {
           return args.position_id === positionId;
         });
 
+        const pair = data.events[0].args[3];
+
         return {
           positionId,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
           leverage: data.args.leverage,
-          lot: getValueFromHex(data.events[0].args[5]),
+          amt: getValueFromHex(data.events[0].args[5]),
           openPrice: getValueFromHex(data.events[0].args[6]),
+          pair,
+          poolId: `${data.events[0].args[2]}`,
+          pairId: `${pair.base}${pair.quote}`,
+          direction: data.events[0].args[4].includes('Short') ? 'bid' : 'ask',
         };
       });
       setList(list);
@@ -112,6 +121,16 @@ const MarginPositions: React.FC = () => {
 
     return () => {};
   }, [openedList, closedList]);
+
+  useLayoutEffect(() => {
+    if (api.oracleValues) {
+      const subscription = api.oracleValues().subscribe((result: any) => {
+        setOracleValues(result);
+      });
+
+      return () => subscription.unsubscribe();
+    }
+  }, []);
 
   const columns: any[] = [
     {
@@ -137,8 +156,8 @@ const MarginPositions: React.FC = () => {
       align: 'right',
     },
     {
-      title: t('LOT'),
-      dataIndex: 'lot',
+      title: t('AMT'),
+      dataIndex: 'amt',
       align: 'right',
       render: (value: number) => <Amount value={value} />,
     },
@@ -146,12 +165,26 @@ const MarginPositions: React.FC = () => {
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} />,
+      render: (value: number) => <Amount value={value} minDigits={5} />,
     },
     {
       title: t('CUR. PRICE'),
-      dataIndex: 'pool',
+      dataIndex: 'pairId',
       align: 'right',
+      render: (_: any, record: any) => {
+        return poolInfo[record.poolId] ? (
+          <Price
+            spread={
+              record.direction === 'ask'
+                ? poolInfo[record.poolId]?.options[record.pairId]?.askSpread
+                : poolInfo[record.poolId]?.options[record.pairId]?.bidSpread
+            }
+            base={oracleValues[record.pair.base]}
+            quote={oracleValues[record.pair.quote]}
+            direction={record.direction}
+          />
+        ) : null;
+      },
     },
     {
       title: t('SWAP'),
