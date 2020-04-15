@@ -213,25 +213,25 @@ const MarginPools = () => {
         <Col>
           <Row style={{ marginRight: '2rem' }}>
             <Description layout="vertical" label={t('Margin Call ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent />
+              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent />
+              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('Force Closure ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent />
+              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent />
+              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
           </Row>
         </Col>

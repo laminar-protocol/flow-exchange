@@ -82,7 +82,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
             {traderInfo.marginLevel ? (
               <NumberFormat
                 value={Number(traderInfo.marginHeld) / Number(traderInfo.marginLevel)}
-                options={{ mantissa: 5 }}
+                options={{ mantissa: 3 }}
               />
             ) : null}
           </Description>
