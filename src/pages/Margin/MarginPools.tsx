@@ -60,7 +60,7 @@ const MarginPools = () => {
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, useAppApi]);
+  }, [api, allPoolIds]);
 
   const columns: any[] = [
     {

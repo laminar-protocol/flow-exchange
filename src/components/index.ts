@@ -20,6 +20,7 @@ export * from './PoolName';
 export * from './Date';
 export * from './TxHash';
 export * from './Address';
+export * from './Price';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';
