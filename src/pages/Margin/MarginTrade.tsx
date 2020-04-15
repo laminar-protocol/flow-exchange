@@ -2,7 +2,18 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
-import { AmountInput, DefaultButton, Panel, RadioButton, RadioGroup, Row, Select, Space, Text } from '../../components';
+import {
+  AmountInput,
+  DefaultButton,
+  Panel,
+  RadioButton,
+  RadioGroup,
+  Row,
+  Select,
+  Space,
+  Text,
+  NumberFormat,
+} from '../../components';
 import { AppState } from '../../hooks/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
@@ -94,7 +105,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Buy')}
             </DefaultButton>
-            <Text>{pairInfo.askSpread}</Text>
+            <NumberFormat value={pairInfo.askSpread} options={{ mantissa: 5 }} />
           </div>
           <div className={classes.actionItem}>
             <DefaultButton
@@ -105,7 +116,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Sell')}
             </DefaultButton>
-            <Text>{pairInfo.bidSpread}</Text>
+            <NumberFormat value={pairInfo.bidSpread} options={{ mantissa: 5 }} />
           </div>
         </div>
       </Space>

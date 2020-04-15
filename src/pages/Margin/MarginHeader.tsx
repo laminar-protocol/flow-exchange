@@ -48,11 +48,11 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ENP')}>
-              <NumberFormat value={poolInfo.enp} percent precision />
+              <NumberFormat value={poolInfo.enp} percent precision options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={poolInfo.ell} percent precision />
+              <NumberFormat value={poolInfo.ell} percent precision options={{ mantissa: 2 }} />
             </Description>
           </Space>
         ) : (
@@ -65,7 +65,7 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
 
         <Row>
           <Description layout="vertical" label={t('TOTAL BALANCE')} align="flex-end">
-            <Amount value={balance} tokenId={'LAMI'} hasPostfix />
+            <Amount value={balance} tokenId={'AUSD'} hasPostfix />
           </Description>
           <div className={classes.separate} />
           <Description layout="vertical" label={t('ENABLE TRADING')} align="flex-end">

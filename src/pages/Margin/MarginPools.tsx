@@ -82,17 +82,17 @@ const MarginPools = () => {
     {
       title: t('BID'),
       dataIndex: 'bidSpread',
-      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
+      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 5 }} />,
     },
     {
       title: t('ASK'),
       dataIndex: 'askSpread',
-      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
+      render: (value: number) => <NumberFormat value={value} options={{ mantissa: 5 }} />,
     },
     {
       title: t('ENP'),
       dataIndex: 'enp',
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 5 }} percent precision />,
     },
     {
       title: t('ELL'),
