@@ -28,7 +28,6 @@ const Price: React.FC<BaseProps & PriceProps> = ({
   if (!base || !quote) {
     value = '-';
   } else {
-    console.log(base.value, quote.value, spread);
     value = (
       ((direction === 'ask' ? 1 + spread : 1 - spread) * Number(fromPrecision(base.value, 18))) /
       Number(fromPrecision(quote.value, 18))

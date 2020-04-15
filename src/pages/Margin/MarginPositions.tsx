@@ -172,7 +172,6 @@ const MarginPositions: React.FC = () => {
       dataIndex: 'pairId',
       align: 'right',
       render: (_: any, record: any) => {
-        console.log(record.pairId);
         return poolInfo[record.poolId] ? (
           <Price
             spread={
@@ -181,7 +180,7 @@ const MarginPositions: React.FC = () => {
                 : poolInfo[record.poolId]?.options[record.pairId]?.bidSpread
             }
             base={oracleValues[record.pair.base]}
-            quote={oracleValues[record.pair.base]}
+            quote={oracleValues[record.pair.quote]}
             direction={record.direction}
           />
         ) : null;
