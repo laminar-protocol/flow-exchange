@@ -95,13 +95,15 @@ const MarginPositions: React.FC = () => {
           return args.position_id === positionId;
         });
 
+        console.log(data);
+
         return {
           positionId,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
           leverage: data.args.leverage,
-          openPrice: getValueFromHex(data.args.price),
+          openPrice: getValueFromHex(data.events[0].args[6]),
         };
       });
 
