@@ -105,6 +105,7 @@ const MarginPools = () => {
     {
       title: t('BID'),
       dataIndex: 'bidSpread',
+      align: 'right',
       render: (spread: any, record: any) => {
         return poolInfo[record.poolId] ? (
           <Price
@@ -119,6 +120,7 @@ const MarginPools = () => {
     {
       title: t('ASK'),
       dataIndex: 'askSpread',
+      align: 'right',
       render: (spread: any, record: any) => {
         return poolInfo[record.poolId] ? (
           <Price
@@ -133,11 +135,13 @@ const MarginPools = () => {
     {
       title: t('ENP'),
       dataIndex: 'enp',
+      align: 'right',
       render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
       title: t('ELL'),
       dataIndex: 'ell',
+      align: 'right',
       render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {

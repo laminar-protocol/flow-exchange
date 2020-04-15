@@ -165,7 +165,7 @@ const MarginPositions: React.FC = () => {
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} />,
+      render: (value: number) => <Amount value={value} minDigits={5} />,
     },
     {
       title: t('CUR. PRICE'),
