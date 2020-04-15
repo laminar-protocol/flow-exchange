@@ -8,7 +8,7 @@ type TableProps = React.ComponentProps<typeof AntdTable>;
 const Comp: React.FC<TableProps> = ({ className, ...other }) => {
   const classes = useStyles();
 
-  return <AntdTable className={clsx(className, classes.root)} pagination={false} {...other} />;
+  return <AntdTable scroll={{ x: true }} className={clsx(className, classes.root)} pagination={false} {...other} />;
 };
 
 const useStyles = createUseStyles(theme => ({
