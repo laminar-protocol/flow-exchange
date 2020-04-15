@@ -1,15 +1,12 @@
-import { Text } from 'components';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import { createUseStyles } from 'react-jss';
 
-import { truncate } from '../../../helpers/stringHelper';
-import { useApp } from '../../../hooks';
+import { Text } from '../../../components';
+import { useApp, useAppSelector } from '../../../hooks/useApp';
+import { MenuWalletIcon } from '../../../icons';
+import { truncate } from '../../../_app/helpers/stringHelper';
 import MenuItem from './MenuItem';
-
-const Address = styled(Text)`
-  text-overflow: ellipsis;
-`;
+import SwitchAccount from './SwitchAccount';
 
 const accountName = (account: string) => {
   if (account) {
@@ -19,26 +16,45 @@ const accountName = (account: string) => {
 };
 
 const Wallet: React.FC = ({ ...other }) => {
+  const classes = useStyles();
+
+  const api = useAppSelector(state => state.api);
   const currentAccount = useApp(state => state.currentAccount);
-  const history = useHistory();
+  const [switchAccountVisible, setSwitchAccountVisible] = useState(false);
 
   return (
-    <MenuItem
-      icon="wallet"
-      noRoute
-      {...other}
-      onClick={() => {
-        history.push('/');
-      }}
-    >
-      <div>Wallet</div>
-      <div>
-        <Address size="s" light>
-          {currentAccount ? accountName(currentAccount.address) : 'Please connect your wallet'}
-        </Address>
-      </div>
-    </MenuItem>
+    <>
+      <MenuItem
+        iconComponent={MenuWalletIcon}
+        noRoute
+        {...other}
+        onClick={() => {
+          if (!api || api.chainType !== 'laminar') return false;
+          setSwitchAccountVisible(true);
+        }}
+      >
+        <div>Wallet</div>
+        <div>
+          <Text size="s" light className={classes.address}>
+            {currentAccount ? accountName(currentAccount.address) : 'Please connect your wallet'}
+          </Text>
+        </div>
+      </MenuItem>
+      <SwitchAccount
+        visible={switchAccountVisible}
+        onCancel={() => setSwitchAccountVisible(false)}
+        onOk={() => {
+          setSwitchAccountVisible(false);
+        }}
+      />
+    </>
   );
 };
+
+const useStyles = createUseStyles({
+  address: {
+    textOverflow: 'hidden',
+  },
+});
 
 export default Wallet;

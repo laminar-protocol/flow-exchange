@@ -1,33 +1,46 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
 
-import { Panel, Separator, Text } from '../../components';
-import { useTokens } from '../../hooks';
-import { theme } from '../../styles';
+import { Panel, Separator, Spinner, Text } from '../../components';
+import { useAccount } from '../../hooks/useAccount';
+import { useApp } from '../../hooks/useApp';
 import BalanceLine from './BalanceLine';
 
-export const Container = styled(Panel)`
-  margin-right: 2rem;
-  width: 30%;
-  ${theme.respondTo.lg`
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 2rem;
-  `};
-`;
-
 const SwapBalances: React.FC = () => {
-  const tokens = useTokens(state => state.currentTokens);
+  const classes = useStyles();
+  const tokens = useApp(state => state.tokens);
+  const currentAccount = useApp(state => state.currentAccount);
+  const updateBalances = useAccount(state => state.updateBalances);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (currentAccount?.address) {
+      setLoading(true);
+      updateBalances(currentAccount.address).finally(() => {
+        setLoading(false);
+      });
+    }
+  }, [updateBalances, currentAccount?.address]);
 
   return (
-    <Container>
+    <Panel className={classes.root}>
       <Text size="l">Balances</Text>
       <Separator size={1} />
-      {tokens?.map(token => (
-        <BalanceLine token={token} key={token.name} />
-      ))}
-    </Container>
+      {loading ? <Spinner type="full" /> : tokens?.map(token => <BalanceLine token={token} key={token.name} />)}
+    </Panel>
   );
 };
+
+export const useStyles = createUseStyles(theme => ({
+  root: {
+    marginRight: '2rem',
+    width: '30%',
+    [theme.breakpoints.down('lg')]: {
+      width: '100%',
+      marginRight: 0,
+      marginBottom: '2rem',
+    },
+  },
+}));
 
 export default SwapBalances;

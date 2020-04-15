@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Button, Icon } from '../../components';
+import { DefaultButton, Icon } from '../../components';
 import { useDispatch } from '../../hooks';
 import types from '../../types';
 
@@ -20,13 +20,13 @@ const Faucet: React.FC<Props> = ({ amount, symbol }) => {
   );
 
   return (
-    <Button
+    <DefaultButton
       onClick={() => {
         onOpenFaucet(symbol, amount);
       }}
     >
       <Icon icon="shower" />
-    </Button>
+    </DefaultButton>
   );
 };
 

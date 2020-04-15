@@ -1,7 +1,14 @@
 import BN from 'bn.js';
+import { isHex, bnFromHex } from '@polkadot/util';
 
 const zero = new BN(0);
 const negative1 = new BN(-1);
+
+export const getValueFromHex = (value: string | number) => {
+  if (typeof value === 'number') return String(value);
+  if (isHex(value)) return bnFromHex(value).toString();
+  return value;
+};
 
 export const getValueOfPrecision = (precision: number) => {
   if (precision < 0) throw new Error('precision invaild');
@@ -27,11 +34,14 @@ export const numberToString = (arg: string | number) => {
 };
 
 export const fromPrecision = (
-  input: string | BN,
+  _input: string | BN | number,
   precision: number,
   options: { pad?: boolean; commify?: boolean; minDigits?: number } = {},
 ) => {
-  let wei = typeof input === 'string' ? new BN(input) : input;
+  const input = isHex(_input) ? getValueFromHex(_input) : _input;
+
+  let wei = BN.isBN(input) ? input : new BN(input);
+
   const negative = wei.lt(zero);
 
   const base = getValueOfPrecision(precision);
@@ -78,7 +88,7 @@ export const fromPrecision = (
   return value;
 };
 
-export const toPrecision = (input: number | string, precision: number) => {
+export const toPrecision = (input: number | string, precision = 18) => {
   let ether = numberToString(input);
   const base = getValueOfPrecision(precision);
   const baseLength = precision || 1;

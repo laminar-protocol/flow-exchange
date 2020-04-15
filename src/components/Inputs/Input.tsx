@@ -1,23 +1,36 @@
-import { Input as BaseInput } from 'antd';
-import styled from 'styled-components';
+import React from 'react';
+import { createUseStyles } from 'react-jss';
+import { Input as AntdInput } from 'antd';
+import clsx from 'clsx';
 
-import { theme } from '../../styles';
+type AntdInputProps = React.ComponentProps<typeof AntdInput>;
 
-const Input = styled(BaseInput)`
-  &.ant-input {
-    background-color: ${theme.whiteForegroundColor};
-    border: 1px solid ${theme.borderColor};
-    border-radius: 0.5rem !important;
-    color: ${theme.foregroundColor};
-  }
-  &:hover {
-    border: 1px solid ${theme.darkBorderColor} !important;
-  }
-  &:focus {
-    outline: none;
-    border: 1px solid ${theme.darkBorderColor} !important;
-    box-shadow: none !important;
-  }
-`;
+const Input: React.FC<AntdInputProps> = ({ className, onChange, ...other }) => {
+  const classes = useStyles();
+
+  return <AntdInput size="large" className={clsx(classes.root, className)} {...other} />;
+};
+
+const useStyles = createUseStyles(theme => ({
+  root: {
+    '&.ant-input': {
+      border: `1px solid ${theme.keyColorGrey}`,
+      'border-radius': '2px !important',
+      color: theme.foregroundColor,
+      'background-color': theme.whiteForegroundColor,
+    },
+    '&.ant-input-lg': {
+      padding: '11px 11px',
+    },
+    '&.ant-input:hover': {
+      border: `1px solid ${theme.darkBorderColor} !important`,
+    },
+    '&.ant-input:focus': {
+      outline: 'none',
+      border: `1px solid ${theme.darkBorderColor} !important`,
+      'box-shadow': 'none !important',
+    },
+  },
+}));
 
 export default Input;

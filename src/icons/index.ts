@@ -1,0 +1,9 @@
+export { default as ExchangeIcon } from './ExchangeIcon';
+export { default as MenuWalletIcon } from './MenuWalletIcon';
+export { default as MenuSwapIcon } from './MenuSwapIcon';
+export { default as MenuDashboardIcon } from './MenuDashboardIcon';
+export { default as MenuLiquidityIcon } from './MenuLiquidityIcon';
+export { default as MenuDepositIcon } from './MenuDepositIcon';
+export { default as MenuMarginIcon } from './MenuMarginIcon';
+export { default as IdentityIcon } from './IdentityIcon';
+export { default as LeftArrowIcon } from './LeftArrowIcon';

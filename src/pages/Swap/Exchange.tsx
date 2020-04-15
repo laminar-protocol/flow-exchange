@@ -1,18 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { notification } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
-import { PrimaryButton, Separator, Text } from '../../components';
-import { useApp, useExchange, useExchangeApi, usePools, useTokens } from '../../hooks';
+import { PrimaryButton, Separator, SolidButton, Text } from '../../components';
+import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
+import { apiSelector } from '../../hooks/useApp';
+import { notificationHelper, toPrecision } from '../../utils';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';
 import { EthereumOraclePrice, PolkadotOraclePrice } from './OraclePrice';
 import { ActionBar, Currency, Detail, Divider, Entry, ExchangeIcon, Label, SwapContainer } from './swap.style';
 
 const Exchange: React.FC = () => {
-  const provider = useApp(state => state.provider);
-  const api = useApp(state => state.provider?.api);
+  const api = useApp(apiSelector);
   const currentAccount = useApp(state => state.currentAccount);
+  const pool = usePools(state => state.defaultPool);
+  const updateBalances = useAccount(state => state.updateBalances);
+  const initPool = usePools(state => state.initPool);
 
   const isSwapping = useExchange(state => state.isSwapping);
   const isRedeem = useExchange(state => state.isRedeem);
@@ -28,20 +31,21 @@ const Exchange: React.FC = () => {
   const onFromAmountChange = useExchange(state => state.onFromAmountChange);
   const onToAmountChange = useExchange(state => state.onToAmountChange);
   const onSwapToken = useExchange(state => state.onSwapToken);
-  const baseTokens = useExchange(state => state.baseTokens);
   const onFetchLiquidityPoolSpread = useExchange(state => state.onFetchLiquidityPoolSpread);
-  const pool = usePools(state => state.defaultPool);
-  const setCurrencyData = usePools(state => state.setCurrencyData);
-  const updateBalances = useTokens(state => state.updateBalances);
+  const [allowance, setAllowance] = useState<Record<string, string>>({});
+  const [allowanceLoading, setAllowanceLoading] = useState(false);
+  const [forceUpdateAllowanceSignal, forceUpdateAllowance] = useReducer(x => x + 1, 0);
+
   const { askSpread, bidSpread }: { askSpread?: number; bidSpread?: number } = usePools(state => {
-    if (pool && baseTokens?.[0]) {
-      const token = baseTokens[0];
-      return state.getCurrencyData(pool.id, token.id) || {};
+    if (pool && fromToken && toToken) {
+      const token = fromToken.isBaseToken ? toToken : fromToken;
+      return state.getPoolTokenOptions(pool.id, token.id) || {};
     }
     return {};
   });
 
-  const [isLoadingSpread, setIsLoadingSpread] = useState(false);
+  const [isLoadingSpread, setIsLoadingSpread] = useState(true);
+
   const [{ loading: isLoadingRate, data: rate }, setRate] = useState<{
     loading: boolean;
     data?: number;
@@ -53,46 +57,63 @@ const Exchange: React.FC = () => {
     spread = isRedeem ? bidSpread : askSpread;
   }
 
-  const onSwap = () => {
-    if (currentAccount && api && toToken && fromToken && pool) {
-      useExchangeApi.setState(state => (state.isSwapping = true));
+  const onSwap = async () => {
+    if (currentAccount && toToken && fromToken && pool) {
+      useExchangeApi.setState(state => {
+        state.isSwapping = true;
+      });
 
-      const request = isRedeem
-        ? api.redeem(currentAccount.address, pool.id, fromToken.name, fromAmount)
-        : api.mint(currentAccount.address, pool.id, toToken.name, fromAmount);
-
-      request
+      return notificationHelper(
+        isRedeem
+          ? api.redeem(currentAccount.address, pool.id, fromToken.id, toPrecision(fromAmount, fromToken.precision))
+          : api.mint(currentAccount.address, pool.id, toToken.id, toPrecision(fromAmount, fromToken.precision)),
+      )
         .then(() => {
-          notification.success({
-            message: 'Swap Successful',
-          });
-        })
-        .catch(() => {
-          notification.error({
-            message: 'Swap Failed',
+          useExchangeApi.setState(state => {
+            state.fromAmount = '';
+            state.toAmount = '';
           });
         })
         .finally(() => {
-          useExchangeApi.setState(state => (state.isSwapping = false));
-          updateBalances();
+          useExchangeApi.setState(state => {
+            state.isSwapping = false;
+          });
+          updateBalances(currentAccount?.address);
+        });
+    }
+  };
+
+  const enable = async () => {
+    if (currentAccount && fromToken && pool && api.flowProtocolGrant) {
+      setAllowanceLoading(true);
+
+      return notificationHelper(api.flowProtocolGrant(currentAccount.address, fromToken.id))
+        .then(() => {
+          forceUpdateAllowance();
+        })
+        .finally(() => {
+          setAllowanceLoading(false);
         });
     }
   };
 
   useEffect(() => {
-    const token = baseTokens?.[0];
-    if (api && pool && token) {
-      setIsLoadingSpread(true);
-      api
-        .getCurrencyData(pool.id, token.id)
-        .then(data => {
-          setCurrencyData(pool.id, token.id, data);
-        })
-        .finally(() => {
-          setIsLoadingSpread(false);
-        });
+    if (fromToken?.id && api.chainType === 'ethereum' && api.getTokenAllowance && currentAccount) {
+      api.getTokenAllowance(currentAccount.address, fromToken.id).then((value: any) => {
+        setAllowance(state => ({
+          [fromToken.id]: value,
+          ...state,
+        }));
+      });
     }
-  }, [api, pool, baseTokens, setCurrencyData]);
+  }, [api, currentAccount, fromToken, forceUpdateAllowanceSignal]);
+
+  // init
+  useEffect(() => {
+    if (pool) {
+      initPool(pool.id).finally(() => setIsLoadingSpread(false));
+    }
+  }, [initPool, pool]);
 
   useEffect(() => {
     if (fromAmount && toAmount === undefined) {
@@ -118,11 +139,11 @@ const Exchange: React.FC = () => {
 
   return (
     <SwapContainer padding={2}>
-      {provider?.impl === 'polkadot' ? (
+      {api.chainType === 'laminar' ? (
         <PolkadotOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />
-      ) : (
+      ) : api.chainType === 'ethereum' ? (
         <EthereumOraclePrice set={setRate} fromToken={fromToken} toToken={toToken} />
-      )}
+      ) : null}
       <Entry>
         <Currency>
           <Label>
@@ -171,16 +192,29 @@ const Exchange: React.FC = () => {
         <Detail>
           <ExchangeRate isLoading={isLoading} spread={spread} rate={rate} fromToken={fromToken} toToken={toToken} />
         </Detail>
-        <PrimaryButton
-          size="large"
-          loading={isSwapping}
-          onClick={() => {
-            onSwap();
-          }}
-          disabled={!isValid || isSwapping}
-        >
-          Exchange
-        </PrimaryButton>
+        {api.chainType === 'ethereum' && fromToken && allowance[fromToken.id] === '0' ? (
+          <SolidButton
+            size="large"
+            onClick={() => {
+              enable();
+            }}
+            loading={allowanceLoading}
+            disabled={allowanceLoading}
+          >
+            Enable
+          </SolidButton>
+        ) : (
+          <PrimaryButton
+            size="large"
+            loading={isSwapping}
+            onClick={() => {
+              onSwap();
+            }}
+            disabled={!isValid || isSwapping}
+          >
+            Exchange
+          </PrimaryButton>
+        )}
       </ActionBar>
     </SwapContainer>
   );

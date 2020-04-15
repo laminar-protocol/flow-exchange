@@ -1,36 +1,61 @@
 import React from 'react';
-import { Redirect, Route, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 
-import Liquidity from '../../app/liquidity/liquidity';
-import Margin from '../../app/margin/margin';
+import { useApp } from '../../hooks/useApp';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
 import Home from '../Home';
+import Layout from '../Layout';
+import Liquidity from '../Liquidity';
+import LiquidityCreate from '../Liquidity/LiquidityCreate';
+import PoolDetail from '../Liquidity/PoolDetail';
 import Swap from '../Swap';
+import Margin from '../Margin';
 
 const Routes: React.FC = () => {
+  const currentApi = useApp(state => state.api);
+
   return (
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Layout>
+          <Home />
+        </Layout>
+      </Route>
+      <Route path="/margin">
+        <Layout loading={!currentApi}>
+          <Margin />
+        </Layout>
       </Route>
       <Route path="/dashboard">
-        <Dashboard />
+        <Layout loading={!currentApi}>
+          <Dashboard />
+        </Layout>
       </Route>
       <Route path="/lending">
-        <Lending />
+        <Layout loading={!currentApi}>
+          <Lending />
+        </Layout>
       </Route>
-      <Route exact path="/margin">
-        <Redirect to="/margin/POOL1/EURUSD" />
+      <Route exact path="/liquidity">
+        <Layout loading={!currentApi}>
+          <Liquidity />
+        </Layout>
       </Route>
-      <Route path="/margin/:pool/:tradingSymbol">
-        <Margin />
+      <Route path="/liquidity/new">
+        <Layout loading={!currentApi}>
+          <LiquidityCreate />
+        </Layout>
       </Route>
-      <Route path="/liquidity">
-        <Liquidity />
+      <Route path="/liquidity/:poolId">
+        <Layout loading={!currentApi}>
+          <PoolDetail />
+        </Layout>
       </Route>
       <Route path="/swap">
-        <Swap />
+        <Layout loading={!currentApi}>
+          <Swap />
+        </Layout>
       </Route>
     </Switch>
   );

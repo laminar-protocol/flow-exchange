@@ -4,17 +4,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { addDecorator } from '@storybook/react';
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 
-import { GlobalStyle } from '../src/styles';
+import ThemeProvider from '../src/pages/App/ThemeProvider';
 
 library.add(fas);
 
-addDecorator(storyFn => (
-  <ThemeProvider theme={{ mode: 'light' }}>
-    <>
-      <GlobalStyle />
-      {storyFn()}
-    </>
-  </ThemeProvider>
-));
+addDecorator(storyFn => <ThemeProvider mode="light">{storyFn()}</ThemeProvider>);

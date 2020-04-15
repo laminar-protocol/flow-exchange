@@ -1,58 +1,65 @@
-import React from 'react';
-import styled from 'styled-components';
-
-import { Flex, Panel, Separator, Text } from '../../components';
-import { useTokens } from '../../hooks';
-import { theme } from '../../styles';
+import React, { useEffect, useState } from 'react';
+import { createUseStyles } from 'react-jss';
+import { Panel, Separator, Spinner, Text } from '../../components';
+import { useAccount } from '../../hooks/useAccount';
+import { useApp } from '../../hooks/useApp';
 import Balance from './Balance';
-import Faucet from './Faucet';
 
 const Balances: React.FC = () => {
-  const tokens = useTokens(state => state.currentTokens);
+  const classes = useStyles();
+  const tokens = useApp(state => state.tokens);
+  const currentAccount = useApp(state => state.currentAccount);
+  const updateBalances = useAccount(state => state.updateBalances);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (updateBalances && currentAccount?.address) {
+      setLoading(true);
+      updateBalances(currentAccount.address).finally(() => {
+        setLoading(false);
+      });
+    }
+  }, [currentAccount, updateBalances]);
 
   return (
-    <Container>
+    <Panel className={classes.root} padding="1.5rem">
       <Text size="l">Balances</Text>
       <Separator size={1} />
-      {tokens?.map(token => {
-        if (token.name === 'DAI') {
+      {loading ? (
+        <Spinner type="full" />
+      ) : (
+        tokens?.map(token => {
           return (
-            <div className="item" key="DAI">
-              <Flex>
-                <Balance token={token} />
-                <Faucet symbol="DAI" amount="100" />
-              </Flex>
+            <div className="item" key={token.name}>
+              <Balance token={token} />
             </div>
           );
-        }
-        return (
-          <div className="item" key={token.name}>
-            <Balance token={token} />
-          </div>
-        );
-      })}
-    </Container>
+        })
+      )}
+    </Panel>
   );
 };
 
-const Container = styled(Panel)`
-  width: 35%;
-  ${theme.respondTo.lg`
-    width: 100%;
-  `}
+const useStyles = createUseStyles(theme => ({
+  root: {
+    width: '35%',
+    [theme.breakpoints.down('lg')]: {
+      width: '100%',
+    },
 
-  div:last-child {
-    border-bottom: 0;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
+    '& div:last-child': {
+      borderBottom: 0,
+      marginBottom: 0,
+      paddingBottom: 0,
+    },
 
-  .item {
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-bottom: 1px solid ${theme.borderColor};
-    padding-bottom: 1.5rem;
-  }
-`;
+    '& .item': {
+      marginTop: '1.5rem',
+      marginBottom: '1.5rem',
+      borderBottom: `1px solid ${theme.borderColor}`,
+      paddingBottom: '1.5rem',
+    },
+  },
+}));
 
 export default Balances;

@@ -1,18 +1,25 @@
 import { Button } from 'antd';
-import styled from 'styled-components';
+import clsx from 'clsx';
+import React from 'react';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../../styles';
+const useStyles = createUseStyles(theme => ({
+  root: {
+    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+      border: 0,
+      fontWeight: theme.boldWeight,
+      color: theme.alwaysWhiteForegroundColor,
+      background: theme.keyColorBlue,
+    },
+  },
+}));
 
-const Component = styled(Button)`
-  &.ant-btn,
-  &.ant-btn:hover,
-  &.ant-btn:focus,
-  &.ant-btn:active {
-    border: 1px solid ${theme.borderColor};
-    font-weight: ${theme.boldWeight};
-    color: ${theme.foregroundColor};
-    background-color: ${theme.lightBackgroundColor};
-  }
-`;
+type SolidButtonProps = React.ComponentProps<typeof Button>;
 
-export default Component;
+const SolidButton: React.FC<SolidButtonProps> = ({ className, ...other }) => {
+  const classes = useStyles();
+
+  return <Button className={clsx(className, classes.root)} {...other} />;
+};
+
+export default SolidButton;

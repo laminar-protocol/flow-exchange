@@ -1,48 +1,34 @@
-import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
 
-import { Amount, Panel, Separator, Text } from '../../components';
-import { useApp, usePools, useTokens } from '../../hooks';
-import { theme } from '../../styles';
-import Layout from '../Layout';
+import { Amount, Panel, Separator, Text, Title } from '../../components';
+import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
+import { defaultPoolDetailSelector, usePools } from '../../hooks/usePools';
+import { calcTokenLiquidity } from '../../utils';
 
 const Deposit = () => {
-  const api = useApp(state => state.provider?.api);
+  const classes = useStyles();
+  const allTokens = useApp(tokenInfoMapSelector);
   const pool = usePools(state => state.defaultPool);
-  const tokens = useTokens(state => state.currentTokens);
-  const [liquidities, setLiquidities] = useState<Record<string, BN>>({});
+  const initPool = usePools(state => state.initPool);
+  const poolInfo = usePools(defaultPoolDetailSelector);
 
   useEffect(() => {
-    if (pool && api && tokens) {
-      Promise.all(
-        tokens.map(async token => ({
-          token: token.name,
-          liquidity: await api.getTokenLiquidity(pool, token.id),
-        })),
-      ).then(result => {
-        setLiquidities(
-          result.reduce((acc: any, curr) => {
-            acc[curr.token] = curr.liquidity;
-            return acc;
-          }, {}),
-        );
-      });
-    }
-  }, [tokens, pool, api]);
+    pool && initPool(pool.id);
+  }, [pool, initPool]);
 
   return (
-    <Layout>
-      <Container>
-        <p>
-          <Text size="h">Deposit &amp; Earn</Text>
-        </p>
-        <Separator />
-        <Panel>
-          {tokens?.map(token => {
+    <div>
+      <Title type="page">Deposit &amp; Earn</Title>
+      <Separator />
+      <Panel>
+        {poolInfo &&
+          Object.keys(poolInfo.options).map(tokenId => {
+            const token = allTokens[tokenId];
+
             return (
-              <div className="provider" key={token.name}>
-                <div className="item">
+              <div className={classes.provider} key={token.name}>
+                <div className={classes.item}>
                   <Text size="l" weight="bold">
                     {token.name}
                   </Text>
@@ -55,55 +41,50 @@ const Deposit = () => {
                   </div>
                   <div>
                     <Text size="l">
-                      {liquidities[token.name] && <Amount value={liquidities[token.name]} token={token} hasPrefix />}
+                      {poolInfo && (
+                        <Amount
+                          value={calcTokenLiquidity(
+                            poolInfo.liquidity || 0,
+                            poolInfo.options[token.id].additionalCollateralRatio || 0,
+                          )}
+                          tokenId={token.id}
+                          hasPrefix
+                        />
+                      )}
                     </Text>
-                  </div>
-                </div>
-
-                <div className="item">
-                  <div>
-                    <Text size="s" light>
-                      APR
-                    </Text>
-                  </div>
-                  <div>
-                    <Text size="l">3%</Text>
                   </div>
                 </div>
               </div>
             );
           })}
-        </Panel>
-      </Container>
-    </Layout>
+      </Panel>
+    </div>
   );
 };
 
-const Container = styled('div')`
-  .provider {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    border-bottom: 1px #e6e6eb solid;
-    padding-bottom: 2rem;
-    padding-top: 2rem;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .item {
-    width: 25%;
-    ${theme.respondTo.lg`
-      width: 50%;
-    `}
-
-    div {
-      margin: 0.5rem 0;
-    }
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  provider: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    borderBottom: '1px #e6e6eb solid',
+    paddingBottom: '2rem',
+    paddingTop: '2rem',
+    '&:last-child': {
+      borderBottom: 'none',
+    },
+  },
+  item: {
+    width: '25%',
+    [theme.breakpoints.down('lg')]: {
+      width: '50%',
+    },
+    '& div': {
+      margin: '0.5rem 0',
+    },
+  },
+}));
 
 export default Deposit;

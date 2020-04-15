@@ -2,8 +2,9 @@ import React from 'react';
 import Select from 'react-select';
 import styled from 'styled-components';
 
+import { TokenInfo } from '../../services/Api';
 import { theme } from '../../styles';
-import { Token } from '../../types';
+import { getTokenIcon } from '../../utils';
 import Icon from '../Icon';
 
 const CurrencySelect = styled(Select)`
@@ -30,7 +31,7 @@ const CustomPlaceholder = styled.div`
 `;
 const Placeholder = () => <CustomPlaceholder>Select...</CustomPlaceholder>;
 
-const SingleValue: React.FC<{ innerProps: any; data: { token: Token } }> = ({ innerProps, data }) => (
+const SingleValue: React.FC<{ innerProps: any; data: { token: TokenInfo } }> = ({ innerProps, data }) => (
   <div {...innerProps}>
     <Currency token={data.token} />
   </div>
@@ -75,16 +76,19 @@ const CustomOption = styled.div`
   }
 `;
 
-const Option: React.FC<{ innerProps: any; data: { token: Token; isDisabled: boolean } }> = ({ innerProps, data }) => (
+const Option: React.FC<{ innerProps: any; data: { token: TokenInfo; isDisabled: boolean } }> = ({
+  innerProps,
+  data,
+}) => (
   <CustomOption {...innerProps}>
     <Currency token={data.token} isDisabled={data.isDisabled} />
   </CustomOption>
 );
 
-const Currency: React.FC<{ token: Token; isDisabled?: boolean }> = ({ token, isDisabled = false }) => (
+const Currency: React.FC<{ token: TokenInfo; isDisabled?: boolean }> = ({ token, isDisabled = false }) => (
   <CustomCurrency isDisabled={isDisabled}>
     <div className="icon">
-      <Icon icon={token.icon} />
+      <Icon icon={getTokenIcon(token.id)} />
     </div>
     <div className="text">{token.displayName}</div>
   </CustomCurrency>

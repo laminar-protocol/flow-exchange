@@ -2,8 +2,8 @@ import { SubscriptionHookOptions, useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useMemo } from 'react';
 
-import { tokens } from '../config';
-import { Token } from '../types';
+import { tokens } from '../_app/config';
+import { TokenInfo } from '../services/Api';
 
 interface QueryResult {
   priceEntities?: PriceData[];
@@ -22,8 +22,8 @@ const query = gql`
 export const useOraclePrice = (options?: SubscriptionHookOptions<QueryResult, {}>) => useSubscription(query, options);
 
 export const useEthereumPriceRate = (
-  fromSymbol?: Token,
-  toSymbol?: Token,
+  fromSymbol?: TokenInfo,
+  toSymbol?: TokenInfo,
   options?: SubscriptionHookOptions<QueryResult, {}>,
 ) => {
   const { loading, error, data } = useOraclePrice(options);
@@ -36,8 +36,9 @@ export const useEthereumPriceRate = (
     }
 
     if (data?.priceEntities) {
-      const fromAddress = fromSymbol.id?.toLocaleLowerCase();
-      const toAddress = toSymbol.id?.toLocaleLowerCase();
+      const fromAddress = fromSymbol.address?.toLocaleLowerCase();
+      const toAddress = toSymbol.address?.toLocaleLowerCase();
+
       let fromRate = 1;
       let toRate = 1;
       for (const price of data.priceEntities) {
@@ -70,8 +71,6 @@ export const usePriceRate = (
     if (fromSymbol === toSymbol) {
       return 1;
     }
-
-    console.log(data);
 
     if (data?.priceEntities) {
       const fromAddress = tokens[fromSymbol].address?.toLocaleLowerCase();

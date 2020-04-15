@@ -1,59 +1,61 @@
-import { Layout as AntdLayout } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { Spinner } from '../../components';
+import { Layout, Spinner } from '../../components';
 import { useApp } from '../../hooks/useApp';
 import { useSetting } from '../../hooks/useSetting';
 import Prime from './Prime';
 import SideBar from './SideBar';
 
-const Layout: React.FC = ({ children }) => {
-  const currentProvider = useApp(state => state.provider);
-  const setProviderEnable = useApp(state => state.setProviderEnable);
+type LayoutProps = {
+  loading?: boolean;
+};
+
+const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
+  const classes = useStyles();
+
+  const currentApi = useApp(state => state.api);
+  const setApiEnable = useApp(state => state.setApiEnable);
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setting = useSetting(state => state.setting);
 
-  const [loadingProvider, setLoadingProvider] = useState(false);
   const history = useHistory();
+  const location = useLocation();
 
   useEffect(() => {
     const availableProvider = checkAvailableProvider();
 
-    console.log('history and currentProvider changed');
+    if (location.pathname === '/') return;
 
-    if (currentProvider) {
-      if (!availableProvider.includes(currentProvider.impl)) {
+    if (currentApi) {
+      if (!availableProvider.includes(currentApi.chainType)) {
         history.push('/');
       }
     } else {
       // eslint-disable-next-line
-      if (setting.provider && availableProvider.includes(setting.provider)) {
-        setLoadingProvider(true);
-        setProviderEnable(setting.provider).finally(() => {
-          setLoadingProvider(false);
-        });
+      if (setting.chainType && availableProvider.includes(setting.chainType)) {
+        setApiEnable(setting.chainType);
       } else {
         history.push('/');
       }
     }
-  }, [history, currentProvider, checkAvailableProvider, setProviderEnable, setting.provider]);
+  }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType, location]);
 
   return (
-    <Container>
+    <Layout>
       <SideBar />
-      <Prime>{loadingProvider ? <Spinner size="large" className="layout__spinner" /> : children}</Prime>
-    </Container>
+      <Prime>{loading ? <Spinner size="large" className={classes.spinner} /> : children}</Prime>
+    </Layout>
   );
 };
 
-const Container = styled(AntdLayout)`
-  .layout__spinner {
-    margin-top: 300px;
-    display: flex;
-    justify-content: center;
-  }
-`;
+const useStyles = createUseStyles({
+  spinner: {
+    marginTop: '300px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+});
 
-export default Layout;
+export default PageLayout;

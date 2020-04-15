@@ -1,14 +1,12 @@
-import 'antd/dist/antd.css';
-
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import * as Sentry from '@sentry/browser';
 import React from 'react';
+
+import * as Sentry from '@sentry/browser';
 import ReactDOM from 'react-dom';
 
-import App from './pages/App';
+import 'antd/dist/antd.css';
 
-library.add(fas);
+import './i18n';
+import App from './pages/App';
 
 const render = (App: React.ComponentType) => {
   ReactDOM.render(<App />, document.getElementById('root'));

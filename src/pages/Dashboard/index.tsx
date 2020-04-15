@@ -1,49 +1,47 @@
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { Separator, Text } from '../../components';
-import { theme } from '../../styles';
-import Layout from '../Layout';
+import { Separator, Text, Title } from '../../components';
 import Balances from './Balances';
 import ChartTicker from './ChartTicker';
 import Links from './Links';
 
-const Dashboard = () => (
-  <Layout>
-    <Container>
-      <Text size="h">Dashboard</Text>
+const Dashboard = () => {
+  const classes = useStyles();
+
+  return (
+    <div>
+      <Title type="page">Dashboard</Title>
       <Separator />
-      <div className="dashboard">
+      <div className={classes.dashboard}>
         <Balances />
-        <div className="markets">
+        <div className={classes.markets}>
           <Text size="l">Markets</Text>
           <Separator />
           <ChartTicker />
           <Links />
         </div>
       </div>
-    </Container>
-  </Layout>
-);
+    </div>
+  );
+};
 
-const Container = styled.div`
-  .dashboard {
-    display: flex;
-    flex-direction: row;
-    ${theme.respondTo.lg`
-    flex-direction: column;
-  `}
-  }
-
-  .markets {
-    flex: 1;
-    margin-left: 2rem;
-
-    ${theme.respondTo.lg`
-    margin-left: 0rem;
-    margin-top: 2rem;
-  `}
-  }
-`;
+const useStyles = createUseStyles(theme => ({
+  dashboard: {
+    display: 'flex',
+    flexDirection: 'row',
+    [theme.breakpoints.down('lg')]: {
+      flexDirection: 'column',
+    },
+  },
+  markets: {
+    flex: 1,
+    marginLeft: '2rem',
+    [theme.breakpoints.down('lg')]: {
+      marginLeft: '0rem',
+      marginTop: '2rem',
+    },
+  },
+}));
 
 export default Dashboard;

@@ -5,7 +5,7 @@ import {
   changedActionTypes,
   moduleActions,
   triggerActionTypes,
-} from 'helpers/typeCreator';
+} from '_app/helpers/typeCreator';
 
 const app = moduleActions('app', {
   init: triggerActionTypes<undefined>(),

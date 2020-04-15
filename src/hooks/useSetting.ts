@@ -1,23 +1,23 @@
 import store from 'store';
 
-import { Impl } from '../types';
+import { ChainType } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 
 const SETTING_KEY = 'setting';
 
 export interface SettingState extends State {
   setting: {
-    provider?: Impl;
+    chainType?: ChainType;
     currentTheme: 'light' | 'dark';
-    setCurrentTheme(theme: SettingState['setting']['currentTheme']): void;
-    setProvider(providerName: SettingState['provider']): void;
   };
+  setCurrentTheme(theme: SettingState['setting']['currentTheme']): void;
+  setChainType(chainTypeName: SettingState['chainType']): void;
 }
 
 export const [useSetting, useSettingApi] = create<SettingState>(
   (set: SetState<SettingState>, get: GetState<SettingState>): SettingState => {
     let initSetting: SettingState['settings'] = {
-      provider: undefined,
+      chainType: undefined,
       currentTheme: 'light',
     };
 
@@ -35,16 +35,16 @@ export const [useSetting, useSettingApi] = create<SettingState>(
 
     return {
       setting: initSetting,
-      setCurrentTheme(theme: SettingState['setting']['currentTheme']) {
+      setCurrentTheme(theme) {
         set(state => {
           state.setting.currentTheme = theme;
         });
         sync();
       },
-      setProvider(providerName: SettingState['provider']) {
-        if (providerName) {
+      setChainType(chainTypeName) {
+        if (chainTypeName) {
           set(state => {
-            state.setting.provider = providerName;
+            state.setting.chainType = chainTypeName;
           });
           sync();
         }
@@ -52,3 +52,5 @@ export const [useSetting, useSettingApi] = create<SettingState>(
     };
   },
 );
+
+export default useSetting;

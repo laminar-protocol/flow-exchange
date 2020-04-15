@@ -1,24 +1,35 @@
 import { Button } from 'antd';
-import styled from 'styled-components';
+import clsx from 'clsx';
+import React from 'react';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../../styles';
+const useStyles = createUseStyles(theme => ({
+  root: {
+    '&.ant-btn': {
+      color: '#0155ff',
+      'border-style': 'solid',
+      'border-width': 1,
+      'border-image-slice': 1,
+      'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
+      'border-color': theme.keyColorGrey,
+    },
+    '&.ant-btn:hover': {
+      background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
+      color: '#fff',
+    },
+    '&.ant-btn[disabled], &.ant-btn[disabled]:hover': {
+      opacity: 0.75,
+      color: '#fff',
+    },
+  },
+}));
 
-const Component = styled(Button)`
-  &.ant-btn,
-  &.ant-btn:hover,
-  &.ant-btn:focus,
-  &.ant-btn:active {
-    background: linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%);
-    color: #fff;
-    border: 0;
-    font-weight: ${theme.boldWeight};
-  }
+type PrimaryButtonProps = React.ComponentProps<typeof Button>;
 
-  &.ant-btn[disabled],
-  &.ant-btn[disabled]:hover {
-    opacity: 0.75;
-    color: #fff;
-  }
-`;
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ className, ...other }) => {
+  const classes = useStyles();
 
-export default Component;
+  return <Button className={clsx(className, classes.root)} {...other} />;
+};
+
+export default PrimaryButton;

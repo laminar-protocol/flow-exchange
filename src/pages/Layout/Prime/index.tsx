@@ -1,40 +1,23 @@
-import { Layout } from 'antd';
 import React from 'react';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../../../styles';
-import Header from './Header';
+import { Layout } from '../../../components';
 
-interface Props {
-  children?: React.ReactNode;
-}
+const Prime: React.FC = ({ children }) => {
+  const classes = useStyles();
+  return <Layout className={classes.root}>{children}</Layout>;
+};
 
-const Prime: React.FC<Props> = ({ children }) => (
-  <Container>
-    <Layout className="layout__prime">
-      <Header />
-      <div className="layout__content">{children}</div>
-    </Layout>
-  </Container>
-);
+const useStyles = createUseStyles(theme => ({
+  root: {
+    marginLeft: theme.sideBarWidth,
+    padding: '2rem 2.5rem',
 
-const Container = styled(Layout)`
-  margin-left: ${theme.sideBarWidth}px;
-
-  ${theme.respondTo.sm`
-    margin-left: 0;
-  `}
-
-  .layout__prime.ant-layout {
-    background-color: ${theme.backgroundColor};
-  }
-
-  .layout__content {
-    margin: 3rem;
-    ${theme.respondTo.sm`
-      margin: 1rem;
-    `}
-  }
-`;
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: 0,
+      padding: '1rem',
+    },
+  },
+}));
 
 export default Prime;

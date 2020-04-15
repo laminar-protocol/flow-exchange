@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import { Amount, Text } from '../../components';
-import { useApp, useTokens } from '../../hooks';
-import { Token } from '../../types';
+import { useAccount } from '../../hooks/useAccount';
+import { TokenInfo } from '../../services/Api';
 
 const Container = styled.div`
   margin: 1rem 0;
@@ -14,33 +14,20 @@ const Container = styled.div`
 `;
 
 export interface Props {
-  token: Token;
+  token: TokenInfo;
   lite?: boolean;
+  loading?: boolean;
 }
 
-const BalanceLine: React.FC<Props> = ({ token, lite }) => {
-  const [loading, setLoading] = useState(false);
-  const api = useApp(state => state.provider && state.provider.api);
-  const currentAccount = useApp(state => state.currentAccount);
-  const balance = useTokens(state => state.currentBalances[token.name]);
-  const setBalance = useTokens(state => state.setCurrentBalance);
+const BalanceLine: React.FC<Props> = ({ token, lite, loading = false }) => {
+  const balance = useAccount(state => state.balances[token.id]);
 
-  useEffect(() => {
-    if (currentAccount && api) {
-      setLoading(true);
-      api
-        .getBalance(currentAccount.address, token.name)
-        .then(result => {
-          setBalance(token.name, result);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    }
-  }, [api, token, setBalance, currentAccount]);
+  if (!balance) return null;
 
   if (lite) {
-    return <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>;
+    return (
+      <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} tokenId={token.id} hasPrefix />}</Text>
+    );
   }
 
   return (
@@ -49,7 +36,7 @@ const BalanceLine: React.FC<Props> = ({ token, lite }) => {
         <Text>{token.displayName}</Text>
       </div>
       <div>
-        <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} token={token} hasPrefix />}</Text>
+        <Text weight="bold">{loading || !balance ? '—' : <Amount value={balance} tokenId={token.id} hasPrefix />}</Text>
       </div>
     </Container>
   );
