@@ -95,18 +95,16 @@ const MarginPositions: React.FC = () => {
           return args.position_id === positionId;
         });
 
-        console.log(data);
-
         return {
           positionId,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
           leverage: data.args.leverage,
+          lot: getValueFromHex(data.events[0].args[5]),
           openPrice: getValueFromHex(data.events[0].args[6]),
         };
       });
-
       setList(list);
 
       return () => {};
@@ -140,8 +138,9 @@ const MarginPositions: React.FC = () => {
     },
     {
       title: t('LOT'),
-      dataIndex: 'ell',
+      dataIndex: 'lot',
       align: 'right',
+      render: (value: number) => <Amount value={value} />,
     },
     {
       title: t('OPEN PRICE'),
