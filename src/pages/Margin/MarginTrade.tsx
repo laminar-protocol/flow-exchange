@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
@@ -42,6 +42,13 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
     return getLeverageEnable(pairInfo.enabledTrades);
   }, [pairInfo.enabledTrades]);
 
+  // set default leverage
+  useLayoutEffect(() => {
+    if (Object.keys(leverages).length && !leverage) {
+      setLeverage(Object.keys(leverages)[0]);
+    }
+  }, [leverages, leverage]);
+
   const openPosition = async (direction: 'short' | 'long') => {
     if (!api.margin || !poolInfo.poolId || !pairInfo.pair || !leverages[leverage][direction]) return;
     try {
@@ -80,7 +87,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
             value={leverage}
             style={{ width: '12rem' }}
             onSelect={value => setLeverage(value as string)}
-            loading={!Object.keys(leverages).length}
+            disabled={!Object.keys(leverages).length}
           >
             {Object.keys(leverages).map(label => (
               <Select.Option value={label} key={label}>
