@@ -136,12 +136,16 @@ const MarginPools = () => {
       title: t('ENP'),
       dataIndex: 'enp',
       align: 'right',
+      sorter: (a: any, b: any) => a.enp - b.enp,
+      showSorterTooltip: false,
       render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
       title: t('ELL'),
       dataIndex: 'ell',
       align: 'right',
+      sorter: (a: any, b: any) => a.ell - b.ell,
+      showSorterTooltip: false,
       render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
     },
     {
@@ -240,14 +244,6 @@ const MarginPools = () => {
         <Table
           columns={columns}
           dataSource={symbolList}
-          // rowClassName={classes.selectRow}
-          // onRow={(record: any) => {
-          //   return {
-          //     onClick: () => {
-          //       history.push(`/margin/${record.poolId}/${record.pairId}`);
-          //     },
-          //   };
-          // }}
           rowKey={(record: any) => `${record.poolId}/${record.pairId}`}
         />
       </Panel>

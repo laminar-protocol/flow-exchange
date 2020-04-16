@@ -25,6 +25,12 @@ const useStyles = createUseStyles(theme => ({
       padding: '1rem 1rem',
       'font-size': '1rem',
     },
+    '& .ant-table-column-sorters': {
+      padding: 0,
+    },
+    '& .ant-table-thead th.ant-table-column-has-sorters': {
+      cursor: 'pointer',
+    },
   },
 }));
 
