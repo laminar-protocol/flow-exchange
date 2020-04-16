@@ -243,6 +243,9 @@ const MarginPositions: React.FC = () => {
         <Table
           columns={columns}
           className={classes.table}
+          pagination={{
+            pageSize: 10,
+          }}
           dataSource={list.filter(({ isClosed }) => isClosed)}
           rowKey="hash"
         />
@@ -250,6 +253,9 @@ const MarginPositions: React.FC = () => {
         <Table
           columns={columns}
           className={classes.table}
+          pagination={{
+            pageSize: 10,
+          }}
           dataSource={list.filter(({ isClosed }) => !isClosed)}
           rowKey="hash"
         />
@@ -266,6 +272,9 @@ const useStyles = createUseStyles(theme => ({
     },
     '& .ant-table tbody > tr:last-child > td': {
       'border-bottom': 'none',
+    },
+    '& .ant-table-pagination': {
+      'margin-right': '1rem',
     },
   },
   tabs: {

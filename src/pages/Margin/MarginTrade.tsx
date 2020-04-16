@@ -79,7 +79,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
           pairInfo.pair as any,
           leverages[leverage][direction] as any,
           toPrecision(amount),
-          direction === 'long' ? toPrecision('10') : toPrecision('0'),
+          direction === 'long' ? toPrecision('1000000000') : toPrecision('0'),
         ),
       );
       setAmount('');

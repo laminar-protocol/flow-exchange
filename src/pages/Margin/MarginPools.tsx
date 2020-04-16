@@ -240,14 +240,6 @@ const MarginPools = () => {
         <Table
           columns={columns}
           dataSource={symbolList}
-          // rowClassName={classes.selectRow}
-          // onRow={(record: any) => {
-          //   return {
-          //     onClick: () => {
-          //       history.push(`/margin/${record.poolId}/${record.pairId}`);
-          //     },
-          //   };
-          // }}
           rowKey={(record: any) => `${record.poolId}/${record.pairId}`}
         />
       </Panel>
