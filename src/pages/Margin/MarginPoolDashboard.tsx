@@ -1,6 +1,8 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+import { useSubscription, useQuery } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
 import useApp, { AppState, useAppApi } from '../../hooks/useApp';
@@ -12,6 +14,18 @@ type MarginPoolDashboardProps = {
   openWithdraw: () => void;
 };
 
+const positionOpenedSubscription = gql`
+  subscription positionOpenedSubscription($signer: jsonb!) {
+    Events(
+      where: { method: { _eq: "PositionOpened" }, section: { _eq: "marginProtocol" }, args: { _contains: $signer } }
+      order_by: { blockNumber: desc }
+      limit: 1
+    ) {
+      blockNumber
+    }
+  }
+`;
+
 const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -20,6 +34,11 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
   const account = useAccountSelector();
   const marginInfo = useApp(state => state.margin.marginInfo);
   const traderInfo = useApp(state => state.margin.traderInfo);
+  const { data } = useSubscription(positionOpenedSubscription, {
+    variables: {
+      signer: account.address,
+    },
+  });
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
@@ -39,7 +58,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, account]);
+  }, [api, account, data]);
 
   return (
     <Panel>
@@ -81,7 +100,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
           <Description label={t('Total Leveraged Position')} justify="space-between">
             {traderInfo.marginLevel ? (
               <NumberFormat
-                value={Number(traderInfo.marginHeld) / Number(traderInfo.marginLevel)}
+                value={Number(traderInfo.equity) / Number(traderInfo.marginLevel)}
                 options={{ mantissa: 3 }}
               />
             ) : null}

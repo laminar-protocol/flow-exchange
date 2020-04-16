@@ -8,10 +8,11 @@ const useStyles = createUseStyles(theme => ({
     '&.ant-btn': {
       color: '#0155ff',
       'border-style': 'solid',
-      'border-width': 1,
+      'border-width': '0.08rem',
+      'border-color': theme.keyColorGrey,
       'border-image-slice': 1,
       'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
-      'border-color': theme.keyColorGrey,
+      transition: 'none',
     },
     '&.ant-btn:hover': {
       background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
