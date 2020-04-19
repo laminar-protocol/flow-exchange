@@ -42,8 +42,8 @@ const RenderTxRecords: React.FC = ({}) => {
         time: item.block.timestamp,
         fToken: item.args[1],
         baseToken: 'AUSD',
-        fAmount: item.args[3],
-        baseAmount: item.args[4],
+        fAmount: item.args[4],
+        baseAmount: item.args[3],
       };
     });
   }, [data]);
@@ -71,15 +71,15 @@ const RenderTxRecords: React.FC = ({}) => {
       render: (value: any, record: any) =>
         record.action === 'Redeemed' ? (
           <>
-            <Amount value={record.baseAmount} tokenId={record.baseToken} hasPostfix />
+            <Amount value={record.fAmount} tokenId={record.fToken} minDigits={5} hasPostfix />
             =>
-            <Amount value={record.fAmount} tokenId={record.fToken} hasPostfix />
+            <Amount value={record.baseAmount} tokenId={record.baseToken} minDigits={5} hasPostfix />
           </>
         ) : (
           <>
-            <Amount value={record.fAmount} tokenId={record.fToken} hasPostfix />
+            <Amount value={record.baseAmount} tokenId={record.baseToken} minDigits={5} hasPostfix />
             =>
-            <Amount value={record.baseAmount} tokenId={record.baseToken} hasPostfix />
+            <Amount value={record.fAmount} tokenId={record.fToken} minDigits={5} hasPostfix />
           </>
         ),
     },
