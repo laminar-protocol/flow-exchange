@@ -14,13 +14,23 @@ const useStyles = createUseStyles(theme => ({
       'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
       transition: 'none',
     },
-    '&.ant-btn:hover': {
+    '&.ant-btn:not(.ant-btn[disabled]):hover': {
       background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
       color: '#fff',
     },
     '&.ant-btn[disabled], &.ant-btn[disabled]:hover': {
       opacity: 0.75,
-      color: '#fff',
+    },
+    '&.ant-btn-lg': {
+      'font-size': '1.5rem',
+      'line-height': 1,
+      'padding-left': '3.625rem',
+      'padding-right': '3.625rem',
+      height: '3.125rem',
+    },
+    '&.ant-btn[disabled]': {
+      background: theme.alwaysWhiteForegroundColor,
+      color: '#0155ff',
     },
   },
 }));

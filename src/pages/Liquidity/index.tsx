@@ -14,8 +14,8 @@ import {
   Tabs,
   Title,
 } from '../../components';
-import { isReadySelector, useApp } from '../../hooks/useApp';
-import { poolsSelector, usePools } from '../../hooks/usePools';
+import { isReadySelector, useApp } from '../../store/useApp';
+import { poolsSelector, usePools } from '../../store/usePools';
 import LiquidityProvider from './LiquidityProvider';
 import RenderAddPool from './RenderAddPool';
 

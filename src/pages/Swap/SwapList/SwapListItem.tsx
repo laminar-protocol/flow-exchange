@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { explorer, tokens } from '../../../_app/config';
+// import { explorer, tokens } from '../../../_app/config';
 import { FormatBalance, Icon, Text } from '../../../components';
 import { theme } from '../../../styles';
+
+const tokens: any = {};
 
 const Line = styled.div`
   margin: 0.75rem 0;
@@ -97,9 +99,9 @@ const SwapItem: React.FC<StateProps> = ({ tx, kind, baseTokenAmount, flowTokenAm
       </Timestamp>
       <View>
         <Text>
-          <a href={`${explorer}/tx/${tx}`} target="_blank" rel="noopener noreferrer">
+          {/* <a href={`${explorer}/tx/${tx}`} target="_blank" rel="noopener noreferrer">
             <Icon icon="external-link-alt" />
-          </a>
+          </a> */}
         </Text>
       </View>
     </Line>

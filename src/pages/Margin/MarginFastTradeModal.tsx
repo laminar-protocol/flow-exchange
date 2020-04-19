@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Space } from '../../components';
-import { AppState } from '../../hooks/useApp';
+import { AppState } from '../../store/useApp';
 import MarginPoolDashboard from './MarginPoolDashboard';
 import MarginTrade from './MarginTrade';
 

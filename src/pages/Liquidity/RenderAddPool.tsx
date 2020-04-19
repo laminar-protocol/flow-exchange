@@ -2,8 +2,8 @@ import { message } from 'antd';
 import React, { useCallback, useState } from 'react';
 
 import { Col, Input, LightButton, Modal, Row, SolidButton } from '../../components';
-import { useAppApi } from '../../hooks/useApp';
-import { usePools } from '../../hooks/usePools';
+import { useAppApi } from '../../store/useApp';
+import { usePools } from '../../store/usePools';
 
 type RenderAddPoolProps = {
   visible: boolean;

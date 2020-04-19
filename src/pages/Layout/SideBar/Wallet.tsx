@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Text } from '../../../components';
-import { useApp, useAppSelector } from '../../../hooks/useApp';
+import { Text, Address } from '../../../components';
+import { useApp, useAppSelector } from '../../../store/useApp';
 import { MenuWalletIcon } from '../../../icons';
-import { truncate } from '../../../_app/helpers/stringHelper';
 import MenuItem from './MenuItem';
 import SwitchAccount from './SwitchAccount';
-
-const accountName = (account: string) => {
-  if (account) {
-    return truncate(account, 20);
-  }
-  return null;
-};
 
 const Wallet: React.FC = ({ ...other }) => {
   const classes = useStyles();
@@ -36,7 +28,7 @@ const Wallet: React.FC = ({ ...other }) => {
         <div>Wallet</div>
         <div>
           <Text size="s" light className={classes.address}>
-            {currentAccount ? accountName(currentAccount.address) : 'Please connect your wallet'}
+            {currentAccount ? <Address value={currentAccount.address} maxLength={20} /> : 'Please connect your wallet'}
           </Text>
         </div>
       </MenuItem>

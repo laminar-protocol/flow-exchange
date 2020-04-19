@@ -1,0 +1,101 @@
+import React, { useLayoutEffect, useMemo } from 'react';
+import { useSubscription } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
+import { useAccountSelector } from '../../selectors';
+import { Balance, Panel, Table, TxHash, Amount, Date } from '../../components';
+
+const swapRecordSubscription = gql`
+  subscription swapRecordSubscription($signer: jsonb!) {
+    Events(
+      order_by: { blockNumber: desc }
+      where: { method: { _in: ["Redeemed", "Minted"] }, args: { _contains: $signer } }
+    ) {
+      method
+      args
+      block {
+        timestamp
+      }
+      extrinsic {
+        hash
+        method
+      }
+    }
+  }
+`;
+
+const RenderTxRecords: React.FC = ({}) => {
+  const account = useAccountSelector();
+
+  const { data } = useSubscription(swapRecordSubscription, {
+    variables: {
+      signer: account.address,
+    },
+  });
+
+  const list = useMemo(() => {
+    if (!data) return [];
+    return data.Events.map((item: any) => {
+      return {
+        txHash: item.extrinsic.hash,
+        action: item.method,
+        time: item.block.timestamp,
+        fToken: item.args[1],
+        baseToken: 'AUSD',
+        fAmount: item.args[3],
+        baseAmount: item.args[4],
+      };
+    });
+  }, [data]);
+
+  const columns: any[] = [
+    {
+      title: 'Tx Hash',
+      dataIndex: 'txHash',
+      render: (value: any) => <TxHash value={value} maxLength={20} />,
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      align: 'right',
+    },
+    {
+      title: 'fToken',
+      dataIndex: 'fToken',
+      align: 'right',
+    },
+    {
+      title: 'Amount',
+      dataIndex: 'id',
+      align: 'right',
+      render: (value: any, record: any) =>
+        record.action === 'Redeemed' ? (
+          <>
+            <Amount value={record.baseAmount} tokenId={record.baseToken} hasPostfix />
+            =>
+            <Amount value={record.fAmount} tokenId={record.fToken} hasPostfix />
+          </>
+        ) : (
+          <>
+            <Amount value={record.fAmount} tokenId={record.fToken} hasPostfix />
+            =>
+            <Amount value={record.baseAmount} tokenId={record.baseToken} hasPostfix />
+          </>
+        ),
+    },
+    {
+      title: 'Date',
+      dataIndex: 'time',
+      align: 'right',
+      render: (value: any) => <Date value={value} format="MM/DD/YYYY" />,
+    },
+  ];
+
+  return (
+    <Panel title={'Transaction'}>
+      <Table columns={columns} dataSource={list} rowKey="txHash" />
+    </Panel>
+  );
+};
+
+export default RenderTxRecords;

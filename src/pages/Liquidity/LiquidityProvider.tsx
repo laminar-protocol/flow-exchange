@@ -3,8 +3,8 @@ import { createUseStyles } from 'react-jss';
 import { Link } from 'react-router-dom';
 
 import { Amount, Col, Row, SolidButton, Spinner, Text } from '../../components';
-import { baseTokenInfoSelector, useApp } from '../../hooks/useApp';
-import { poolDetailSelector, usePoolsSelector } from '../../hooks/usePools';
+import { baseTokenInfoSelector, useApp } from '../../store/useApp';
+import { poolDetailSelector, usePoolsSelector } from '../../store/usePools';
 import { PoolInfo, TokenId } from '../../services/Api';
 import { calcTokenLiquidity } from '../../utils';
 

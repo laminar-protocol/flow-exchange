@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useRouteMatch } from 'react-router-dom';
 import { Amount, Description, NumberFormat, Panel, PoolName, Row, Space, Switch, Title } from '../../components';
-import useApp, { AppState, useAppApi } from '../../hooks/useApp';
+import useApp, { AppState, useAppApi } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 
 type MarginHeaderProps = {
@@ -44,7 +44,7 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
               {match.params.pairId}
             </Title>
             <Description layout="vertical" label={t('Pool')}>
-              <PoolName value={poolInfo.poolId} />
+              <PoolName value={poolInfo.poolId} type="margin" />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ENP')}>

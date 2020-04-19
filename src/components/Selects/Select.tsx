@@ -28,12 +28,28 @@ const useStyles = createUseStyles(theme => ({
   root: {
     '&.ant-select-single:not(.ant-select-customize-input) .ant-select-selector': {
       'border-color': theme.keyColorGrey,
+      height: '2.5rem',
+    },
+    '&.ant-select-single:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-item, .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-placeholder': {
+      'line-height': '2.5rem',
     },
     '&.ant-select:not(.ant-select-disabled):hover .ant-select-selector': {
       'border-color': theme.keyColorGrey,
     },
     '&.ant-select-focused.ant-select-single:not(.ant-select-customize-input) .ant-select-selector': {
       'border-color': theme.keyColorGrey,
+    },
+    '&.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector': {
+      height: '3.125rem',
+    },
+    '&.ant-select-single.ant-select-lg:not(.ant-select-customize-input):not(.ant-select-customize-input) .ant-select-selection-search-input': {
+      height: '3.125rem',
+    },
+    '&.ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-item, .ant-select-single.ant-select-lg:not(.ant-select-customize-input) .ant-select-selector .ant-select-selection-placeholder': {
+      'line-height': '3.125rem',
+    },
+    '& .ant-select-selection-item': {
+      'text-align': 'left',
     },
   },
   dropdown: {

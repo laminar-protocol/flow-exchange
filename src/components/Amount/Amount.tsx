@@ -1,9 +1,9 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
+import { tokenInfoMapSelector, useApp } from '../../store/useApp';
 import { TokenInfo } from '../../services/Api';
-import { fromPrecision, getCurrencySymbol } from '../../utils';
+import { fromPrecision, getCurrencySymbol, getValueFromHex } from '../../utils';
 import { Spinner } from '../Spinner';
 import { BaseProps } from '../../types';
 
@@ -71,7 +71,7 @@ function Amount(
     if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
   }
 
-  const number = BN.isBN(value) ? value : new BN(value);
+  const number = BN.isBN(value) ? value : new BN(getValueFromHex(value));
 
   return <Component {...other}>{numberToAmount(number, options)}</Component>;
 }

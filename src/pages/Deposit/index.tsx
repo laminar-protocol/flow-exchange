@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Panel, Separator, Text, Title } from '../../components';
-import { tokenInfoMapSelector, useApp } from '../../hooks/useApp';
-import { defaultPoolDetailSelector, usePools } from '../../hooks/usePools';
+import { tokenInfoMapSelector, useApp } from '../../store/useApp';
+import { defaultPoolDetailSelector, usePools } from '../../store/usePools';
 import { calcTokenLiquidity } from '../../utils';
 
 const Deposit = () => {

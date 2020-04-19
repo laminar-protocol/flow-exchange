@@ -13,10 +13,9 @@ import {
   Select,
   Space,
   Text,
-  NumberFormat,
-  Price,
+  OraclePrice,
 } from '../../components';
-import { AppState } from '../../hooks/useApp';
+import { AppState } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
@@ -58,16 +57,6 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
     }
   }, [leverages, leverage]);
 
-  useLayoutEffect(() => {
-    if (api.oracleValues) {
-      const subscription = api.oracleValues().subscribe((result: any) => {
-        setOracleValues(result);
-      });
-
-      return () => subscription.unsubscribe();
-    }
-  }, []);
-
   const openPosition = async (direction: 'short' | 'long') => {
     if (!api.margin || !poolInfo.poolId || !pairInfo.pair || !leverages[leverage][direction]) return;
     try {
@@ -102,7 +91,6 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
         <Row align="middle" justify="space-between">
           <Text>{pairId}</Text>
           <Select
-            size="large"
             value={leverage}
             style={{ width: '12rem' }}
             onSelect={value => setLeverage(value as string)}
@@ -116,8 +104,8 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
           </Select>
         </Row>
         <AmountInput
-          size="large"
           value={amount}
+          placeholder="Amount"
           className={classes.input}
           onChange={event => setAmount(event.target.value)}
         />
@@ -132,9 +120,9 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
               {t('Buy')}
             </DefaultButton>
             {pairInfo ? (
-              <Price
-                base={oracleValues[pairInfo.pair.base]}
-                quote={oracleValues[pairInfo.pair.quote]}
+              <OraclePrice
+                baseTokenId={pairInfo.pair.base}
+                quoteTokenId={pairInfo.pair.quote}
                 spread={pairInfo.askSpread}
                 direction="ask"
               />
@@ -150,9 +138,9 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
               {t('Sell')}
             </DefaultButton>
             {pairInfo ? (
-              <Price
-                base={oracleValues[pairInfo.pair.base]}
-                quote={oracleValues[pairInfo.pair.quote]}
+              <OraclePrice
+                baseTokenId={pairInfo.pair.base}
+                quoteTokenId={pairInfo.pair.quote}
                 spread={pairInfo.bidSpread}
                 direction="bid"
               />
@@ -174,7 +162,6 @@ const useStyles = createUseStyles(theme => ({
   input: {
     width: '100%',
     'font-size': '1rem',
-    height: '2.5rem',
   },
   buyButton: {
     '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {

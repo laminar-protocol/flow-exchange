@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useReducer, useState } from 'react';
 
 import { PrimaryButton, Separator, SolidButton, Text } from '../../components';
-import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../hooks';
-import { apiSelector } from '../../hooks/useApp';
+import { useAccount, useApp, useExchange, useExchangeApi, usePools } from '../../store';
+import { apiSelector } from '../../store/useApp';
 import { notificationHelper, toPrecision } from '../../utils';
 import AmountInput from './AmountInput';
 import ExchangeRate from './ExchangeRate';

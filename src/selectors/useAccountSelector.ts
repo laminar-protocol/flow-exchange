@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { useAppSelector, AppState } from '../hooks/useApp';
+import { useAppSelector, AppState } from '../store/useApp';
 
 export const accountSelector = createSelector(
   (state: AppState) => state.currentAccount,

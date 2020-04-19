@@ -1,3 +1,4 @@
+export * from './Balance';
 export * from './Buttons';
 export * from './Inputs';
 export * from './Selects';
@@ -20,7 +21,7 @@ export * from './PoolName';
 export * from './Date';
 export * from './TxHash';
 export * from './Address';
-export * from './Price';
+export * from './OraclePrice';
 
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as SegmentedControlItem } from './SegmentedControlItem';

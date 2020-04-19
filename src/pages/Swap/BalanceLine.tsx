@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import { Amount, Text } from '../../components';
-import { useAccount } from '../../hooks/useAccount';
+import { useAccount } from '../../store/useAccount';
 import { TokenInfo } from '../../services/Api';
 
 const Container = styled.div`

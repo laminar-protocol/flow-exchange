@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Address, AmountInput, Dialog, PoolName } from '../../components';
-import { AppState } from '../../hooks/useApp';
+import { AppState } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { notificationHelper, toPrecision } from '../../utils';
 
@@ -62,12 +62,13 @@ export const MarginDepositModal: React.FC<MarginHandleModalProps> = ({ visible, 
           <div className={classes.infoSeparate}></div>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>To</span>
-            {data ? <PoolName value={data.poolId} /> : null}
+            {data ? <PoolName value={data.poolId} type="margin" /> : null}
           </div>
         </div>
       </div>
       <div className={classes.control}>
         <AmountInput
+          size="large"
           placeholder="Amount"
           value={amount}
           onChange={e => {
@@ -119,7 +120,7 @@ export const MarginWithdrawModal: React.FC<MarginHandleModalProps> = ({ visible,
         <div className={classes.infoRight}>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>From</span>
-            {data ? <PoolName value={data.poolId} /> : null}
+            {data ? <PoolName value={data.poolId} type="margin" /> : null}
           </div>
           <div className={classes.infoSeparate}></div>
           <div className={classes.infoItem}>
@@ -133,6 +134,7 @@ export const MarginWithdrawModal: React.FC<MarginHandleModalProps> = ({ visible,
       </div>
       <div className={classes.control}>
         <AmountInput
+          size="large"
           placeholder="Amount"
           value={amount}
           onChange={e => {

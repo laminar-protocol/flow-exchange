@@ -60,7 +60,7 @@
     "redux": "^4.0.4",
     "redux-observable": "^1.2.0",
     "reselect": "^4.0.0",
-    "rxjs": "^6.5.5",
+    "rxjs": "^6.5.4",
     "store": "^2.0.12",
     "styled-components": "^4.4.1",
     "styled-media-query": "^2.1.2",

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { Panel, Separator, Spinner, Text } from '../../components';
-import { useAccount } from '../../hooks/useAccount';
-import { useApp } from '../../hooks/useApp';
-import Balance from './Balance';
+
+import { Panel, Separator, Spinner, Text, TextCell, Balance } from '../../components';
+import { useAccount } from '../../store/useAccount';
+import { useApp } from '../../store/useApp';
+import { getTokenIcon } from '../../utils';
 
 const Balances: React.FC = () => {
   const classes = useStyles();
@@ -31,7 +32,11 @@ const Balances: React.FC = () => {
         tokens?.map(token => {
           return (
             <div className="item" key={token.name}>
-              <Balance token={token} />
+              <TextCell header={`${token.name} Balance`} accessory={getTokenIcon(token.id)}>
+                <Text weight="bold" size="l">
+                  <Balance tokenId={token.id} hasPrefix />
+                </Text>
+              </TextCell>
             </div>
           );
         })

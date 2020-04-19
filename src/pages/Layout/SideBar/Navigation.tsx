@@ -13,7 +13,7 @@ import {
   MenuDepositIcon,
   MenuMarginIcon,
 } from '../../../icons';
-import useApp from '../../../hooks/useApp';
+import useApp from '../../../store/useApp';
 
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';

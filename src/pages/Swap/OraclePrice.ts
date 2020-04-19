@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
-import { useApp, useEthereumPriceRate } from '../../hooks';
-import { apiSelector } from '../../hooks/useApp';
+import { useApp, useEthereumPriceRate } from '../../store';
+import { apiSelector } from '../../store/useApp';
 import { TokenInfo } from '../../services/Api';
 
 type OraclePriceProps = {

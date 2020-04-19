@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Col, LightButton, Row, SolidButton } from '../../components';
-import { apiSelector, useApp } from '../../hooks/useApp';
+import { apiSelector, useApp } from '../../store/useApp';
 import { notificationHelper } from '../../utils';
 
 const { Step } = Steps;
