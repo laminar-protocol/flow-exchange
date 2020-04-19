@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import walletPolkadot from '../../../assets/walletPolkadot.png';
 import { Dialog, Text } from '../../../components';
-import useApp, { useAppApi } from '../../../hooks/useApp';
+import useApp, { useAppApi } from '../../../store/useApp';
 
 type SwitchAccountProps = {
   visible: boolean;

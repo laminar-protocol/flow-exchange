@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { AppState, useAppSelector } from '../hooks/useApp';
+import { AppState, useAppSelector } from '../store/useApp';
 
 import { AppEthereumApi, AppLaminarApi } from '../services/Api';
 

@@ -1,37 +1,68 @@
-import React from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import { useTranslation } from 'react-i18next';
+import { combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
-import { Separator, Title } from '../../components';
-import Exchange from './Exchange';
-import SwapBalances from './SwapBalances';
-import SwapList from './SwapList';
+import { useApp } from '../../store/useApp';
+import { useSyntheticPools } from '../../store/useSyntheticPools';
+import { useApiSelector } from '../../selectors';
+import { Title, Space, Text, Row, Col, PoolName } from '../../components';
+import RenderExchange from './RenderExchange';
+import RenderSyntheticPools from './RenderSyntheticPools';
+import RenderBalances from './RenderBalances';
+import RenderTxRecords from './RenderTxRecords';
 
 const Swap: React.FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation();
+
+  const api = useApiSelector();
+  const setState = useSyntheticPools(state => state.setState);
+
+  const ids = useSyntheticPools(state => state.ids);
+  const [selectPoolId, setSelectPoolId] = useState('');
+
+  useLayoutEffect(() => {
+    if (ids.length && !selectPoolId) {
+      setSelectPoolId(ids[0]);
+    }
+  }, [ids]);
+
+  useLayoutEffect(() => {
+    if (api?.synthetic?.allPoolIds) {
+      const s = api.synthetic.allPoolIds().subscribe((result: any) => {
+        setState(state => {
+          state.ids = result;
+        });
+      });
+
+      return () => s && s.unsubscribe();
+    }
+  }, [api]);
 
   return (
-    <div>
-      <Title type="page">Spot Exchange</Title>
-      <Separator />
-      <Exchange />
-      <div className={classes.swapDetail}>
-        <SwapBalances />
-        <SwapList />
-      </div>
-    </div>
+    <Space direction="vertical" size={24}>
+      <Title type="page">{t('Swap')}</Title>
+      <RenderExchange selectPoolId={selectPoolId} />
+      <Text size="l">
+        {t('Current Liquidity Provider')}: <PoolName value={selectPoolId} type="synthetic" />
+      </Text>
+      <RenderSyntheticPools onSelectPool={setSelectPoolId} selectPoolId={selectPoolId} />
+      <Row gutter={[24, 24]}>
+        <Col span={16}>
+          <RenderTxRecords />
+        </Col>
+        <Col span={8}>
+          <RenderBalances />
+        </Col>
+      </Row>
+    </Space>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
-  swapDetail: {
-    marginTop: '2rem',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    [theme.breakpoints.down('lg')]: {
-      flexDirection: 'column',
-    },
-  },
+  root: {},
 }));
 
 export default Swap;

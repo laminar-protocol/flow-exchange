@@ -3,14 +3,17 @@ import React, { useMemo } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
-import useSetting from '../../hooks/useSetting';
-import useApp from '../../hooks/useApp';
+import useSetting from '../../store/useSetting';
+import useApp from '../../store/useApp';
 import createApolloClient from './apollo';
-import Init from './Init';
 import Routes from './Routes';
 import ThemeProvider from './ThemeProvider';
 
-const AppInit: React.FC = () => {
+import OracleFeed from './OracleFeed';
+import BalancesFeed from './BalancesFeed';
+import AppInit from './AppInit';
+
+const AppInner: React.FC = () => {
   const api = useApp(state => state.api);
   const mode = useSetting(state => state.setting.currentTheme);
 
@@ -18,20 +21,19 @@ const AppInit: React.FC = () => {
     return api ? createApolloClient(api.chainType) : null;
   }, [api]);
 
+  const inner = (
+    <>
+      <OracleFeed />
+      <BalancesFeed />
+      <AppInit />
+      <Routes />
+    </>
+  );
+
   return (
     <StyledThemeProvider theme={{ mode }}>
       <ThemeProvider mode={mode}>
-        {client ? (
-          <ApolloProvider client={client}>
-            <Init />
-            <Routes />
-          </ApolloProvider>
-        ) : (
-          <>
-            <Init />
-            <Routes />
-          </>
-        )}
+        {client ? <ApolloProvider client={client}>{inner}</ApolloProvider> : inner}
       </ThemeProvider>
     </StyledThemeProvider>
   );
@@ -40,7 +42,7 @@ const AppInit: React.FC = () => {
 const App: React.FC = () => {
   return (
     <Router>
-      <AppInit />
+      <AppInner />
     </Router>
   );
 };

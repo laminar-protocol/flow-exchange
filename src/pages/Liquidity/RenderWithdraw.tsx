@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Col, InputNumber, LightButton, Modal, Row, SolidButton } from '../../components';
-import { baseTokenInfoSelector, useAppApi, useAppSelector } from '../../hooks/useApp';
+import { baseTokenInfoSelector, useAppApi, useAppSelector } from '../../store/useApp';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderWithdrawProps = {

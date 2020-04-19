@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { PrimaryButton } from '../../components';
-import { AppState } from '../../hooks/useApp';
+import { AppState } from '../../store/useApp';
 import MarginFastTradeModal from './MarginFastTradeModal';
 import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
 

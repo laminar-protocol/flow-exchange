@@ -3,8 +3,8 @@ import { createUseStyles } from 'react-jss';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { Layout, Spinner } from '../../components';
-import { useApp } from '../../hooks/useApp';
-import { useSetting } from '../../hooks/useSetting';
+import { useApp } from '../../store/useApp';
+import { useSetting } from '../../store/useSetting';
 import Prime from './Prime';
 import SideBar from './SideBar';
 

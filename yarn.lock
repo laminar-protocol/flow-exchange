@@ -1578,25 +1578,26 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.48":
-  version "0.2.0-beta.48"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.48.tgz#74e399099b6a91d750b74642354aec50be68fb6e"
-  integrity sha512-+Ud138yXdSobeVIn5U/6IXglC7oK5DkEqwPkE9sttksX3vLa1qIbK0Lqa7o0aljmTvRU1jrlwejwCcCTTZ5ghA==
+"@laminar/api@^0.2.0-beta.50":
+  version "0.2.0-beta.50"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.50.tgz#c447b3aab85751e1282ec81f321696e46ea50564"
+  integrity sha512-uFaedBCo3+KlTtUouYU1q1d3f+/he63s7L/WpsmoVQG76CpjVyfxwjbpwcXKv9gJ2Vjk1obGehxVkmmdfXmFVg==
   dependencies:
     "@babel/runtime" "^7.8.0"
-    "@laminar/types" "^0.2.0-beta.48"
+    "@laminar/types" "^0.2.0-beta.50"
     "@orml/api-derive" "^0.2.0-beta.63"
     "@polkadot/api" "^1.9.0-beta.22"
     flow-protocol-ethereum "github:laminar-protocol/flow-protocol-ethereum#0.0.2"
+    rxjs "^6.5.4"
     web3 "1.2.6"
     web3-core "1.2.6"
     web3-eth-contract "1.2.6"
     web3-utils "1.2.6"
 
-"@laminar/types@^0.2.0-beta.48":
-  version "0.2.0-beta.48"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.48.tgz#be3b76ef339cae2e61af85c39d862de8d2a3956c"
-  integrity sha512-UodRv8Q+1a47s96xGNuzoiVGdIIBU+f1+NvZHIrvLn0bpK8FeGXnSQgUzPGog4G37T8xe/KVqKqWpiWJWvfS/g==
+"@laminar/types@^0.2.0-beta.50":
+  version "0.2.0-beta.50"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.50.tgz#9237da28341e517d359a9e9627577d4ab8eace40"
+  integrity sha512-4xSfeqOjII9mgfAkEYuT/G4bSPomc7fpmtOMQV77kbpDfbg+nKGfXDbD6ShA59/Ry8xvyBnsnnUH3UhnrQCQkQ==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@orml/types" "^0.2.0-beta.63"
@@ -14942,7 +14943,7 @@ rxjs@^6.4.0, rxjs@^6.5.3:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^6.5.5:
+rxjs@^6.5.4, rxjs@^6.5.5:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
   integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==

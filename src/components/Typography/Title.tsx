@@ -25,11 +25,10 @@ const Title: React.FC<TitleProps & BaseProps> = ({ component: Component = 'h2', 
 
 const useStyles = createUseStyles(theme => ({
   page: {
-    fontSize: '2rem',
+    fontSize: '1.5rem',
     color: theme.foregroundColor,
     fontWeight: theme.normalWeight,
     margin: 0,
-    marginBottom: '2rem',
   },
   panel: {
     fontSize: '1.5rem',

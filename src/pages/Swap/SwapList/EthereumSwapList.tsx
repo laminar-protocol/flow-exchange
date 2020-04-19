@@ -5,7 +5,7 @@ import React, { useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Panel, Spinner, Text } from '../../../components';
-import { useApp } from '../../../hooks';
+import { useApp } from '../../../store';
 import SwapItem from './SwapListItem';
 
 const listQuery = gql`

@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Panel, Row, Space } from '../../components';
-import useApp, { useAppApi } from '../../hooks/useApp';
+import useApp, { useAppApi } from '../../store/useApp';
 import { LeftArrowIcon } from '../../icons';
 import { useApiSelector } from '../../selectors';
 import ChartWidget from './ChartWidget';

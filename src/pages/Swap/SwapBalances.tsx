@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import { Panel, Separator, Spinner, Text } from '../../components';
-import { useAccount } from '../../hooks/useAccount';
-import { useApp } from '../../hooks/useApp';
+import { useAccount } from '../../store/useAccount';
+import { useApp } from '../../store/useApp';
 import BalanceLine from './BalanceLine';
 
 const SwapBalances: React.FC = () => {

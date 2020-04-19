@@ -3,12 +3,21 @@ import { Table as AntdTable } from 'antd';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
-type TableProps = React.ComponentProps<typeof AntdTable>;
+type TableProps = React.ComponentProps<typeof AntdTable> & {
+  hideHeader?: boolean;
+};
 
-const Comp: React.FC<TableProps> = ({ className, ...other }) => {
+const Table: React.FC<TableProps> = ({ hideHeader, className, ...other }) => {
   const classes = useStyles();
 
-  return <AntdTable scroll={{ x: true }} className={clsx(className, classes.root)} pagination={false} {...other} />;
+  return (
+    <AntdTable
+      scroll={{ x: true }}
+      className={clsx(className, classes.root, { [classes.hideHeader]: hideHeader })}
+      pagination={false}
+      {...other}
+    />
+  );
 };
 
 const useStyles = createUseStyles(theme => ({
@@ -31,7 +40,18 @@ const useStyles = createUseStyles(theme => ({
     '& .ant-table-thead th.ant-table-column-has-sorters': {
       cursor: 'pointer',
     },
+    '& .ant-table-tbody > tr.ant-table-row:hover > td': {
+      background: 'none',
+    },
+  },
+  hideHeader: {
+    '& .ant-table-thead': {
+      display: 'none',
+    },
+    '& .ant-table': {
+      'border-top': `solid 1px ${theme.keyColorGrey}`,
+    },
   },
 }));
 
-export default Comp;
+export default Table;

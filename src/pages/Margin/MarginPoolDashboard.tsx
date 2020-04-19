@@ -5,7 +5,7 @@ import { useSubscription, useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import useApp, { AppState, useAppApi } from '../../hooks/useApp';
+import useApp, { AppState, useAppApi } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 
 type MarginPoolDashboardProps = {

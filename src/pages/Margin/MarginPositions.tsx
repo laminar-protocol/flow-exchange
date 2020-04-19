@@ -1,14 +1,13 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { createUseStyles } from 'react-jss';
 import { useSubscription } from '@apollo/react-hooks';
 import clsx from 'clsx';
 import gql from 'graphql-tag';
-
-import { Amount, Date, DefaultButton, Panel, Table, TxHash, Price } from '../../components';
+import React, { useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
+import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '../../components';
 import { useAccountSelector, useApiSelector } from '../../selectors';
+import useApp from '../../store/useApp';
 import { getValueFromHex, notificationHelper } from '../../utils';
-import useApp from '../../hooks/useApp';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
@@ -64,7 +63,6 @@ const MarginPositions: React.FC = () => {
   const api = useApiSelector();
   const account = useAccountSelector();
   const [actionLoading, setActionLoading] = useState('');
-  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
   const poolInfo = useApp(state => state.margin.poolInfo);
 
   const { data: openedList } = useSubscription(positionsOpenQuery, {
@@ -122,16 +120,6 @@ const MarginPositions: React.FC = () => {
     return () => {};
   }, [openedList, closedList]);
 
-  useLayoutEffect(() => {
-    if (api.oracleValues) {
-      const subscription = api.oracleValues().subscribe((result: any) => {
-        setOracleValues(result);
-      });
-
-      return () => subscription.unsubscribe();
-    }
-  }, []);
-
   const columns: any[] = [
     {
       title: t('TX HASH'),
@@ -173,14 +161,14 @@ const MarginPositions: React.FC = () => {
       align: 'right',
       render: (_: any, record: any) => {
         return poolInfo[record.poolId] ? (
-          <Price
+          <OraclePrice
             spread={
               record.direction === 'ask'
                 ? poolInfo[record.poolId]?.options[record.pairId]?.askSpread
                 : poolInfo[record.poolId]?.options[record.pairId]?.bidSpread
             }
-            base={oracleValues[record.pair.base]}
-            quote={oracleValues[record.pair.quote]}
+            baseTokenId={record.pair.base}
+            quoteTokenId={record.pair.quote}
             direction={record.direction}
           />
         ) : null;

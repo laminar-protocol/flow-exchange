@@ -16,11 +16,11 @@ import {
   Space,
   Table,
   Text,
-  Price,
+  OraclePrice,
 } from '../../components';
-import useApp, { useAppApi } from '../../hooks/useApp';
+import useApp, { useAppApi } from '../../store/useApp';
 import { IdentityIcon } from '../../icons';
-import { useApiSelector, useMarginSymbolListSelector } from '../../selectors';
+import { useApiSelector, useSymbolListSelector } from '../../selectors';
 import MarginFastTradeButton from './MarginFastTradeButton';
 import MarginHeader from './MarginHeader';
 import MarginPositions from './MarginPositions';
@@ -33,11 +33,10 @@ const MarginPools = () => {
   const [active, setActive] = useState('');
 
   const api = useApiSelector();
-  const symbolList = useMarginSymbolListSelector(active);
+  const symbolList = useSymbolListSelector(active);
   const marginInfo = useApp(state => state.margin.marginInfo);
   const poolInfo = useApp(state => state.margin.poolInfo);
   const allPoolIds = useApp(state => state.margin.allPoolIds);
-  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
@@ -75,16 +74,6 @@ const MarginPools = () => {
     return () => subscription?.unsubscribe();
   }, [api, allPoolIds]);
 
-  useLayoutEffect(() => {
-    if (api.oracleValues) {
-      const subscription = api.oracleValues().subscribe((result: any) => {
-        setOracleValues(result);
-      });
-
-      return () => subscription.unsubscribe();
-    }
-  }, []);
-
   const columns: any[] = [
     {
       title: t('SYMBOL'),
@@ -108,10 +97,10 @@ const MarginPools = () => {
       align: 'right',
       render: (spread: any, record: any) => {
         return poolInfo[record.poolId] ? (
-          <Price
+          <OraclePrice
             spread={spread}
-            base={oracleValues[record.pair.base]}
-            quote={oracleValues[record.pair.quote]}
+            baseTokenId={record.pair.base}
+            quoteTokenId={record.pair.quote}
             direction="bid"
           />
         ) : null;
@@ -123,10 +112,10 @@ const MarginPools = () => {
       align: 'right',
       render: (spread: any, record: any) => {
         return poolInfo[record.poolId] ? (
-          <Price
+          <OraclePrice
             spread={spread}
-            base={oracleValues[record.pair.base]}
-            quote={oracleValues[record.pair.quote]}
+            baseTokenId={record.pair.base}
+            quoteTokenId={record.pair.quote}
             direction="ask"
           />
         ) : null;
@@ -152,7 +141,7 @@ const MarginPools = () => {
       title: t('POOL'),
       dataIndex: 'poolId',
       align: 'right',
-      render: (value: string) => <PoolName value={value} />,
+      render: (value: string) => <PoolName value={value} type="margin" />,
     },
     {
       title: '',
@@ -196,7 +185,7 @@ const MarginPools = () => {
                         label={
                           <div>
                             <Text size="n">
-                              <PoolName value={poolId} />
+                              <PoolName value={poolId} type="margin" />
                             </Text>
                             <Text size="s" style={{ paddingLeft: '0.25rem' }}>
                               AVAILABLE

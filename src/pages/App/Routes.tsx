@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
 
-import { useApp } from '../../hooks/useApp';
+import { useApp } from '../../store/useApp';
 import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
 import Home from '../Home';

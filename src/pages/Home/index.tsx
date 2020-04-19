@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
 
 import { Text, Row, Col, Spinner } from '../../components';
-import useApp from '../../hooks/useApp';
+import useApp from '../../store/useApp';
 import { ChainType } from '../../services/Api';
 
 import laminachain from '../../assets/laminachain.png';
