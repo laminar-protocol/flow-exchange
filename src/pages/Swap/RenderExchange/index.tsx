@@ -121,12 +121,12 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
   );
 
   const onSwap = async () => {
-    if (api?.synthetic && account.address && exchangeTokenId && exchangeAmount && poolInfo) {
+    if (api?.synthetic && account.address && exchangeTokenId && exchangeAmount && baseAmount && poolInfo) {
       setSwapping(true);
       return notificationHelper(
         isRedeem
           ? api.synthetic.redeem(account.address, poolInfo.poolId, exchangeTokenId, toPrecision(exchangeAmount))
-          : api.synthetic.mint(account.address, poolInfo.poolId, exchangeTokenId, toPrecision(exchangeAmount)),
+          : api.synthetic.mint(account.address, poolInfo.poolId, exchangeTokenId, toPrecision(baseAmount)),
       )
         .then(() => {
           setExchangeAmount('');
