@@ -56,8 +56,8 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
   );
 
   const askRate = useOraclePriceSelector(
-    baseTokenId || null,
     exchangeTokenId || null,
+    baseTokenId || null,
     option ? option.askSpread : null,
     'ask',
   );
@@ -71,12 +71,12 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
 
   const predictBaseAmount = useMemo(() => {
     if (!askRate || !bidRate || !exchangeAmount) return '';
-    return (!isRedeem ? Number(exchangeAmount) / Number(askRate) : Number(exchangeAmount) * Number(bidRate)).toFixed(5);
+    return (!isRedeem ? Number(exchangeAmount) * Number(askRate) : Number(exchangeAmount) * Number(bidRate)).toFixed(5);
   }, [askRate, bidRate, isRedeem, exchangeAmount]);
 
   const predictExchangeAmount = useMemo(() => {
     if (!askRate || !bidRate || !baseAmount) return '';
-    return (!isRedeem ? Number(baseAmount) * Number(askRate) : Number(baseAmount) / Number(bidRate)).toFixed(5);
+    return (!isRedeem ? Number(baseAmount) / Number(askRate) : Number(baseAmount) / Number(bidRate)).toFixed(5);
   }, [askRate, bidRate, isRedeem, baseAmount]);
 
   useLayoutEffect(() => {
@@ -160,23 +160,9 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
         option.askSpread &&
         option.bidSpread ? (
           <Text>
-            {`1 ${!isRedeem ? baseTokenId : exchangeTokenId} ≈ `}
-            {!isRedeem ? (
-              <OraclePrice
-                baseTokenId={baseTokenId}
-                quoteTokenId={exchangeTokenId}
-                spread={option.askSpread}
-                direction="ask"
-              />
-            ) : (
-              <OraclePrice
-                baseTokenId={exchangeTokenId}
-                quoteTokenId={baseTokenId}
-                spread={option.bidSpread}
-                direction="bid"
-              />
-            )}
-            {` ${isRedeem ? baseTokenId : exchangeTokenId}`}
+            {!isRedeem
+              ? `1 ${baseTokenId} ≈ ${(1 / Number(askRate)).toFixed(5)} ${exchangeTokenId}`
+              : `1 ${exchangeTokenId} ≈ ${Number(bidRate).toFixed(5)} ${baseTokenId}`}
           </Text>
         ) : (
           <Spinner />

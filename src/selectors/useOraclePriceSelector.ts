@@ -16,10 +16,11 @@ export const useOraclePriceSelector = (
   return useMemo(() => {
     if (!baseOracleValue || !quoteOracleValue || !spread || !direction) return null;
 
-    return (
-      ((direction === 'ask' ? 1 + spread : 1 - spread) * Number(fromPrecision(baseOracleValue.value, 18))) /
-      Number(fromPrecision(quoteOracleValue.value, 18))
-    );
+    const price = Number(fromPrecision(baseOracleValue.value, 18)) / Number(fromPrecision(quoteOracleValue.value, 18));
+
+    const _spread = direction === 'ask' ? 1 + spread : 1 - spread;
+
+    return _spread * price;
   }, [baseOracleValue, quoteOracleValue, spread, direction]);
 };
 
