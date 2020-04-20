@@ -1,16 +1,13 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
-import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { createUseStyles } from 'react-jss';
 
-import { useApp } from '../../store/useApp';
-import { useSyntheticPools } from '../../store/useSyntheticPools';
+import { Col, PoolName, Row, Space, Text, Title } from '../../components';
 import { useApiSelector } from '../../selectors';
-import { Title, Space, Text, Row, Col, PoolName } from '../../components';
+import { useSyntheticPools } from '../../store/useSyntheticPools';
+import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
 import RenderSyntheticPools from './RenderSyntheticPools';
-import RenderBalances from './RenderBalances';
 import RenderTxRecords from './RenderTxRecords';
 
 const Swap: React.FC = () => {

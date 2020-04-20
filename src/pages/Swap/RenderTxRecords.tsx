@@ -1,9 +1,8 @@
-import React, { useLayoutEffect, useMemo } from 'react';
 import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-
+import React, { useMemo } from 'react';
+import { Amount, Date, Panel, Table, TxHash } from '../../components';
 import { useAccountSelector } from '../../selectors';
-import { Balance, Panel, Table, TxHash, Amount, Date } from '../../components';
 
 const swapRecordSubscription = gql`
   subscription swapRecordSubscription($signer: jsonb!) {

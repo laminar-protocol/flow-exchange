@@ -1,7 +1,7 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { AmountInput, Text, Select } from '../../../components';
+import { AmountInput, Select, Text } from '../../../components';
 import { TokenInfo } from '../../../services';
 
 type SwapInputProps = {

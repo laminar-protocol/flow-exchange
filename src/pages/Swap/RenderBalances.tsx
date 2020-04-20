@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { createUseStyles } from 'react-jss';
+import React from 'react';
 import {} from 'react-i18next';
-
-import { Panel, Table, Balance } from '../../components';
+import { Balance, Panel, Table } from '../../components';
 import useApp from '../../store/useApp';
 
 type RenderBalancesProps = {};

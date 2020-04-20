@@ -1,9 +1,9 @@
-import React, { useMemo, useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { OraclePrice, Panel, Spinner, Text } from '../../../components';
-import { useApiSelector, useAccountSelector, useOraclePriceSelector } from '../../../selectors';
-import { TokenId, options } from '../../../services';
+import { Panel, Spinner, Text } from '../../../components';
+import { useAccountSelector, useApiSelector, useOraclePriceSelector } from '../../../selectors';
+import { TokenId } from '../../../services';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
 import { notificationHelper, toPrecision } from '../../../utils';
