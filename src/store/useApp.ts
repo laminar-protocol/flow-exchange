@@ -6,6 +6,7 @@ import Api, {
   AppLaminarApi,
   ChainType,
   MarginInfo,
+  TraderInfo,
   PoolInfo,
   TokenInfo,
   TradingPair,
@@ -28,13 +29,7 @@ export interface AppState extends State {
     marginInfo: MarginInfo;
     allPoolIds: string[];
     poolInfo: Record<string, MarginPoolInfo>;
-    traderInfo: {
-      equity: string;
-      freeMargin: string;
-      marginHeld: string;
-      marginLevel: string;
-      unrealizedPl: string;
-    };
+    traderInfo: TraderInfo;
   };
   // poolOptions: any,
   setApiEnable(chainType: ChainType): Promise<AppState['api']>;
@@ -62,10 +57,6 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
           marginCall: 0,
           stopOut: 0,
         },
-        traderThreshold: {
-          marginCall: 0,
-          stopOut: 0,
-        },
       },
       allPoolIds: [],
       poolInfo: {},
@@ -75,6 +66,10 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
         marginHeld: '0',
         marginLevel: '0',
         unrealizedPl: '0',
+        traderThreshold: {
+          marginCall: 0,
+          stopOut: 0,
+        },
       },
     },
     checkAvailableProvider() {
@@ -91,14 +86,11 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
       const api = new Api({ chainType });
 
       await api.isReady();
-      // const defaultPools = await api.getDefaultPools();
-      const tradingPairs = await api.getTradingPairs();
+
       const accounts = await api.getAccounts();
 
       set(state => {
         state.api = api;
-        // state.defaultPools = defaultPools;
-        state.tradingPairs = tradingPairs;
         state.currentAccount = accounts[0];
         state.accountList = accounts;
       });

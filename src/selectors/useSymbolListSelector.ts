@@ -12,15 +12,15 @@ const createMarginSymbolListSelector = (key: string) => {
           return key === poolId;
         })
         .reduce((result, curr) => {
-          for (const pairId of Object.keys(poolInfo[curr].options)) {
+          for (const item of poolInfo[curr].options) {
             result.push({
               ...poolInfo[curr],
-              ...poolInfo[curr].options[pairId],
+              ...item,
             });
           }
 
           return result;
-        }, [] as (typeof poolInfo['string'] & typeof poolInfo['string']['options']['string'])[]);
+        }, [] as (typeof poolInfo['string'] & typeof poolInfo['string']['options'][number])[]);
     },
   );
 };

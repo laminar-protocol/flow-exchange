@@ -9,10 +9,10 @@ import { LeftArrowIcon } from '../../icons';
 import { useApiSelector } from '../../selectors';
 import ChartWidget from './ChartWidget';
 import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
-import MarginHeader from './MarginHeader';
 import MarginPoolDashboard from './MarginPoolDashboard';
 import MarginPositions from './MarginPositions';
 import MarginTrade from './MarginTrade';
+import RenderHeader from './RenderHeader';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -46,7 +46,7 @@ const MarginPools = () => {
       <div className={classes.backButton} onClick={() => history.push('/margin')}>
         <LeftArrowIcon />
       </div>
-      <MarginHeader poolInfo={poolInfo} />
+      <RenderHeader poolInfo={poolInfo} />
       <Row className={classes.container}>
         <Panel title={t('Price Chart')} className={classes.chartContainer}>
           <ChartWidget symbol={params.pairId} className={classes.chartWidget} />

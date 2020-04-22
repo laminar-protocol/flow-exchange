@@ -32,7 +32,6 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
 
   const api = useApiSelector();
   const account = useAccountSelector();
-  const marginInfo = useApp(state => state.margin.marginInfo);
   const traderInfo = useApp(state => state.margin.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {
@@ -51,14 +50,16 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
   }, [api]);
 
   useLayoutEffect(() => {
-    const subscription = api.margin?.traderInfo(account.address).subscribe((result: any) => {
-      useAppApi.setState(state => {
-        state.margin.traderInfo = result;
+    if (poolInfo.poolId) {
+      const subscription = api.margin?.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
+        useAppApi.setState(state => {
+          state.margin.traderInfo = result;
+        });
       });
-    });
 
-    return () => subscription?.unsubscribe();
-  }, [api, account, data]);
+      return () => subscription?.unsubscribe();
+    }
+  }, [api, account, data, poolInfo]);
 
   return (
     <Panel>
@@ -66,10 +67,10 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={traderInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={traderInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
           </Description>
         </Space>
       </Space>

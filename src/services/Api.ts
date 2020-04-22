@@ -11,7 +11,7 @@ export interface Account {
 export type AppEthereumApi = Api & EthereumApi;
 export type AppLaminarApi = Api & LaminarApi;
 
-class Api implements FlowApi {
+class Api {
   private injected: any;
   private provider: EthereumApi | LaminarApi;
   private _eventemitter = new EventEmitter();
@@ -25,7 +25,6 @@ class Api implements FlowApi {
   public getOraclePrice: FlowApi['getOraclePrice'];
   public getDefaultPools: FlowApi['getDefaultPools'];
   public getTokens: FlowApi['getTokens'];
-  public getTradingPairs: FlowApi['getTradingPairs'];
   public withdrawLiquidity: FlowApi['withdrawLiquidity'];
   public depositLiquidity: FlowApi['depositLiquidity'];
   public getPoolOwner: FlowApi['getPoolOwner'];
@@ -70,17 +69,17 @@ class Api implements FlowApi {
     this.getOraclePrice = this.provider.getOraclePrice;
     this.getDefaultPools = this.provider.getDefaultPools;
     this.getTokens = this.provider.getTokens;
-    this.getTradingPairs = this.provider.getTradingPairs;
     this.withdrawLiquidity = this.provider.withdrawLiquidity;
     this.depositLiquidity = this.provider.depositLiquidity;
     this.getPoolOwner = this.provider.getPoolOwner;
     this.createPool = this.provider.createPool;
     if (this.chainType === 'ethereum') {
       const provider = this.provider as EthereumApi;
-      this.getTokenAllowance = provider.getTokenAllowance;
-      this.getPoolAllowance = provider.getPoolAllowance;
-      this.flowProtocolGrant = provider.flowProtocolGrant;
-      this.liquidityPoolGrant = provider.liquidityPoolGrant;
+      // this.getTokenAllowance = provider.getTokenAllowance;
+      // this.getPoolAllowance = provider.getPoolAllowance;
+      // this.flowProtocolGrant = provider.flowProtocolGrant;
+      // this.liquidityPoolGrant = provider.liquidityPoolGrant;
+      // this.margin = provider.margin
     }
     if (this.chainType === 'laminar') {
       const provider = this.provider as LaminarApi;

@@ -22,7 +22,7 @@ import useApp, { useAppApi } from '../../store/useApp';
 import { IdentityIcon } from '../../icons';
 import { useApiSelector, useSymbolListSelector } from '../../selectors';
 import MarginFastTradeButton from './MarginFastTradeButton';
-import MarginHeader from './MarginHeader';
+import RenderHeader from './RenderHeader';
 import MarginPositions from './MarginPositions';
 
 const MarginPools = () => {
@@ -155,7 +155,7 @@ const MarginPools = () => {
 
   return (
     <Space direction="vertical" size={24}>
-      <MarginHeader />
+      <RenderHeader />
       <Row align="middle" justify="space-between">
         <Col>
           <Row>
