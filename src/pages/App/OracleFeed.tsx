@@ -8,8 +8,8 @@ const OracleFeed: React.FC = () => {
   const setOracleValues = useOracle(state => state.setOracleValues);
 
   useLayoutEffect(() => {
-    if (currentApi?.oracleValues) {
-      const s = currentApi.oracleValues().subscribe((data: any) => {
+    if (currentApi?.currencies?.oracleValues) {
+      const s = currentApi.currencies.oracleValues().subscribe((data: any) => {
         setOracleValues(data);
       });
 

@@ -7,8 +7,8 @@ const AppInit: React.FC = () => {
   const setState = useApp(state => state.setState);
 
   useLayoutEffect(() => {
-    if (currentApi?.tokens) {
-      const s = currentApi.tokens().subscribe((data: any) => {
+    if (currentApi?.currencies?.tokens) {
+      const s = currentApi.currencies.tokens().subscribe((data: any) => {
         setState(state => {
           state.tokens = data;
         });
