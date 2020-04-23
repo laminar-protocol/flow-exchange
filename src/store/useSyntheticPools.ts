@@ -1,7 +1,5 @@
-import { createSelector } from 'reselect';
-
-import create, { GetState, SetState, State } from './createState';
 import { SyntheticPoolInfo } from '../services';
+import create, { GetState, SetState, State } from './createState';
 
 export interface SyntheticPoolsState extends State {
   ids: string[];

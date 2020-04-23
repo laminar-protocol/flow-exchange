@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createUseStyles } from 'react-jss';
 
 import { Col, PoolName, Row, Space, Text, Title } from '../../components';
 import { useApiSelector } from '../../selectors';
@@ -11,7 +10,6 @@ import RenderSyntheticPools from './RenderSyntheticPools';
 import RenderTxRecords from './RenderTxRecords';
 
 const Swap: React.FC = () => {
-  const classes = useStyles();
   const { t } = useTranslation();
 
   const api = useApiSelector();
@@ -24,7 +22,7 @@ const Swap: React.FC = () => {
     if (ids.length && !selectPoolId) {
       setSelectPoolId(ids[0]);
     }
-  }, [ids]);
+  }, [ids, selectPoolId]);
 
   useLayoutEffect(() => {
     if (api?.synthetic?.allPoolIds) {
@@ -36,7 +34,7 @@ const Swap: React.FC = () => {
 
       return () => s && s.unsubscribe();
     }
-  }, [api]);
+  }, [api, setState]);
 
   return (
     <Space direction="vertical" size={24}>
@@ -57,9 +55,5 @@ const Swap: React.FC = () => {
     </Space>
   );
 };
-
-const useStyles = createUseStyles(theme => ({
-  root: {},
-}));
 
 export default Swap;

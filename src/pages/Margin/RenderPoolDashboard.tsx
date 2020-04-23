@@ -1,12 +1,12 @@
-import React, { useLayoutEffect, useEffect } from 'react';
+import { useSubscription } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { useSubscription, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import useApp, { AppState, useAppApi } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
+import useApp, { AppState, useAppApi } from '../../store/useApp';
 
 type RenderPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];

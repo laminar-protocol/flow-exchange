@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import { useReducer } from 'react';
 
 const useForceUpdate = () => {
   const [tick, forceUpdate] = useReducer(x => x + 1, 0);

@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { BaseProps } from '../../types';
-import { fromPrecision } from '../../utils';
-import { TokenId } from '../../services/Api';
 import { useOraclePriceSelector } from '../../selectors';
+import { TokenId } from '../../services/Api';
+import { BaseProps } from '../../types';
 
 type OraclePriceProps = {
   baseTokenId: TokenId;

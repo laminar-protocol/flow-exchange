@@ -42,7 +42,7 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
         setLoading(false);
       }
     },
-    [api, address],
+    [api, address, forceUpdate],
   );
 
   return (

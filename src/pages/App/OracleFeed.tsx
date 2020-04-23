@@ -65,7 +65,7 @@ const EthereumOracleFeed: React.FC = () => {
 
       setOracleValues(result);
     }
-  }, [data, getToken]);
+  }, [data, getToken, setOracleValues]);
 
   return null;
 };

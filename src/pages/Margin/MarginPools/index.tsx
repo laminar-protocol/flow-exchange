@@ -18,7 +18,7 @@ import {
   Text,
   OraclePrice,
 } from '../../../components';
-import useApp, { useAppApi } from '../../../store/useApp';
+import useApp from '../../../store/useApp';
 import { IdentityIcon } from '../../../icons';
 import { useApiSelector, useSymbolListSelector } from '../../../selectors';
 import RenderFastTradeButton from './RenderFastTradeButton';
@@ -29,6 +29,7 @@ const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
+  const setState = useApp(state => state.setState);
 
   const [active, setActive] = useState('');
 
@@ -40,23 +41,23 @@ const MarginPools = () => {
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
-      useAppApi.setState(state => {
+      setState(state => {
         state.margin.marginInfo = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api]);
+  }, [api, setState]);
 
   useLayoutEffect(() => {
     const subscription = api.margin?.allPoolIds().subscribe((result: any) => {
-      useAppApi.setState(state => {
+      setState(state => {
         state.margin.allPoolIds = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api]);
+  }, [api, setState]);
 
   useLayoutEffect(() => {
     const subscription = combineLatest(
@@ -64,15 +65,15 @@ const MarginPools = () => {
         return api.margin?.poolInfo(poolId);
       }),
     ).subscribe((result: any) => {
-      result.map((poolInfo: any) => {
-        useAppApi.setState(state => {
-          state.margin.poolInfo[poolInfo.poolId] = poolInfo;
+      for (const item of result) {
+        setState(state => {
+          state.margin.poolInfo[item.poolId] = item;
         });
-      });
+      }
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, allPoolIds]);
+  }, [api, allPoolIds, setState]);
 
   const columns: any[] = [
     {

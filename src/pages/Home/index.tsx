@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 
-import { Text, Row, Col, Spinner } from '../../components';
-import useApp from '../../store/useApp';
-import useSetting from '../../store/useSetting';
-import { ChainType } from '../../services/Api';
-
-import laminachain from '../../assets/laminachain.png';
 import ethereum from '../../assets/ethereum.png';
+import laminachain from '../../assets/laminachain.png';
 import walletCoinBase from '../../assets/walletCoinBase.png';
 import walletLedger from '../../assets/walletLedger.png';
 import walletMetamask from '../../assets/walletMetamask.png';
 import walletPolkadot from '../../assets/walletPolkadot.png';
 import walletPolkawallet from '../../assets/walletPolkawallet.png';
+import { Col, Row, Spinner, Text } from '../../components';
+import { ChainType } from '../../services/Api';
+import useApp from '../../store/useApp';
+import useSetting from '../../store/useSetting';
 
 const Home = () => {
-  const history = useHistory();
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
-  const setApiEnable = useApp(state => state.setApiEnable);
   const setChainType = useSetting(state => state.setChainType);
 
-  const [loading, setLoading] = useState('');
+  const [loading] = useState('');
   const [availableProvider, setAvailableProvider] = useState<ChainType[]>([]);
   const classes = useStyles();
   const { t } = useTranslation();

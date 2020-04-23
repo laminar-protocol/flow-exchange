@@ -11,14 +11,14 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
   const { t } = useTranslation();
 
   const api = useApiSelector();
-  const account = useAccountSelector();
+  const { address } = useAccountSelector();
   const setState = useApp(state => state.setState);
 
   const balance = useApp(state => state.margin.balance);
 
   useLayoutEffect(() => {
     if (api.margin?.balance) {
-      const subscription = api.margin.balance(account.address).subscribe((result: string) => {
+      const subscription = api.margin.balance(address).subscribe((result: string) => {
         setState(state => {
           state.margin.balance = result;
         });
@@ -26,7 +26,7 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
 
       return () => subscription?.unsubscribe();
     }
-  }, [account.address, api]);
+  }, [address, api, setState]);
 
   return (
     <Description

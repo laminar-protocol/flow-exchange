@@ -31,7 +31,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
     if (tokens.length && !tokenId) {
       onChangeTokenId(tokens[0].id);
     }
-  }, [tokens]);
+  }, [tokens, onChangeTokenId, tokenId]);
 
   const select = (
     <Select

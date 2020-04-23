@@ -5,7 +5,7 @@ import useApp from '../../store/useApp';
 
 type RenderBalancesProps = {};
 
-const RenderBalances: React.FC<RenderBalancesProps> = ({}) => {
+const RenderBalances: React.FC<RenderBalancesProps> = () => {
   const tokens = useApp(state => state.tokens);
 
   const columns: any[] = [

@@ -1,6 +1,7 @@
 import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
+
 import { Amount, Date, Panel, Table, TxHash } from '../../components';
 import { useAccountSelector } from '../../selectors';
 
@@ -23,7 +24,7 @@ const swapRecordSubscription = gql`
   }
 `;
 
-const RenderTxRecords: React.FC = ({}) => {
+const RenderTxRecords: React.FC = () => {
   const account = useAccountSelector();
 
   const { data } = useSubscription(swapRecordSubscription, {

@@ -36,7 +36,7 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
     }
     setAmount('');
     onOk();
-  }, [onOk, api, data?.poolId, account.address, amount]);
+  }, [onOk, api, data, account.address, amount]);
 
   return (
     <Dialog
@@ -107,7 +107,7 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
     }
     setAmount('');
     onOk();
-  }, [onOk, api, data?.poolId, account.address, amount]);
+  }, [onOk, api, data, account.address, amount]);
 
   return (
     <Dialog
