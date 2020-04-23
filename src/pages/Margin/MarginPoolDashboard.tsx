@@ -50,8 +50,8 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
   }, [api]);
 
   useLayoutEffect(() => {
-    if (poolInfo.poolId) {
-      const subscription = api.margin?.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
+    if (poolInfo.poolId && api.margin?.traderInfo) {
+      const subscription = api.margin.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
         useAppApi.setState(state => {
           state.margin.traderInfo = result;
         });

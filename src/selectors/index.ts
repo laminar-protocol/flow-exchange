@@ -7,3 +7,4 @@ export { default as useGetMarginPoolInfoSelector } from './useGetMarginPoolInfoS
 export { default as useAccountBalanceSelector } from './useAccountBalanceSelector';
 export { default as useOraclePriceSelector } from './useOraclePriceSelector';
 export { default as useTradingPairSelector } from './useTradingPairSelector';
+export { default as useTokenInfoSelector } from './useTokenInfoSelector';

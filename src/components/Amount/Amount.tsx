@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { tokenInfoMapSelector, useApp } from '../../store/useApp';
+import { useTokenInfoSelector } from '../../selectors';
 import { TokenInfo } from '../../services/Api';
 import { fromPrecision, getCurrencySymbol, getValueFromHex } from '../../utils';
 import { Spinner } from '../Spinner';
@@ -51,7 +51,7 @@ function Amount(
     ...other
   } = props;
 
-  const tokens = useApp(tokenInfoMapSelector);
+  const token = useTokenInfoSelector(tokenId);
 
   if (loading) return <Spinner />;
 
@@ -61,11 +61,7 @@ function Amount(
     precision: 18,
   };
 
-  if (tokenId) {
-    if (!tokens[tokenId]) return <Spinner />;
-
-    const token = tokens[tokenId];
-
+  if (token) {
     options.precision = token.precision;
     if (hasPostfix) options.postfix = token.name;
     if (hasPrefix) options.prefix = getCurrencySymbol(token.id);

@@ -48,7 +48,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
   }, [leverages, leverage]);
 
   const openPosition = async (direction: 'short' | 'long') => {
-    if (!api.margin || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+    if (!api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
       await notificationHelper(

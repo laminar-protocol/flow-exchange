@@ -17,26 +17,14 @@ class Api {
   private _eventemitter = new EventEmitter();
 
   public chainType: FlowApi['chainType'];
-  // public getBalance: FlowApi['getBalance'];
-  // public getPoolOptions: FlowApi['getPoolOptions'];
-  // public getLiquidity: FlowApi['getLiquidity'];
-  // public redeem: FlowApi['redeem'];
-  // public mint: FlowApi['mint'];
-  // public getOraclePrice: FlowApi['getOraclePrice'];
-  // public getDefaultPools: FlowApi['getDefaultPools'];
-  // public getTokens: FlowApi['getTokens'];
-  // public withdrawLiquidity: FlowApi['withdrawLiquidity'];
-  // public depositLiquidity: FlowApi['depositLiquidity'];
-  // public getPoolOwner: FlowApi['getPoolOwner'];
-  // public createPool: FlowApi['createPool'];
 
   public getTokenAllowance?: EthereumApi['getTokenAllowance'];
   public getPoolAllowance?: EthereumApi['getPoolAllowance'];
   public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
   public liquidityPoolGrant?: EthereumApi['liquidityPoolGrant'];
 
-  public currencies?: LaminarApi['currencies'];
-  public margin?: LaminarApi['margin'];
+  public currencies?: LaminarApi['currencies'] | EthereumApi['currencies'];
+  public margin?: LaminarApi['margin'] | EthereumApi['margin'];
   public synthetic?: LaminarApi['synthetic'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
@@ -62,11 +50,13 @@ class Api {
 
     if (this.chainType === 'ethereum') {
       const provider = this.provider as EthereumApi;
+      this.currencies = provider.currencies;
+      this.margin = provider.margin;
+
       // this.getTokenAllowance = provider.getTokenAllowance;
       // this.getPoolAllowance = provider.getPoolAllowance;
       // this.flowProtocolGrant = provider.flowProtocolGrant;
       // this.liquidityPoolGrant = provider.liquidityPoolGrant;
-      // this.margin = provider.margin
     }
     if (this.chainType === 'laminar') {
       const provider = this.provider as LaminarApi;

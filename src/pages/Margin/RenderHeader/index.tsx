@@ -4,8 +4,8 @@ import { createUseStyles } from 'react-jss';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Amount, Description, NumberFormat, Panel, PoolName, Row, Space, Switch, Title } from '../../../components';
-import useApp, { AppState, useAppApi } from '../../../store/useApp';
-import { useAccountSelector, useApiSelector } from '../../../selectors';
+import { AppState } from '../../../store/useApp';
+import TotalBalance from './TotalBalance';
 
 type MarginHeaderProps = {
   poolInfo?: AppState['margin']['poolInfo']['string'];
@@ -21,20 +21,6 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
     path: '/margin/:poolId/:pairId',
     exact: true,
   });
-
-  const api = useApiSelector();
-  const account = useAccountSelector();
-  const balance = useApp(state => state.margin.balance);
-
-  useLayoutEffect(() => {
-    const subscription = api.margin?.balance(account.address).subscribe((result: string) => {
-      useAppApi.setState(state => {
-        state.margin.balance = result;
-      });
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [account.address, api]);
 
   return (
     <Panel padding="0.75rem 2rem">
@@ -65,9 +51,7 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
         )}
 
         <Row>
-          <Description layout="vertical" label={t('TOTAL BALANCE')} align="flex-end">
-            <Amount value={balance} tokenId={'AUSD'} hasPostfix />
-          </Description>
+          <TotalBalance />
           <div className={classes.separate} />
           <Description layout="vertical" label={t('ENABLE TRADING')} align="flex-end">
             <Switch className={classes.switch} checked={true} onClick={() => {}} />

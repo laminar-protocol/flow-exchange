@@ -27,7 +27,7 @@ export const MarginDepositModal: React.FC<MarginHandleModalProps> = ({ visible, 
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin) return;
+    if (!api.margin?.deposit) return;
     await notificationHelper(api.margin.deposit(account.address, toPrecision(amount)));
     setAmount('');
     onOk();
@@ -93,7 +93,7 @@ export const MarginWithdrawModal: React.FC<MarginHandleModalProps> = ({ visible,
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin) return;
+    if (!api.margin?.withdraw) return;
     await notificationHelper(api.margin.withdraw(account.address, toPrecision(amount)));
     setAmount('');
     onOk();

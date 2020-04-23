@@ -78,7 +78,7 @@ const MarginPositions: React.FC = () => {
   });
 
   const closePosition = async (positionId: string) => {
-    if (!api.margin) return;
+    if (!api.margin?.closePosition) return;
     try {
       setActionLoading(positionId);
       await notificationHelper(api.margin.closePosition(account.address, positionId));
