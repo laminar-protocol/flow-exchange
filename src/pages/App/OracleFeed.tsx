@@ -38,22 +38,22 @@ const OracelQuery = gql`
 const getTokenInfoSelector = createSelector(
   (state: AppState) => state.tokens,
   tokens => {
-    console.log(tokens);
     return (tokenAddress: string) => tokens.find(({ address }) => compareHash(address, tokenAddress)) || null;
   },
 );
 
+const useGetTokenInfoSelector = () => useAppSelector(getTokenInfoSelector);
+
 const EthereumOracleFeed: React.FC = () => {
   const { data } = useSubscription(OracelQuery);
   const setOracleValues = useOracle(state => state.setOracleValues);
-  const getToken = useAppSelector(getTokenInfoSelector);
+  const getToken = useGetTokenInfoSelector();
 
   useLayoutEffect(() => {
     if (data?.priceEntities) {
       const result = data.priceEntities
         .map(({ id, updateAt, value }: any) => {
           const token = getToken(id);
-          console.log(id);
           if (!token) return null;
           return {
             id: token.id,
@@ -62,7 +62,7 @@ const EthereumOracleFeed: React.FC = () => {
           };
         })
         .filter((x: any) => x);
-      console.log(result);
+
       setOracleValues(result);
     }
   }, [data, getToken]);
