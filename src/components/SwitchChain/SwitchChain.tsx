@@ -3,11 +3,11 @@ import { useApiSelector } from '../../selectors';
 
 type SwitchChainProps = {
   defaultValue?: React.ReactNode;
-  laminar?: React.ReactNode;
-  ethereum?: React.ReactNode;
+  renderLaminar?: () => React.ReactNode;
+  renderEthereum?: () => React.ReactNode;
 };
 
-const SwitchChain: React.FC<SwitchChainProps> = ({ laminar, ethereum, defaultValue, children }) => {
+const SwitchChain: React.FC<SwitchChainProps> = ({ renderLaminar, renderEthereum, defaultValue, children }) => {
   const api = useApiSelector();
 
   const [chain, setChain] = useState('');
@@ -22,8 +22,8 @@ const SwitchChain: React.FC<SwitchChainProps> = ({ laminar, ethereum, defaultVal
     }
   }, [api]);
 
-  if (chain === 'ethereum') return <>{ethereum}</>;
-  if (chain === 'laminar') return <>{laminar}</>;
+  if (chain === 'ethereum' && renderEthereum) return <>{renderEthereum()}</>;
+  if (chain === 'laminar' && renderLaminar) return <>{renderLaminar()}</>;
 
   return defaultValue ? <>{defaultValue}</> : null;
 };

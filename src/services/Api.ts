@@ -66,6 +66,22 @@ class Api {
     }
   }
 
+  public get isLaminar() {
+    return this.chainType === 'laminar';
+  }
+
+  public get isEthereum() {
+    return this.chainType === 'ethereum';
+  }
+
+  public get asLaminar() {
+    return (this as any) as AppLaminarApi;
+  }
+
+  public get asEthereum() {
+    return (this as any) as AppEthereumApi;
+  }
+
   private ethereumIsReady = async () => {
     await this.injected.enable();
   };

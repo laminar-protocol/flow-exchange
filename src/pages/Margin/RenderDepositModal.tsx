@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
-import { Address, AmountInput, Dialog, PoolName } from '../../components';
+import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
 import { AppState } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { notificationHelper, toPrecision } from '../../utils';
@@ -28,10 +28,15 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
 
   const handleSubmit = useCallback(async () => {
     if (!api.margin?.deposit) return;
-    await notificationHelper(api.margin.deposit(account.address, toPrecision(amount)));
+    if (api.isLaminar) {
+      await notificationHelper(api.asLaminar.margin.deposit(account.address, toPrecision(amount)));
+    }
+    if (api.isEthereum && data?.poolId) {
+      await notificationHelper(api.asEthereum.margin.deposit(account.address, data.poolId, toPrecision(amount)));
+    }
     setAmount('');
     onOk();
-  }, [onOk, api, account.address, amount]);
+  }, [onOk, api, data?.poolId, account.address, amount]);
 
   return (
     <Dialog
@@ -54,7 +59,7 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
         <div className={classes.infoRight}>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>From</span>
-            Polkadot
+            <SwitchChain renderEthereum={() => 'Ethereum'} renderLaminar={() => 'Polkadot'} />
             <span className={classes.infoAddress}>
               <Address value={account.address} maxLength={20} />
             </span>
@@ -94,10 +99,15 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
 
   const handleSubmit = useCallback(async () => {
     if (!api.margin?.withdraw) return;
-    await notificationHelper(api.margin.withdraw(account.address, toPrecision(amount)));
+    if (api.isLaminar) {
+      await notificationHelper(api.asLaminar.margin.withdraw(account.address, toPrecision(amount)));
+    }
+    if (api.isEthereum && data?.poolId) {
+      await notificationHelper(api.asEthereum.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
+    }
     setAmount('');
     onOk();
-  }, [onOk, api, account.address, amount]);
+  }, [onOk, api, data?.poolId, account.address, amount]);
 
   return (
     <Dialog
@@ -125,7 +135,7 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
           <div className={classes.infoSeparate}></div>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>To</span>
-            Polkadot
+            <SwitchChain renderEthereum={() => 'Ethereum'} renderLaminar={() => 'Polkadot'} />
             <span className={classes.infoAddress}>
               <Address value={account.address} maxLength={20} />
             </span>

@@ -146,7 +146,7 @@ export function create<TState extends State>(
   };
 
   const useSelector = <U>(selector: StateSelector<TState, U>, deps: ReadonlyArray<any> = []) =>
-    useStore(useCallback(selector, deps));
+    useStore(useCallback((...args) => selector(...args), deps));
 
   const api = { setState, getState, subscribe: apiSubscribe, destroy };
   state = createState(setState, getState, api);

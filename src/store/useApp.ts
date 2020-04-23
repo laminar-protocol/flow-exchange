@@ -9,7 +9,6 @@ import Api, {
   TraderInfo,
   PoolInfo,
   TokenInfo,
-  TradingPair,
   MarginPoolInfo,
 } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
@@ -22,7 +21,6 @@ export interface AppState extends State {
   availableProvider: ChainType[];
   connectModalShow: boolean;
   tokens: TokenInfo[];
-  tradingPairs: TradingPair[];
   defaultPools?: PoolInfo[];
   margin: {
     balance: string;
@@ -45,7 +43,6 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
     availableProvider: [],
     connectModalShow: false,
     tokens: [],
-    tradingPairs: [],
     margin: {
       balance: '0',
       marginInfo: {

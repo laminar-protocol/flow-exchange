@@ -1,6 +1,5 @@
 import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { createUseStyles } from 'react-jss';
 
 import { Amount, Description, SwitchChain } from '../../../components';
 import { useAccountSelector, useApiSelector } from '../../../selectors';
@@ -9,7 +8,6 @@ import useApp from '../../../store/useApp';
 type TotalBalanceProps = {};
 
 const TotalBalance: React.FC<TotalBalanceProps> = () => {
-  const classes = useStyles();
   const { t } = useTranslation();
 
   const api = useApiSelector();
@@ -33,14 +31,12 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
   return (
     <Description
       layout="vertical"
-      label={<SwitchChain ethereum={t('Balance (Wallet)')} laminar={t('Total Balance')} />}
+      label={<SwitchChain renderEthereum={() => t('Balance (Wallet)')} renderLaminar={() => t('Total Balance')} />}
       align="flex-end"
     >
       <Amount value={balance} tokenId={'AUSD'} hasPostfix />
     </Description>
   );
 };
-
-const useStyles = createUseStyles(theme => ({}));
 
 export default TotalBalance;

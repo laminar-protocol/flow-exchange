@@ -1,10 +1,11 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useRouteMatch } from 'react-router-dom';
 
-import { Amount, Description, NumberFormat, Panel, PoolName, Row, Space, Switch, Title } from '../../../components';
+import { Description, NumberFormat, Panel, PoolName, Row, Space, Title, SwitchChain } from '../../../components';
 import { AppState } from '../../../store/useApp';
+import EnableTrading from './EnableTrading';
 import TotalBalance from './TotalBalance';
 
 type MarginHeaderProps = {
@@ -52,10 +53,16 @@ const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {
 
         <Row>
           <TotalBalance />
-          <div className={classes.separate} />
-          <Description layout="vertical" label={t('ENABLE TRADING')} align="flex-end">
-            <Switch className={classes.switch} checked={true} onClick={() => {}} />
-          </Description>
+          <SwitchChain
+            renderEthereum={() => {
+              return (
+                <>
+                  <div className={classes.separate} />
+                  <EnableTrading />
+                </>
+              );
+            }}
+          />
         </Row>
       </Row>
     </Panel>
@@ -73,9 +80,6 @@ const useStyles = createUseStyles(theme => ({
     marginLeft: '1.5rem',
     marginRight: '1.5rem',
     borderLeft: `solid 1px ${theme.keyColorGrey}`,
-  },
-  switch: {
-    marginTop: '0.125rem',
   },
 }));
 
