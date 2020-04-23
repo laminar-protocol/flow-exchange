@@ -3,16 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 
-import { Panel, Row, Space } from '../../components';
-import useApp, { useAppApi } from '../../store/useApp';
-import { LeftArrowIcon } from '../../icons';
-import { useApiSelector } from '../../selectors';
+import { Panel, Row, Space } from '../../../components';
+import useApp, { useAppApi } from '../../../store/useApp';
+import { LeftArrowIcon } from '../../../icons';
+import { useApiSelector } from '../../../selectors';
 import ChartWidget from './ChartWidget';
-import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
-import MarginPoolDashboard from './MarginPoolDashboard';
-import MarginPositions from './MarginPositions';
-import MarginTrade from './MarginTrade';
-import RenderHeader from './RenderHeader';
+import RenderTrade from '../RenderTrade';
+import RenderHeader from '../RenderHeader';
+import RenderPoolDashboard from '../RenderPoolDashboard';
+import RenderPositions from '../RenderPositions';
+import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -52,24 +52,24 @@ const MarginPools = () => {
           <ChartWidget symbol={params.pairId} className={classes.chartWidget} />
         </Panel>
         <Space direction="vertical" style={{ width: '27.25rem' }} size={24}>
-          <MarginPoolDashboard
+          <RenderPoolDashboard
             poolInfo={poolInfo}
             openDeposit={() => setShowDeposit(true)}
             openWithdraw={() => setShowWithdraw(true)}
           />
-          <MarginTrade poolInfo={poolInfo} pairId={params.pairId} />
+          <RenderTrade poolInfo={poolInfo} pairId={params.pairId} />
         </Space>
       </Row>
-      <MarginPositions />
+      <RenderPositions />
 
-      <MarginDepositModal
+      <RenderDepositModal
         visible={showDeposit}
         onCancel={() => setShowDeposit(false)}
         data={poolInfo}
         onOk={() => setShowDeposit(false)}
       />
 
-      <MarginWithdrawModal
+      <RenderWithdrawModal
         visible={showWithdraw}
         onCancel={() => setShowWithdraw(false)}
         data={poolInfo}

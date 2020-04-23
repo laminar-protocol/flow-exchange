@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { createUseStyles } from 'react-jss';
 
-import { PrimaryButton } from '../../components';
-import { AppState } from '../../store/useApp';
-import MarginFastTradeModal from './MarginFastTradeModal';
-import { MarginDepositModal, MarginWithdrawModal } from './MarginHandleModal';
+import { PrimaryButton } from '../../../components';
+import { AppState } from '../../../store/useApp';
+import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
+import RenderFastTradeModal from './RenderFastTradeModal';
 
-type MarginFastTradeButtonProps = {
+type RenderFastTradeButtonProps = {
   data: AppState['margin']['poolInfo']['string'];
   pairId: string;
 };
 
-const MarginFastTradeButton: React.FC<MarginFastTradeButtonProps> = ({ data, pairId }) => {
+const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ data, pairId }) => {
   const [showModal, setShowModal] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
@@ -27,7 +26,7 @@ const MarginFastTradeButton: React.FC<MarginFastTradeButtonProps> = ({ data, pai
       >
         Fast Buy/Sell
       </PrimaryButton>
-      <MarginFastTradeModal
+      <RenderFastTradeModal
         data={data}
         visible={showModal}
         pairId={pairId}
@@ -42,14 +41,14 @@ const MarginFastTradeButton: React.FC<MarginFastTradeButtonProps> = ({ data, pai
         onOk={() => setShowModal(false)}
         onCancel={() => setShowModal(false)}
       />
-      <MarginDepositModal
+      <RenderDepositModal
         visible={showDeposit}
         onCancel={() => setShowDeposit(false)}
         data={data}
         onOk={() => setShowDeposit(false)}
       />
 
-      <MarginWithdrawModal
+      <RenderWithdrawModal
         visible={showWithdraw}
         onCancel={() => setShowWithdraw(false)}
         data={data}
@@ -59,4 +58,4 @@ const MarginFastTradeButton: React.FC<MarginFastTradeButtonProps> = ({ data, pai
   );
 };
 
-export default MarginFastTradeButton;
+export default RenderFastTradeButton;

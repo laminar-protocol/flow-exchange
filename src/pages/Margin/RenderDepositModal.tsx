@@ -7,14 +7,14 @@ import { AppState } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 import { notificationHelper, toPrecision } from '../../utils';
 
-type MarginHandleModalProps = {
+type RenderDepositModalProps = {
   visible: boolean;
   onCancel: () => void;
   onOk: () => void;
   data?: AppState['margin']['poolInfo']['string'];
 };
 
-export const MarginDepositModal: React.FC<MarginHandleModalProps> = ({ visible, onCancel, onOk, data }) => {
+export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -80,7 +80,7 @@ export const MarginDepositModal: React.FC<MarginHandleModalProps> = ({ visible, 
   );
 };
 
-export const MarginWithdrawModal: React.FC<MarginHandleModalProps> = ({ visible, onCancel, onOk, data }) => {
+export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 

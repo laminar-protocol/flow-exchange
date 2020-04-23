@@ -8,7 +8,7 @@ import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../.
 import useApp, { AppState, useAppApi } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
 
-type MarginPoolDashboardProps = {
+type RenderPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
   openDeposit: () => void;
   openWithdraw: () => void;
@@ -26,7 +26,7 @@ const positionOpenedSubscription = gql`
   }
 `;
 
-const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
+const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -50,7 +50,7 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
   }, [api]);
 
   useLayoutEffect(() => {
-    if (poolInfo.poolId && api.margin?.traderInfo) {
+    if (poolInfo?.poolId && api.margin?.traderInfo) {
       const subscription = api.margin.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
         useAppApi.setState(state => {
           state.margin.traderInfo = result;
@@ -159,4 +159,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginPoolDashboard;
+export default RenderPoolDashboard;

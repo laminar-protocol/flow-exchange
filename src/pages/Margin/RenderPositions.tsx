@@ -55,7 +55,7 @@ const positionsCloseQuery = gql`
   }
 `;
 
-const MarginPositions: React.FC = () => {
+const RenderPositions: React.FC = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
@@ -283,4 +283,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginPositions;
+export default RenderPositions;

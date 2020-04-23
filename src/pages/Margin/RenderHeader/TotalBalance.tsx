@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
-import { Amount, Description } from '../../../components';
+import { Amount, Description, SwitchChain } from '../../../components';
 import { useAccountSelector, useApiSelector } from '../../../selectors';
 import useApp from '../../../store/useApp';
 
@@ -22,7 +22,6 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
     if (api.margin?.balance) {
       const subscription = api.margin.balance(account.address).subscribe((result: string) => {
         setState(state => {
-          console.log(result);
           state.margin.balance = result;
         });
       });
@@ -32,7 +31,11 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
   }, [account.address, api]);
 
   return (
-    <Description layout="vertical" label={t('TOTAL BALANCE')} align="flex-end">
+    <Description
+      layout="vertical"
+      label={<SwitchChain ethereum={t('Balance (Wallet)')} laminar={t('Total Balance')} />}
+      align="flex-end"
+    >
       <Amount value={balance} tokenId={'AUSD'} hasPostfix />
     </Description>
   );

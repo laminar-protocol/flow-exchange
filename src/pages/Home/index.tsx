@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import { Text, Row, Col, Spinner } from '../../components';
 import useApp from '../../store/useApp';
+import useSetting from '../../store/useSetting';
 import { ChainType } from '../../services/Api';
 
 import laminachain from '../../assets/laminachain.png';
@@ -20,6 +21,8 @@ const Home = () => {
   const history = useHistory();
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
   const setApiEnable = useApp(state => state.setApiEnable);
+  const setChainType = useSetting(state => state.setChainType);
+
   const [loading, setLoading] = useState('');
   const [availableProvider, setAvailableProvider] = useState<ChainType[]>([]);
   const classes = useStyles();
@@ -28,15 +31,16 @@ const Home = () => {
   const handleConnect = async (chainType: ChainType) => {
     if (loading) return;
 
-    setLoading(chainType);
+    // setLoading(chainType);
+    setChainType(chainType);
+    window.location.pathname = './dashboard';
+    // try {
+    //   await setApiEnable(chainType);
+    // } finally {
+    //   setLoading('');
+    // }
 
-    try {
-      await setApiEnable(chainType);
-    } finally {
-      setLoading('');
-    }
-
-    history.push('./dashboard');
+    // history.push('./dashboard');
   };
 
   useEffect(() => {

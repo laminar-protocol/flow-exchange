@@ -18,12 +18,12 @@ import { AppState } from '../../store/useApp';
 import { useAccountSelector, useApiSelector, useTradingPairSelector } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
-type MarginTradeProps = {
+type RenderTradeProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
   pairId: string;
 };
 
-const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
+const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -191,4 +191,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginTrade;
+export default RenderTrade;

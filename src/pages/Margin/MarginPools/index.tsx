@@ -17,13 +17,13 @@ import {
   Table,
   Text,
   OraclePrice,
-} from '../../components';
-import useApp, { useAppApi } from '../../store/useApp';
-import { IdentityIcon } from '../../icons';
-import { useApiSelector, useSymbolListSelector } from '../../selectors';
-import MarginFastTradeButton from './MarginFastTradeButton';
-import RenderHeader from './RenderHeader';
-import MarginPositions from './MarginPositions';
+} from '../../../components';
+import useApp, { useAppApi } from '../../../store/useApp';
+import { IdentityIcon } from '../../../icons';
+import { useApiSelector, useSymbolListSelector } from '../../../selectors';
+import RenderFastTradeButton from './RenderFastTradeButton';
+import RenderHeader from '../RenderHeader';
+import RenderPositions from '../RenderPositions';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -148,7 +148,7 @@ const MarginPools = () => {
       dataIndex: 'action',
       align: 'right',
       render: (_: any, record: any) => {
-        return <MarginFastTradeButton data={record} pairId={record.pairId} />;
+        return <RenderFastTradeButton data={record} pairId={record.pairId} />;
       },
     },
   ];
@@ -236,7 +236,7 @@ const MarginPools = () => {
           rowKey={(record: any) => `${record.poolId}/${record.pairId}`}
         />
       </Panel>
-      <MarginPositions />
+      <RenderPositions />
     </Space>
   );
 };
