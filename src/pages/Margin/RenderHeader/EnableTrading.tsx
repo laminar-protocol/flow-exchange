@@ -36,7 +36,7 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
       try {
         return value
           ? await notificationHelper(api.asEthereum.margin.grant(address))
-          : await notificationHelper(api.asEthereum.margin.grant(address, 0));
+          : await notificationHelper(api.asEthereum.margin.grant(address, '0'));
       } finally {
         forceUpdate();
         setLoading(false);
