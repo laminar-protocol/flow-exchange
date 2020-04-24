@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Panel, Row, Space } from '../../../components';
-import useApp, { useAppApi } from '../../../store/useApp';
+import useApp from '../../../store/useApp';
 import { LeftArrowIcon } from '../../../icons';
 import { useApiSelector } from '../../../selectors';
 import ChartWidget from './ChartWidget';
@@ -22,6 +22,7 @@ const MarginPools = () => {
     poolId: string;
     pairId: string;
   }>();
+  const setState = useApp(state => state.setState);
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
@@ -31,15 +32,15 @@ const MarginPools = () => {
 
   useLayoutEffect(() => {
     if (params.poolId) {
-      const subscription = api.margin?.poolInfo(params.poolId).subscribe((result: any) => {
-        useAppApi.setState(state => {
+      const s = api.margin.poolInfo(params.poolId).subscribe((result: any) => {
+        setState(state => {
           state.margin.poolInfo[result.poolId] = result;
         });
       });
 
-      return () => subscription?.unsubscribe();
+      return () => s?.unsubscribe();
     }
-  }, [api, params.poolId]);
+  }, [api, params.poolId, setState]);
 
   return (
     <Space direction="vertical" size={24}>

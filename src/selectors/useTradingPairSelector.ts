@@ -2,11 +2,15 @@ import { createSelector } from 'reselect';
 
 import { useAppSelector, AppState } from '../store/useApp';
 
+export const findTradingPair = (poolInfo: AppState['margin']['poolInfo'], poolId: string, pairId: string) => {
+  return poolInfo?.[poolId]?.options.find(({ pairId: _pairId }) => _pairId === pairId) || null;
+};
+
 export const createTradingPairSelector = (poolId: string, pairId: string) => {
   return createSelector(
     (state: AppState) => state.margin.poolInfo,
     poolInfo => {
-      return poolInfo?.[poolId]?.options.find(({ pairId: _pairId }) => _pairId === pairId) || null;
+      return findTradingPair(poolInfo, poolId, pairId);
     },
   );
 };

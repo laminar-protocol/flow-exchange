@@ -7,7 +7,7 @@ import { BaseProps } from '../../types';
 type OraclePriceProps = {
   baseTokenId: TokenId;
   quoteTokenId: TokenId;
-  spread: number;
+  spread?: number;
   direction: 'ask' | 'bid';
   calc?: (value: number) => number;
 };
@@ -21,7 +21,7 @@ const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   calc = (x: number) => x,
   ...other
 }) => {
-  const price = useOraclePriceSelector(baseTokenId, quoteTokenId, spread, direction);
+  const price = useOraclePriceSelector(baseTokenId, quoteTokenId, spread || null, direction);
 
   if (!price) return null;
 
