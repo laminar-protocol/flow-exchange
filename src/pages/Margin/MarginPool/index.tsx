@@ -32,6 +32,7 @@ const MarginPools = () => {
 
   useLayoutEffect(() => {
     if (params.poolId) {
+      //@ts-ignore
       const s = api.margin.poolInfo(params.poolId).subscribe((result: any) => {
         setState(state => {
           state.margin.poolInfo[result.poolId] = result;
