@@ -10,8 +10,8 @@ export const useOraclePriceSelector = (
   spread: number | null,
   direction: 'ask' | 'bid',
 ) => {
-  const baseOracleValue = useOracleValueSelector(baseTokenId as any);
-  const quoteOracleValue = useOracleValueSelector(quoteTokenId as any);
+  const baseOracleValue = useOracleValueSelector(baseTokenId as string);
+  const quoteOracleValue = useOracleValueSelector(quoteTokenId as string);
 
   return useMemo(() => {
     if (!baseOracleValue || !quoteOracleValue || !spread || !direction) return null;

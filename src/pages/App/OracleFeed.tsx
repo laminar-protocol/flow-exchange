@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import useApp, { useAppSelector, AppState } from '../../store/useApp';
 import useOracle from '../../store/useOracle';
 import { SwitchChain } from '../../components';
-import { compareHash } from '../../utils';
+import { compareHash, toPrecision } from '../../utils';
 
 const PolkadotOracleFeed: React.FC = () => {
   const currentApi = useApp(state => state.api);
@@ -52,18 +52,22 @@ const EthereumOracleFeed: React.FC = () => {
   useLayoutEffect(() => {
     if (data?.priceEntities) {
       const result = data.priceEntities
-        .map(({ id, updateAt, value }: any) => {
-          const token = getToken(id);
-          if (!token) return null;
+        .map(({ id, updatedAt, value }: any) => {
           return {
-            id: token.id,
-            timestamp: updateAt,
-            value,
+            tokenId: id,
+            timestamp: updatedAt,
+            value: toPrecision(value).toString(),
           };
         })
         .filter((x: any) => x);
 
-      setOracleValues(result);
+      setOracleValues(
+        result.concat({
+          tokenId: '0xbF7A7169562078c96f0eC1A8aFD6aE50f12e5A99',
+          timestamp: null,
+          value: toPrecision(1).toString(),
+        }),
+      );
     }
   }, [data, getToken, setOracleValues]);
 

@@ -7,7 +7,8 @@ export const createOracleValueSelector = (tokenId: TokenId) => {
   return createSelector(
     (state: OracleState) => state.data,
     data => {
-      const info = data.find(item => item.tokenId === tokenId);
+      if (!tokenId) return null;
+      const info = data.find(item => item.tokenId.toLowerCase() === tokenId.toLowerCase());
       return info || null;
     },
   );

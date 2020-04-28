@@ -18,11 +18,6 @@ class Api {
 
   public chainType: FlowApi['chainType'];
 
-  public getTokenAllowance?: EthereumApi['getTokenAllowance'];
-  public getPoolAllowance?: EthereumApi['getPoolAllowance'];
-  public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
-  public liquidityPoolGrant?: EthereumApi['liquidityPoolGrant'];
-
   public currencies?: LaminarApi['currencies'] | EthereumApi['currencies'];
   public margin?: LaminarApi['margin'] | EthereumApi['margin'];
   public synthetic?: LaminarApi['synthetic'];
@@ -52,11 +47,6 @@ class Api {
       const provider = this.provider as EthereumApi;
       this.currencies = provider.currencies;
       this.margin = provider.margin;
-
-      // this.getTokenAllowance = provider.getTokenAllowance;
-      // this.getPoolAllowance = provider.getPoolAllowance;
-      // this.flowProtocolGrant = provider.flowProtocolGrant;
-      // this.liquidityPoolGrant = provider.liquidityPoolGrant;
     }
     if (this.chainType === 'laminar') {
       const provider = this.provider as LaminarApi;
