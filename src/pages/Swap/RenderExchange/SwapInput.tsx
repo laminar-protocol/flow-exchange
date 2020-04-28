@@ -44,7 +44,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
     >
       {tokens.map(token => (
         <Select.Option value={token.id} key={token.id}>
-          {token.id}
+          {token.name}
         </Select.Option>
       ))}
     </Select>
