@@ -1,20 +1,15 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
 import { useTranslation } from 'react-i18next';
-import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
 
-import { useApp } from '../../store/useApp';
-import { useSyntheticPools } from '../../store/useSyntheticPools';
+import { Col, PoolName, Row, Space, Text, Title } from '../../components';
 import { useApiSelector } from '../../selectors';
-import { Title, Space, Text, Row, Col, PoolName } from '../../components';
+import { useSyntheticPools } from '../../store/useSyntheticPools';
+import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
 import RenderSyntheticPools from './RenderSyntheticPools';
-import RenderBalances from './RenderBalances';
 import RenderTxRecords from './RenderTxRecords';
 
 const Swap: React.FC = () => {
-  const classes = useStyles();
   const { t } = useTranslation();
 
   const api = useApiSelector();
@@ -27,7 +22,7 @@ const Swap: React.FC = () => {
     if (ids.length && !selectPoolId) {
       setSelectPoolId(ids[0]);
     }
-  }, [ids]);
+  }, [ids, selectPoolId]);
 
   useLayoutEffect(() => {
     if (api?.synthetic?.allPoolIds) {
@@ -39,7 +34,7 @@ const Swap: React.FC = () => {
 
       return () => s && s.unsubscribe();
     }
-  }, [api]);
+  }, [api, setState]);
 
   return (
     <Space direction="vertical" size={24}>
@@ -60,9 +55,5 @@ const Swap: React.FC = () => {
     </Space>
   );
 };
-
-const useStyles = createUseStyles(theme => ({
-  root: {},
-}));
 
 export default Swap;

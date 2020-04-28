@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { combineLatest } from 'rxjs';
 
 import {
   AmountInput,
@@ -16,35 +15,26 @@ import {
   OraclePrice,
 } from '../../components';
 import { AppState } from '../../store/useApp';
-import { useAccountSelector, useApiSelector } from '../../selectors';
+import { useAccountSelector, useApiSelector, useTradingPairSelector } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
-type MarginTradeProps = {
+type RenderTradeProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
   pairId: string;
 };
 
-type OracleValue = {
-  timestamp: number;
-  value: string;
-};
-
-const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
+const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
-  const [oracleValues, setOracleValues] = useState<Record<string, any>>({});
 
   const [mode, setMode] = useState<'basic' | 'advanced'>('basic');
   const [leverage, setLeverage] = useState('');
   const [actionLoading, setActionLoading] = useState('');
   const api = useApiSelector();
   const account = useAccountSelector();
-
-  const pairInfo = useMemo(() => {
-    return poolInfo?.options[pairId];
-  }, [poolInfo, pairId]);
+  const pairInfo = useTradingPairSelector(poolInfo?.poolId, pairId);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -58,7 +48,7 @@ const MarginTrade: React.FC<MarginTradeProps> = ({ poolInfo, pairId }) => {
   }, [leverages, leverage]);
 
   const openPosition = async (direction: 'short' | 'long') => {
-    if (!api.margin || !poolInfo.poolId || !pairInfo.pair || !leverages[leverage][direction]) return;
+    if (!api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
       await notificationHelper(
@@ -201,4 +191,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginTrade;
+export default RenderTrade;

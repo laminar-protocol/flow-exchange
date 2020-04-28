@@ -5,7 +5,7 @@ import React, { useEffect, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 
-import { BaseProps } from '../../types';
+import { BaseProps } from '../../../types';
 
 type ChartWidgetProps = {
   symbol: string;
@@ -22,6 +22,9 @@ const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol
       ['FJPY', 'JPY'],
       ['FBTC', 'BTC'],
       ['FETH', 'ETH'],
+      ['FETH', 'ETH'],
+      ['USDAAPL', 'AAPL'],
+      ['USDXAU', 'XAUUSD'],
     ].reduce((result, curr) => {
       return result.replace(curr[0], curr[1]);
     }, symbol);

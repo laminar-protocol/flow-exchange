@@ -1,9 +1,9 @@
 import { faBtc, faEthereum } from '@fortawesome/free-brands-svg-icons';
 import { faAward, faCubes, faDollarSign, faEuroSign, faYenSign } from '@fortawesome/free-solid-svg-icons';
 
-import { TokenId } from '../services/Api';
+import { TokenInfo } from '../services/Api';
 
-const iconMap = {
+const iconMap: Record<TokenInfo['name'], typeof faBtc> = {
   DAI: faDollarSign,
   fEUR: faEuroSign,
   fJPY: faYenSign,
@@ -17,8 +17,8 @@ const iconMap = {
   FETH: faEthereum,
 };
 
-const getTokenIcon = (tokenId: TokenId) => {
-  return iconMap[tokenId];
+const getTokenIcon = (tokenName: TokenInfo['name']) => {
+  return iconMap[tokenName];
 };
 
 export default getTokenIcon;

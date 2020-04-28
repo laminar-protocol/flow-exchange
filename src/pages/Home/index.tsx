@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { createUseStyles } from 'react-jss';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 import clsx from 'clsx';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { createUseStyles } from 'react-jss';
 
-import { Text, Row, Col, Spinner } from '../../components';
-import useApp from '../../store/useApp';
-import { ChainType } from '../../services/Api';
-
-import laminachain from '../../assets/laminachain.png';
 import ethereum from '../../assets/ethereum.png';
+import laminachain from '../../assets/laminachain.png';
 import walletCoinBase from '../../assets/walletCoinBase.png';
 import walletLedger from '../../assets/walletLedger.png';
 import walletMetamask from '../../assets/walletMetamask.png';
 import walletPolkadot from '../../assets/walletPolkadot.png';
 import walletPolkawallet from '../../assets/walletPolkawallet.png';
+import { Col, Row, Spinner, Text } from '../../components';
+import { ChainType } from '../../services/Api';
+import useApp from '../../store/useApp';
+import useSetting from '../../store/useSetting';
 
 const Home = () => {
-  const history = useHistory();
   const checkAvailableProvider = useApp(state => state.checkAvailableProvider);
-  const setApiEnable = useApp(state => state.setApiEnable);
-  const [loading, setLoading] = useState('');
+  const setChainType = useSetting(state => state.setChainType);
+
+  const [loading] = useState('');
   const [availableProvider, setAvailableProvider] = useState<ChainType[]>([]);
   const classes = useStyles();
   const { t } = useTranslation();
@@ -28,15 +27,16 @@ const Home = () => {
   const handleConnect = async (chainType: ChainType) => {
     if (loading) return;
 
-    setLoading(chainType);
+    // setLoading(chainType);
+    setChainType(chainType);
+    window.location.pathname = './dashboard';
+    // try {
+    //   await setApiEnable(chainType);
+    // } finally {
+    //   setLoading('');
+    // }
 
-    try {
-      await setApiEnable(chainType);
-    } finally {
-      setLoading('');
-    }
-
-    history.push('./dashboard');
+    // history.push('./dashboard');
   };
 
   useEffect(() => {

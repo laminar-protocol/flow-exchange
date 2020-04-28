@@ -88,7 +88,7 @@ const Option: React.FC<{ innerProps: any; data: { token: TokenInfo; isDisabled: 
 const Currency: React.FC<{ token: TokenInfo; isDisabled?: boolean }> = ({ token, isDisabled = false }) => (
   <CustomCurrency isDisabled={isDisabled}>
     <div className="icon">
-      <Icon icon={getTokenIcon(token.id)} />
+      <Icon icon={getTokenIcon(token.name)} />
     </div>
     <div className="text">{token.displayName}</div>
   </CustomCurrency>

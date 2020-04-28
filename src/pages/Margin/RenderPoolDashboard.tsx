@@ -1,14 +1,14 @@
-import React, { useLayoutEffect, useEffect } from 'react';
+import { useSubscription } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { useSubscription, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import useApp, { AppState, useAppApi } from '../../store/useApp';
 import { useAccountSelector, useApiSelector } from '../../selectors';
+import useApp, { AppState, useAppApi } from '../../store/useApp';
 
-type MarginPoolDashboardProps = {
+type RenderPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
   openDeposit: () => void;
   openWithdraw: () => void;
@@ -26,13 +26,12 @@ const positionOpenedSubscription = gql`
   }
 `;
 
-const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
+const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const api = useApiSelector();
   const account = useAccountSelector();
-  const marginInfo = useApp(state => state.margin.marginInfo);
   const traderInfo = useApp(state => state.margin.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {
@@ -51,14 +50,16 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
   }, [api]);
 
   useLayoutEffect(() => {
-    const subscription = api.margin?.traderInfo(account.address).subscribe((result: any) => {
-      useAppApi.setState(state => {
-        state.margin.traderInfo = result;
+    if (poolInfo?.poolId && api.margin?.traderInfo) {
+      const subscription = api.margin.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
+        useAppApi.setState(state => {
+          state.margin.traderInfo = result;
+        });
       });
-    });
 
-    return () => subscription?.unsubscribe();
-  }, [api, account, data]);
+      return () => subscription?.unsubscribe();
+    }
+  }, [api, account, data, poolInfo]);
 
   return (
     <Panel>
@@ -66,10 +67,10 @@ const MarginPoolDashboard: React.FC<MarginPoolDashboardProps> = ({ poolInfo, ope
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={traderInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            <NumberFormat value={marginInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={traderInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
           </Description>
         </Space>
       </Space>
@@ -158,4 +159,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginPoolDashboard;
+export default RenderPoolDashboard;

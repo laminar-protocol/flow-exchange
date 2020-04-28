@@ -32,7 +32,7 @@ const Balances: React.FC = () => {
         tokens?.map(token => {
           return (
             <div className="item" key={token.name}>
-              <TextCell header={`${token.name} Balance`} accessory={getTokenIcon(token.id)}>
+              <TextCell header={`${token.name} Balance`} accessory={getTokenIcon(token.name)}>
                 <Text weight="bold" size="l">
                   <Balance tokenId={token.id} hasPrefix />
                 </Text>

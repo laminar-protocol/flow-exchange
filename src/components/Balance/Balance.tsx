@@ -1,6 +1,5 @@
 import React from 'react';
 
-import useAccount from '../../store/useAccount';
 import { useAccountBalanceSelector } from '../../selectors';
 import { Amount } from '../Amount';
 

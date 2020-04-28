@@ -21,19 +21,19 @@ const AppInner: React.FC = () => {
     return api ? createApolloClient(api.chainType) : null;
   }, [api]);
 
-  const inner = (
-    <>
-      <OracleFeed />
-      <BalancesFeed />
-      <AppInit />
-      <Routes />
-    </>
-  );
-
   return (
     <StyledThemeProvider theme={{ mode }}>
       <ThemeProvider mode={mode}>
-        {client ? <ApolloProvider client={client}>{inner}</ApolloProvider> : inner}
+        {client ? (
+          <ApolloProvider client={client}>
+            <OracleFeed />
+            <BalancesFeed />
+            <AppInit />
+            <Routes />
+          </ApolloProvider>
+        ) : (
+          <Routes />
+        )}
       </ThemeProvider>
     </StyledThemeProvider>
   );

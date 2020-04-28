@@ -4,8 +4,10 @@ import gql from 'graphql-tag';
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+
 import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '../../components';
 import { useAccountSelector, useApiSelector } from '../../selectors';
+import { findTradingPair } from '../../selectors/useTradingPairSelector';
 import useApp from '../../store/useApp';
 import { getValueFromHex, notificationHelper } from '../../utils';
 
@@ -55,7 +57,7 @@ const positionsCloseQuery = gql`
   }
 `;
 
-const MarginPositions: React.FC = () => {
+const RenderPositions: React.FC = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
@@ -78,7 +80,7 @@ const MarginPositions: React.FC = () => {
   });
 
   const closePosition = async (positionId: string) => {
-    if (!api.margin) return;
+    if (!api.margin?.closePosition) return;
     try {
       setActionLoading(positionId);
       await notificationHelper(api.margin.closePosition(account.address, positionId));
@@ -160,13 +162,11 @@ const MarginPositions: React.FC = () => {
       dataIndex: 'pairId',
       align: 'right',
       render: (_: any, record: any) => {
+        const tradingPair = findTradingPair(poolInfo, record.poolId, record.pairId);
+
         return poolInfo[record.poolId] ? (
           <OraclePrice
-            spread={
-              record.direction === 'ask'
-                ? poolInfo[record.poolId]?.options[record.pairId]?.askSpread
-                : poolInfo[record.poolId]?.options[record.pairId]?.bidSpread
-            }
+            spread={record.direction === 'ask' ? tradingPair?.askSpread : tradingPair?.bidSpread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction={record.direction}
@@ -283,4 +283,4 @@ const useStyles = createUseStyles(theme => ({
   },
 }));
 
-export default MarginPositions;
+export default RenderPositions;

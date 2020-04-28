@@ -11,36 +11,16 @@ export interface Account {
 export type AppEthereumApi = Api & EthereumApi;
 export type AppLaminarApi = Api & LaminarApi;
 
-class Api implements FlowApi {
+class Api {
   private injected: any;
   private provider: EthereumApi | LaminarApi;
   private _eventemitter = new EventEmitter();
 
   public chainType: FlowApi['chainType'];
-  public getBalance: FlowApi['getBalance'];
-  public getPoolOptions: FlowApi['getPoolOptions'];
-  public getLiquidity: FlowApi['getLiquidity'];
-  public redeem: FlowApi['redeem'];
-  public mint: FlowApi['mint'];
-  public getOraclePrice: FlowApi['getOraclePrice'];
-  public getDefaultPools: FlowApi['getDefaultPools'];
-  public getTokens: FlowApi['getTokens'];
-  public getTradingPairs: FlowApi['getTradingPairs'];
-  public withdrawLiquidity: FlowApi['withdrawLiquidity'];
-  public depositLiquidity: FlowApi['depositLiquidity'];
-  public getPoolOwner: FlowApi['getPoolOwner'];
-  public createPool: FlowApi['createPool'];
 
-  public getTokenAllowance?: EthereumApi['getTokenAllowance'];
-  public getPoolAllowance?: EthereumApi['getPoolAllowance'];
-  public flowProtocolGrant?: EthereumApi['flowProtocolGrant'];
-  public liquidityPoolGrant?: EthereumApi['liquidityPoolGrant'];
-
-  public oracleValues?: LaminarApi['oracleValues'];
-  public balances?: LaminarApi['balances'];
-  public margin?: LaminarApi['margin'];
+  public currencies?: LaminarApi['currencies'] | EthereumApi['currencies'];
+  public margin?: LaminarApi['margin'] | EthereumApi['margin'];
   public synthetic?: LaminarApi['synthetic'];
-  public tokens?: LaminarApi['tokens'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;
@@ -62,34 +42,34 @@ class Api implements FlowApi {
     }
 
     this.chainType = this.provider.chainType;
-    this.getBalance = this.provider.getBalance;
-    this.getPoolOptions = this.provider.getPoolOptions;
-    this.getLiquidity = this.provider.getLiquidity;
-    this.redeem = this.provider.redeem;
-    this.mint = this.provider.mint;
-    this.getOraclePrice = this.provider.getOraclePrice;
-    this.getDefaultPools = this.provider.getDefaultPools;
-    this.getTokens = this.provider.getTokens;
-    this.getTradingPairs = this.provider.getTradingPairs;
-    this.withdrawLiquidity = this.provider.withdrawLiquidity;
-    this.depositLiquidity = this.provider.depositLiquidity;
-    this.getPoolOwner = this.provider.getPoolOwner;
-    this.createPool = this.provider.createPool;
+
     if (this.chainType === 'ethereum') {
       const provider = this.provider as EthereumApi;
-      this.getTokenAllowance = provider.getTokenAllowance;
-      this.getPoolAllowance = provider.getPoolAllowance;
-      this.flowProtocolGrant = provider.flowProtocolGrant;
-      this.liquidityPoolGrant = provider.liquidityPoolGrant;
+      this.currencies = provider.currencies;
+      this.margin = provider.margin;
     }
     if (this.chainType === 'laminar') {
       const provider = this.provider as LaminarApi;
-      this.oracleValues = provider.oracleValues;
-      this.balances = provider.balances;
       this.margin = provider.margin;
       this.synthetic = provider.synthetic;
-      this.tokens = provider.tokens;
+      this.currencies = provider.currencies;
     }
+  }
+
+  public get isLaminar() {
+    return this.chainType === 'laminar';
+  }
+
+  public get isEthereum() {
+    return this.chainType === 'ethereum';
+  }
+
+  public get asLaminar() {
+    return (this as any) as AppLaminarApi;
+  }
+
+  public get asEthereum() {
+    return (this as any) as AppEthereumApi;
   }
 
   private ethereumIsReady = async () => {

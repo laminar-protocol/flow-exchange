@@ -1,7 +1,7 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { AmountInput, Text, Select } from '../../../components';
+import { AmountInput, Select, Text } from '../../../components';
 import { TokenInfo } from '../../../services';
 
 type SwapInputProps = {
@@ -31,7 +31,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
     if (tokens.length && !tokenId) {
       onChangeTokenId(tokens[0].id);
     }
-  }, [tokens]);
+  }, [tokens, onChangeTokenId, tokenId]);
 
   const select = (
     <Select
@@ -44,7 +44,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
     >
       {tokens.map(token => (
         <Select.Option value={token.id} key={token.id}>
-          {token.id}
+          {token.name}
         </Select.Option>
       ))}
     </Select>

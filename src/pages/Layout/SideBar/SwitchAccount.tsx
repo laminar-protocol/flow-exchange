@@ -1,10 +1,10 @@
+import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import clsx from 'clsx';
 
 import walletPolkadot from '../../../assets/walletPolkadot.png';
 import { Dialog, Text } from '../../../components';
-import useApp, { useAppApi } from '../../../store/useApp';
+import useApp from '../../../store/useApp';
 
 type SwitchAccountProps = {
   visible: boolean;
@@ -14,6 +14,7 @@ type SwitchAccountProps = {
 
 const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }) => {
   const classes = useStyles();
+  const setState = useApp(state => state.setState);
 
   const currentAccount = useApp(state => state.currentAccount);
   const accountList = useApp(state => state.accountList);
@@ -21,13 +22,13 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
 
   const selectAccount = useCallback(
     accountAddress => {
-      useAppApi.setState(state => {
+      setState(state => {
         const account = accountList.find(({ address }) => accountAddress === address);
         if (!account) return null;
         state.currentAccount = account;
       });
     },
-    [useAppApi, accountList],
+    [setState, accountList],
   );
 
   const handleCancel = useCallback(() => {

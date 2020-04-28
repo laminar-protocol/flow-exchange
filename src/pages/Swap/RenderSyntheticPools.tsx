@@ -1,9 +1,9 @@
-import React, { useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
-import { Panel, Balance, Table, PoolName } from '../../components';
+import { Balance, Panel, PoolName, Table } from '../../components';
 import { useApiSelector, useGetSyntheticPoolInfoSelector } from '../../selectors';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 
