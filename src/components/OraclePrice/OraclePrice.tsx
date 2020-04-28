@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useOraclePrice } from '../../selectors';
+import { useOraclePrice } from '../../hooks';
 import { TokenId } from '../../services/Api';
 import { BaseProps } from '../../types';
 

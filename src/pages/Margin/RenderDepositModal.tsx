@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
 import { AppState } from '../../store/useApp';
-import { useCurrentAccount, useApi } from '../../selectors';
+import { useCurrentAccount, useApi } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderDepositModalProps = {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAccountBalance } from '../../selectors';
+import { useAccountBalance } from '../../hooks';
 import { Amount } from '../Amount';
 
 type AmountProps = React.ComponentProps<typeof Amount>;

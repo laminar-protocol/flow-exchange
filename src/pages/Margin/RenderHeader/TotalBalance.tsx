@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Amount, Description, SwitchChain } from '../../../components';
-import { useCurrentAccount, useApi } from '../../../selectors';
+import { useCurrentAccount, useApi } from '../../../hooks';
 import useApp from '../../../store/useApp';
 
 type TotalBalanceProps = {};

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '../../components';
-import { useCurrentAccount, useApi } from '../../selectors';
-import { findTradingPair } from '../../selectors/useTradingPair';
+import { useCurrentAccount, useApi } from '../../hooks';
+import { findTradingPair } from '../../hooks/useTradingPair';
 import useApp from '../../store/useApp';
 import { getValueFromHex, notificationHelper } from '../../utils';
 

@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Balance, Panel, PoolName, Table } from '../../components';
-import { useApi, useGetSyntheticPoolInfo } from '../../selectors';
+import { useApi, useGetSyntheticPoolInfo } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 
 type RenderSyntheticPoolsProps = {

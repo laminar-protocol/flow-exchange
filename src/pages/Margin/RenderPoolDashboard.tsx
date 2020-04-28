@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import { useCurrentAccount, useApi } from '../../selectors';
+import { useCurrentAccount, useApi } from '../../hooks';
 import useApp, { AppState, useAppApi } from '../../store/useApp';
 
 type RenderPoolDashboardProps = {

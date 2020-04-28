@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 
 import useSwap from '../useSwap';
 import { Panel, Spinner, Text } from '../../../components';
-import { useCurrentAccount, useApi, useOraclePrice } from '../../../selectors';
+import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
 import { notificationHelper, toPrecision } from '../../../utils';

@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Description, Switch } from '../../../components';
-import { useCurrentAccount, useApi } from '../../../selectors';
-import { useForceUpdate } from '../../../hooks';
+import { useCurrentAccount, useApi, useForceUpdate } from '../../../hooks';
 import { notificationHelper } from '../../../utils';
 
 type TotalBalanceProps = {};

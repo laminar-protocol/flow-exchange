@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Col, PoolName, Row, Space, Text, Title } from '../../components';
-import { useApi } from '../../selectors';
+import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';

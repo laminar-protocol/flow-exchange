@@ -6,7 +6,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
 import useApp from '../../../store/useApp';
 import { LeftArrowIcon } from '../../../icons';
-import { useApi } from '../../../selectors';
+import { useApi } from '../../../hooks';
 import ChartWidget from './ChartWidget';
 import RenderTrade from '../RenderTrade';
 import RenderHeader from '../RenderHeader';

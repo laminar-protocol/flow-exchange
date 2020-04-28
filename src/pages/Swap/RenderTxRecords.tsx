@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
 
 import { Amount, Date, Panel, Table, TxHash } from '../../components';
-import { useCurrentAccount } from '../../selectors';
+import { useCurrentAccount } from '../../hooks';
 
 const swapRecordSubscription = gql`
   subscription swapRecordSubscription($signer: jsonb!) {

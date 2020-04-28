@@ -20,7 +20,7 @@ import {
 } from '../../../components';
 import useApp from '../../../store/useApp';
 import { IdentityIcon } from '../../../icons';
-import { useApi, useSymbolList } from '../../../selectors';
+import { useApi, useSymbolList } from '../../../hooks';
 import RenderFastTradeButton from './RenderFastTradeButton';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';

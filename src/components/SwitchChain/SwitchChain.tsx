@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { useApi } from '../../selectors';
+import { useApi } from '../../hooks';
 
 type SwitchChainProps = {
   defaultValue?: React.ReactNode;

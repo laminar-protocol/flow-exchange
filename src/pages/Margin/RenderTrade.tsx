@@ -15,7 +15,7 @@ import {
   OraclePrice,
 } from '../../components';
 import { AppState } from '../../store/useApp';
-import { useCurrentAccount, useApi, useTradingPair } from '../../selectors';
+import { useCurrentAccount, useApi, useTradingPair } from '../../hooks';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
 type RenderTradeProps = {
