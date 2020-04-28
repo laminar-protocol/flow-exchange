@@ -15,7 +15,7 @@ import {
   OraclePrice,
 } from '../../components';
 import { AppState } from '../../store/useApp';
-import { useAccountSelector, useApiSelector, useTradingPairSelector } from '../../selectors';
+import { useCurrentAccount, useApi, useTradingPair } from '../../selectors';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 
 type RenderTradeProps = {
@@ -32,9 +32,9 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const [mode, setMode] = useState<'basic' | 'advanced'>('basic');
   const [leverage, setLeverage] = useState('');
   const [actionLoading, setActionLoading] = useState('');
-  const api = useApiSelector();
-  const account = useAccountSelector();
-  const pairInfo = useTradingPairSelector(poolInfo?.poolId, pairId);
+  const api = useApi();
+  const account = useCurrentAccount();
+  const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};

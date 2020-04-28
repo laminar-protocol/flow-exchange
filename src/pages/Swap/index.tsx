@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Col, PoolName, Row, Space, Text, Title } from '../../components';
-import { useApiSelector } from '../../selectors';
+import { useApi } from '../../selectors';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
@@ -12,10 +12,10 @@ import RenderTxRecords from './RenderTxRecords';
 const Swap: React.FC = () => {
   const { t } = useTranslation();
 
-  const api = useApiSelector();
+  const api = useApi();
   const setState = useSyntheticPools(state => state.setState);
-
   const ids = useSyntheticPools(state => state.ids);
+
   const [selectPoolId, setSelectPoolId] = useState('');
 
   useLayoutEffect(() => {

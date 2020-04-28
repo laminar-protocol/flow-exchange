@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Balance, Panel, PoolName, Table } from '../../components';
-import { useApiSelector, useGetSyntheticPoolInfoSelector } from '../../selectors';
+import { useApi, useGetSyntheticPoolInfo } from '../../selectors';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 
 type RenderSyntheticPoolsProps = {
@@ -14,9 +14,9 @@ type RenderSyntheticPoolsProps = {
 
 const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPool, selectPoolId }) => {
   const classes = useStyles();
-  const api = useApiSelector();
+  const api = useApi();
   const setState = useSyntheticPools(state => state.setState);
-  const getPoolInfo = useGetSyntheticPoolInfoSelector();
+  const getPoolInfo = useGetSyntheticPoolInfo();
 
   const ids = useSyntheticPools(state => state.ids);
 

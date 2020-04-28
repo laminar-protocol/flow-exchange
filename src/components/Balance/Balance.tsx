@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAccountBalanceSelector } from '../../selectors';
+import { useAccountBalance } from '../../selectors';
 import { Amount } from '../Amount';
 
 type AmountProps = React.ComponentProps<typeof Amount>;
@@ -10,7 +10,7 @@ type BalanceProps = {
 };
 
 const Balance: React.FC<BalanceProps & Omit<AmountProps, 'value'>> = ({ tokenId, ...other }) => {
-  const balance = useAccountBalanceSelector(tokenId);
+  const balance = useAccountBalance(tokenId);
 
   if (!balance || !balance.free) return null;
 

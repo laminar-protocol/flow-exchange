@@ -5,15 +5,19 @@ import clsx from 'clsx';
 
 type TableProps = React.ComponentProps<typeof AntdTable> & {
   hideHeader?: boolean;
+  variant?: 'panelTable';
 };
 
-const Table: React.FC<TableProps> = ({ hideHeader, className, ...other }) => {
+const Table: React.FC<TableProps> = ({ hideHeader, className, variant, ...other }) => {
   const classes = useStyles();
 
   return (
     <AntdTable
       scroll={{ x: true }}
-      className={clsx(className, classes.root, { [classes.hideHeader]: hideHeader })}
+      className={clsx(className, classes.root, {
+        [classes.hideHeader]: hideHeader,
+        [classes.panelTable]: variant === 'panelTable',
+      })}
       pagination={false}
       {...other}
     />
@@ -42,6 +46,17 @@ const useStyles = createUseStyles(theme => ({
     },
     '& .ant-table-tbody > tr.ant-table-row:hover > td': {
       background: 'none',
+    },
+  },
+  panelTable: {
+    '& .ant-table': {
+      'border-radius': '0.75rem',
+    },
+    '& .ant-table tbody > tr:last-child > td': {
+      'border-bottom': 'none',
+    },
+    '& .ant-table-pagination': {
+      'margin-right': '1rem',
     },
   },
   hideHeader: {

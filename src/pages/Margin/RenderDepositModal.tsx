@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
 import { AppState } from '../../store/useApp';
-import { useAccountSelector, useApiSelector } from '../../selectors';
+import { useCurrentAccount, useApi } from '../../selectors';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderDepositModalProps = {
@@ -19,8 +19,8 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
-  const account = useAccountSelector();
-  const api = useApiSelector();
+  const account = useCurrentAccount();
+  const api = useApi();
 
   const handleCancel = useCallback(() => {
     return onCancel();
@@ -90,8 +90,8 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
-  const account = useAccountSelector();
-  const api = useApiSelector();
+  const account = useCurrentAccount();
+  const api = useApi();
 
   const handleCancel = useCallback(() => {
     return onCancel();

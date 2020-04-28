@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from 'react';
-import { useApiSelector } from '../../selectors';
+import { useApi } from '../../selectors';
 
 type SwitchChainProps = {
   defaultValue?: React.ReactNode;
@@ -8,7 +8,7 @@ type SwitchChainProps = {
 };
 
 const SwitchChain: React.FC<SwitchChainProps> = ({ renderLaminar, renderEthereum, defaultValue, children }) => {
-  const api = useApiSelector();
+  const api = useApi();
 
   const [chain, setChain] = useState('');
 

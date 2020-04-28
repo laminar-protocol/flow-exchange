@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
+import useSwap from '../useSwap';
 import { Panel, Spinner, Text } from '../../../components';
-import { useAccountSelector, useApiSelector, useOraclePriceSelector } from '../../../selectors';
-import { TokenId } from '../../../services';
+import { useCurrentAccount, useApi, useOraclePrice } from '../../../selectors';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
 import { notificationHelper, toPrecision } from '../../../utils';
@@ -18,21 +18,23 @@ type RenderExchangeProps = {
 const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
   const classes = useStyles();
   const tokens = useApp(state => state.tokens);
-  const api = useApiSelector();
-  const account = useAccountSelector();
+  const api = useApi();
+  const account = useCurrentAccount();
   const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
+  const setSwapState = useSwap(state => state.setState);
 
-  const [baseTokenId, setBaseTokenId] = useState<TokenId | ''>('');
-  const [isRedeem, setIsRedeem] = useState(false);
+  const baseToken = useSwap(state => state.baseToken);
+  const exchangeToken = useSwap(state => state.exchangeToken);
+  const isRedeem = useSwap(state => state.isRedeem);
+
   const [baseAmount, setBaseAmount] = useState('');
-  const [exchangeTokenId, setExchangeTokenId] = useState<TokenId | ''>('');
   const [exchangeAmount, setExchangeAmount] = useState('');
   const [changingInput, setChangingInput] = useState<'base' | 'exchange' | ''>('');
   const [swapping, setSwapping] = useState(false);
 
   const option = useMemo(
-    () => (poolInfo && exchangeTokenId ? poolInfo.options.find(({ tokenId }) => tokenId === exchangeTokenId) : null),
-    [poolInfo, exchangeTokenId],
+    () => (poolInfo && exchangeToken ? poolInfo.options.find(({ tokenId }) => tokenId === exchangeToken.id) : null),
+    [poolInfo, exchangeToken],
   );
 
   const enabledTokens = useMemo(
@@ -55,16 +57,16 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
     [tokens, enabledTokens],
   );
 
-  const askRate = useOraclePriceSelector(
-    exchangeTokenId || null,
-    baseTokenId || null,
+  const askRate = useOraclePrice(
+    exchangeToken?.id || null,
+    baseToken?.id || null,
     option ? option.askSpread : null,
     'ask',
   );
 
-  const bidRate = useOraclePriceSelector(
-    exchangeTokenId || null,
-    baseTokenId || null,
+  const bidRate = useOraclePrice(
+    exchangeToken?.id || null,
+    baseToken?.id || null,
     option ? option.bidSpread : null,
     'bid',
   );
@@ -93,13 +95,15 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
       label={!isRedeem ? 'Send' : 'Recieve'}
       tokens={baseTokens}
       amount={baseAmount}
-      tokenId={baseTokenId}
+      token={baseToken}
       disabled={!askRate || !bidRate}
       onChangeAmount={amount => setBaseAmount(amount)}
       onInput={() => setChangingInput('base')}
-      onChangeTokenId={tokenId => {
+      onChangeToken={token => {
         setChangingInput('base');
-        setBaseTokenId(tokenId);
+        setSwapState(state => {
+          state.baseToken = token;
+        });
       }}
     />
   );
@@ -109,24 +113,26 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
       label={isRedeem ? 'Send' : 'Recieve'}
       tokens={exchangeTokens}
       amount={exchangeAmount}
-      tokenId={exchangeTokenId}
+      token={exchangeToken}
       disabled={!askRate || !bidRate}
       onChangeAmount={amount => setExchangeAmount(amount)}
       onInput={() => setChangingInput('exchange')}
-      onChangeTokenId={tokenId => {
+      onChangeToken={token => {
         setChangingInput('exchange');
-        setExchangeTokenId(tokenId);
+        setSwapState(state => {
+          state.exchangeToken = token;
+        });
       }}
     />
   );
 
   const onSwap = async () => {
-    if (api?.synthetic && account.address && exchangeTokenId && exchangeAmount && baseAmount && poolInfo) {
+    if (api?.synthetic && account.address && exchangeToken && exchangeAmount && baseAmount && poolInfo) {
       setSwapping(true);
       return notificationHelper(
         isRedeem
-          ? api.synthetic.redeem(account.address, poolInfo.poolId, exchangeTokenId, toPrecision(exchangeAmount))
-          : api.synthetic.mint(account.address, poolInfo.poolId, exchangeTokenId, toPrecision(baseAmount)),
+          ? api.synthetic.redeem(account.address, poolInfo.poolId, exchangeToken.id, toPrecision(exchangeAmount))
+          : api.synthetic.mint(account.address, poolInfo.poolId, exchangeToken.id, toPrecision(baseAmount)),
       )
         .then(() => {
           setExchangeAmount('');
@@ -142,27 +148,26 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
     <Panel className={classes.root}>
       <div className={classes.swap}>
         {!isRedeem ? baseInput : exchangeInput}
-        <SwapExchange onClick={() => setIsRedeem(!isRedeem)} />
+        <SwapExchange
+          onClick={() =>
+            setSwapState(state => {
+              state.isRedeem = !state.isRedeem;
+            })
+          }
+        />
         {isRedeem ? baseInput : exchangeInput}
         <SwapButton
           loading={swapping}
           onClick={() => onSwap()}
-          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeTokenId}
+          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeToken}
         />
       </div>
       <div className={classes.rateContainer}>
-        {baseTokenId &&
-        exchangeTokenId &&
-        baseTokenId &&
-        exchangeTokenId &&
-        poolInfo &&
-        option &&
-        option.askSpread &&
-        option.bidSpread ? (
+        {baseToken && exchangeToken && option?.askSpread && option?.bidSpread ? (
           <Text>
             {!isRedeem
-              ? `1 ${baseTokenId} ≈ ${(1 / Number(askRate)).toFixed(5)} ${exchangeTokenId}`
-              : `1 ${exchangeTokenId} ≈ ${Number(bidRate).toFixed(5)} ${baseTokenId}`}
+              ? `1 ${baseToken.name} ≈ ${(1 / Number(askRate)).toFixed(5)} ${exchangeToken.name}`
+              : `1 ${exchangeToken.name} ≈ ${Number(bidRate).toFixed(5)} ${baseToken.name}`}
           </Text>
         ) : (
           <Spinner />

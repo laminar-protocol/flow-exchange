@@ -2,7 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Amount, Description, SwitchChain } from '../../../components';
-import { useAccountSelector, useApiSelector } from '../../../selectors';
+import { useCurrentAccount, useApi } from '../../../selectors';
 import useApp from '../../../store/useApp';
 
 type TotalBalanceProps = {};
@@ -10,8 +10,8 @@ type TotalBalanceProps = {};
 const TotalBalance: React.FC<TotalBalanceProps> = () => {
   const { t } = useTranslation();
 
-  const api = useApiSelector();
-  const { address } = useAccountSelector();
+  const api = useApi();
+  const { address } = useCurrentAccount();
   const setState = useApp(state => state.setState);
 
   const balance = useApp(state => state.margin.balance);

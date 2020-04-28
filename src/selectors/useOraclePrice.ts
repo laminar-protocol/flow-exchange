@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
 
 import { TokenId } from '../services';
-import useOracleValueSelector from './useOracleValueSelector';
+import useOracleValue from './useOracleValue';
 import { fromPrecision } from '../utils';
 
-export const useOraclePriceSelector = (
+export const useOraclePrice = (
   baseTokenId: TokenId | null,
   quoteTokenId: TokenId | null,
   spread: number | null,
   direction: 'ask' | 'bid',
 ) => {
-  const baseOracleValue = useOracleValueSelector(baseTokenId as string);
-  const quoteOracleValue = useOracleValueSelector(quoteTokenId as string);
+  const baseOracleValue = useOracleValue(baseTokenId as string);
+  const quoteOracleValue = useOracleValue(quoteTokenId as string);
 
   return useMemo(() => {
     if (!baseOracleValue || !quoteOracleValue || !spread || !direction) return null;
@@ -24,4 +24,4 @@ export const useOraclePriceSelector = (
   }, [baseOracleValue, quoteOracleValue, spread, direction]);
 };
 
-export default useOraclePriceSelector;
+export default useOraclePrice;

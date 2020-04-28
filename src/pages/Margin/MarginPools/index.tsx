@@ -20,7 +20,7 @@ import {
 } from '../../../components';
 import useApp from '../../../store/useApp';
 import { IdentityIcon } from '../../../icons';
-import { useApiSelector, useSymbolListSelector } from '../../../selectors';
+import { useApi, useSymbolList } from '../../../selectors';
 import RenderFastTradeButton from './RenderFastTradeButton';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';
@@ -33,8 +33,8 @@ const MarginPools = () => {
 
   const [active, setActive] = useState('');
 
-  const api = useApiSelector();
-  const symbolList = useSymbolListSelector(active);
+  const api = useApi();
+  const symbolList = useSymbolList(active);
   const marginInfo = useApp(state => state.margin.marginInfo);
   const poolInfo = useApp(state => state.margin.poolInfo);
   const allPoolIds = useApp(state => state.margin.allPoolIds);

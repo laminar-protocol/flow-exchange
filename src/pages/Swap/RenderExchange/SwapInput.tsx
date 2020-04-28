@@ -7,10 +7,10 @@ import { TokenInfo } from '../../../services';
 type SwapInputProps = {
   label: string;
   tokens: TokenInfo[];
-  tokenId: string;
+  token?: TokenInfo;
   amount: string;
   disabled?: boolean;
-  onChangeTokenId(tokenId: TokenInfo['id']): void;
+  onChangeToken(token?: TokenInfo): void;
   onChangeAmount(amount: string): void;
   onInput(): void;
 };
@@ -18,9 +18,9 @@ type SwapInputProps = {
 const SwapInput: React.FC<SwapInputProps> = ({
   label,
   tokens,
-  tokenId,
+  token,
   amount,
-  onChangeTokenId,
+  onChangeToken,
   onChangeAmount,
   onInput,
   disabled = false,
@@ -28,16 +28,19 @@ const SwapInput: React.FC<SwapInputProps> = ({
   const classes = useStyles();
 
   useLayoutEffect(() => {
-    if (tokens.length && !tokenId) {
-      onChangeTokenId(tokens[0].id);
+    if (tokens.length && !token) {
+      onChangeToken(tokens[0]);
     }
-  }, [tokens, onChangeTokenId, tokenId]);
+  }, [tokens, onChangeToken, token]);
 
   const select = (
     <Select
       size="large"
-      value={tokenId}
-      onSelect={value => onChangeTokenId(value as TokenInfo['id'])}
+      value={token?.id}
+      onSelect={tokenId => {
+        const token = tokens.find(({ id }) => tokenId === id);
+        onChangeToken(token);
+      }}
       style={{ width: '12rem' }}
       loading={!tokens.length}
       disabled={!tokens.length}

@@ -23,7 +23,7 @@ const RenderBalances: React.FC<RenderBalancesProps> = () => {
 
   return (
     <Panel title={'Balance'}>
-      <Table columns={columns} dataSource={tokens} hideHeader rowKey="id" />
+      <Table variant="panelTable" columns={columns} dataSource={tokens} hideHeader rowKey="id" />
     </Panel>
   );
 };

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { useAccountSelector, AccountState } from '../store/useAccount';
+import { useCurrentAccount, AccountState } from '../store/useAccount';
 import { TokenId } from '../services';
 
 export const createAccountBalanceSelector = (tokenId: TokenId) => {
@@ -13,4 +13,4 @@ export const createAccountBalanceSelector = (tokenId: TokenId) => {
   );
 };
 
-export default (tokenId: TokenId) => useAccountSelector(createAccountBalanceSelector(tokenId), [tokenId]);
+export default (tokenId: TokenId) => useCurrentAccount(createAccountBalanceSelector(tokenId), [tokenId]);

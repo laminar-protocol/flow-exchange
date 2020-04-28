@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import React, { useMemo } from 'react';
 
 import { Amount, Date, Panel, Table, TxHash } from '../../components';
-import { useAccountSelector } from '../../selectors';
+import { useCurrentAccount } from '../../selectors';
 
 const swapRecordSubscription = gql`
   subscription swapRecordSubscription($signer: jsonb!) {
@@ -25,7 +25,7 @@ const swapRecordSubscription = gql`
 `;
 
 const RenderTxRecords: React.FC = () => {
-  const account = useAccountSelector();
+  const account = useCurrentAccount();
 
   const { data } = useSubscription(swapRecordSubscription, {
     variables: {
@@ -93,7 +93,15 @@ const RenderTxRecords: React.FC = () => {
 
   return (
     <Panel title={'Transaction'}>
-      <Table columns={columns} dataSource={list} rowKey="txHash" />
+      <Table
+        variant="panelTable"
+        columns={columns}
+        dataSource={list}
+        rowKey="txHash"
+        pagination={{
+          pageSize: 10,
+        }}
+      />
     </Panel>
   );
 };
