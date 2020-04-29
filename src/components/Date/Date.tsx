@@ -11,7 +11,7 @@ type DateProps = {
 const Date: React.FC<BaseProps & DateProps> = ({
   component: Component = 'span',
   value,
-  format = 'MM/DD/YYYY HH:mm:ss',
+  format = 'YYYY/MM/DD HH:mm:ss',
   ...other
 }) => {
   if (!value) return null;

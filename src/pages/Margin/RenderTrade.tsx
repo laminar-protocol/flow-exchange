@@ -47,8 +47,9 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
     }
   }, [leverages, leverage]);
 
-  const openPosition = async (direction: 'short' | 'long') => {
-    if (!api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+  const openPosition = async (direction: 'ask' | 'bid') => {
+    if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
+      return;
     try {
       setActionLoading(direction);
       await notificationHelper(
@@ -58,7 +59,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
           pairInfo.pair as any,
           leverages[leverage][direction] as any,
           toPrecision(amount),
-          direction === 'long' ? toPrecision('1000000000') : toPrecision('0'),
+          direction === 'ask' ? toPrecision('1000000000') : toPrecision('0'),
         ),
       );
       setAmount('');
@@ -102,10 +103,11 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
         <div className={classes.actions}>
           <div className={classes.actionItem}>
             <DefaultButton
-              loading={actionLoading === 'long'}
+              loading={actionLoading === 'ask'}
               className={classes.buyButton}
-              onClick={() => openPosition('long')}
-              disabled={!leverages[leverage]?.long}
+              onClick={() => openPosition('ask')}
+              tooltip={!leverages[leverage]?.ask ? 'NOT SUPPORT' : ''}
+              disabled={!leverages[leverage]?.ask}
             >
               {t('Buy')}
             </DefaultButton>
@@ -120,10 +122,11 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
           </div>
           <div className={classes.actionItem}>
             <DefaultButton
-              loading={actionLoading === 'short'}
+              loading={actionLoading === 'bid'}
               className={classes.sellButton}
-              onClick={() => openPosition('short')}
-              disabled={!leverages[leverage]?.short}
+              onClick={() => openPosition('bid')}
+              tooltip={!leverages[leverage]?.bid ? 'NOT SUPPORT' : ''}
+              disabled={!leverages[leverage]?.bid}
             >
               {t('Sell')}
             </DefaultButton>

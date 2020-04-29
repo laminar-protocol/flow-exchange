@@ -52,7 +52,7 @@ const RenderTxRecords: React.FC = () => {
     {
       title: 'Tx Hash',
       dataIndex: 'txHash',
-      render: (value: any) => <TxHash value={value} maxLength={20} />,
+      render: (value: any) => <TxHash value={value} />,
     },
     {
       title: 'Action',
@@ -87,7 +87,7 @@ const RenderTxRecords: React.FC = () => {
       title: 'Date',
       dataIndex: 'time',
       align: 'right',
-      render: (value: any) => <Date value={value} format="MM/DD/YYYY" />,
+      render: (value: any) => <Date value={value} format="YYYY/MM/DD" />,
     },
   ];
 

@@ -18,10 +18,8 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ data, pai
   return (
     <div>
       <PrimaryButton
-        onClick={event => {
+        onClick={() => {
           setShowModal(true);
-          event.stopPropagation();
-          event.preventDefault();
         }}
       >
         Fast Buy/Sell
