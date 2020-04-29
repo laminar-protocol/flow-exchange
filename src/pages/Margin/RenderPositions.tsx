@@ -1,7 +1,7 @@
 import { useSubscription } from '@apollo/react-hooks';
 import clsx from 'clsx';
 import gql from 'graphql-tag';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
@@ -10,6 +10,7 @@ import { useCurrentAccount, useApi } from '../../hooks';
 import { findTradingPair } from '../../hooks/useTradingPair';
 import useApp from '../../store/useApp';
 import { getValueFromHex, notificationHelper, getLeverage, toPrecision } from '../../utils';
+import useMargin from './hooks/useMargin';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
@@ -65,11 +66,17 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
-  const [list, setList] = useState([]);
+  const setState = useMargin(state => state.setState);
+  const positions = useMargin(state => state.positions);
+
   const api = useApi();
   const account = useCurrentAccount();
   const [actionLoading, setActionLoading] = useState('');
   const poolInfo = useApp(state => state.margin.poolInfo);
+
+  const list = useMemo(() => {
+    return positions.filter(filter);
+  }, [filter, positions]);
 
   const { data: openedList } = useSubscription(positionsOpenQuery, {
     variables: {
@@ -124,8 +131,11 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
           leverage,
           direction,
         };
-      }).filter(filter);
-      setList(list);
+      });
+
+      setState(state => {
+        state.positions = list;
+      });
 
       return () => {};
     }

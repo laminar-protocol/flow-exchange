@@ -17,6 +17,8 @@ import {
 import { AppState } from '../../store/useApp';
 import { useCurrentAccount, useApi, useTradingPair } from '../../hooks';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
+import useMargin from './hooks/useMargin';
+import useAllowanceEnable from './hooks/useAllowanceEnable';
 
 type RenderTradeProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
@@ -35,6 +37,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const api = useApi();
   const account = useCurrentAccount();
   const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
+  const allowanceEnable = useAllowanceEnable();
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -46,6 +49,26 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
       setLeverage(Object.keys(leverages)[0]);
     }
   }, [leverages, leverage]);
+
+  const buyDisabledTip = useMemo(() => {
+    if (!allowanceEnable) {
+      return 'NOT ENABLE';
+    }
+    if (!leverages[leverage]?.ask) {
+      return 'NOT SUPPORT';
+    }
+    return '';
+  }, [allowanceEnable, leverages, leverage]);
+
+  const sellDisabledTip = useMemo(() => {
+    if (!allowanceEnable) {
+      return 'NOT ENABLE';
+    }
+    if (!leverages[leverage]?.bid) {
+      return 'NOT SUPPORT';
+    }
+    return '';
+  }, [allowanceEnable, leverages, leverage]);
 
   const openPosition = async (direction: 'ask' | 'bid') => {
     if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
@@ -106,8 +129,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'ask'}
               className={classes.buyButton}
               onClick={() => openPosition('ask')}
-              tooltip={!leverages[leverage]?.ask ? 'NOT SUPPORT' : ''}
-              disabled={!leverages[leverage]?.ask}
+              tooltip={buyDisabledTip}
+              disabled={!!buyDisabledTip}
             >
               {t('Buy')}
             </DefaultButton>
@@ -125,8 +148,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'bid'}
               className={classes.sellButton}
               onClick={() => openPosition('bid')}
-              tooltip={!leverages[leverage]?.bid ? 'NOT SUPPORT' : ''}
-              disabled={!leverages[leverage]?.bid}
+              tooltip={sellDisabledTip}
+              disabled={!!sellDisabledTip}
             >
               {t('Sell')}
             </DefaultButton>

@@ -5,6 +5,8 @@ import { createUseStyles } from 'react-jss';
 import { Description, Switch } from '../../../components';
 import { useCurrentAccount, useApi, useForceUpdate } from '../../../hooks';
 import { notificationHelper } from '../../../utils';
+import useMargin from '../hooks/useMargin';
+import useAllowanceEnable from '../hooks/useAllowanceEnable';
 
 type TotalBalanceProps = {};
 
@@ -14,14 +16,19 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
 
   const api = useApi();
   const { address } = useCurrentAccount();
-  const [allowance, setAllowance] = useState('');
+  const setState = useMargin(state => state.setState);
+
+  const allowanceEnable = useAllowanceEnable();
   const [loading, setLoading] = useState(false);
   const [tick, forceUpdate] = useForceUpdate();
 
   useLayoutEffect(() => {
     if (api.asEthereum.margin.allowance) {
       const subscription = api.asEthereum.margin.allowance(address).subscribe((result: string) => {
-        setAllowance(result);
+        setState(state => {
+          console.log(result, '----');
+          state.allowance = result;
+        });
       });
 
       return () => subscription?.unsubscribe();
@@ -48,7 +55,7 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
     <Description layout="vertical" label={t('ENABLE TRADING')} align="flex-end">
       <Switch
         className={classes.switch}
-        checked={!!allowance && allowance !== '0'}
+        checked={allowanceEnable}
         onChange={value => handleSubmit(value)}
         disabled={loading}
         loading={loading}
