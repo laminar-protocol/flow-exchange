@@ -4,7 +4,10 @@ import { TokenId } from '../services';
 import useOracleValue from './useOracleValue';
 import { fromPrecision } from '../utils';
 
-export const useGetOraclePrice = (baseTokenId: TokenId | null, quoteTokenId: TokenId | null) => {
+export const useGetOraclePrice = (
+  baseTokenId: TokenId | null | undefined,
+  quoteTokenId: TokenId | null | undefined,
+) => {
   const baseOracleValue = useOracleValue(baseTokenId as string);
   const quoteOracleValue = useOracleValue(quoteTokenId as string);
 

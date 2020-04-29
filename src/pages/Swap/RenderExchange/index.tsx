@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
-import useSwap from '../useSwap';
+import useSwap from '../hooks/useSwap';
 import { Panel, Spinner, Text } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
@@ -11,17 +11,16 @@ import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
 
-type RenderExchangeProps = {
-  selectPoolId: string;
-};
+type RenderExchangeProps = {};
 
-const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
+const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const classes = useStyles();
   const tokens = useApp(state => state.tokens);
   const api = useApi();
   const account = useCurrentAccount();
-  const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
+  const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
+  const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
 
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
@@ -50,11 +49,8 @@ const RenderExchange: React.FC<RenderExchangeProps> = ({ selectPoolId }) => {
   ]);
 
   const exchangeTokens = useMemo(
-    () =>
-      tokens.filter(
-        ({ id, isBaseToken, isNetworkToken }) => enabledTokens.includes(id) && !isNetworkToken && !isBaseToken,
-      ),
-    [tokens, enabledTokens],
+    () => tokens.filter(({ isBaseToken, isNetworkToken }) => !isNetworkToken && !isBaseToken),
+    [tokens],
   );
 
   const askRate = useOraclePrice(

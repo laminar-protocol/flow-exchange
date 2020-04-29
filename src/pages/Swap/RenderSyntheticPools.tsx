@@ -3,22 +3,23 @@ import { createUseStyles } from 'react-jss';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { Balance, Panel, PoolName, Table } from '../../components';
+import { NumberFormat, Panel, PoolName, Table } from '../../components';
 import { useApi, useGetSyntheticPoolInfo } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
+import useSwapPools from './hooks/useSwapPools';
+import useSwap from './hooks/useSwap';
 
-type RenderSyntheticPoolsProps = {
-  onSelectPool(poolId: string): void;
-  selectPoolId: string;
-};
+type RenderSyntheticPoolsProps = {};
 
-const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPool, selectPoolId }) => {
+const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
   const classes = useStyles();
   const api = useApi();
-  const setState = useSyntheticPools(state => state.setState);
-  const getPoolInfo = useGetSyntheticPoolInfo();
+  const setSyntheticState = useSyntheticPools(state => state.setState);
+  const selectPoolId = useSwap(state => state.selectPoolId);
+  const setSwapState = useSwap(state => state.setState);
 
   const ids = useSyntheticPools(state => state.ids);
+  const data = useSwapPools();
 
   useLayoutEffect(() => {
     if (api?.synthetic?.poolInfo) {
@@ -26,7 +27,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPoo
         ids.map((poolId: string) => {
           return api.synthetic?.poolInfo(poolId).pipe(
             map((result: any) => {
-              setState(state => {
+              setSyntheticState(state => {
                 state.poolInfo[result.poolId] = result;
               });
             }),
@@ -36,7 +37,22 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPoo
 
       return () => s && s.unsubscribe();
     }
-  }, [api, setState, ids]);
+  }, [api, setSyntheticState, ids]);
+
+  useLayoutEffect(() => {
+    if (data.length) {
+      const findCurrentPool = data.find(({ poolId }) => selectPoolId === poolId);
+      if (!findCurrentPool) {
+        setSwapState(state => {
+          state.selectPoolId = data[0].poolId;
+        });
+      }
+    } else {
+      setSwapState(state => {
+        state.selectPoolId = '';
+      });
+    }
+  }, [selectPoolId, data, setSwapState]);
 
   const columns: any[] = [
     {
@@ -46,33 +62,33 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPoo
     },
     {
       title: 'Swap Rate',
-      dataIndex: 'id',
+      dataIndex: 'swapRate',
       align: 'right',
-      render: (value: any, record: any) => {
-        return <Balance tokenId={value} />;
+      render: (value: any) => {
+        return <NumberFormat value={value} options={{ mantissa: 5 }} />;
       },
     },
     {
       title: 'Collateral Ratio',
-      dataIndex: 'id',
+      dataIndex: 'collateralRatio',
       align: 'right',
-      render: (value: any) => <Balance tokenId={value} />,
+      render: (value: any) => {
+        return <NumberFormat value={value} percent options={{ mantissa: 2 }} />;
+      },
     },
     {
       title: 'Liquidity：Collateral',
       dataIndex: 'id',
       align: 'right',
-      render: (value: any) => <Balance tokenId={value} />,
+      render: null,
     },
     {
       title: 'Max Amount',
       dataIndex: 'id',
       align: 'right',
-      render: (value: any) => <Balance tokenId={value} />,
+      render: null,
     },
   ];
-
-  const data = ids.map((id: string) => getPoolInfo(id)).filter(i => i);
 
   return (
     <Panel className={classes.root}>
@@ -82,7 +98,10 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = ({ onSelectPoo
         rowKey="poolId"
         onRow={(record: any) => {
           return {
-            onClick: () => onSelectPool(record.poolId),
+            onClick: () =>
+              setSwapState(state => {
+                state.selectPoolId = record.poolId;
+              }),
           };
         }}
         rowClassName={(record: any) => {
