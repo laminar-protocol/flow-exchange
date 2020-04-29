@@ -9,7 +9,7 @@ import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '
 import { useCurrentAccount, useApi } from '../../hooks';
 import { findTradingPair } from '../../hooks/useTradingPair';
 import useApp from '../../store/useApp';
-import { getValueFromHex, notificationHelper } from '../../utils';
+import { getValueFromHex, notificationHelper, getLeverage, toPrecision } from '../../utils';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
@@ -57,7 +57,11 @@ const positionsCloseQuery = gql`
   }
 `;
 
-const RenderPositions: React.FC = () => {
+type RenderPositionsProps = {
+  filter?: (data: any) => boolean;
+};
+
+const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
@@ -79,11 +83,17 @@ const RenderPositions: React.FC = () => {
     },
   });
 
-  const closePosition = async (positionId: string) => {
+  const closePosition = async (positionId: string, direction: string) => {
     if (!api.margin?.closePosition) return;
     try {
       setActionLoading(positionId);
-      await notificationHelper(api.margin.closePosition(account.address, positionId));
+      await notificationHelper(
+        api.margin.closePosition(
+          account.address,
+          positionId,
+          direction === 'bid' ? toPrecision('1000000000') : toPrecision('0'),
+        ),
+      );
     } finally {
       setActionLoading('');
     }
@@ -99,21 +109,22 @@ const RenderPositions: React.FC = () => {
         });
 
         const pair = data.events[0].args[3];
+        const [direction, leverage] = getLeverage(data.events[0].args[4]);
 
         return {
           positionId,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
-          leverage: data.args.leverage,
           amt: getValueFromHex(data.events[0].args[5]),
           openPrice: getValueFromHex(data.events[0].args[6]),
           pair,
           poolId: `${data.events[0].args[2]}`,
           pairId: `${pair.base}${pair.quote}`,
-          direction: data.events[0].args[4].includes('Short') ? 'bid' : 'ask',
+          leverage,
+          direction,
         };
-      });
+      }).filter(filter);
       setList(list);
 
       return () => {};
@@ -129,6 +140,11 @@ const RenderPositions: React.FC = () => {
       render: (value: string) => <TxHash value={value} maxLength={20} />,
     },
     {
+      title: t('SYMBOL'),
+      dataIndex: 'pairId',
+      align: 'right',
+    },
+    {
       title: t('DATETIME'),
       dataIndex: 'openedTime',
       align: 'right',
@@ -136,9 +152,9 @@ const RenderPositions: React.FC = () => {
     },
     {
       title: t('L/S'),
-      dataIndex: 'L/S',
+      dataIndex: 'direction',
       align: 'right',
-      render: (value: number) => '-',
+      render: (value: string) => (value === 'ask' ? 'L' : 'S'),
     },
     {
       title: t('LEVERAGE'),
@@ -191,7 +207,10 @@ const RenderPositions: React.FC = () => {
       render: (_: any, record: any) => {
         if (record.isClosed) return null;
         return (
-          <DefaultButton loading={actionLoading === record.positionId} onClick={() => closePosition(record.positionId)}>
+          <DefaultButton
+            loading={actionLoading === record.positionId}
+            onClick={() => closePosition(record.positionId, record.direction)}
+          >
             Close
           </DefaultButton>
         );

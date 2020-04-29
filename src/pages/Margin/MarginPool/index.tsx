@@ -62,7 +62,7 @@ const MarginPools = () => {
           <RenderTrade poolInfo={poolInfo} pairId={params.pairId} />
         </Space>
       </Row>
-      <RenderPositions />
+      <RenderPositions filter={(item: any) => poolInfo?.poolId === item.poolId && params.pairId === item.pairId} />
 
       <RenderDepositModal
         visible={showDeposit}

@@ -87,7 +87,7 @@ const RenderTxRecords: React.FC = () => {
       title: 'Date',
       dataIndex: 'time',
       align: 'right',
-      render: (value: any) => <Date value={value} format="MM/DD/YYYY" />,
+      render: (value: any) => <Date value={value} format="YYYY/MM/DD" />,
     },
   ];
 
