@@ -48,7 +48,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   }, [leverages, leverage]);
 
   const openPosition = async (direction: 'ask' | 'bid') => {
-    if (!api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+    if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
+      return;
     try {
       setActionLoading(direction);
       await notificationHelper(
@@ -105,6 +106,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'ask'}
               className={classes.buyButton}
               onClick={() => openPosition('ask')}
+              tooltip={!leverages[leverage]?.ask ? 'NOT SUPPORT' : ''}
               disabled={!leverages[leverage]?.ask}
             >
               {t('Buy')}
@@ -123,6 +125,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'bid'}
               className={classes.sellButton}
               onClick={() => openPosition('bid')}
+              tooltip={!leverages[leverage]?.bid ? 'NOT SUPPORT' : ''}
               disabled={!leverages[leverage]?.bid}
             >
               {t('Sell')}
