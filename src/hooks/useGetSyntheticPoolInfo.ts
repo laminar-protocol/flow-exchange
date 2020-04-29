@@ -5,7 +5,7 @@ import { useSyntheticPoolsSelector, SyntheticPoolsState } from '../store/useSynt
 export const getSyntheticPoolInfoSelector = createSelector(
   (state: SyntheticPoolsState) => state.poolInfo,
   poolInfo => {
-    return (poolId: string) => {
+    return (poolId: string): typeof poolInfo['string'] | null => {
       return poolInfo[poolId] || null;
     };
   },

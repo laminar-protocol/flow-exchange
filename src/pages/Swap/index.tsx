@@ -2,27 +2,22 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Col, PoolName, Row, Space, Text, Title } from '../../components';
-import { useApiSelector } from '../../selectors';
+import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
 import RenderSyntheticPools from './RenderSyntheticPools';
 import RenderTxRecords from './RenderTxRecords';
 
+import useSwap from './hooks/useSwap';
+
 const Swap: React.FC = () => {
   const { t } = useTranslation();
 
-  const api = useApiSelector();
+  const api = useApi();
   const setState = useSyntheticPools(state => state.setState);
 
-  const ids = useSyntheticPools(state => state.ids);
-  const [selectPoolId, setSelectPoolId] = useState('');
-
-  useLayoutEffect(() => {
-    if (ids.length && !selectPoolId) {
-      setSelectPoolId(ids[0]);
-    }
-  }, [ids, selectPoolId]);
+  const selectPoolId = useSwap(state => state.selectPoolId);
 
   useLayoutEffect(() => {
     if (api?.synthetic?.allPoolIds) {
@@ -39,11 +34,11 @@ const Swap: React.FC = () => {
   return (
     <Space direction="vertical" size={24}>
       <Title type="page">{t('Swap')}</Title>
-      <RenderExchange selectPoolId={selectPoolId} />
+      <RenderExchange />
       <Text size="l">
-        {t('Current Liquidity Provider')}: <PoolName value={selectPoolId} type="synthetic" />
+        {t('Current Liquidity Provider')}: {selectPoolId ? <PoolName type="synthetic" value={selectPoolId} /> : '-'}
       </Text>
-      <RenderSyntheticPools onSelectPool={setSelectPoolId} selectPoolId={selectPoolId} />
+      <RenderSyntheticPools />
       <Row gutter={[24, 24]}>
         <Col span={16}>
           <RenderTxRecords />

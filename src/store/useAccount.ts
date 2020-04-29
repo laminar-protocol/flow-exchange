@@ -7,7 +7,7 @@ export interface AccountState extends State {
   setState: SetState<AccountState>;
 }
 
-export const [useAccount, useAccountApi, useAccountSelector] = create<AccountState>(
+export const [useAccount, useAccountApi, useCurrentAccount] = create<AccountState>(
   (set: SetState<AccountState>, get: GetState<AccountState>): AccountState => ({
     data: [],
     setBalances(data: TokenBalance[]) {

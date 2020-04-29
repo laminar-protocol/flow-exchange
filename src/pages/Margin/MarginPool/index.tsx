@@ -6,7 +6,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
 import useApp from '../../../store/useApp';
 import { LeftArrowIcon } from '../../../icons';
-import { useApiSelector } from '../../../selectors';
+import { useApi } from '../../../hooks';
 import ChartWidget from './ChartWidget';
 import RenderTrade from '../RenderTrade';
 import RenderHeader from '../RenderHeader';
@@ -26,7 +26,7 @@ const MarginPools = () => {
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
-  const api = useApiSelector();
+  const api = useApi();
 
   const poolInfo = useApp(state => state.margin.poolInfo[params.poolId]);
 

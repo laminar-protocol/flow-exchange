@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import React from 'react';
 
-import { useTokenInfoSelector } from '../../selectors';
+import { useTokenInfo } from '../../hooks';
 import { TokenInfo } from '../../services/Api';
 import { fromPrecision, getCurrencySymbol, getValueFromHex } from '../../utils';
 import { Spinner } from '../Spinner';
@@ -51,7 +51,7 @@ function Amount(
     ...other
   } = props;
 
-  const token = useTokenInfoSelector(tokenId);
+  const token = useTokenInfo(tokenId);
 
   if (loading) return <Spinner />;
 

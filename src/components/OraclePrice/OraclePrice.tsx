@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useOraclePriceSelector } from '../../selectors';
+import { useOraclePrice } from '../../hooks';
 import { TokenId } from '../../services/Api';
 import { BaseProps } from '../../types';
 
@@ -21,7 +21,7 @@ const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   calc = (x: number) => x,
   ...other
 }) => {
-  const price = useOraclePriceSelector(baseTokenId, quoteTokenId, spread || null, direction);
+  const price = useOraclePrice(baseTokenId, quoteTokenId, spread || null, direction);
 
   if (!price) return null;
 

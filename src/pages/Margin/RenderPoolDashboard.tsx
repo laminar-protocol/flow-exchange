@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import { useAccountSelector, useApiSelector } from '../../selectors';
+import { useCurrentAccount, useApi } from '../../hooks';
 import useApp, { AppState, useAppApi } from '../../store/useApp';
 
 type RenderPoolDashboardProps = {
@@ -30,8 +30,8 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const api = useApiSelector();
-  const account = useAccountSelector();
+  const api = useApi();
+  const account = useCurrentAccount();
   const traderInfo = useApp(state => state.margin.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {

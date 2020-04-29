@@ -1,16 +1,4 @@
-import { createSelector } from 'reselect';
-
-import Api, {
-  Account,
-  AppEthereumApi,
-  AppLaminarApi,
-  ChainType,
-  MarginInfo,
-  TraderInfo,
-  PoolInfo,
-  TokenInfo,
-  MarginPoolInfo,
-} from '../services/Api';
+import Api, { Account, ChainType, MarginInfo, TraderInfo, PoolInfo, TokenInfo, MarginPoolInfo } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 import { useSettingApi } from './useSetting';
 
@@ -21,7 +9,6 @@ export interface AppState extends State {
   availableProvider: ChainType[];
   connectModalShow: boolean;
   tokens: TokenInfo[];
-  defaultPools?: PoolInfo[];
   margin: {
     balance: string;
     marginInfo: MarginInfo;
@@ -100,45 +87,6 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
     },
     setState: set,
   }),
-);
-
-export const apiSelector = createSelector(
-  (state: AppState) => state.api,
-  api => {
-    if (!api) throw new Error('unexpected error');
-    if (api.chainType === 'ethereum') {
-      return api as AppEthereumApi;
-    } else if (api.chainType === 'laminar') {
-      return api as AppLaminarApi;
-    }
-    throw new Error('unexpected chaintype');
-  },
-);
-
-export const tokenInfoMapSelector = createSelector(
-  (state: AppState) => state.tokens,
-  tokens => {
-    return tokens.reduce((result, curr) => {
-      result[curr.id] = curr;
-      return result;
-    }, {} as Record<string, TokenInfo>);
-  },
-);
-
-export const baseTokenInfoSelector = createSelector(
-  (state: AppState) => state.tokens,
-  tokens => {
-    const result = tokens.find(token => token.isBaseToken);
-    if (!result) throw new Error('Base token not found');
-    return result;
-  },
-);
-
-export const isReadySelector = createSelector(
-  (state: AppState) => state.api,
-  api => {
-    return !!api;
-  },
 );
 
 export default useApp;

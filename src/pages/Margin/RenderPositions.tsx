@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '../../components';
-import { useAccountSelector, useApiSelector } from '../../selectors';
-import { findTradingPair } from '../../selectors/useTradingPairSelector';
+import { useCurrentAccount, useApi } from '../../hooks';
+import { findTradingPair } from '../../hooks/useTradingPair';
 import useApp from '../../store/useApp';
 import { getValueFromHex, notificationHelper } from '../../utils';
 
@@ -62,8 +62,8 @@ const RenderPositions: React.FC = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
   const [list, setList] = useState([]);
-  const api = useApiSelector();
-  const account = useAccountSelector();
+  const api = useApi();
+  const account = useCurrentAccount();
   const [actionLoading, setActionLoading] = useState('');
   const poolInfo = useApp(state => state.margin.poolInfo);
 
@@ -229,8 +229,8 @@ const RenderPositions: React.FC = () => {
     >
       {activeTab === 'closed' ? (
         <Table
+          variant="panelTable"
           columns={columns}
-          className={classes.table}
           pagination={{
             pageSize: 10,
           }}
@@ -239,8 +239,8 @@ const RenderPositions: React.FC = () => {
         />
       ) : (
         <Table
+          variant="panelTable"
           columns={columns}
-          className={classes.table}
           pagination={{
             pageSize: 10,
           }}
@@ -254,17 +254,6 @@ const RenderPositions: React.FC = () => {
 
 const useStyles = createUseStyles(theme => ({
   root: {},
-  table: {
-    '& .ant-table': {
-      'border-radius': '0.75rem',
-    },
-    '& .ant-table tbody > tr:last-child > td': {
-      'border-bottom': 'none',
-    },
-    '& .ant-table-pagination': {
-      'margin-right': '1rem',
-    },
-  },
   tabs: {
     display: 'flex',
     marginRight: '1rem',

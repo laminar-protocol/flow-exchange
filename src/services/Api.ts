@@ -20,7 +20,7 @@ class Api {
 
   public currencies?: LaminarApi['currencies'] | EthereumApi['currencies'];
   public margin?: LaminarApi['margin'] | EthereumApi['margin'];
-  public synthetic?: LaminarApi['synthetic'];
+  public synthetic?: LaminarApi['synthetic'] | EthereumApi['synthetic'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;
@@ -43,17 +43,9 @@ class Api {
 
     this.chainType = this.provider.chainType;
 
-    if (this.chainType === 'ethereum') {
-      const provider = this.provider as EthereumApi;
-      this.currencies = provider.currencies;
-      this.margin = provider.margin;
-    }
-    if (this.chainType === 'laminar') {
-      const provider = this.provider as LaminarApi;
-      this.margin = provider.margin;
-      this.synthetic = provider.synthetic;
-      this.currencies = provider.currencies;
-    }
+    this.currencies = this.provider.currencies;
+    this.margin = this.provider.margin;
+    this.synthetic = this.provider.synthetic;
   }
 
   public get isLaminar() {

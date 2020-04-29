@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Description, Switch } from '../../../components';
-import { useAccountSelector, useApiSelector } from '../../../selectors';
-import { useForceUpdate } from '../../../hooks';
+import { useCurrentAccount, useApi, useForceUpdate } from '../../../hooks';
 import { notificationHelper } from '../../../utils';
 
 type TotalBalanceProps = {};
@@ -13,8 +12,8 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const api = useApiSelector();
-  const { address } = useAccountSelector();
+  const api = useApi();
+  const { address } = useCurrentAccount();
   const [allowance, setAllowance] = useState('');
   const [loading, setLoading] = useState(false);
   const [tick, forceUpdate] = useForceUpdate();
