@@ -52,7 +52,7 @@ const RenderTxRecords: React.FC = () => {
     {
       title: 'Tx Hash',
       dataIndex: 'txHash',
-      render: (value: any) => <TxHash value={value} maxLength={20} />,
+      render: (value: any) => <TxHash value={value} />,
     },
     {
       title: 'Action',

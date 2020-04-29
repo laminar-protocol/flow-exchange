@@ -80,16 +80,7 @@ const MarginPools = () => {
       title: t('SYMBOL'),
       dataIndex: 'pairId',
       render: (value: any, record: any) => {
-        return (
-          <div
-            className={classes.selectRow}
-            onClick={() => {
-              history.push(`/margin/${record.poolId}/${record.pairId}`);
-            }}
-          >
-            {value}
-          </div>
-        );
+        return <div>{value}</div>;
       },
     },
     {
@@ -149,7 +140,15 @@ const MarginPools = () => {
       dataIndex: 'action',
       align: 'right',
       render: (_: any, record: any) => {
-        return <RenderFastTradeButton data={record} pairId={record.pairId} />;
+        return (
+          <div
+            onClick={event => {
+              event.stopPropagation();
+            }}
+          >
+            <RenderFastTradeButton data={record} pairId={record.pairId} />
+          </div>
+        );
       },
     },
   ];
@@ -230,8 +229,15 @@ const MarginPools = () => {
           </Row>
         </Col>
       </Row>
-      <Panel className={classes.tableWrap}>
+      <Panel>
         <Table
+          onRow={(record: any) => ({
+            onClick: () => {
+              history.push(`/margin/${record.poolId}/${record.pairId}`);
+            },
+          })}
+          variant="panelTable"
+          rowClassName={classes.selectRow}
           columns={columns}
           dataSource={symbolList}
           rowKey={(record: any) => `${record.poolId}/${record.pairId}`}
@@ -243,10 +249,6 @@ const MarginPools = () => {
 };
 
 const useStyles = createUseStyles(theme => ({
-  tableWrap: {
-    marginBottom: '1.5rem',
-    padding: '1rem 0',
-  },
   all: {},
   text: {},
   pool: {

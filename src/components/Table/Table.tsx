@@ -8,11 +8,14 @@ type TableProps = React.ComponentProps<typeof AntdTable> & {
   variant?: 'panelTable';
 };
 
-const Table: React.FC<TableProps> = ({ hideHeader, className, variant, ...other }) => {
-  const classes = useStyles();
+const Table: React.FC<TableProps> = ({ hideHeader, className, variant, onRow, ...other }) => {
+  const classes = useStyles({
+    onRow,
+  });
 
   return (
     <AntdTable
+      onRow={onRow}
       scroll={{ x: true }}
       className={clsx(className, classes.root, {
         [classes.hideHeader]: hideHeader,
@@ -45,7 +48,7 @@ const useStyles = createUseStyles(theme => ({
       cursor: 'pointer',
     },
     '& .ant-table-tbody > tr.ant-table-row:hover > td': {
-      background: 'none',
+      background: (props: any) => (props?.onRow ? theme.backgroundHoverColor : 'none'),
     },
   },
   panelTable: {

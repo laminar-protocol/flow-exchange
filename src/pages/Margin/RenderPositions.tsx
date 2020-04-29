@@ -137,7 +137,7 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
     {
       title: t('TX HASH'),
       dataIndex: 'hash',
-      render: (value: string) => <TxHash value={value} maxLength={20} />,
+      render: (value: string) => <TxHash value={value} />,
     },
     {
       title: t('SYMBOL'),
