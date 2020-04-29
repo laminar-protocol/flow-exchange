@@ -1578,13 +1578,13 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.58":
-  version "0.2.0-beta.58"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.58.tgz#3bfc02e737563d22f91709b8b1c3ba954b40bad2"
-  integrity sha512-QZvzdSEUjhOeBXydg89t0jPCdlR7uxfW1AFVZ9vo9Bv+fdUtVtrLMEJCrXLkIiF80Aio7j0M4bvrc+TK0RUoUA==
+"@laminar/api@^0.2.0-beta.59":
+  version "0.2.0-beta.59"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.59.tgz#8f93a8ea8055c5896af412e2560f1466a1c53e05"
+  integrity sha512-40byR4HJYqXqTa8Vq7e2J8CfHhjhO3oTiKt+AfaML7X5rXyEOlL8cCl7IcFM5fq4DXWxFUq1iowfahoBi4ikUg==
   dependencies:
     "@babel/runtime" "^7.8.0"
-    "@laminar/types" "^0.2.0-beta.58"
+    "@laminar/types" "^0.2.0-beta.59"
     "@open-web3/orml-api-derive" "^0.3.0-beta.3"
     "@polkadot/api" "^1.9.0-beta.22"
     flow-protocol-ethereum "github:laminar-protocol/flow-protocol-ethereum#0.0.4"
@@ -1594,10 +1594,10 @@
     web3-eth-contract "1.2.6"
     web3-utils "1.2.6"
 
-"@laminar/types@^0.2.0-beta.58":
-  version "0.2.0-beta.58"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.58.tgz#d95cd473d1af2889023fda956388c6e22e627adf"
-  integrity sha512-Or+K5i8auJgOU1MpBtnAnfx56khudkblvy6tysntfxonnSEWv5yHvY5EenC1Y2psekud9M1YdWuJjqHyAW9EyQ==
+"@laminar/types@^0.2.0-beta.59":
+  version "0.2.0-beta.59"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.59.tgz#8e4a645857fc975563c9d887094f0aec70820f72"
+  integrity sha512-d0FSQc2Zz0vgb5dgfipFzl96+VQ6MF36Kh+OfnH6TRNGwXojU4mpK0N+uOl21Ipeuby8MagC2pgQ/ZdnxOZzFg==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@open-web3/orml-types" "^0.3.0-beta.3"
