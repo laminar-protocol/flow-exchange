@@ -13,9 +13,9 @@ const SwitchChain: React.FC<SwitchChainProps> = ({ renderLaminar, renderEthereum
   const [chain, setChain] = useState('');
 
   useLayoutEffect(() => {
-    if (api && api.chainType === 'ethereum') {
+    if (api?.chainType === 'ethereum') {
       setChain('ethereum');
-    } else if (api && api.chainType === 'laminar') {
+    } else if (api?.chainType === 'laminar') {
       setChain('laminar');
     } else {
       setChain('');

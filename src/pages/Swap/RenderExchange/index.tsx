@@ -10,6 +10,8 @@ import { notificationHelper, toPrecision } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
+import useTokensAllowance from '../hooks/useTokensAllowance';
+import useTokenEnable from '../hooks/useTokenEnable';
 
 type RenderExchangeProps = {};
 
@@ -21,10 +23,12 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
   const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
+  const tokensAllowance = useTokensAllowance();
 
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
   const isRedeem = useSwap(state => state.isRedeem);
+  const tokenEnabled = useTokenEnable();
 
   const [baseAmount, setBaseAmount] = useState('');
   const [exchangeAmount, setExchangeAmount] = useState('');
@@ -34,14 +38,6 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const option = useMemo(
     () => (poolInfo && exchangeToken ? poolInfo.options.find(({ tokenId }) => tokenId === exchangeToken.id) : null),
     [poolInfo, exchangeToken],
-  );
-
-  const enabledTokens = useMemo(
-    () =>
-      poolInfo
-        ? poolInfo.options.filter(({ askSpread, bidSpread }) => askSpread && bidSpread).map(({ tokenId }) => tokenId)
-        : [],
-    [poolInfo],
   );
 
   const baseTokens = useMemo(() => tokens.filter(({ isBaseToken, isNetworkToken }) => !isNetworkToken && isBaseToken), [
@@ -89,10 +85,11 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const baseInput = (
     <SwapInput
       label={!isRedeem ? 'Send' : 'Recieve'}
+      locked={!isRedeem && !tokenEnabled}
       tokens={baseTokens}
       amount={baseAmount}
       token={baseToken}
-      disabled={!askRate || !bidRate}
+      disabled={!askRate || !bidRate || !tokenEnabled}
       onChangeAmount={amount => setBaseAmount(amount)}
       onInput={() => setChangingInput('base')}
       onChangeToken={token => {
@@ -107,10 +104,11 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const exchangeInput = (
     <SwapInput
       label={isRedeem ? 'Send' : 'Recieve'}
+      locked={isRedeem && !tokenEnabled}
       tokens={exchangeTokens}
       amount={exchangeAmount}
       token={exchangeToken}
-      disabled={!askRate || !bidRate}
+      disabled={!askRate || !bidRate || !tokenEnabled}
       onChangeAmount={amount => setExchangeAmount(amount)}
       onInput={() => setChangingInput('exchange')}
       onChangeToken={token => {
@@ -155,7 +153,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
         <SwapButton
           loading={swapping}
           onClick={() => onSwap()}
-          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeToken}
+          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeToken || !tokenEnabled}
         />
       </div>
       <div className={classes.rateContainer}>

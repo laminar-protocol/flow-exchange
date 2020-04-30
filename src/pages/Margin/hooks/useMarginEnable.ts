@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 import { useApi } from '../../../hooks';
 import useMargin from './useMargin';
 
-const useAllowanceEnable = () => {
+const useMarginEnable = () => {
   const api = useApi();
   const allowance = useMargin(state => state.allowance);
 
   return useMemo(() => {
-    if (api.chainType === 'laminar') return true;
+    if (api.isLaminar) return true;
     return !!(allowance && allowance !== '0');
   }, [api, allowance]);
 };
 
-export default useAllowanceEnable;
+export default useMarginEnable;

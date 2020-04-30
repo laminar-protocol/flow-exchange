@@ -6,7 +6,7 @@ import { Description, Switch } from '../../../components';
 import { useCurrentAccount, useApi, useForceUpdate } from '../../../hooks';
 import { notificationHelper } from '../../../utils';
 import useMargin from '../hooks/useMargin';
-import useAllowanceEnable from '../hooks/useAllowanceEnable';
+import useMarginEnable from '../hooks/useMarginEnable';
 
 type TotalBalanceProps = {};
 
@@ -18,7 +18,7 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
   const { address } = useCurrentAccount();
   const setState = useMargin(state => state.setState);
 
-  const allowanceEnable = useAllowanceEnable();
+  const allowanceEnable = useMarginEnable();
   const [loading, setLoading] = useState(false);
   const [tick, forceUpdate] = useForceUpdate();
 

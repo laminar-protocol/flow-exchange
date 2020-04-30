@@ -18,7 +18,7 @@ import { AppState } from '../../store/useApp';
 import { useCurrentAccount, useApi, useTradingPair } from '../../hooks';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMargin from './hooks/useMargin';
-import useAllowanceEnable from './hooks/useAllowanceEnable';
+import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderTradeProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
@@ -37,7 +37,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const api = useApi();
   const account = useCurrentAccount();
   const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
-  const allowanceEnable = useAllowanceEnable();
+  const allowanceEnable = useMarginEnable();
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -106,7 +106,6 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
           <Text>{pairId}</Text>
           <Select
             value={leverage}
-            style={{ width: '12rem' }}
             onSelect={value => setLeverage(value as string)}
             disabled={!Object.keys(leverages).length}
           >

@@ -26,13 +26,11 @@ const Navigation: React.FC = () => {
   const history = useHistory();
 
   const networkName = useMemo(() => {
-    if (api) {
-      if (api.chainType === 'ethereum') {
-        return 'ethereum';
-      }
-      if (api.chainType === 'laminar') {
-        return 'laminar';
-      }
+    if (api?.chainType === 'ethereum') {
+      return 'ethereum';
+    }
+    if (api?.chainType === 'laminar') {
+      return 'laminar';
     }
     return 'Select';
   }, [api]);

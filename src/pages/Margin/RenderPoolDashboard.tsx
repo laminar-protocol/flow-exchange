@@ -7,7 +7,7 @@ import { createUseStyles } from 'react-jss';
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text, Tooltip } from '../../components';
 import { useApi, useCurrentAccount } from '../../hooks';
 import useApp, { AppState, useAppApi } from '../../store/useApp';
-import useAllowanceEnable from './hooks/useAllowanceEnable';
+import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
@@ -33,7 +33,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
 
   const api = useApi();
   const account = useCurrentAccount();
-  const allowanceEnable = useAllowanceEnable();
+  const allowanceEnable = useMarginEnable();
   const traderInfo = useApp(state => state.margin.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {
