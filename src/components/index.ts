@@ -13,7 +13,6 @@ export * from './Amount';
 export * from './Spinner';
 export * from './Modal';
 export * from './Panel';
-export * from './Format';
 export * from './Switch';
 export * from './Radio';
 export * from './NumberFormat';
@@ -25,9 +24,5 @@ export * from './OraclePrice';
 export * from './SwitchChain';
 export * from './Tooltip';
 
-export { default as SegmentedControl } from './SegmentedControl';
-export { default as SegmentedControlItem } from './SegmentedControlItem';
 export { default as Separator } from './Separator';
-export { default as Notice } from './Notice';
 export { default as Icon } from './Icon';
-export { default as NumberInput } from './NumberInput';
