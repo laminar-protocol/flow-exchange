@@ -1,10 +1,10 @@
-import React, { useMemo, useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
 import {
   AmountInput,
   DefaultButton,
+  OraclePrice,
   Panel,
   RadioButton,
   RadioGroup,
@@ -12,12 +12,10 @@ import {
   Select,
   Space,
   Text,
-  OraclePrice,
 } from '../../components';
+import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
 import { AppState } from '../../store/useApp';
-import { useCurrentAccount, useApi, useTradingPair } from '../../hooks';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
-import useMargin from './hooks/useMargin';
 import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderTradeProps = {

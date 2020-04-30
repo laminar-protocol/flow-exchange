@@ -26,14 +26,13 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
     if (api.asEthereum.margin.allowance) {
       const subscription = api.asEthereum.margin.allowance(address).subscribe((result: string) => {
         setState(state => {
-          console.log(result, '----');
           state.allowance = result;
         });
       });
 
       return () => subscription?.unsubscribe();
     }
-  }, [address, api, tick]);
+  }, [address, api, tick, setState]);
 
   const handleSubmit = useCallback(
     async value => {

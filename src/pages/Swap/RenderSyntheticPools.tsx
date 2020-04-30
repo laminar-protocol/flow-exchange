@@ -2,12 +2,11 @@ import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { NumberFormat, Panel, PoolName, Table } from '../../components';
-import { useApi, useGetSyntheticPoolInfo } from '../../hooks';
+import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
-import useSwapPools from './hooks/useSwapPools';
 import useSwap from './hooks/useSwap';
+import useSwapPools from './hooks/useSwapPools';
 
 type RenderSyntheticPoolsProps = {};
 

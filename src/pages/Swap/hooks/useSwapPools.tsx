@@ -36,7 +36,7 @@ const useSwapPools = () => {
         return null;
       })
       .filter(isPresent);
-  }, [ids, getSyntheticPoolInfo, getOraclePrice, isRedeem, baseToken, exchangeToken]);
+  }, [ids, getSyntheticPoolInfo, getOraclePrice, isRedeem, exchangeToken]);
 };
 
 export default useSwapPools;

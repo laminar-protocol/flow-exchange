@@ -141,7 +141,7 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
     }
 
     return () => {};
-  }, [openedList, closedList]);
+  }, [openedList, closedList, setState]);
 
   const columns: any[] = [
     {

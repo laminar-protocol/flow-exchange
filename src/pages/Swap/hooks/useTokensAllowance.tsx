@@ -34,7 +34,7 @@ const useTokensAllowance = () => {
 
       return () => s && s.unsubscribe();
     }
-  }, [api, tokensAllowanceUpdate]);
+  }, [api, tokensAllowanceUpdate, address, setState]);
 
   return tokensAllowance;
 };
