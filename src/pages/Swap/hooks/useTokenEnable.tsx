@@ -8,7 +8,7 @@ const useTokenEnable = () => {
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
   const isRedeem = useSwap(state => state.isRedeem);
-  console.log(tokensAllowance);
+
   return useMemo(() => {
     if (api.isLaminar) return true;
     const baseAllowance = baseToken ? tokensAllowance[baseToken.id] : '';
