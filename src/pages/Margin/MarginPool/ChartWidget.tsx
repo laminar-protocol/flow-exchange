@@ -17,14 +17,19 @@ const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol
 
   const loadChart = useCallback((symbol: string, currentTheme = 'light') => {
     const tradingSymbol = [
+      ['USDAAPL', 'AAPL'],
+      ['FAAPLDAI', 'AAPL'],
+      ['DAIFAAPL', 'AAPL'],
+      ['USDXAU', 'XAUUSD'],
+      ['DAIFXAU', 'XAUUSD'],
+      ['DAI', 'USD'],
       ['AUSD', 'USD'],
       ['FEUR', 'EUR'],
       ['FJPY', 'JPY'],
+      ['FXAU', 'XAU'],
       ['FBTC', 'BTC'],
       ['FETH', 'ETH'],
       ['FETH', 'ETH'],
-      ['USDAAPL', 'AAPL'],
-      ['USDXAU', 'XAUUSD'],
     ].reduce((result, curr) => {
       return result.replace(curr[0], curr[1]);
     }, symbol);
