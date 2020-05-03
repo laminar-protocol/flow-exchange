@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import useSwap from '../hooks/useSwap';
-import { Panel, Spinner, Text } from '../../../components';
+import { Panel, Spinner, Text, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
@@ -10,8 +10,8 @@ import { notificationHelper, toPrecision } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
-import useTokensAllowance from '../hooks/useTokensAllowance';
 import useTokenEnable from '../hooks/useTokenEnable';
+import EthTokensAllowance from './EthTokensAllowance';
 
 type RenderExchangeProps = {};
 
@@ -23,7 +23,6 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
   const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
-  const tokensAllowance = useTokensAllowance();
 
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
@@ -140,6 +139,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   return (
     <Panel className={classes.root}>
+      <SwitchChain renderEthereum={() => <EthTokensAllowance />} />
       <div className={classes.swap}>
         {!isRedeem ? baseInput : exchangeInput}
         <SwapExchange

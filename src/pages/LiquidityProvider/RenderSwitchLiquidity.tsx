@@ -24,6 +24,10 @@ const RenderSwitchLiquidity: React.FC<RenderSwitchLiquidityProps> = ({ value }) 
   );
 };
 
-const useStyles = createUseStyles(theme => ({}));
+const useStyles = createUseStyles(theme => ({
+  radioButton: {
+    padding: '0.7rem',
+  },
+}));
 
 export default RenderSwitchLiquidity;

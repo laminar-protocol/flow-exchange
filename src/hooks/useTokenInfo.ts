@@ -1,14 +1,12 @@
-import { createSelector } from 'reselect';
+import { useMemo } from 'react';
+import useGetTokenInfo from './useGetTokenInfo';
 
-import { useAppSelector, AppState } from '../store/useApp';
+export const useTokenInfo = (tokenId?: string) => {
+  const getTokenInfo = useGetTokenInfo();
 
-export const createTokenInfoSelector = (tokenId?: string) => {
-  return createSelector(
-    (state: AppState) => state.tokens,
-    tokens => {
-      return tokens.find(({ id }) => id === tokenId) || null;
-    },
-  );
+  return useMemo(() => {
+    return getTokenInfo(tokenId);
+  }, [getTokenInfo, tokenId]);
 };
 
-export default (tokenId?: string) => useAppSelector(createTokenInfoSelector(tokenId), [tokenId]);
+export default useTokenInfo;

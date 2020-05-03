@@ -8,6 +8,15 @@ export interface SwapState extends State {
   isRedeem: boolean;
   selectPoolId?: string;
   tokensAllowance: Record<TokenId, string>;
+  txRecords: {
+    txHash: string;
+    action: string;
+    time: string;
+    fToken: string;
+    baseToken: string;
+    fAmount: string;
+    baseAmount: string;
+  }[];
   // count
   tokensAllowanceUpdate: number;
 }
@@ -21,6 +30,7 @@ export const [useSwap, useSwapApi, useSwapSelector] = create<SwapState>(
     selectPoolId: '',
     tokensAllowance: {},
     tokensAllowanceUpdate: 0,
+    txRecords: [],
   }),
 );
 

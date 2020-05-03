@@ -92,12 +92,12 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   return (
     <Panel className={classes.container}>
       <Space direction="vertical" size={16}>
-        <RadioGroup value={mode} onChange={e => setMode(e.target.value)}>
+        <RadioGroup value={mode} size="large" onChange={e => setMode(e.target.value)}>
           <RadioButton value="basic">
-            <Text className={classes.radioButton}>Basic</Text>
+            <Text>Basic</Text>
           </RadioButton>
           <RadioButton value="advanced" disabled>
-            <Text className={classes.radioButton}>Advanced</Text>
+            <Text>Advanced</Text>
           </RadioButton>
         </RadioGroup>
         <Row align="middle" justify="space-between">
@@ -106,6 +106,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
             value={leverage}
             onSelect={value => setLeverage(value as string)}
             disabled={!Object.keys(leverages).length}
+            className={classes.selectLeverge}
           >
             {Object.keys(leverages).map(label => (
               <Select.Option value={label} key={label}>
@@ -169,9 +170,6 @@ const useStyles = createUseStyles(theme => ({
   container: {
     padding: '1.5rem',
   },
-  radioButton: {
-    padding: '0.7rem',
-  },
   input: {
     width: '100%',
     'font-size': '1rem',
@@ -201,6 +199,9 @@ const useStyles = createUseStyles(theme => ({
     '&:not(:last-child)': {
       'margin-right': '2rem',
     },
+  },
+  selectLeverge: {
+    width: '10rem',
   },
   actions: {
     display: 'flex',
