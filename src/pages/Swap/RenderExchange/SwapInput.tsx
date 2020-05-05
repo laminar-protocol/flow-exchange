@@ -37,6 +37,8 @@ const SwapInput: React.FC<SwapInputProps> = ({
     }
   }, [tokens, onChangeToken, token]);
 
+  console.log(token?.id);
+
   const select = (
     <Select
       size="large"

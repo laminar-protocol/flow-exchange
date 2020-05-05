@@ -35,7 +35,7 @@ const Links: React.FC = () => {
           </div>
         </div>
       </Link>
-      <Link to="/liquidity" className="item-link">
+      <Link to="/provider" className="item-link">
         <div className="item">
           <Icon icon="hand-holding-usd" className="link-icon" />
           <div className="title">

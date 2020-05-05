@@ -67,7 +67,7 @@ const Navigation: React.FC = () => {
           <MenuItem iconComponent={MenuDepositIcon} to="/lending">
             {t('Deposit & Earn')}
           </MenuItem>
-          <MenuItem iconComponent={MenuLiquidityIcon} to="/liquidity">
+          <MenuItem iconComponent={MenuLiquidityIcon} to="/provider">
             {t('Liquidity Provider')}
           </MenuItem>
         </div>

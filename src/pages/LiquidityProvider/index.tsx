@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
+import { useHistory } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
+import { RadioButton, RadioGroup, Text, Title } from '../../components';
+import useLiquidityProvider from './hooks/useLiquidityProvider';
 import LiquidityMargin from './LiquidityMargin';
 import LiquiditySwap from './LiquiditySwap';
-import RenderPoolsCollapse from './RenderPoolsCollapse';
-import { RadioGroup, RadioButton, Text, Title, Space } from '../../components';
 
 const LiquidityProvider = () => {
   const classes = useStyles();
   const { t } = useTranslation();
+  const history = useHistory();
+  const setState = useLiquidityProvider(state => state.setState);
 
-  const [liquidityType, setLiquidityType] = useState<'margin' | 'swap'>('margin');
+  const liquidityType = useLiquidityProvider(state => state.liquidityType);
+
+  useLayoutEffect(() => {
+    if (liquidityType === 'margin' && history.location.pathname !== '/provider/margin') {
+      history.push('/provider/margin');
+    }
+    if (liquidityType === 'swap' && history.location.pathname !== '/provider/swap') {
+      history.push('/provider/swap');
+    }
+  }, [liquidityType, history]);
 
   return (
     <div>
@@ -21,7 +32,11 @@ const LiquidityProvider = () => {
         size="middle"
         className={classes.switchLiquidity}
         value={liquidityType}
-        onChange={e => setLiquidityType(e.target.value)}
+        onChange={e =>
+          setState(state => {
+            state.liquidityType = e.target.value;
+          })
+        }
       >
         <RadioButton value="margin">
           <Text>{t('Margin')}</Text>
@@ -30,7 +45,6 @@ const LiquidityProvider = () => {
           <Text>{t('Swap')}</Text>
         </RadioButton>
       </RadioGroup>
-      <RenderPoolsCollapse />
       <Switch>
         <Route exact path="/provider/margin">
           <LiquidityMargin />

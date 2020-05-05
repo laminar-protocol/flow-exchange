@@ -35,7 +35,7 @@ const Routes: React.FC = () => {
           <Lending />
         </Layout>
       </Route>
-      <Route exact path="/liquidity">
+      <Route path="/provider">
         <Layout loading={!currentApi}>
           <LiquidityProvider />
         </Layout>

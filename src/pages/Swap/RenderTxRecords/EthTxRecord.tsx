@@ -49,7 +49,7 @@ const EthTxRecord: React.FC = () => {
         state.txRecords = list;
       });
     }
-  }, [data]);
+  }, [data, setState]);
 
   return null;
 };

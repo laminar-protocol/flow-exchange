@@ -2,7 +2,7 @@ import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useLayoutEffect } from 'react';
 import { useCurrentAccount, useGetTokenInfo } from '../../../hooks';
-import { getLeverage, getValueFromHex, toPrecision } from '../../../utils';
+import { toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 
 const positionsOpenQuery = gql`
