@@ -1578,26 +1578,26 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.59":
-  version "0.2.0-beta.59"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.59.tgz#8f93a8ea8055c5896af412e2560f1466a1c53e05"
-  integrity sha512-40byR4HJYqXqTa8Vq7e2J8CfHhjhO3oTiKt+AfaML7X5rXyEOlL8cCl7IcFM5fq4DXWxFUq1iowfahoBi4ikUg==
+"@laminar/api@^0.2.0-beta.62":
+  version "0.2.0-beta.62"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.62.tgz#773903c14dd3ae8300aca5c50ef19c0b2f2d97e4"
+  integrity sha512-Fz9ykk74ZuYXg2EHfJJz107Uy46tHCJdoeEkvgpJdJZqnZArkfHzarjL8qjlnZ+LvYlCT1CX0FU/N8D26Npldw==
   dependencies:
     "@babel/runtime" "^7.8.0"
-    "@laminar/types" "^0.2.0-beta.59"
+    "@laminar/types" "^0.2.0-beta.62"
     "@open-web3/orml-api-derive" "^0.3.0-beta.3"
     "@polkadot/api" "^1.9.0-beta.22"
-    flow-protocol-ethereum "github:laminar-protocol/flow-protocol-ethereum#0.0.4"
+    flow-protocol-ethereum "github:laminar-protocol/flow-protocol-ethereum#0.0.5"
     rxjs "^6.5.4"
     web3 "1.2.6"
     web3-core "1.2.6"
     web3-eth-contract "1.2.6"
     web3-utils "1.2.6"
 
-"@laminar/types@^0.2.0-beta.59":
-  version "0.2.0-beta.59"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.59.tgz#8e4a645857fc975563c9d887094f0aec70820f72"
-  integrity sha512-d0FSQc2Zz0vgb5dgfipFzl96+VQ6MF36Kh+OfnH6TRNGwXojU4mpK0N+uOl21Ipeuby8MagC2pgQ/ZdnxOZzFg==
+"@laminar/types@^0.2.0-beta.62":
+  version "0.2.0-beta.62"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.62.tgz#b20630fb82b7ec6120a89622c5aab24db3518314"
+  integrity sha512-OuJ/jtiuCZ6VEURHvPy5aF+ZSjKRQrpnrYmH/AoBm4eCz22qPlJa8kzxOsASsGOH33UMXCy6PZ0ZL+leXKpNwQ==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@open-web3/orml-types" "^0.3.0-beta.3"
@@ -7499,9 +7499,9 @@ flow-parser@0.*:
   resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.120.1.tgz#26781130575fee4a45ecae0240b9d037e2746b72"
   integrity sha512-t5y9QoOegJuY+LCIjh0p6SGF7ItsxG5ycQApTSqWloutUZQ2gC0f6wMu91dab0/SSj2vH41bu5pDTLuvtP49ng==
 
-"flow-protocol-ethereum@github:laminar-protocol/flow-protocol-ethereum#0.0.4":
+"flow-protocol-ethereum@github:laminar-protocol/flow-protocol-ethereum#0.0.5":
   version "0.0.2"
-  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/41202b6e094b8d04f35fc35244287c01c766f1f8"
+  resolved "https://codeload.github.com/laminar-protocol/flow-protocol-ethereum/tar.gz/371aeb41b59626868c2c2cc3293d32609ba5e636"
 
 flush-write-stream@^1.0.0:
   version "1.1.1"
