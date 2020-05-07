@@ -4,12 +4,23 @@ import { Radio as AntdRadio } from 'antd';
 import clsx from 'clsx';
 
 const AntdRadioGroup = AntdRadio.Group;
-type RadioGroupProps = React.ComponentProps<typeof AntdRadioGroup>;
+type RadioGroupProps = React.ComponentProps<typeof AntdRadioGroup> & {
+  size?: 'small' | 'middle' | 'large' | undefined;
+};
 
-const RadioGroup: React.FC<RadioGroupProps> = ({ className, ...other }) => {
+const RadioGroup: React.FC<RadioGroupProps> = ({ size, className, ...other }) => {
   const classes = useStyles();
 
-  return <AntdRadioGroup className={clsx(classes.root, className)} buttonStyle="solid" {...other} />;
+  return (
+    <AntdRadioGroup
+      className={clsx(classes.root, className, {
+        [classes.large]: size === 'large',
+        [classes.middle]: size === 'middle',
+      })}
+      buttonStyle="solid"
+      {...other}
+    />
+  );
 };
 
 const useStyles = createUseStyles(theme => ({
@@ -67,6 +78,16 @@ const useStyles = createUseStyles(theme => ({
       display: 'flex',
       'align-items': 'center',
       'justify-content': 'center',
+    },
+  },
+  large: {
+    '& .ant-radio-button-wrapper>span:last-child': {
+      padding: '0.7rem',
+    },
+  },
+  middle: {
+    '& .ant-radio-button-wrapper>span:last-child': {
+      padding: '0.5rem',
     },
   },
 }));

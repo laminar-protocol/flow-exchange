@@ -11,7 +11,11 @@ export const findTradingPair = createSelector(
     };
   },
   ({ poolInfo, poolId, pairId }) => {
-    return poolInfo?.[poolId]?.options.find(({ pairId: _pairId }) => _pairId === pairId) || null;
+    return (
+      poolInfo?.[poolId]?.options.find(({ pairId: _pairId }) => {
+        return _pairId === pairId;
+      }) || null
+    );
   },
 );
 

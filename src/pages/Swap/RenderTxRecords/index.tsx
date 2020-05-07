@@ -1,52 +1,11 @@
-import { useSubscription } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import React, { useMemo } from 'react';
-
-import { Amount, Date, Panel, Table, TxHash } from '../../components';
-import { useCurrentAccount } from '../../hooks';
-
-const swapRecordSubscription = gql`
-  subscription swapRecordSubscription($signer: jsonb!) {
-    Events(
-      order_by: { blockNumber: desc }
-      where: { method: { _in: ["Redeemed", "Minted"] }, args: { _contains: $signer } }
-    ) {
-      method
-      args
-      block {
-        timestamp
-      }
-      extrinsic {
-        hash
-        method
-      }
-    }
-  }
-`;
+import React from 'react';
+import { Amount, Date, Panel, SwitchChain, Table, TxHash } from '../../../components';
+import useSwap from '../hooks/useSwap';
+import LaminarTxRecord from './LaminarTxRecord';
+import EthTxRecord from './EthTxRecord';
 
 const RenderTxRecords: React.FC = () => {
-  const account = useCurrentAccount();
-
-  const { data } = useSubscription(swapRecordSubscription, {
-    variables: {
-      signer: account.address,
-    },
-  });
-
-  const list = useMemo(() => {
-    if (!data) return [];
-    return data.Events.map((item: any) => {
-      return {
-        txHash: item.extrinsic.hash,
-        action: item.method,
-        time: item.block.timestamp,
-        fToken: item.args[1],
-        baseToken: 'AUSD',
-        fAmount: item.args[4],
-        baseAmount: item.args[3],
-      };
-    });
-  }, [data]);
+  const list = useSwap(state => state.txRecords);
 
   const columns: any[] = [
     {
@@ -93,6 +52,7 @@ const RenderTxRecords: React.FC = () => {
 
   return (
     <Panel title={'Transaction'}>
+      <SwitchChain renderLaminar={() => <LaminarTxRecord />} renderEthereum={() => <EthTxRecord />} />
       <Table
         variant="panelTable"
         columns={columns}

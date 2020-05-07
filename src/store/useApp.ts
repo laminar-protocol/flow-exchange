@@ -1,4 +1,4 @@
-import Api, { Account, ChainType, MarginInfo, TraderInfo, PoolInfo, TokenInfo, MarginPoolInfo } from '../services/Api';
+import Api, { Account, ChainType, MarginInfo, MarginPoolInfo, TokenInfo, TraderInfo } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 import { useSettingApi } from './useSetting';
 

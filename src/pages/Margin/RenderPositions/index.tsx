@@ -1,61 +1,15 @@
-import { useSubscription } from '@apollo/react-hooks';
 import clsx from 'clsx';
-import gql from 'graphql-tag';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
-import { Amount, Date, DefaultButton, OraclePrice, Panel, Table, TxHash } from '../../components';
-import { useCurrentAccount, useApi } from '../../hooks';
-import { findTradingPair } from '../../hooks/useTradingPair';
-import useApp from '../../store/useApp';
-import { getValueFromHex, notificationHelper, getLeverage, toPrecision } from '../../utils';
-
-const positionsOpenQuery = gql`
-  subscription positionsSubscription($signer: String!) {
-    Extrinsics(
-      where: {
-        section: { _eq: "marginProtocol" }
-        method: { _eq: "openPosition" }
-        result: { _eq: "ExtrinsicSuccess" }
-        signer: { _eq: $signer }
-      }
-      order_by: { blockNumber: desc }
-    ) {
-      args
-      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionOpened" } }, limit: 1) {
-        args
-      }
-      block {
-        timestamp
-      }
-      hash
-    }
-  }
-`;
-
-const positionsCloseQuery = gql`
-  subscription positionsSubscription($signer: String!) {
-    Extrinsics(
-      where: {
-        section: { _eq: "marginProtocol" }
-        method: { _eq: "closePosition" }
-        result: { _eq: "ExtrinsicSuccess" }
-        signer: { _eq: $signer }
-      }
-      order_by: { blockNumber: desc }
-    ) {
-      args
-      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionClosed" } }, limit: 1) {
-        args
-      }
-      block {
-        timestamp
-      }
-      hash
-    }
-  }
-`;
+import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, TxHash } from '../../../components';
+import { useApi, useCurrentAccount } from '../../../hooks';
+import { findTradingPair } from '../../../hooks/useTradingPair';
+import useApp from '../../../store/useApp';
+import { notificationHelper, toPrecision } from '../../../utils';
+import useMargin from '../hooks/useMargin';
+import LaminarPositions from './LaminarPositions';
+import EthPositions from './EthPositions';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
@@ -65,23 +19,16 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
-  const [list, setList] = useState([]);
+  const positions = useMargin(state => state.positions);
+
   const api = useApi();
   const account = useCurrentAccount();
   const [actionLoading, setActionLoading] = useState('');
   const poolInfo = useApp(state => state.margin.poolInfo);
 
-  const { data: openedList } = useSubscription(positionsOpenQuery, {
-    variables: {
-      signer: account.address,
-    },
-  });
-
-  const { data: closedList } = useSubscription(positionsCloseQuery, {
-    variables: {
-      signer: account.address,
-    },
-  });
+  const list = useMemo(() => {
+    return positions.filter(filter);
+  }, [filter, positions]);
 
   const closePosition = async (positionId: string, direction: string) => {
     if (!api.margin?.closePosition) return;
@@ -98,40 +45,6 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
       setActionLoading('');
     }
   };
-
-  useLayoutEffect(() => {
-    if (openedList && closedList) {
-      const list = openedList.Extrinsics.map((data: any) => {
-        const positionId = data.events[0].args[1];
-
-        const closed = !!closedList.Extrinsics.find(({ args }: any) => {
-          return args.position_id === positionId;
-        });
-
-        const pair = data.events[0].args[3];
-        const [direction, leverage] = getLeverage(data.events[0].args[4]);
-
-        return {
-          positionId,
-          hash: data.hash,
-          openedTime: data.block.timestamp,
-          isClosed: !!closed,
-          amt: getValueFromHex(data.events[0].args[5]),
-          openPrice: getValueFromHex(data.events[0].args[6]),
-          pair,
-          poolId: `${data.events[0].args[2]}`,
-          pairId: `${pair.base}${pair.quote}`,
-          leverage,
-          direction,
-        };
-      }).filter(filter);
-      setList(list);
-
-      return () => {};
-    }
-
-    return () => {};
-  }, [openedList, closedList]);
 
   const columns: any[] = [
     {
@@ -246,6 +159,7 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
         </div>
       }
     >
+      <SwitchChain renderLaminar={() => <LaminarPositions />} renderEthereum={() => <EthPositions />} />
       {activeTab === 'closed' ? (
         <Table
           variant="panelTable"

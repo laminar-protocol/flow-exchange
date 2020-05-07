@@ -79,7 +79,11 @@ const useStyles = createUseStyles(theme => ({
     width: (props: DescriptionProps) => props.width || 'auto',
     height: (props: DescriptionProps) => props.height || 'auto',
   },
-  label: {},
+  label: {
+    'white-space': 'nowrap',
+    overflow: 'hidden',
+    'text-overflow': 'ellipsis',
+  },
   content: {},
 }));
 

@@ -6,7 +6,7 @@ import Dashboard from '../Dashboard';
 import Lending from '../Deposit';
 import Home from '../Home';
 import Layout from '../Layout';
-import Liquidity from '../Liquidity';
+import LiquidityProvider from '../LiquidityProvider';
 import Swap from '../Swap';
 import Margin from '../Margin';
 
@@ -35,9 +35,9 @@ const Routes: React.FC = () => {
           <Lending />
         </Layout>
       </Route>
-      <Route exact path="/liquidity">
+      <Route path="/provider">
         <Layout loading={!currentApi}>
-          <Liquidity />
+          <LiquidityProvider />
         </Layout>
       </Route>
       <Route path="/swap">

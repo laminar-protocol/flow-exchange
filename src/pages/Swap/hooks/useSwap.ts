@@ -1,5 +1,5 @@
 import create, { GetState, SetState, State } from '../../../store/createState';
-import { TokenInfo } from '../../../services';
+import { TokenInfo, TokenId } from '../../../services';
 
 export interface SwapState extends State {
   setState: SetState<SwapState>;
@@ -7,6 +7,18 @@ export interface SwapState extends State {
   exchangeToken?: TokenInfo;
   isRedeem: boolean;
   selectPoolId?: string;
+  tokensAllowance: Record<TokenId, string>;
+  txRecords: {
+    txHash: string;
+    action: string;
+    time: string;
+    fToken: string;
+    baseToken: string;
+    fAmount: string;
+    baseAmount: string;
+  }[];
+  // count
+  tokensAllowanceUpdate: number;
 }
 
 export const [useSwap, useSwapApi, useSwapSelector] = create<SwapState>(
@@ -16,6 +28,9 @@ export const [useSwap, useSwapApi, useSwapSelector] = create<SwapState>(
     exchangeToken: undefined,
     isRedeem: false,
     selectPoolId: '',
+    tokensAllowance: {},
+    tokensAllowanceUpdate: 0,
+    txRecords: [],
   }),
 );
 

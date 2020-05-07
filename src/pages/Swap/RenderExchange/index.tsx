@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 
 import useSwap from '../hooks/useSwap';
-import { Panel, Spinner, Text } from '../../../components';
+import { Panel, Spinner, Text, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
@@ -10,6 +10,8 @@ import { notificationHelper, toPrecision } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
+import useTokenEnable from '../hooks/useTokenEnable';
+import EthTokensAllowance from './EthTokensAllowance';
 
 type RenderExchangeProps = {};
 
@@ -25,6 +27,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
   const isRedeem = useSwap(state => state.isRedeem);
+  const tokenEnabled = useTokenEnable();
 
   const [baseAmount, setBaseAmount] = useState('');
   const [exchangeAmount, setExchangeAmount] = useState('');
@@ -34,14 +37,6 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const option = useMemo(
     () => (poolInfo && exchangeToken ? poolInfo.options.find(({ tokenId }) => tokenId === exchangeToken.id) : null),
     [poolInfo, exchangeToken],
-  );
-
-  const enabledTokens = useMemo(
-    () =>
-      poolInfo
-        ? poolInfo.options.filter(({ askSpread, bidSpread }) => askSpread && bidSpread).map(({ tokenId }) => tokenId)
-        : [],
-    [poolInfo],
   );
 
   const baseTokens = useMemo(() => tokens.filter(({ isBaseToken, isNetworkToken }) => !isNetworkToken && isBaseToken), [
@@ -89,10 +84,11 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const baseInput = (
     <SwapInput
       label={!isRedeem ? 'Send' : 'Recieve'}
+      locked={!isRedeem && !tokenEnabled}
       tokens={baseTokens}
       amount={baseAmount}
       token={baseToken}
-      disabled={!askRate || !bidRate}
+      disabled={!askRate || !bidRate || !tokenEnabled}
       onChangeAmount={amount => setBaseAmount(amount)}
       onInput={() => setChangingInput('base')}
       onChangeToken={token => {
@@ -107,10 +103,11 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const exchangeInput = (
     <SwapInput
       label={isRedeem ? 'Send' : 'Recieve'}
+      locked={isRedeem && !tokenEnabled}
       tokens={exchangeTokens}
       amount={exchangeAmount}
       token={exchangeToken}
-      disabled={!askRate || !bidRate}
+      disabled={!askRate || !bidRate || !tokenEnabled}
       onChangeAmount={amount => setExchangeAmount(amount)}
       onInput={() => setChangingInput('exchange')}
       onChangeToken={token => {
@@ -142,6 +139,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   return (
     <Panel className={classes.root}>
+      <SwitchChain renderEthereum={() => <EthTokensAllowance />} />
       <div className={classes.swap}>
         {!isRedeem ? baseInput : exchangeInput}
         <SwapExchange
@@ -155,7 +153,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
         <SwapButton
           loading={swapping}
           onClick={() => onSwap()}
-          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeToken}
+          disabled={!askRate || !bidRate || !exchangeAmount || !exchangeToken || !tokenEnabled}
         />
       </div>
       <div className={classes.rateContainer}>

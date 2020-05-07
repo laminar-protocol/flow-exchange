@@ -1,12 +1,13 @@
 import { useSubscription } from '@apollo/react-hooks';
+import clsx from 'clsx';
 import gql from 'graphql-tag';
-import React, { useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
-import { Amount, Description, NumberFormat, Panel, Row, Space, Text } from '../../components';
-import { useCurrentAccount, useApi } from '../../hooks';
+import { Amount, Description, NumberFormat, Panel, Row, Space, Text, Tooltip } from '../../components';
+import { useApi, useCurrentAccount } from '../../hooks';
 import useApp, { AppState, useAppApi } from '../../store/useApp';
+import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderPoolDashboardProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
@@ -32,6 +33,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
 
   const api = useApi();
   const account = useCurrentAccount();
+  const allowanceEnable = useMarginEnable();
   const traderInfo = useApp(state => state.margin.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {
@@ -60,6 +62,11 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
       return () => subscription?.unsubscribe();
     }
   }, [api, account, data, poolInfo]);
+
+  const depositDisabledTip = useMemo(() => {
+    if (!allowanceEnable) return 'NOT ENABLED';
+    return '';
+  }, [allowanceEnable]);
 
   return (
     <Panel>
@@ -109,9 +116,16 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
         </Space>
       </Row>
       <Row align="middle" justify="center" className={classes.footer}>
-        <div className={classes.footerActionLeft} onClick={() => openDeposit()}>
-          {t('Deposit')}
-        </div>
+        <Tooltip title={depositDisabledTip}>
+          <div
+            className={clsx(classes.footerActionLeft, {
+              [classes.disabled]: !!depositDisabledTip,
+            })}
+            onClick={() => !depositDisabledTip && openDeposit()}
+          >
+            {t('Deposit')}
+          </div>
+        </Tooltip>
         <div className={classes.footerActionRight} onClick={() => openWithdraw()}>
           {t('Withdraw')}
         </div>
@@ -144,7 +158,6 @@ const useStyles = createUseStyles(theme => ({
       'justify-content': 'center',
       padding: '0.75rem',
       fontSize: '1rem',
-      cursor: 'pointer',
       '&:hover': {
         background: theme.backgroundColor,
       },
@@ -152,10 +165,19 @@ const useStyles = createUseStyles(theme => ({
   },
   footerActionLeft: {
     'border-right': `1px solid ${theme.keyColorGrey}`,
+    cursor: 'pointer',
     color: theme.keyColorBlue,
   },
   footerActionRight: {
+    cursor: 'pointer',
     color: theme.keyColorRed,
+  },
+  disabled: {
+    opacity: '0.5',
+    cursor: 'not-allowed',
+    '&$footerActionLeft:hover,&$footerActionRight:hover': {
+      background: 'none',
+    },
   },
 }));
 

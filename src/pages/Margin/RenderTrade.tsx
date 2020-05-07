@@ -1,10 +1,10 @@
-import React, { useMemo, useState, useLayoutEffect } from 'react';
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
 import {
   AmountInput,
   DefaultButton,
+  OraclePrice,
   Panel,
   RadioButton,
   RadioGroup,
@@ -12,11 +12,11 @@ import {
   Select,
   Space,
   Text,
-  OraclePrice,
 } from '../../components';
+import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
 import { AppState } from '../../store/useApp';
-import { useCurrentAccount, useApi, useTradingPair } from '../../hooks';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
+import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderTradeProps = {
   poolInfo: AppState['margin']['poolInfo']['string'];
@@ -35,6 +35,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const api = useApi();
   const account = useCurrentAccount();
   const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
+  const allowanceEnable = useMarginEnable();
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -46,6 +47,26 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
       setLeverage(Object.keys(leverages)[0]);
     }
   }, [leverages, leverage]);
+
+  const buyDisabledTip = useMemo(() => {
+    if (!allowanceEnable) {
+      return 'NOT ENABLE';
+    }
+    if (!leverages[leverage]?.ask) {
+      return 'NOT SUPPORT';
+    }
+    return '';
+  }, [allowanceEnable, leverages, leverage]);
+
+  const sellDisabledTip = useMemo(() => {
+    if (!allowanceEnable) {
+      return 'NOT ENABLE';
+    }
+    if (!leverages[leverage]?.bid) {
+      return 'NOT SUPPORT';
+    }
+    return '';
+  }, [allowanceEnable, leverages, leverage]);
 
   const openPosition = async (direction: 'ask' | 'bid') => {
     if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
@@ -71,21 +92,21 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   return (
     <Panel className={classes.container}>
       <Space direction="vertical" size={16}>
-        <RadioGroup value={mode} onChange={e => setMode(e.target.value)}>
+        <RadioGroup value={mode} size="large" onChange={e => setMode(e.target.value)}>
           <RadioButton value="basic">
-            <Text className={classes.radioButton}>Basic</Text>
+            <Text>Basic</Text>
           </RadioButton>
           <RadioButton value="advanced" disabled>
-            <Text className={classes.radioButton}>Advanced</Text>
+            <Text>Advanced</Text>
           </RadioButton>
         </RadioGroup>
         <Row align="middle" justify="space-between">
           <Text>{pairId}</Text>
           <Select
             value={leverage}
-            style={{ width: '12rem' }}
             onSelect={value => setLeverage(value as string)}
             disabled={!Object.keys(leverages).length}
+            className={classes.selectLeverge}
           >
             {Object.keys(leverages).map(label => (
               <Select.Option value={label} key={label}>
@@ -106,8 +127,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'ask'}
               className={classes.buyButton}
               onClick={() => openPosition('ask')}
-              tooltip={!leverages[leverage]?.ask ? 'NOT SUPPORT' : ''}
-              disabled={!leverages[leverage]?.ask}
+              tooltip={buyDisabledTip}
+              disabled={!!buyDisabledTip}
             >
               {t('Buy')}
             </DefaultButton>
@@ -125,8 +146,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
               loading={actionLoading === 'bid'}
               className={classes.sellButton}
               onClick={() => openPosition('bid')}
-              tooltip={!leverages[leverage]?.bid ? 'NOT SUPPORT' : ''}
-              disabled={!leverages[leverage]?.bid}
+              tooltip={sellDisabledTip}
+              disabled={!!sellDisabledTip}
             >
               {t('Sell')}
             </DefaultButton>
@@ -148,9 +169,6 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
 const useStyles = createUseStyles(theme => ({
   container: {
     padding: '1.5rem',
-  },
-  radioButton: {
-    padding: '0.7rem',
   },
   input: {
     width: '100%',
@@ -181,6 +199,9 @@ const useStyles = createUseStyles(theme => ({
     '&:not(:last-child)': {
       'margin-right': '2rem',
     },
+  },
+  selectLeverge: {
+    width: '10rem',
   },
   actions: {
     display: 'flex',

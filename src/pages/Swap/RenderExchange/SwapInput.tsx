@@ -1,8 +1,10 @@
 import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
+import clsx from 'clsx';
 
 import { AmountInput, Select, Text } from '../../../components';
 import { TokenInfo } from '../../../services';
+import SwapLock from './SwapLock';
 
 type SwapInputProps = {
   label: string;
@@ -10,6 +12,7 @@ type SwapInputProps = {
   token?: TokenInfo;
   amount: string;
   disabled?: boolean;
+  locked?: boolean;
   onChangeToken(token?: TokenInfo): void;
   onChangeAmount(amount: string): void;
   onInput(): void;
@@ -23,6 +26,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
   onChangeToken,
   onChangeAmount,
   onInput,
+  locked,
   disabled = false,
 }) => {
   const classes = useStyles();
@@ -33,6 +37,8 @@ const SwapInput: React.FC<SwapInputProps> = ({
     }
   }, [tokens, onChangeToken, token]);
 
+  console.log(token?.id);
+
   const select = (
     <Select
       size="large"
@@ -41,7 +47,7 @@ const SwapInput: React.FC<SwapInputProps> = ({
         const token = tokens.find(({ id }) => tokenId === id);
         onChangeToken(token);
       }}
-      style={{ width: '12rem' }}
+      className={classes.swapInput}
       loading={!tokens.length}
       disabled={!tokens.length}
     >
@@ -64,7 +70,11 @@ const SwapInput: React.FC<SwapInputProps> = ({
         size="large"
         onChange={e => onChangeAmount(e.target.value)}
         onInput={() => onInput()}
+        className={clsx({
+          [classes.waitEnable]: locked,
+        })}
         addonAfter={select}
+        addonBefore={locked ? <SwapLock tokenId={token?.id} /> : null}
       />
     </div>
   );
@@ -78,6 +88,27 @@ const useStyles = createUseStyles(theme => ({
   },
   label: {
     'margin-bottom': '1.5rem',
+  },
+  swapInput: {
+    width: '8rem',
+    [theme.breakpoints.down('lg')]: {
+      width: 'auto',
+    },
+  },
+  waitEnable: {
+    '& .ant-input-group .ant-input-group-addon': {
+      width: '100%',
+    },
+    '& .ant-input-group .ant-input': {
+      width: 0,
+      'padding-left': '0',
+      'padding-right': '0',
+      'border-left': 0,
+    },
+    '& .ant-input-group .ant-input-group-addon:first-child': {
+      'line-height': '48px',
+      padding: 0,
+    },
   },
 }));
 

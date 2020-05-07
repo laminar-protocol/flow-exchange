@@ -1,15 +1,13 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { Col, PoolName, Row, Space, Text, Title } from '../../components';
 import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
+import useSwap from './hooks/useSwap';
 import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
 import RenderSyntheticPools from './RenderSyntheticPools';
 import RenderTxRecords from './RenderTxRecords';
-
-import useSwap from './hooks/useSwap';
 
 const Swap: React.FC = () => {
   const { t } = useTranslation();

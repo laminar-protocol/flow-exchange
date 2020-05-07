@@ -50,7 +50,7 @@ const MarginPools = () => {
   }, [api, setState]);
 
   useLayoutEffect(() => {
-    const subscription = api.margin?.allPoolIds().subscribe((result: any) => {
+    const subscription = api.margin.allPoolIds().subscribe((result: any) => {
       setState(state => {
         state.margin.allPoolIds = result;
       });
@@ -62,7 +62,7 @@ const MarginPools = () => {
   useLayoutEffect(() => {
     const subscription = combineLatest(
       allPoolIds.map(poolId => {
-        return api.margin?.poolInfo(poolId);
+        return api.margin.poolInfo(poolId);
       }),
     ).subscribe((result: any) => {
       for (const item of result) {

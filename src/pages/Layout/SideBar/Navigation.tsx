@@ -26,13 +26,11 @@ const Navigation: React.FC = () => {
   const history = useHistory();
 
   const networkName = useMemo(() => {
-    if (api) {
-      if (api.chainType === 'ethereum') {
-        return 'ethereum';
-      }
-      if (api.chainType === 'laminar') {
-        return 'laminar';
-      }
+    if (api?.chainType === 'ethereum') {
+      return 'ethereum';
+    }
+    if (api?.chainType === 'laminar') {
+      return 'laminar';
     }
     return 'Select';
   }, [api]);
@@ -69,7 +67,7 @@ const Navigation: React.FC = () => {
           <MenuItem iconComponent={MenuDepositIcon} to="/lending">
             {t('Deposit & Earn')}
           </MenuItem>
-          <MenuItem iconComponent={MenuLiquidityIcon} to="/liquidity">
+          <MenuItem iconComponent={MenuLiquidityIcon} to="/provider">
             {t('Liquidity Provider')}
           </MenuItem>
         </div>
