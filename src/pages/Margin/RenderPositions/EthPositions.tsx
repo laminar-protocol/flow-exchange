@@ -15,6 +15,7 @@ const positionsOpenQuery = gql`
       owner
       liquidityPool
       amount
+      leverage
       openPrice
       openTime
       openTxhash
@@ -59,8 +60,8 @@ const EthPositions = () => {
           },
           poolId: data.liquidityPool,
           pairId: `${base?.name.toUpperCase()}${quote?.name.toUpperCase()}`,
-          // leverage,
-          // direction,
+          leverage: `${data.leverage}`,
+          direction: data.leverage > 0 ? 'ask ' : 'bid',
         };
       });
 
