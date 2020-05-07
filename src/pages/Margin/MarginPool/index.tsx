@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 
 import { Panel, Row, Space } from '../../../components';
-import useApp from '../../../store/useApp';
+import useMarginPools from '../../../store/useMarginPools';
 import { LeftArrowIcon } from '../../../icons';
 import { useApi } from '../../../hooks';
 import ChartWidget from './ChartWidget';
@@ -22,20 +22,20 @@ const MarginPools = () => {
     poolId: string;
     pairId: string;
   }>();
-  const setState = useApp(state => state.setState);
+  const setState = useMarginPools(state => state.setState);
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const api = useApi();
 
-  const poolInfo = useApp(state => state.margin.poolInfo[params.poolId]);
+  const poolInfo = useMarginPools(state => state.poolInfo[params.poolId]);
 
   useLayoutEffect(() => {
     if (params.poolId) {
       //@ts-ignore
       const s = api.margin.poolInfo(params.poolId).subscribe((result: any) => {
         setState(state => {
-          state.margin.poolInfo[result.poolId] = result;
+          state.poolInfo[result.poolId] = result;
         });
       });
 

@@ -4,12 +4,12 @@ import { createUseStyles } from 'react-jss';
 import { useRouteMatch } from 'react-router-dom';
 
 import { Description, NumberFormat, Panel, PoolName, Row, Space, Title, SwitchChain } from '../../../components';
-import { AppState } from '../../../store/useApp';
+import { MarginPoolsState } from '../../../store/useMarginPools';
 import EnableTrading from './EnableTrading';
 import TotalBalance from './TotalBalance';
 
 type MarginHeaderProps = {
-  poolInfo?: AppState['margin']['poolInfo']['string'];
+  poolInfo?: MarginPoolsState['poolInfo']['string'];
 };
 
 const MarginHeader: React.FC<MarginHeaderProps> = ({ poolInfo }) => {

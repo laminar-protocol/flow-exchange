@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, TxHash } from '../../../components';
 import { useApi, useCurrentAccount } from '../../../hooks';
 import { findTradingPair } from '../../../hooks/useTradingPair';
-import useApp from '../../../store/useApp';
+import useMarginPools from '../../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import LaminarPositions from './LaminarPositions';
@@ -24,7 +24,7 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
   const api = useApi();
   const account = useCurrentAccount();
   const [actionLoading, setActionLoading] = useState('');
-  const poolInfo = useApp(state => state.margin.poolInfo);
+  const poolInfo = useMarginPools(state => state.poolInfo);
 
   const list = useMemo(() => {
     return positions.filter(filter);

@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect';
 
-import { AppState, useAppSelector } from '../store/useApp';
+import { useMarginPoolsSelector, MarginPoolsState } from '../store/useMarginPools';
 
 const createMarginSymbolListSelector = (key: string) => {
   return createSelector(
-    (state: AppState) => state.margin.poolInfo,
+    (state: MarginPoolsState) => state.poolInfo,
     poolInfo => {
       return Object.keys(poolInfo)
         .filter(poolId => {
@@ -25,4 +25,4 @@ const createMarginSymbolListSelector = (key: string) => {
   );
 };
 
-export default (key: string) => useAppSelector(createMarginSymbolListSelector(key), [key]);
+export default (key: string) => useMarginPoolsSelector(createMarginSymbolListSelector(key), [key]);

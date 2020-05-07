@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Amount, Description, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi } from '../../../hooks';
-import useApp from '../../../store/useApp';
+import useMarginPools from '../../../store/useMarginPools';
 
 type TotalBalanceProps = {};
 
@@ -12,15 +12,15 @@ const TotalBalance: React.FC<TotalBalanceProps> = () => {
 
   const api = useApi();
   const { address } = useCurrentAccount();
-  const setState = useApp(state => state.setState);
+  const setState = useMarginPools(state => state.setState);
 
-  const balance = useApp(state => state.margin.balance);
+  const balance = useMarginPools(state => state.balance);
 
   useLayoutEffect(() => {
     if (api.margin?.balance) {
       const subscription = api.margin.balance(address).subscribe((result: string) => {
         setState(state => {
-          state.margin.balance = result;
+          state.balance = result;
         });
       });
 

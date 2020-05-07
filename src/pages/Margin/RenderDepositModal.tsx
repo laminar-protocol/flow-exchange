@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
-import { AppState } from '../../store/useApp';
+import { MarginPoolsState } from '../../store/useMarginPools';
 import { useCurrentAccount, useApi } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
 
@@ -11,7 +11,7 @@ type RenderDepositModalProps = {
   visible: boolean;
   onCancel: () => void;
   onOk: () => void;
-  data?: AppState['margin']['poolInfo']['string'];
+  data?: MarginPoolsState['poolInfo']['string'];
 };
 
 export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {

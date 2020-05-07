@@ -14,12 +14,12 @@ import {
   Text,
 } from '../../components';
 import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
-import { AppState } from '../../store/useApp';
+import { MarginPoolsState } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderTradeProps = {
-  poolInfo: AppState['margin']['poolInfo']['string'];
+  poolInfo: MarginPoolsState['poolInfo']['string'];
   pairId: string;
 };
 

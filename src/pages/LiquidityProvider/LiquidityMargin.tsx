@@ -3,16 +3,16 @@ import { createUseStyles } from 'react-jss';
 import { combineLatest } from 'rxjs';
 import { NumberFormat } from '../../components';
 import { useApi } from '../../hooks';
-import useApp from '../../store/useApp';
+import useMarginPools from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
 import RenderPoolsCollapse from './RenderPoolsCollapse';
 
 const LiquidityMargin: React.FC = () => {
   const api = useApi();
 
-  const setAppState = useApp(state => state.setState);
-  const allPoolIds = useApp(state => state.margin.allPoolIds);
-  const marginPoolInfo = useApp(state => state.margin.poolInfo);
+  const setState = useMarginPools(state => state.setState);
+  const allPoolIds = useMarginPools(state => state.allPoolIds);
+  const marginPoolInfo = useMarginPools(state => state.poolInfo);
 
   const data = Object.values(marginPoolInfo).map(item => ({
     poolId: item.poolId,
@@ -48,13 +48,13 @@ const LiquidityMargin: React.FC = () => {
 
   useLayoutEffect(() => {
     const subscription = api.margin.allPoolIds().subscribe((result: any) => {
-      setAppState(state => {
-        state.margin.allPoolIds = result;
+      setState(state => {
+        state.allPoolIds = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, setAppState]);
+  }, [api, setState]);
 
   useLayoutEffect(() => {
     const subscription = combineLatest(
@@ -63,14 +63,14 @@ const LiquidityMargin: React.FC = () => {
       }),
     ).subscribe((result: any) => {
       for (const item of result) {
-        setAppState(state => {
-          state.margin.poolInfo[item.poolId] = item;
+        setState(state => {
+          state.poolInfo[item.poolId] = item;
         });
       }
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, setAppState]);
+  }, [api, allPoolIds, setState]);
 
   const handleDeposit = async (address: string, poolId: string, amount: string) => {
     await notificationHelper(api.asLaminar.margin.depositLiquidity(address, poolId, toPrecision(amount)));
