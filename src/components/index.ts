@@ -16,7 +16,7 @@ export * from './Panel';
 export * from './PoolName';
 export * from './Radio';
 export * from './Selects';
-export { default as Separator } from './Separator';
+export * from './Separator';
 export * from './Skeleton';
 export * from './Spinner';
 export * from './Switch';

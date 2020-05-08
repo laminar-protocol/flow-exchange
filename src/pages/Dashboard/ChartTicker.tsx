@@ -1,82 +1,76 @@
-import React, { Component } from 'react';
+import React, { useRef, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { createUseStyles } from 'react-jss';
 
-import { theme } from '../../styles';
+const ChartTicker: React.FC = () => {
+  const classes = useStyles();
+  const chartRef = useRef<HTMLDivElement>(null);
 
-class ChartTicker extends Component {
-  public chartRef: React.RefObject<any>;
+  useLayoutEffect(() => {
+    if (chartRef?.current) {
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+      script.async = false;
+      script.innerHTML = JSON.stringify({
+        symbols: [
+          {
+            description: '',
+            proName: 'FX:EURUSD',
+          },
+          {
+            description: '',
+            proName: 'FX:USDJPY',
+          },
+          {
+            description: '',
+            proName: 'OANDA:XAUUSD',
+          },
+          {
+            description: '',
+            proName: 'NASDAQ:AAPL',
+          },
+        ],
+        colorTheme: 'light',
+        isTransparent: false,
+        displayMode: 'compact',
+        locale: 'en',
+      });
+      chartRef.current.appendChild(script);
+    }
+  }, [chartRef]);
 
-  constructor(props: any) {
-    super(props);
-    this.chartRef = React.createRef();
-  }
+  return (
+    <Link to="/margin">
+      <div ref={chartRef} className={classes.root}>
+        <div className={classes.widget} />
+      </div>
+    </Link>
+  );
+};
 
-  componentDidMount() {
-    const script = document.createElement('script');
-    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-    script.async = false;
-    script.innerHTML = JSON.stringify({
-      symbols: [
-        {
-          description: '',
-          proName: 'FX:EURUSD',
-        },
-        {
-          description: '',
-          proName: 'FX:USDJPY',
-        },
-        {
-          description: '',
-          proName: 'OANDA:XAUUSD',
-        },
-        {
-          description: '',
-          proName: 'NASDAQ:AAPL',
-        },
-      ],
-      colorTheme: 'light',
-      isTransparent: false,
-      displayMode: 'compact',
-      locale: 'en',
-    });
-    this.chartRef.current.appendChild(script);
-  }
+const useStyles = createUseStyles(theme => ({
+  root: {
+    flex: 1,
+    'align-self': 'stretch',
+    position: 'relative',
+    overflow: 'hidden',
+    border: `1px solid ${theme.borderColor}`,
+    'border-radius': '0.5rem',
+    'box-shadow': '0 0 20px rgba(0, 0, 0, 0.05)',
+    'background-color': `${theme.lightBackgroundColor}`,
+    '& iframe': {
+      'pointer-events': 'none',
+    },
+  },
 
-  render() {
-    return (
-      <Link to="/margin">
-        <Widget ref={this.chartRef}>
-          <div className="tradingview-widget-container__widget" />
-        </Widget>
-      </Link>
-    );
-  }
-}
-
-const Widget = styled.div`
-  flex: 1;
-  align-self: stretch;
-  position: relative;
-  overflow: hidden;
-
-  border: 1px solid ${theme.borderColor};
-  border-radius: 0.5rem;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-  background-color: ${theme.lightBackgroundColor};
-
-  #tradingview-widget-container__widget {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    bottom: -1px !important;
-    border: 0px !important;
-  }
-
-  iframe {
-    pointer-events: none;
-  }
-`;
+  widget: {
+    position: 'absolute',
+    top: '-1px',
+    left: '-1px',
+    right: '-1px',
+    bottom: '-1px !important',
+    border: '0px !important',
+  },
+}));
 
 export default ChartTicker;
