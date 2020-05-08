@@ -58,6 +58,7 @@ const useStyles = createUseStyles(theme => ({
     borderRadius: (props: any) => props.radius || '0.75rem',
     boxShadow: '0 1px 20px 0 rgba(23, 65, 212, 0.02)',
     backgroundColor: theme.lightBackgroundColor,
+    overflow: 'hidden',
   },
   title: {
     margin: '1.25rem 1rem',
