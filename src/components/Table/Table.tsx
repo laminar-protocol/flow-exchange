@@ -61,6 +61,12 @@ const useStyles = createUseStyles(theme => ({
     '& .ant-table-pagination': {
       'margin-right': '1rem',
     },
+    '& .ant-table-container table > thead > tr:first-child th:first-child': {
+      'border-top-left-radius': '0',
+    },
+    '& .ant-table-container table > thead > tr:first-child th:last-child': {
+      'border-top-right-radius': '0',
+    },
   },
   hideHeader: {
     '& .ant-table-thead': {

@@ -28,7 +28,16 @@ const Panel: React.FC<BaseProps & PanelProps & React.HTMLProps<HTMLDivElement>> 
   });
 
   return (
-    <div className={clsx(classes.root, className)} {...other}>
+    <div
+      className={clsx(
+        classes.root,
+        {
+          [classes.noTitleTable]: !title,
+        },
+        className,
+      )}
+      {...other}
+    >
       <Row justify="space-between" align="middle">
         {title ? (
           <Title type="panel" className={classes.title}>
@@ -53,6 +62,17 @@ const useStyles = createUseStyles(theme => ({
   title: {
     margin: '1.25rem 1rem',
     'font-size': '1.25rem',
+  },
+  noTitleTable: {
+    '& .ant-table-wrapper .ant-table thead > tr > th': {
+      'border-top': 'none',
+    },
+    '& .ant-table-wrapper .ant-table-container table > thead > tr:first-child th:first-child': {
+      'border-top-left-radius': '0.75rem',
+    },
+    '& .ant-table-wrapper .ant-table-container table > thead > tr:first-child th:last-child': {
+      'border-top-right-radius': '0.75rem',
+    },
   },
 }));
 

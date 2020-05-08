@@ -51,7 +51,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
     });
 
     return () => subscription?.unsubscribe();
-  }, [api]);
+  }, [api, setState]);
 
   useLayoutEffect(() => {
     if (poolInfo?.poolId && api.margin?.traderInfo) {
@@ -63,7 +63,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
 
       return () => subscription?.unsubscribe();
     }
-  }, [api, account, data, poolInfo]);
+  }, [api, account, data, poolInfo, setState]);
 
   const depositDisabledTip = useMemo(() => {
     if (!allowanceEnable) return 'NOT ENABLED';

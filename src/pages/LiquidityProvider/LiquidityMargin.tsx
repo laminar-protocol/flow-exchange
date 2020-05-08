@@ -1,5 +1,4 @@
 import React, { useLayoutEffect } from 'react';
-import { createUseStyles } from 'react-jss';
 import { combineLatest } from 'rxjs';
 import { NumberFormat } from '../../components';
 import { useApi } from '../../hooks';
@@ -82,9 +81,5 @@ const LiquidityMargin: React.FC = () => {
 
   return <RenderPoolsCollapse data={data} handleWithdraw={handleWithdraw} handleDeposit={handleDeposit} />;
 };
-
-const useStyles = createUseStyles(theme => ({
-  root: {},
-}));
 
 export default LiquidityMargin;
