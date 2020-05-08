@@ -69,7 +69,7 @@ const useStyles = createUseStyles(theme => ({
     '&:nth-child(3)': {
       'border-right': `1px solid ${theme.borderColor}`,
     },
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
       border: 'none !important',
       'border-bottom': `1px solid ${theme.borderColor} !important`,

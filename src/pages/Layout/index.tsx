@@ -52,7 +52,7 @@ const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
 
 const useStyles = createUseStyles({
   spinner: {
-    marginTop: '300px',
+    marginTop: '18.75rem',
     display: 'flex',
     justifyContent: 'center',
   },

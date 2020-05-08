@@ -94,6 +94,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
       <Table
         columns={columns}
         dataSource={data}
+        variant="panelTable"
         rowKey="poolId"
         onRow={(record: any) => {
           return {

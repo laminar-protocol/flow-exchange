@@ -37,7 +37,7 @@ const Balances: React.FC = () => {
 const useStyles = createUseStyles(theme => ({
   root: {
     width: '35%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
 

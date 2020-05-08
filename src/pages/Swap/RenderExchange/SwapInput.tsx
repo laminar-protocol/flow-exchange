@@ -106,7 +106,7 @@ const useStyles = createUseStyles(theme => ({
       'border-left': 0,
     },
     '& .ant-input-group .ant-input-group-addon:first-child': {
-      'line-height': '48px',
+      'line-height': '3rem',
       padding: 0,
     },
   },

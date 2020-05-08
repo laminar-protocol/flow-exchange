@@ -8,10 +8,10 @@ export default function createBreakpoints(breakpoints: any = {}) {
     // The breakpoint **start** at this value.
     // For instance with the first breakpoint xs: [xs, sm[.
     values = {
-      xs: 480,
-      sm: 768,
-      md: 992,
-      lg: 1200,
+      xs: 768,
+      sm: 1024,
+      md: 1280,
+      lg: 1440,
       xl: 1400,
     },
     unit = 'px',
@@ -20,11 +20,11 @@ export default function createBreakpoints(breakpoints: any = {}) {
 
   function up(key: any) {
     const value = typeof values[key] === 'number' ? values[key] : key;
-    return `@media (min-width:${value}${unit})`;
+    return `@media (min-width:${value + step / 100}${unit})`;
   }
 
   function down(key: any) {
-    const endIndex = keys.indexOf(key) + 1;
+    const endIndex = keys.indexOf(key);
     const upperbound = values[keys[endIndex]];
 
     if (endIndex === keys.length) {
@@ -33,7 +33,7 @@ export default function createBreakpoints(breakpoints: any = {}) {
     }
 
     const value = typeof upperbound === 'number' && endIndex > 0 ? upperbound : key;
-    return `@media (max-width:${value - step / 100}${unit})`;
+    return `@media (max-width:${value}${unit})`;
   }
 
   function between(start: any, end: any) {
@@ -44,11 +44,10 @@ export default function createBreakpoints(breakpoints: any = {}) {
     }
 
     return (
-      `@media (min-width:${typeof values[start] === 'number' ? values[start] : start}${unit}) and ` +
-      `(max-width:${(endIndex !== -1 && typeof values[keys[endIndex + 1]] === 'number'
-        ? values[keys[endIndex + 1]]
-        : end) -
-        step / 100}${unit})`
+      `@media (min-width:${typeof values[start] === 'number' ? values[start] + step / 100 : start}${unit}) and ` +
+      `(max-width:${
+        endIndex !== -1 && typeof values[keys[endIndex]] === 'number' ? values[keys[endIndex]] : end
+      }${unit})`
     );
   }
 

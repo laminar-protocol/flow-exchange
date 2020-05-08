@@ -20,7 +20,7 @@ const useStyles = createUseStyles(theme => ({
       'background-color': theme.whiteForegroundColor,
     },
     '&.ant-input-lg': {
-      padding: '11px 11px',
+      padding: '0.6875rem 0.6875rem',
     },
     '&.ant-input:hover': {
       border: `1px solid ${theme.darkBorderColor} !important`,

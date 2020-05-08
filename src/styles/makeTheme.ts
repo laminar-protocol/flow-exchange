@@ -32,7 +32,7 @@ interface AppTheme {
   sellColor: string;
   buyColor: string;
   // Side bar
-  sideBarWidth: number;
+  sideBarWidth: string;
   // Font weight
   lightWeight: number;
   normalWeight: number;
@@ -174,7 +174,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
   }),
 
   // Side bar
-  sideBarWidth: 270,
+  sideBarWidth: '16.875rem',
 
   // Font weight
   lightWeight: 150,

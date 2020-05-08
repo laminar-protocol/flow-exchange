@@ -50,11 +50,12 @@ const useStyles = createUseStyles(theme => ({
     '& .ant-table-tbody > tr.ant-table-row:hover > td': {
       background: (props: any) => (props?.onRow ? theme.backgroundHoverColor : 'none'),
     },
+    '& .ant-table-container': {
+      'border-top-left-radius': 0,
+      'border-top-right-radius': 0,
+    },
   },
   panelTable: {
-    '& .ant-table': {
-      'border-radius': '0.75rem',
-    },
     '& .ant-table tbody > tr:last-child > td': {
       'border-bottom': 'none',
     },
