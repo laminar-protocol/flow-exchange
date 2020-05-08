@@ -21,12 +21,8 @@ const useStyles = createUseStyles(theme => ({
       'border-image-slice': 1,
       'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
       transition: 'none',
-      '&:hover, &:active': {
-        'background-image': 'linear-gradient(to right, #004eff, #fa0000)',
-        color: theme.alwaysWhiteForegroundColor,
-      },
     },
-    '&.ant-btn:not(.ant-btn[disabled]):hover': {
+    '&.ant-btn:not([disabled]):hover': {
       background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
       color: '#fff',
     },
