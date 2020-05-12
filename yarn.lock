@@ -1599,14 +1599,14 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.68":
-  version "0.2.0-beta.68"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.68.tgz#39c5f7f25cf1d16d77dab9584449126758ffa309"
-  integrity sha512-Qp7Q1pRFq8PdvtxpMFpb1vxviYnDrAk2q/4QUDWOSlxsU9IYeOHBrwQFMzd6COpSA8V7ZZhK392vcFYh79xz2w==
+"@laminar/api@^0.2.0-beta.69":
+  version "0.2.0-beta.69"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.69.tgz#9b23a10799abdbfa6783b67205f8f4e1cdc314d6"
+  integrity sha512-17Pjhv03fK9dlcR5MU3ACVyQ4qeYIf4tsPlHDsdQ5NAMESC1gvLsYQZFHnoDKYrC05u1RfcmOXMV2ygMabaUlQ==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@laminar/flow-protocol-ethereum" "0.0.7"
-    "@laminar/types" "^0.2.0-beta.68"
+    "@laminar/types" "^0.2.0-beta.69"
     "@open-web3/orml-api-derive" "^0.3.0-beta.4"
     "@polkadot/api" "^1.12.1"
     rxjs "^6.5.5"
@@ -1620,10 +1620,10 @@
   resolved "https://registry.yarnpkg.com/@laminar/flow-protocol-ethereum/-/flow-protocol-ethereum-0.0.7.tgz#aac0c3045b3d2c77e7240a0ead0981c714d91e79"
   integrity sha512-L80SOVjYUlCYzSqiGIwa0N3hqkSMf7gba2XQjDgPv/I7F9coUe+O9+J1RJ7q9jFAdA/GiTgyfZZqS6MHG5nk/A==
 
-"@laminar/types@^0.2.0-beta.68":
-  version "0.2.0-beta.68"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.68.tgz#da2bdd55051fb7068e845229f8a58eb790f641f0"
-  integrity sha512-3C568jUv53GWg4khxUf2Xhl0wpLrRitsUtpyPGQ0DQ3gWjcrvkW45IpwDddvxLaxMEE2Irq/Jgc1aKVIBghcug==
+"@laminar/types@^0.2.0-beta.69":
+  version "0.2.0-beta.69"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.69.tgz#d049165566d635fa346dc37c8279d1403c738b09"
+  integrity sha512-WifewUFRCTRpaSXQXw6WFHIWEBu9H+z4sgMqkN0tmtpC9xf+/5FommMXJdMpwiECTsNcUDLtSCQAKi7BX/2KPA==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@open-web3/orml-types" "^0.3.0-beta.4"
