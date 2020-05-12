@@ -27,12 +27,8 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin?.deposit) return;
-    if (api.isLaminar) {
-      await notificationHelper(api.asLaminar.margin.deposit(account.address, toPrecision(amount)));
-    }
-    if (api.isEthereum && data?.poolId) {
-      await notificationHelper(api.asEthereum.margin.deposit(account.address, data.poolId, toPrecision(amount)));
+    if (data?.poolId) {
+      await notificationHelper(api.margin.deposit(account.address, data.poolId, toPrecision(amount)));
     }
     setAmount('');
     onOk();
@@ -98,12 +94,8 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin?.withdraw) return;
-    if (api.isLaminar) {
-      await notificationHelper(api.asLaminar.margin.withdraw(account.address, toPrecision(amount)));
-    }
-    if (api.isEthereum && data?.poolId) {
-      await notificationHelper(api.asEthereum.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
+    if (data?.poolId) {
+      await notificationHelper(api.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
     }
     setAmount('');
     onOk();
