@@ -7,38 +7,34 @@ import { fromPrecision, getCurrencySymbol, getValueFromHex } from '../../utils';
 import { Spinner } from '../Spinner';
 import { BaseProps } from '../../types';
 
-function numberToAmount(
+type NumberToAmountOptions = {
+  postfix?: string;
+  prefix?: string;
+  precision?: number;
+  useGrouping?: boolean;
+  minDigits?: number;
+};
+
+type AmountProps = {
+  value: BN | string | number;
+  tokenId?: TokenInfo['id'];
+  minDigits?: number;
+  useGrouping?: boolean;
+  hasPostfix?: boolean;
+  hasPrefix?: boolean;
+  loading?: boolean;
+} & BaseProps;
+
+const numberToAmount = (
   number: BN,
-  {
-    postfix = '',
-    prefix = '',
-    minDigits = 3,
-    precision = 0,
-    useGrouping = true,
-  }: {
-    postfix?: string;
-    prefix?: string;
-    precision?: number;
-    useGrouping?: boolean;
-    minDigits?: number;
-  } = {},
-) {
+  { postfix = '', prefix = '', minDigits = 3, precision = 0, useGrouping = true }: NumberToAmountOptions = {},
+) => {
   const value = fromPrecision(number, precision, { pad: true, minDigits, commify: useGrouping });
 
   return `${prefix}${value}${postfix ? ' ' : ''}${postfix}`;
-}
+};
 
-function Amount(
-  props: {
-    value: BN | string | number;
-    tokenId?: TokenInfo['id'];
-    minDigits?: number;
-    useGrouping?: boolean;
-    hasPostfix?: boolean;
-    hasPrefix?: boolean;
-    loading?: boolean;
-  } & BaseProps,
-) {
+const Amount: React.FC<AmountProps> = props => {
   const {
     value,
     tokenId,
@@ -55,7 +51,7 @@ function Amount(
 
   if (loading) return <Spinner />;
 
-  const options: any = {
+  const options: NumberToAmountOptions = {
     useGrouping,
     minDigits,
     precision: 18,
@@ -70,6 +66,6 @@ function Amount(
   const number = BN.isBN(value) ? value : new BN(getValueFromHex(value));
 
   return <Component {...other}>{numberToAmount(number, options)}</Component>;
-}
+};
 
 export default Amount;

@@ -1,9 +1,17 @@
 // Sorted ASC by size. That's important.
 // It can't be configured as it's used statically for propTypes.
-export const keys = ['xs', 'sm', 'md', 'lg', 'xl'];
+export const keys = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+
+type Key = typeof keys[number];
 
 // Keep in mind that @media is inclusive by the CSS specification.
-export default function createBreakpoints(breakpoints: any = {}) {
+export default function createBreakpoints(
+  breakpoints: {
+    values?: Record<Key, number>;
+    unit?: 'px' | 'rem';
+    step?: number;
+  } = {},
+) {
   const {
     // The breakpoint **start** at this value.
     // For instance with the first breakpoint xs: [xs, sm[.
@@ -18,12 +26,12 @@ export default function createBreakpoints(breakpoints: any = {}) {
     step = 5,
   } = breakpoints;
 
-  function up(key: any) {
-    const value = typeof values[key] === 'number' ? values[key] : key;
+  function up(key: Key | number) {
+    const value = typeof values[key as Key] === 'number' ? values[key as Key] : (key as number);
     return `@media (min-width:${value + step / 100}${unit})`;
   }
 
-  function down(key: any) {
+  function down(key: Key) {
     const endIndex = keys.indexOf(key);
     const upperbound = values[keys[endIndex]];
 
@@ -44,18 +52,20 @@ export default function createBreakpoints(breakpoints: any = {}) {
     }
 
     return (
-      `@media (min-width:${typeof values[start] === 'number' ? values[start] + step / 100 : start}${unit}) and ` +
+      `@media (min-width:${
+        typeof values[start as Key] === 'number' ? values[start as Key] + step / 100 : start
+      }${unit}) and ` +
       `(max-width:${
         endIndex !== -1 && typeof values[keys[endIndex]] === 'number' ? values[keys[endIndex]] : end
       }${unit})`
     );
   }
 
-  function only(key: any) {
+  function only(key: Key) {
     return between(key, key);
   }
 
-  function width(key: any) {
+  function width(key: Key) {
     return values[key];
   }
 

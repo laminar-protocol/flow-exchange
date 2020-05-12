@@ -30,14 +30,14 @@ const useStyles = createUseStyles(theme => ({
   dashboard: {
     display: 'flex',
     flexDirection: 'row',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
   },
   markets: {
     flex: 1,
     marginLeft: '2rem',
-    [theme.breakpoints.down('md')]: {
+    [theme.breakpoints.down('sm')]: {
       marginLeft: '0rem',
       marginTop: '2rem',
     },

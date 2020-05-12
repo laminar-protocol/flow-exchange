@@ -35,7 +35,7 @@ class Api {
       if (!anyWindow.injectedWeb3['polkadot-js']) throw new Error('polkadot extensions not detect');
 
       this.provider = new LaminarApi({
-        provider: new WsProvider('wss://dev-node.laminar-chain.laminar.one/ws'),
+        provider: new WsProvider('wss://testnet-node-1.laminar-chain.laminar.one/ws'),
       });
     } else {
       throw new Error('chainType is either ethereum or laminar');

@@ -51,8 +51,8 @@ interface AppTheme {
   breakpoints: ReturnType<typeof createBreakpoints>;
 
   // style
-  linearGradientBorder: any;
-  linearGradientRadiusBorder: any;
+  linearGradientBorder: Record<string, string>;
+  linearGradientRadiusBorder: Record<string, string>;
 
   textColor: {
     greyColor1: string;
@@ -209,7 +209,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   linearGradientBorder: {
     borderImageSource: 'linear-gradient(to bottom, #004fff, #fe0000)',
-    borderImageSlice: 1,
+    borderImageSlice: '1',
   },
 
   textColor: {
@@ -223,7 +223,7 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
     'border-style': 'solid',
     'border-width': '1px',
     'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
-    'border-image-slice': 1,
+    'border-image-slice': '1',
     'background-image': 'linear-gradient(to bottom, #ffffff, #ffffff), linear-gradient(to right, #004eff, #fa0000)',
     'background-origin': 'border-box',
     'background-clip': 'content-box, border-box',

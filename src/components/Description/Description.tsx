@@ -13,8 +13,6 @@ type DescriptionProps = {
   layout?: 'horizontal' | 'vertical';
   align?: ['center', 'flex-start', 'flex-end'][number];
   justify?: ['start', 'end', 'center', 'space-around', 'space-between'][number];
-  labelProps?: any;
-  contentProps?: any;
 };
 
 const Description: React.FC<BaseProps & DescriptionProps> = ({
@@ -22,8 +20,6 @@ const Description: React.FC<BaseProps & DescriptionProps> = ({
   align,
   justify,
   layout = 'horizontal',
-  labelProps,
-  contentProps,
   space,
   label,
   className,

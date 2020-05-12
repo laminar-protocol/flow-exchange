@@ -54,8 +54,8 @@ const Panel: React.FC<BaseProps & PanelProps & React.HTMLProps<HTMLDivElement>> 
 const useStyles = createUseStyles(theme => ({
   root: {
     border: `1px solid ${theme.borderColor}`,
-    padding: (props: any) => props.padding || '0',
-    borderRadius: (props: any) => props.radius || '0.75rem',
+    padding: (props: PanelProps) => props.padding || '0',
+    borderRadius: (props: PanelProps) => props.radius || '0.75rem',
     boxShadow: '0 1px 20px 0 rgba(23, 65, 212, 0.02)',
     backgroundColor: theme.lightBackgroundColor,
     overflow: 'hidden',
