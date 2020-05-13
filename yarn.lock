@@ -1599,16 +1599,16 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.69":
-  version "0.2.0-beta.69"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.69.tgz#9b23a10799abdbfa6783b67205f8f4e1cdc314d6"
-  integrity sha512-17Pjhv03fK9dlcR5MU3ACVyQ4qeYIf4tsPlHDsdQ5NAMESC1gvLsYQZFHnoDKYrC05u1RfcmOXMV2ygMabaUlQ==
+"@laminar/api@^0.2.0-beta.73":
+  version "0.2.0-beta.73"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.73.tgz#ede50073eb1a9a0496c4e41d389b654a4f08458a"
+  integrity sha512-7s1bY649ofkP64MCe4xNhDnCUd/zRmm5Cd54Lv4viNuCzg/l7KSepL4HQV1BA27b3hBCZKdpNd4KWWd7mqCZXQ==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@laminar/flow-protocol-ethereum" "0.0.7"
-    "@laminar/types" "^0.2.0-beta.69"
+    "@laminar/types" "^0.2.0-beta.73"
     "@open-web3/orml-api-derive" "^0.3.0-beta.4"
-    "@polkadot/api" "^1.12.1"
+    "@polkadot/api" "^1.13.1"
     rxjs "^6.5.5"
     web3 "1.2.6"
     web3-core "1.2.6"
@@ -1620,15 +1620,15 @@
   resolved "https://registry.yarnpkg.com/@laminar/flow-protocol-ethereum/-/flow-protocol-ethereum-0.0.7.tgz#aac0c3045b3d2c77e7240a0ead0981c714d91e79"
   integrity sha512-L80SOVjYUlCYzSqiGIwa0N3hqkSMf7gba2XQjDgPv/I7F9coUe+O9+J1RJ7q9jFAdA/GiTgyfZZqS6MHG5nk/A==
 
-"@laminar/types@^0.2.0-beta.69":
-  version "0.2.0-beta.69"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.69.tgz#d049165566d635fa346dc37c8279d1403c738b09"
-  integrity sha512-WifewUFRCTRpaSXQXw6WFHIWEBu9H+z4sgMqkN0tmtpC9xf+/5FommMXJdMpwiECTsNcUDLtSCQAKi7BX/2KPA==
+"@laminar/types@^0.2.0-beta.73":
+  version "0.2.0-beta.73"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.73.tgz#14b2cd98811a5b676d7a217a4bad0c23b4aeb538"
+  integrity sha512-CdrkmYsMGBpn6LEgta0prNxkXUQd73ACWh4bb5eDqtg95ElkWwnXk9AqBLjJjQWvsJjixoBkDlkbHUVPpN4lgA==
   dependencies:
     "@babel/runtime" "^7.8.0"
-    "@open-web3/orml-types" "^0.3.0-beta.4"
-    "@polkadot/typegen" "^1.12.1"
-    "@polkadot/types" "^1.12.1"
+    "@open-web3/orml-types" "^0.3.0-beta.6"
+    "@polkadot/typegen" "^1.13.1"
+    "@polkadot/types" "^1.13.1"
 
 "@mdx-js/mdx@^1.5.1":
   version "1.5.7"
@@ -1701,13 +1701,10 @@
     "@polkadot/api" "^1.12.1"
     memoizee "^0.4.14"
 
-"@open-web3/orml-types@^0.3.0-beta.4":
-  version "0.3.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@open-web3/orml-types/-/orml-types-0.3.0-beta.5.tgz#d13e46defd533f2f2ff9fa9e438c7ac5cdbb1d20"
-  integrity sha512-6VXbBNsQePfwCX0Y+hJoKOLqMJy5ZyikaJZL8HNnKzUG3mjDApApshtbmzK47Ytkq8vjeTGVDaciOXSimWOO3Q==
-  dependencies:
-    "@babel/runtime" "^7.8.4"
-    "@polkadot/typegen" "^1.12.1"
+"@open-web3/orml-types@^0.3.0-beta.6":
+  version "0.3.0-beta.6"
+  resolved "https://registry.yarnpkg.com/@open-web3/orml-types/-/orml-types-0.3.0-beta.6.tgz#8f7727ce4a650869c149831d3bf60863ca6b597a"
+  integrity sha512-FCmbnBgbG5bvnqACnBFGhoNTXeCkumXiKDNoPYg7w35NB368bpWHkDNzfY4Xxtnpp6OTZm8+HCVZfyWoqvxH8Q==
 
 "@polkadot/api-derive@1.13.1":
   version "1.13.1"
@@ -1725,7 +1722,7 @@
     memoizee "^0.4.14"
     rxjs "^6.5.5"
 
-"@polkadot/api@1.13.1", "@polkadot/api@^1.12.1":
+"@polkadot/api@1.13.1", "@polkadot/api@^1.12.1", "@polkadot/api@^1.13.1":
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-1.13.1.tgz#6e8cb2f59a230498811c9fd818e1756316188044"
   integrity sha512-q/dzklbTpshR58tpLmi7Z51ii6dtpbW6vmPu9PAJbFoFIe45Z09B8rczf6BgXi9mWMiO1Az9gxwtjuc1lnnobg==
@@ -1806,7 +1803,7 @@
     isomorphic-fetch "^2.2.1"
     websocket "^1.0.31"
 
-"@polkadot/typegen@^1.12.1":
+"@polkadot/typegen@^1.13.1":
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/@polkadot/typegen/-/typegen-1.13.1.tgz#7d313bcc61827dabc150821f1c1f217438e5b89f"
   integrity sha512-RjnJHAu/6RlXHyd7m3cyL/UWtLZlgrR15Q29/qGK50XYQFT7a5p++C4eEB0WN+g2FqS9Vkn+WX8IV6OaRUjTbg==
@@ -1833,7 +1830,7 @@
     "@polkadot/util" "^2.9.1"
     bn.js "^5.1.1"
 
-"@polkadot/types@1.13.1", "@polkadot/types@^1.12.1":
+"@polkadot/types@1.13.1", "@polkadot/types@^1.13.1":
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-1.13.1.tgz#4583b7773644fe777d8fa0b837d8d562f8172ac0"
   integrity sha512-cyANcVkDQmb3Ih5XggvLMWj7Gu9/VL/HYoebua50mecuYWa9eOn3iYGVmvvYG2rFcObikLwAwrUu8Dn1AZ5RoA==

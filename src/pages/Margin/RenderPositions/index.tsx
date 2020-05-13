@@ -6,16 +6,17 @@ import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, Tx
 import { useApi, useCurrentAccount } from '../../../hooks';
 import { findTradingPair } from '../../../hooks/useTradingPair';
 import useMarginPools from '../../../store/useMarginPools';
+import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
-import LaminarPositions from './LaminarPositions';
 import EthPositions from './EthPositions';
+import LaminarPositions from './LaminarPositions';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
 };
 
-const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true }) => {
+const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = x => true, ...other }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
@@ -158,6 +159,7 @@ const RenderPositions: React.FC<RenderPositionsProps> = ({ filter = x => true })
           </div>
         </div>
       }
+      {...other}
     >
       <SwitchChain renderLaminar={() => <LaminarPositions />} renderEthereum={() => <EthPositions />} />
       {activeTab === 'closed' ? (
