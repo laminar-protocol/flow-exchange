@@ -12,6 +12,8 @@ import {
   Select,
   Space,
   Text,
+  Description,
+  Amount,
 } from '../../components';
 import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
 import { MarginPoolsState } from '../../store/useMarginPools';
@@ -50,20 +52,20 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
 
   const buyDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
-      return 'NOT ENABLE';
+      return 'NOT ENABLED';
     }
     if (!leverages[leverage]?.ask) {
-      return 'NOT SUPPORT';
+      return 'NOT SUPPORTED';
     }
     return '';
   }, [allowanceEnable, leverages, leverage]);
 
   const sellDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
-      return 'NOT ENABLE';
+      return 'NOT ENABLED';
     }
     if (!leverages[leverage]?.bid) {
-      return 'NOT SUPPORT';
+      return 'NOT SUPPORTED';
     }
     return '';
   }, [allowanceEnable, leverages, leverage]);
@@ -77,7 +79,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
         api.margin.openPosition(
           account.address,
           poolInfo.poolId,
-          pairInfo.pair as any,
+          pairInfo.pair,
           leverages[leverage][direction] as any,
           toPrecision(amount),
           direction === 'ask' ? toPrecision('1000000000') : toPrecision('0'),
@@ -118,47 +120,73 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
         <AmountInput
           value={amount}
           placeholder="Amount"
+          tokenId={pairInfo?.pair.base}
+          showSuffix={true}
           className={classes.input}
           onChange={event => setAmount(event.target.value)}
         />
         <div className={classes.actions}>
           <div className={classes.actionItem}>
+            <Description label={`${t('Price')}: `} space="0">
+              {pairInfo ? (
+                <OraclePrice
+                  baseTokenId={pairInfo.pair.base}
+                  quoteTokenId={pairInfo.pair.quote}
+                  spread={pairInfo.askSpread}
+                  direction="ask"
+                  render={(price: number) => (
+                    <Amount
+                      value={price}
+                      tokenId={pairInfo.pair.quote}
+                      withPrecision={true}
+                      mantissa={5}
+                      hasPostfix={true}
+                    />
+                  )}
+                />
+              ) : null}
+            </Description>
             <DefaultButton
+              size="large"
               loading={actionLoading === 'ask'}
               className={classes.buyButton}
               onClick={() => openPosition('ask')}
               tooltip={buyDisabledTip}
               disabled={!!buyDisabledTip}
             >
-              {t('Buy')}
+              {t('Buy/Long')}
             </DefaultButton>
-            {pairInfo ? (
-              <OraclePrice
-                baseTokenId={pairInfo.pair.base}
-                quoteTokenId={pairInfo.pair.quote}
-                spread={pairInfo.askSpread}
-                direction="ask"
-              />
-            ) : null}
           </div>
           <div className={classes.actionItem}>
+            <Description label={`${t('Price')}: `} space="0">
+              {pairInfo ? (
+                <OraclePrice
+                  baseTokenId={pairInfo.pair.base}
+                  quoteTokenId={pairInfo.pair.quote}
+                  spread={pairInfo.bidSpread}
+                  direction="bid"
+                  render={(price: number) => (
+                    <Amount
+                      value={price}
+                      tokenId={pairInfo.pair.quote}
+                      withPrecision={true}
+                      mantissa={5}
+                      hasPostfix={true}
+                    />
+                  )}
+                />
+              ) : null}
+            </Description>
             <DefaultButton
+              size="large"
               loading={actionLoading === 'bid'}
               className={classes.sellButton}
               onClick={() => openPosition('bid')}
               tooltip={sellDisabledTip}
               disabled={!!sellDisabledTip}
             >
-              {t('Sell')}
+              {t('Sell/Short')}
             </DefaultButton>
-            {pairInfo ? (
-              <OraclePrice
-                baseTokenId={pairInfo.pair.base}
-                quoteTokenId={pairInfo.pair.quote}
-                spread={pairInfo.bidSpread}
-                direction="bid"
-              />
-            ) : null}
           </div>
         </div>
       </Space>
@@ -172,19 +200,20 @@ const useStyles = createUseStyles(theme => ({
   },
   input: {
     width: '100%',
-    'font-size': '1rem',
   },
   buyButton: {
-    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+    '&.ant-btn, & .ant-btn': {
       border: 0,
+      width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
       background: '#10b887',
     },
   },
   sellButton: {
-    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+    '&.ant-btn, &.ant-btn:hover, & .ant-btn, & .ant-btn:hover': {
       border: 0,
+      width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
       background: '#fa5352',
@@ -199,6 +228,9 @@ const useStyles = createUseStyles(theme => ({
     '&:not(:last-child)': {
       'margin-right': '2rem',
     },
+    '& > *': {
+      'margin-bottom': '0.5rem',
+    },
   },
   selectLeverge: {
     width: '10rem',
@@ -210,7 +242,6 @@ const useStyles = createUseStyles(theme => ({
     width: '100%',
     '& $buyButton,& $sellButton': {
       flex: 1,
-      'margin-bottom': '0.5rem',
     },
   },
 }));

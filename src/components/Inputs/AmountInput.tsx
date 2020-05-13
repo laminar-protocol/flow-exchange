@@ -2,14 +2,31 @@ import React, { useMemo } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Input as AntdInput } from 'antd';
 import clsx from 'clsx';
+import { useTokenInfo } from '../../hooks';
 
-type AntdInputProps = React.ComponentProps<typeof AntdInput>;
+type AntdInputProps = {
+  tokenId?: string;
+  showSuffix?: boolean;
+} & React.ComponentProps<typeof AntdInput>;
 
-const Input: React.FC<AntdInputProps> = ({ className, onChange, size = 'middle', ...other }) => {
+const Input: React.FC<AntdInputProps> = ({
+  className,
+  onChange,
+  size = 'middle',
+  tokenId,
+  showSuffix = false,
+  ...other
+}) => {
   const classes = useStyles();
 
+  const token = useTokenInfo(tokenId);
+
+  const suffix = useMemo(() => {
+    return token?.name || null;
+  }, [token]);
+
   const re = useMemo(() => {
-    return new RegExp(`^\\d{0,}(\\.\\d{0,8})?$`);
+    return new RegExp(`^\\d{0,10}(\\.\\d{0,3})?$`);
   }, []);
 
   return (
@@ -20,9 +37,11 @@ const Input: React.FC<AntdInputProps> = ({ className, onChange, size = 'middle',
           onChange && onChange(event);
         }
       }}
+      suffix={suffix}
       className={clsx(classes.root, className, {
         [classes.large]: size === 'large',
         [classes.middle]: size === 'middle',
+        [classes.hasSuffix]: showSuffix,
       })}
       {...other}
     />
@@ -69,7 +88,7 @@ const useStyles = createUseStyles(theme => ({
     },
   },
   large: {
-    '&.ant-input-lg, & .ant-input-lg': {
+    '&.ant-input-lg, & .ant-input-lg, & .ant-input-suffix': {
       'padding-top': '0.71875rem',
       'padding-bottom': '0.71875rem',
       'font-size': '1rem',
@@ -79,9 +98,20 @@ const useStyles = createUseStyles(theme => ({
     },
   },
   middle: {
-    '&.ant-input, & .ant-input': {
+    '&.ant-input, & .ant-input, & .ant-input-suffix': {
       'padding-top': '0.40625rem',
       'padding-bottom': '0.40625rem',
+      'font-size': '1rem',
+    },
+  },
+  hasSuffix: {
+    '&.ant-input-affix-wrapper': {
+      'padding-top': 0,
+      'padding-bottom': 0,
+      border: `1px solid ${theme.keyColorGrey}`,
+    },
+    '& .ant-input-suffix': {
+      color: theme.textColor.greyColor4,
     },
   },
 }));

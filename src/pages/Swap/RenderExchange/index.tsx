@@ -6,7 +6,7 @@ import { Panel, Spinner, Text, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
-import { notificationHelper, toPrecision } from '../../../utils';
+import { notificationHelper, toPrecision, toFixed } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
@@ -64,12 +64,12 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   const predictBaseAmount = useMemo(() => {
     if (!askRate || !bidRate || !exchangeAmount) return '';
-    return (!isRedeem ? Number(exchangeAmount) * Number(askRate) : Number(exchangeAmount) * Number(bidRate)).toFixed(5);
+    return toFixed(!isRedeem ? Number(exchangeAmount) * Number(askRate) : Number(exchangeAmount) * Number(bidRate), 5);
   }, [askRate, bidRate, isRedeem, exchangeAmount]);
 
   const predictExchangeAmount = useMemo(() => {
     if (!askRate || !bidRate || !baseAmount) return '';
-    return (!isRedeem ? Number(baseAmount) / Number(askRate) : Number(baseAmount) / Number(bidRate)).toFixed(5);
+    return toFixed(!isRedeem ? Number(baseAmount) / Number(askRate) : Number(baseAmount) / Number(bidRate), 5);
   }, [askRate, bidRate, isRedeem, baseAmount]);
 
   useLayoutEffect(() => {

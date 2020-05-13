@@ -85,7 +85,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} minDigits={5} />,
+      render: (value: number) => <Amount value={value} mantissa={5} />,
     },
     {
       title: t('CUR. PRICE'),

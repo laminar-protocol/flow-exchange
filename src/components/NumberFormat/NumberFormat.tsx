@@ -16,7 +16,9 @@ const NumberFormat: React.FC<BaseProps & NumberFormatProps> = ({
   precision,
   value: _value,
   percent = false,
-  options = {},
+  options = {
+    roundingFunction: Math.floor,
+  },
   ...other
 }) => {
   const formatOptions: Record<string, any> = {};

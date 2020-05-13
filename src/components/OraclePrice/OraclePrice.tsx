@@ -3,13 +3,14 @@ import React from 'react';
 import { useOraclePrice } from '../../hooks';
 import { TokenId } from '../../services/Api';
 import { BaseProps } from '../../types';
+import { toFixed } from '../../utils';
 
 type OraclePriceProps = {
   baseTokenId: TokenId;
   quoteTokenId: TokenId;
   spread?: number;
   direction: 'ask' | 'bid';
-  calc?: (value: number) => number;
+  render?: (value: number) => React.ReactNode;
 };
 
 const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
@@ -18,14 +19,14 @@ const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   quoteTokenId,
   spread,
   direction,
-  calc = (x: number) => x,
+  render = (x: number) => toFixed(x, 5),
   ...other
 }) => {
   const price = useOraclePrice(baseTokenId, quoteTokenId, spread || null, direction);
 
   if (!price) return null;
 
-  return <Component {...other}>{calc(price).toFixed(5)}</Component>;
+  return <Component {...other}>{render(price)}</Component>;
 };
 
 export default OraclePrice;
