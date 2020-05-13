@@ -1,7 +1,6 @@
 import { ApolloProvider } from '@apollo/react-hooks';
 import React, { useMemo } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 
 import useSetting from '../../store/useSetting';
 import useApp from '../../store/useApp';
@@ -22,20 +21,18 @@ const AppInner: React.FC = () => {
   }, [api]);
 
   return (
-    <StyledThemeProvider theme={{ mode }}>
-      <ThemeProvider mode={mode}>
-        {client ? (
-          <ApolloProvider client={client}>
-            <OracleFeed />
-            <BalancesFeed />
-            <AppInit />
-            <Routes />
-          </ApolloProvider>
-        ) : (
+    <ThemeProvider mode={mode}>
+      {client ? (
+        <ApolloProvider client={client}>
+          <OracleFeed />
+          <BalancesFeed />
+          <AppInit />
           <Routes />
-        )}
-      </ThemeProvider>
-    </StyledThemeProvider>
+        </ApolloProvider>
+      ) : (
+        <Routes />
+      )}
+    </ThemeProvider>
   );
 };
 

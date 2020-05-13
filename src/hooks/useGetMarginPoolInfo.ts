@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { useAppSelector, AppState } from '../store/useApp';
+import { useMarginPoolsSelector, MarginPoolsState } from '../store/useMarginPools';
 
 export const getSyntheticPoolInfoSelector = createSelector(
-  (state: AppState) => state.margin.poolInfo,
+  (state: MarginPoolsState) => state.poolInfo,
   poolInfo => {
     return (poolId: string): typeof poolInfo['string'] | null => {
       return poolInfo[poolId] || null;
@@ -11,4 +11,4 @@ export const getSyntheticPoolInfoSelector = createSelector(
   },
 );
 
-export default () => useAppSelector(getSyntheticPoolInfoSelector);
+export default () => useMarginPoolsSelector(getSyntheticPoolInfoSelector);

@@ -48,18 +48,25 @@ const useStyles = createUseStyles(theme => ({
       cursor: 'pointer',
     },
     '& .ant-table-tbody > tr.ant-table-row:hover > td': {
-      background: (props: any) => (props?.onRow ? theme.backgroundHoverColor : 'none'),
+      background: (props: TableProps) => (props.onRow ? theme.backgroundHoverColor : 'none'),
+    },
+    '& .ant-table-container': {
+      'border-top-left-radius': 0,
+      'border-top-right-radius': 0,
     },
   },
   panelTable: {
-    '& .ant-table': {
-      'border-radius': '0.75rem',
-    },
     '& .ant-table tbody > tr:last-child > td': {
       'border-bottom': 'none',
     },
     '& .ant-table-pagination': {
       'margin-right': '1rem',
+    },
+    '& .ant-table-container table > thead > tr:first-child th:first-child': {
+      'border-top-left-radius': '0',
+    },
+    '& .ant-table-container table > thead > tr:first-child th:last-child': {
+      'border-top-right-radius': '0',
     },
   },
   hideHeader: {

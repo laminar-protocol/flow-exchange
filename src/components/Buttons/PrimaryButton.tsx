@@ -3,6 +3,14 @@ import clsx from 'clsx';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
+type PrimaryButtonProps = React.ComponentProps<typeof Button>;
+
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ className, ...other }) => {
+  const classes = useStyles();
+
+  return <Button className={clsx(className, classes.root)} {...other} />;
+};
+
 const useStyles = createUseStyles(theme => ({
   root: {
     '&.ant-btn': {
@@ -14,7 +22,7 @@ const useStyles = createUseStyles(theme => ({
       'border-image-source': 'linear-gradient(to right, #004eff, #fa0000)',
       transition: 'none',
     },
-    '&.ant-btn:not(.ant-btn[disabled]):hover': {
+    '&.ant-btn:not([disabled]):hover': {
       background: `linear-gradient(90deg, ${theme.keyColorBlue} 0%, ${theme.keyColorRed} 100%)`,
       color: '#fff',
     },
@@ -34,13 +42,5 @@ const useStyles = createUseStyles(theme => ({
     },
   },
 }));
-
-type PrimaryButtonProps = React.ComponentProps<typeof Button>;
-
-const PrimaryButton: React.FC<PrimaryButtonProps> = ({ className, ...other }) => {
-  const classes = useStyles();
-
-  return <Button className={clsx(className, classes.root)} {...other} />;
-};
 
 export default PrimaryButton;

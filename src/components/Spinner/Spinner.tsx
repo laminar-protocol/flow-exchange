@@ -41,8 +41,8 @@ const useStyles = createUseStyles(theme => ({
     },
   },
   fullWidth: {
-    marginTop: '20px',
-    marginBottom: '20px',
+    marginTop: '1.25rem',
+    marginBottom: '1.25rem',
     width: '100%',
   },
 }));

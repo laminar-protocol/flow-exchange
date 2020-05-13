@@ -12,7 +12,9 @@ const useStyles = createUseStyles(theme => ({
   root: {
     marginLeft: theme.sideBarWidth,
     padding: '2rem 2.5rem',
-
+    [theme.breakpoints.between('sm', 'lg')]: {
+      padding: '1.5rem 2rem',
+    },
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
       padding: '1rem',

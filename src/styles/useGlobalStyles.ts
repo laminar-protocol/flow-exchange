@@ -2,6 +2,9 @@ import { createUseStyles } from 'react-jss';
 
 const useGlobalStyles = createUseStyles(theme => ({
   '@global': {
+    html: {
+      'font-size': '16px',
+    },
     body: {
       margin: '0',
       fontFamily:

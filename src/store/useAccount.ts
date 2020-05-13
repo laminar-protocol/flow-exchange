@@ -1,5 +1,5 @@
-import create, { GetState, SetState, State } from './createState';
 import { TokenBalance } from '../services';
+import create, { GetState, SetState, State } from './createState';
 
 export interface AccountState extends State {
   data: TokenBalance[];

@@ -22,7 +22,7 @@ const useStyles = createUseStyles(theme => ({
       position: 'fixed',
       left: 0,
       height: '100vh',
-      width: `${theme.sideBarWidth}px`,
+      width: theme.sideBarWidth,
       backgroundColor: `${theme.lightBackgroundColor}`,
       borderRight: `1px solid ${theme.borderColor}`,
       padding: '1rem',

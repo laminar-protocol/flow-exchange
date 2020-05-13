@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Col, PoolName, Row, Space, Text, Title } from '../../components';
+import { createUseStyles } from 'react-jss';
+import { Col, PoolName, Row, Text, Title } from '../../components';
 import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 import useSwap from './hooks/useSwap';
@@ -10,6 +11,7 @@ import RenderSyntheticPools from './RenderSyntheticPools';
 import RenderTxRecords from './RenderTxRecords';
 
 const Swap: React.FC = () => {
+  const classes = useStyles();
   const { t } = useTranslation();
 
   const api = useApi();
@@ -30,7 +32,7 @@ const Swap: React.FC = () => {
   }, [api, setState]);
 
   return (
-    <Space direction="vertical" size={24}>
+    <div className={classes.root}>
       <Title type="page">{t('Swap')}</Title>
       <RenderExchange />
       <Text size="l">
@@ -45,8 +47,15 @@ const Swap: React.FC = () => {
           <RenderBalances />
         </Col>
       </Row>
-    </Space>
+    </div>
   );
 };
+
+const useStyles = createUseStyles(theme => ({
+  root: {
+    display: 'grid',
+    'grid-gap': '1.5rem',
+  },
+}));
 
 export default Swap;

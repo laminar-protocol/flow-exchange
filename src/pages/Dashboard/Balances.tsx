@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createUseStyles } from 'react-jss';
-
-import { Panel, Separator, Spinner, Text, TextCell, Balance } from '../../components';
-import { useAccount } from '../../store/useAccount';
+import { Balance, Panel, Separator, Spinner, Text, TextCell } from '../../components';
 import { useApp } from '../../store/useApp';
+import { useAccount } from '../../store/useAccount';
 import { getTokenIcon } from '../../utils';
 
 const Balances: React.FC = () => {
   const classes = useStyles();
-  const tokens = useApp(state => state.tokens);
-  const currentAccount = useApp(state => state.currentAccount);
-  const updateBalances = useAccount(state => state.updateBalances);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (updateBalances && currentAccount?.address) {
-      setLoading(true);
-      updateBalances(currentAccount.address).finally(() => {
-        setLoading(false);
-      });
-    }
-  }, [currentAccount, updateBalances]);
+  const tokens = useApp(state => state.tokens);
+  const balances = useAccount(state => state.data);
 
   return (
     <Panel className={classes.root} padding="1.5rem">
       <Text size="l">Balances</Text>
       <Separator size={1} />
-      {loading ? (
-        <Spinner type="full" />
-      ) : (
+      {balances.length ? (
         tokens?.map(token => {
           return (
             <div className="item" key={token.name}>
@@ -40,6 +27,8 @@ const Balances: React.FC = () => {
             </div>
           );
         })
+      ) : (
+        <Spinner type="full" />
       )}
     </Panel>
   );
@@ -48,7 +37,7 @@ const Balances: React.FC = () => {
 const useStyles = createUseStyles(theme => ({
   root: {
     width: '35%',
-    [theme.breakpoints.down('lg')]: {
+    [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
 

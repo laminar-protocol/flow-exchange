@@ -4,7 +4,7 @@ import Icon from '@ant-design/icons';
 type IconProps = React.ComponentProps<typeof Icon>;
 
 const IconComponent = () => (
-  <svg width="20px" height="17px" viewBox="0 0 20 17">
+  <svg viewBox="0 0 20 17">
     <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
       <g transform="translate(-20.000000, -417.000000)">
         <g transform="translate(20.000000, 415.000000)">

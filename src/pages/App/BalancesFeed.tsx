@@ -9,7 +9,7 @@ const BalancesFeed: React.FC = () => {
   const setBalances = useAccount(state => state.setBalances);
 
   useLayoutEffect(() => {
-    if (currentApi?.currencies?.balances && currentAccount) {
+    if (currentApi?.currencies && currentAccount) {
       const s = currentApi.currencies.balances(currentAccount.address).subscribe((data: any) => {
         setBalances(data);
       });

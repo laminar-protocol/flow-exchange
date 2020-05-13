@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 
 import { PrimaryButton } from '../../../components';
-import { AppState } from '../../../store/useApp';
+import { MarginPoolsState } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderFastTradeModal from './RenderFastTradeModal';
 
 type RenderFastTradeButtonProps = {
-  data: AppState['margin']['poolInfo']['string'];
+  data: MarginPoolsState['poolInfo']['string'];
   pairId: string;
 };
 

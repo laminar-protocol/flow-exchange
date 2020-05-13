@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, NumberFormat, Panel, Row, Space, Text, Tooltip } from '../../components';
 import { useApi, useCurrentAccount } from '../../hooks';
-import useApp, { AppState, useAppApi } from '../../store/useApp';
+import useMarginPools, { MarginPoolsState } from '../../store/useMarginPools';
 import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderPoolDashboardProps = {
-  poolInfo: AppState['margin']['poolInfo']['string'];
+  poolInfo: MarginPoolsState['poolInfo']['string'];
   openDeposit: () => void;
   openWithdraw: () => void;
 };
@@ -33,8 +33,10 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
 
   const api = useApi();
   const account = useCurrentAccount();
+  const setState = useMarginPools(state => state.setState);
+
   const allowanceEnable = useMarginEnable();
-  const traderInfo = useApp(state => state.margin.traderInfo);
+  const traderInfo = useMarginPools(state => state.traderInfo);
   const { data } = useSubscription(positionOpenedSubscription, {
     variables: {
       signer: account.address,
@@ -43,25 +45,25 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
-      useAppApi.setState(state => {
-        state.margin.marginInfo = result;
+      setState(state => {
+        state.marginInfo = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api]);
+  }, [api, setState]);
 
   useLayoutEffect(() => {
     if (poolInfo?.poolId && api.margin?.traderInfo) {
       const subscription = api.margin.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
-        useAppApi.setState(state => {
-          state.margin.traderInfo = result;
+        setState(state => {
+          state.traderInfo = result;
         });
       });
 
       return () => subscription?.unsubscribe();
     }
-  }, [api, account, data, poolInfo]);
+  }, [api, account, data, poolInfo, setState]);
 
   const depositDisabledTip = useMemo(() => {
     if (!allowanceEnable) return 'NOT ENABLED';

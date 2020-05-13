@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect';
 
-import { useAppSelector, AppState } from '../store/useApp';
+import { useMarginPoolsSelector, MarginPoolsState } from '../store/useMarginPools';
 
 export const findTradingPair = createSelector(
-  (poolInfo: AppState['margin']['poolInfo'], poolId: string, pairId: string) => {
+  (poolInfo: MarginPoolsState['poolInfo'], poolId: string, pairId: string) => {
     return {
       poolInfo,
       poolId,
@@ -21,7 +21,7 @@ export const findTradingPair = createSelector(
 
 export const createTradingPairSelector = (poolId: string, pairId: string) => {
   return createSelector(
-    (state: AppState) => state.margin.poolInfo,
+    (state: MarginPoolsState) => state.poolInfo,
     poolInfo => {
       return findTradingPair(poolInfo, poolId, pairId);
     },
@@ -29,4 +29,4 @@ export const createTradingPairSelector = (poolId: string, pairId: string) => {
 };
 
 export default (poolId: string, pairId: string) =>
-  useAppSelector(createTradingPairSelector(poolId, pairId), [poolId, pairId]);
+  useMarginPoolsSelector(createTradingPairSelector(poolId, pairId), [poolId, pairId]);

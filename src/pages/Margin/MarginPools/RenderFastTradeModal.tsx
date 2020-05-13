@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Dialog, Space } from '../../../components';
-import { AppState } from '../../../store/useApp';
+import { MarginPoolsState } from '../../../store/useMarginPools';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderTrade from '../RenderTrade';
 
@@ -12,7 +12,7 @@ type RenderFastTradeModalProps = {
   onOk: () => void;
   openDeposit: () => void;
   openWithdraw: () => void;
-  data: AppState['margin']['poolInfo']['string'];
+  data: MarginPoolsState['poolInfo']['string'];
   pairId: string;
 };
 

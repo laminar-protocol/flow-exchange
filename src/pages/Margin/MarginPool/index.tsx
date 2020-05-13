@@ -2,17 +2,16 @@ import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
-
 import { Panel, Row, Space } from '../../../components';
-import useApp from '../../../store/useApp';
-import { LeftArrowIcon } from '../../../icons';
 import { useApi } from '../../../hooks';
-import ChartWidget from './ChartWidget';
-import RenderTrade from '../RenderTrade';
+import { LeftArrowIcon } from '../../../icons';
+import useMarginPools from '../../../store/useMarginPools';
+import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderPositions from '../RenderPositions';
-import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
+import RenderTrade from '../RenderTrade';
+import ChartWidget from './ChartWidget';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -22,20 +21,20 @@ const MarginPools = () => {
     poolId: string;
     pairId: string;
   }>();
-  const setState = useApp(state => state.setState);
+  const setState = useMarginPools(state => state.setState);
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const api = useApi();
 
-  const poolInfo = useApp(state => state.margin.poolInfo[params.poolId]);
+  const poolInfo = useMarginPools(state => state.poolInfo[params.poolId]);
 
   useLayoutEffect(() => {
     if (params.poolId) {
       //@ts-ignore
       const s = api.margin.poolInfo(params.poolId).subscribe((result: any) => {
         setState(state => {
-          state.margin.poolInfo[result.poolId] = result;
+          state.poolInfo[result.poolId] = result;
         });
       });
 
@@ -44,7 +43,7 @@ const MarginPools = () => {
   }, [api, params.poolId, setState]);
 
   return (
-    <Space direction="vertical" size={24}>
+    <div className={classes.root}>
       <div className={classes.backButton} onClick={() => history.push('/margin')}>
         <LeftArrowIcon />
       </div>
@@ -77,11 +76,15 @@ const MarginPools = () => {
         data={poolInfo}
         onOk={() => setShowWithdraw(false)}
       />
-    </Space>
+    </div>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
+  root: {
+    display: 'grid',
+    'grid-gap': '1.5rem',
+  },
   container: { width: '100%' },
   backButton: {
     display: 'flex',

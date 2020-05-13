@@ -1,30 +1,38 @@
 // Sorted ASC by size. That's important.
 // It can't be configured as it's used statically for propTypes.
-export const keys = ['xs', 'sm', 'md', 'lg', 'xl'];
+export const keys = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+
+type Key = typeof keys[number];
 
 // Keep in mind that @media is inclusive by the CSS specification.
-export default function createBreakpoints(breakpoints: any = {}) {
+export default function createBreakpoints(
+  breakpoints: {
+    values?: Record<Key, number>;
+    unit?: 'px' | 'rem';
+    step?: number;
+  } = {},
+) {
   const {
     // The breakpoint **start** at this value.
     // For instance with the first breakpoint xs: [xs, sm[.
     values = {
-      xs: 480,
-      sm: 768,
-      md: 992,
-      lg: 1200,
+      xs: 768,
+      sm: 1024,
+      md: 1280,
+      lg: 1440,
       xl: 1400,
     },
     unit = 'px',
     step = 5,
   } = breakpoints;
 
-  function up(key: any) {
-    const value = typeof values[key] === 'number' ? values[key] : key;
-    return `@media (min-width:${value}${unit})`;
+  function up(key: Key | number) {
+    const value = typeof values[key as Key] === 'number' ? values[key as Key] : (key as number);
+    return `@media (min-width:${value + step / 100}${unit})`;
   }
 
-  function down(key: any) {
-    const endIndex = keys.indexOf(key) + 1;
+  function down(key: Key) {
+    const endIndex = keys.indexOf(key);
     const upperbound = values[keys[endIndex]];
 
     if (endIndex === keys.length) {
@@ -33,7 +41,7 @@ export default function createBreakpoints(breakpoints: any = {}) {
     }
 
     const value = typeof upperbound === 'number' && endIndex > 0 ? upperbound : key;
-    return `@media (max-width:${value - step / 100}${unit})`;
+    return `@media (max-width:${value}${unit})`;
   }
 
   function between(start: any, end: any) {
@@ -44,19 +52,20 @@ export default function createBreakpoints(breakpoints: any = {}) {
     }
 
     return (
-      `@media (min-width:${typeof values[start] === 'number' ? values[start] : start}${unit}) and ` +
-      `(max-width:${(endIndex !== -1 && typeof values[keys[endIndex + 1]] === 'number'
-        ? values[keys[endIndex + 1]]
-        : end) -
-        step / 100}${unit})`
+      `@media (min-width:${
+        typeof values[start as Key] === 'number' ? values[start as Key] + step / 100 : start
+      }${unit}) and ` +
+      `(max-width:${
+        endIndex !== -1 && typeof values[keys[endIndex]] === 'number' ? values[keys[endIndex]] : end
+      }${unit})`
     );
   }
 
-  function only(key: any) {
+  function only(key: Key) {
     return between(key, key);
   }
 
-  function width(key: any) {
+  function width(key: Key) {
     return values[key];
   }
 

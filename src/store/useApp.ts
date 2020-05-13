@@ -1,4 +1,4 @@
-import Api, { Account, ChainType, MarginInfo, MarginPoolInfo, TokenInfo, TraderInfo } from '../services/Api';
+import Api, { Account, ChainType, TokenInfo } from '../services/Api';
 import create, { GetState, SetState, State } from './createState';
 import { useSettingApi } from './useSetting';
 
@@ -9,14 +9,6 @@ export interface AppState extends State {
   availableProvider: ChainType[];
   connectModalShow: boolean;
   tokens: TokenInfo[];
-  margin: {
-    balance: string;
-    marginInfo: MarginInfo;
-    allPoolIds: string[];
-    poolInfo: Record<string, MarginPoolInfo>;
-    traderInfo: TraderInfo;
-  };
-  // poolOptions: any,
   setApiEnable(chainType: ChainType): Promise<AppState['api']>;
   checkAvailableProvider(): ChainType[];
   setState: SetState<AppState>;
@@ -30,32 +22,6 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
     availableProvider: [],
     connectModalShow: false,
     tokens: [],
-    margin: {
-      balance: '0',
-      marginInfo: {
-        ellThreshold: {
-          marginCall: 0,
-          stopOut: 0,
-        },
-        enpThreshold: {
-          marginCall: 0,
-          stopOut: 0,
-        },
-      },
-      allPoolIds: [],
-      poolInfo: {},
-      traderInfo: {
-        equity: '0',
-        freeMargin: '0',
-        marginHeld: '0',
-        marginLevel: '0',
-        unrealizedPl: '0',
-        traderThreshold: {
-          marginCall: 0,
-          stopOut: 0,
-        },
-      },
-    },
     checkAvailableProvider() {
       const anyWindow = window as any;
 

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
-import { AppState } from '../../store/useApp';
+import { MarginPoolsState } from '../../store/useMarginPools';
 import { useCurrentAccount, useApi } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
 
@@ -11,7 +11,7 @@ type RenderDepositModalProps = {
   visible: boolean;
   onCancel: () => void;
   onOk: () => void;
-  data?: AppState['margin']['poolInfo']['string'];
+  data?: MarginPoolsState['poolInfo']['string'];
 };
 
 export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {
@@ -27,12 +27,8 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin?.deposit) return;
-    if (api.isLaminar) {
-      await notificationHelper(api.asLaminar.margin.deposit(account.address, toPrecision(amount)));
-    }
-    if (api.isEthereum && data?.poolId) {
-      await notificationHelper(api.asEthereum.margin.deposit(account.address, data.poolId, toPrecision(amount)));
+    if (data?.poolId) {
+      await notificationHelper(api.margin.deposit(account.address, data.poolId, toPrecision(amount)));
     }
     setAmount('');
     onOk();
@@ -98,12 +94,8 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (!api.margin?.withdraw) return;
-    if (api.isLaminar) {
-      await notificationHelper(api.asLaminar.margin.withdraw(account.address, toPrecision(amount)));
-    }
-    if (api.isEthereum && data?.poolId) {
-      await notificationHelper(api.asEthereum.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
+    if (data?.poolId) {
+      await notificationHelper(api.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
     }
     setAmount('');
     onOk();

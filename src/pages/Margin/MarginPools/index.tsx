@@ -4,45 +4,43 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { combineLatest } from 'rxjs';
-
 import {
   Amount,
   Col,
   Description,
   NumberFormat,
+  OraclePrice,
   Panel,
   PoolName,
   Row,
-  Space,
   Table,
   Text,
-  OraclePrice,
 } from '../../../components';
-import useApp from '../../../store/useApp';
-import { IdentityIcon } from '../../../icons';
 import { useApi, useSymbolList } from '../../../hooks';
-import RenderFastTradeButton from './RenderFastTradeButton';
+import { IdentityIcon } from '../../../icons';
+import useMarginPools from '../../../store/useMarginPools';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';
+import RenderFastTradeButton from './RenderFastTradeButton';
 
 const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
-  const setState = useApp(state => state.setState);
+  const setState = useMarginPools(state => state.setState);
 
   const [active, setActive] = useState('');
 
   const api = useApi();
   const symbolList = useSymbolList(active);
-  const marginInfo = useApp(state => state.margin.marginInfo);
-  const poolInfo = useApp(state => state.margin.poolInfo);
-  const allPoolIds = useApp(state => state.margin.allPoolIds);
+  const marginInfo = useMarginPools(state => state.marginInfo);
+  const poolInfo = useMarginPools(state => state.poolInfo);
+  const allPoolIds = useMarginPools(state => state.allPoolIds);
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
       setState(state => {
-        state.margin.marginInfo = result;
+        state.marginInfo = result;
       });
     });
 
@@ -52,7 +50,7 @@ const MarginPools = () => {
   useLayoutEffect(() => {
     const subscription = api.margin.allPoolIds().subscribe((result: any) => {
       setState(state => {
-        state.margin.allPoolIds = result;
+        state.allPoolIds = result;
       });
     });
 
@@ -67,7 +65,7 @@ const MarginPools = () => {
     ).subscribe((result: any) => {
       for (const item of result) {
         setState(state => {
-          state.margin.poolInfo[item.poolId] = item;
+          state.poolInfo[item.poolId] = item;
         });
       }
     });
@@ -154,57 +152,53 @@ const MarginPools = () => {
   ];
 
   return (
-    <Space direction="vertical" size={24}>
+    <div className={classes.root}>
       <RenderHeader />
-      <Row align="middle" justify="space-between">
-        <Col>
-          <Row>
-            <Col>
+      <Row align="middle" className={classes.cardContainer}>
+        <Col className={classes.cardItem}>
+          <Panel
+            className={clsx(classes.card, classes.all, { [classes.activeCard]: active === '' })}
+            onClick={() => setActive('')}
+          >
+            <div>
+              <Text className={classes.text}>{t('All Pools')}</Text>
+            </div>
+          </Panel>
+        </Col>
+        {allPoolIds.map(poolId => {
+          return (
+            <Col key={poolId} className={classes.cardItem}>
               <Panel
-                className={clsx(classes.card, classes.all, { [classes.activeCard]: active === '' })}
-                onClick={() => setActive('')}
+                className={clsx(classes.card, { [classes.activeCard]: active === poolId })}
+                onClick={() => setActive(poolId)}
               >
-                <div>
-                  <Text className={classes.text}>{t('All Pools')}</Text>
-                </div>
+                <Row style={{ height: '100%' }}>
+                  <div className={classes.poolIcon}>
+                    <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
+                  </div>
+                  <Description
+                    layout="vertical"
+                    label={
+                      <div>
+                        <Text size="n">
+                          <PoolName value={poolId} type="margin" />
+                        </Text>
+                        <Text size="s" style={{ paddingLeft: '0.25rem' }}>
+                          AVAILABLE
+                        </Text>
+                      </div>
+                    }
+                    className={classes.pool}
+                  >
+                    <Amount value={poolInfo[poolId]?.balance} loading={!poolInfo[poolId]} />
+                  </Description>
+                </Row>
               </Panel>
             </Col>
-            {allPoolIds.map(poolId => {
-              return (
-                <Col key={poolId}>
-                  <Panel
-                    className={clsx(classes.card, { [classes.activeCard]: active === poolId })}
-                    onClick={() => setActive(poolId)}
-                  >
-                    <Row style={{ height: '100%' }}>
-                      <div className={classes.poolIcon}>
-                        <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
-                      </div>
-                      <Description
-                        layout="vertical"
-                        label={
-                          <div>
-                            <Text size="n">
-                              <PoolName value={poolId} type="margin" />
-                            </Text>
-                            <Text size="s" style={{ paddingLeft: '0.25rem' }}>
-                              AVAILABLE
-                            </Text>
-                          </div>
-                        }
-                        className={classes.pool}
-                      >
-                        <Amount value={poolInfo[poolId]?.balance} loading={!poolInfo[poolId]} />
-                      </Description>
-                    </Row>
-                  </Panel>
-                </Col>
-              );
-            })}
-          </Row>
-        </Col>
-        <Col>
-          <Row style={{ marginRight: '2rem' }}>
+          );
+        })}
+        <Col style={{ flex: 1 }}>
+          <Row style={{ marginRight: '2rem', flexWrap: 'nowrap' }} justify="end" className={classes.cardItem}>
             <Description layout="vertical" label={t('Margin Call ENP')} align="flex-end">
               <NumberFormat value={marginInfo.enpThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
@@ -244,11 +238,23 @@ const MarginPools = () => {
         />
       </Panel>
       <RenderPositions />
-    </Space>
+    </div>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
+  root: {
+    display: 'grid',
+    'grid-gap': '1.5rem',
+  },
+  cardContainer: {
+    'margin-top': '-0.75rem',
+    'margin-bottom': '-0.75rem',
+  },
+  cardItem: {
+    'padding-top': '0.75rem',
+    'padding-bottom': '0.75rem',
+  },
   all: {},
   text: {},
   pool: {

@@ -72,6 +72,7 @@ const useStyles = createUseStyles(theme => ({
     '&.ant-input-lg, & .ant-input-lg': {
       'padding-top': '0.71875rem',
       'padding-bottom': '0.71875rem',
+      'font-size': '1rem',
     },
     '& .ant-select-lg': {
       'font-size': '1.5rem',

@@ -15,7 +15,13 @@ const PolkadotOracleFeed: React.FC = () => {
   useLayoutEffect(() => {
     if (currentApi?.currencies?.oracleValues) {
       const s = currentApi.currencies.oracleValues().subscribe((data: any) => {
-        setOracleValues(data);
+        setOracleValues(
+          data.concat({
+            tokenId: 'AUSD',
+            timestamp: null,
+            value: toPrecision(1).toString(),
+          }),
+        );
       });
 
       return () => s && s.unsubscribe();
