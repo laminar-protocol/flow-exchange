@@ -175,7 +175,6 @@ const useStyles = createUseStyles(theme => ({
     'padding-top': '0.75rem',
     'padding-bottom': '0.75rem',
   },
-  all: {},
   separate: {
     width: 1,
     height: '2.5rem',

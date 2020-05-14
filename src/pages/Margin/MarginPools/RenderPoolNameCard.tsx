@@ -14,7 +14,6 @@ type RenderPoolNameCardProps = {
 const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const { address } = useCurrentAccount();
 
   const setState = useMargin(state => state.setState);
 
@@ -25,7 +24,7 @@ const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
 
   return (
     <Panel
-      className={clsx(classes.card, { [classes.activeCard]: selectedPoolId === poolId })}
+      className={clsx(classes.card, { [classes.all]: isALl, [classes.activeCard]: selectedPoolId === poolId })}
       onClick={() =>
         setState(state => {
           state.selectedPoolId = isALl ? '' : poolId;
@@ -39,7 +38,7 @@ const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
       ) : (
         <Row style={{ height: '100%' }}>
           <div className={classes.poolIcon}>
-            <IdentityIcon size={32} value={address} />
+            <IdentityIcon size={32} value={poolInfo?.owner} />
           </div>
           <Description
             layout="vertical"
@@ -102,6 +101,7 @@ const useStyles = createUseStyles(theme => ({
     'margin-left': '1rem',
     height: '100%',
   },
+  all: {},
 }));
 
 export default RenderPoolNameCard;
