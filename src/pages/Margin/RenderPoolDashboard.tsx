@@ -1,74 +1,35 @@
-import { useSubscription } from '@apollo/react-hooks';
 import clsx from 'clsx';
-import gql from 'graphql-tag';
-import React, { useLayoutEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Amount, Description, NumberFormat, Panel, Row, Space, Text, Tooltip } from '../../components';
-import { useApi, useCurrentAccount } from '../../hooks';
-import useMarginPools, { MarginPoolsState } from '../../store/useMarginPools';
+import { Amount, Description, NumberFormat, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
+import { useQueryTraderInfo } from '../../store/useMarginPools';
 import useMarginEnable from './hooks/useMarginEnable';
 
 type RenderPoolDashboardProps = {
-  poolInfo: MarginPoolsState['poolInfo']['string'];
+  poolId: string;
   openDeposit: () => void;
   openWithdraw: () => void;
+  data: ReturnType<typeof useQueryTraderInfo>['data'];
 };
 
-const positionOpenedSubscription = gql`
-  subscription positionOpenedSubscription($signer: jsonb!) {
-    Events(
-      where: { method: { _eq: "PositionOpened" }, section: { _eq: "marginProtocol" }, args: { _contains: $signer } }
-      order_by: { blockNumber: desc }
-      limit: 1
-    ) {
-      blockNumber
-    }
-  }
-`;
-
-const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, openDeposit, openWithdraw }) => {
+const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ data, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const api = useApi();
-  const account = useCurrentAccount();
-  const setState = useMarginPools(state => state.setState);
-
   const allowanceEnable = useMarginEnable();
-  const traderInfo = useMarginPools(state => state.traderInfo);
-  const { data } = useSubscription(positionOpenedSubscription, {
-    variables: {
-      signer: account.address,
-    },
-  });
-
-  useLayoutEffect(() => {
-    const subscription = api.margin?.marginInfo().subscribe((result: any) => {
-      setState(state => {
-        state.marginInfo = result;
-      });
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, setState]);
-
-  useLayoutEffect(() => {
-    if (poolInfo?.poolId && api.margin?.traderInfo) {
-      const subscription = api.margin.traderInfo(account.address, poolInfo.poolId).subscribe((result: any) => {
-        setState(state => {
-          state.traderInfo = result;
-        });
-      });
-
-      return () => subscription?.unsubscribe();
-    }
-  }, [api, account, data, poolInfo, setState]);
 
   const depositDisabledTip = useMemo(() => {
     if (!allowanceEnable) return 'NOT ENABLED';
     return '';
   }, [allowanceEnable]);
+
+  if (!data)
+    return (
+      <Panel>
+        <Spinner />
+      </Panel>
+    );
 
   return (
     <Panel>
@@ -76,43 +37,40 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolInfo, ope
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            <NumberFormat value={traderInfo.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={data.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            <NumberFormat value={traderInfo.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={data.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
           </Description>
         </Space>
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          <NumberFormat value={traderInfo.marginLevel} percent precision options={{ mantissa: 2 }} />
+          <NumberFormat value={data.marginLevel} percent precision options={{ mantissa: 2 }} />
         </Description>
       </Space>
       <Row className={classes.detail}>
         <Space direction="vertical" style={{ flex: 1, marginRight: '2rem' }}>
           <Description label={t('Net Deposit/Withdraw')} justify="space-between"></Description>
           <Description label={t('Margin Held')} justify="space-between">
-            <Amount value={traderInfo.marginHeld} />
+            <Amount value={data.marginHeld} />
           </Description>
           <Description label={t('Unrealized P/L')} justify="space-between">
-            <Amount value={traderInfo.unrealizedPl} />
+            <Amount value={data.unrealizedPl} />
           </Description>
           <Description label={t('Equity')} justify="space-between">
-            <Amount value={traderInfo.equity} />
+            <Amount value={data.equity} />
           </Description>
         </Space>
         <Space direction="vertical" style={{ flex: 1 }}>
           <Description label={t('Realized P/L')} justify="space-between"></Description>
           <Description label={t('Free Margin')} justify="space-between">
-            <Amount value={traderInfo.freeMargin} />
+            <Amount value={data.freeMargin} />
           </Description>
           <Description label={t('Accumulated Swap')} justify="space-between"></Description>
           <Description label={t('Total Leveraged Position')} justify="space-between">
-            {traderInfo.marginLevel ? (
-              <NumberFormat
-                value={Number(traderInfo.equity) / Number(traderInfo.marginLevel)}
-                options={{ mantissa: 3 }}
-              />
+            {data.marginLevel ? (
+              <NumberFormat value={Number(data.equity) / Number(data.marginLevel)} options={{ mantissa: 3 }} />
             ) : null}
           </Description>
         </Space>

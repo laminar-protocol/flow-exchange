@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, TxHash } from '../../../components';
 import { useApi, useCurrentAccount } from '../../../hooks';
-import { findTradingPair } from '../../../hooks/useTradingPair';
+import { useGetTradingPair, useGetMarginPoolInfo } from '../../../hooks';
 import useMarginPools from '../../../store/useMarginPools';
 import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
@@ -20,12 +20,14 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
-  const positions = useMargin(state => state.positions);
 
   const api = useApi();
   const account = useCurrentAccount();
+  const getTradingPair = useGetTradingPair();
+  const getMarginPoolInfo = useGetMarginPoolInfo();
+
   const [actionLoading, setActionLoading] = useState('');
-  const poolInfo = useMarginPools(state => state.poolInfo);
+  const positions = useMargin(state => state.positions);
 
   const list = useMemo(() => {
     return positions.filter(filter);
@@ -92,9 +94,9 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
       dataIndex: 'pairId',
       align: 'right',
       render: (_: any, record: any) => {
-        const tradingPair = findTradingPair(poolInfo, record.poolId, record.pairId);
+        const tradingPair = getTradingPair(record.poolId, record.pairId);
 
-        return poolInfo[record.poolId] ? (
+        return tradingPair ? (
           <OraclePrice
             spread={record.direction === 'ask' ? tradingPair?.askSpread : tradingPair?.bidSpread}
             baseTokenId={record.pair.base}

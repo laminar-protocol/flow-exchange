@@ -7,7 +7,7 @@ import { BaseProps } from '../../types';
 type NumberFormatProps = {
   percent?: boolean;
   options?: Record<string, any>;
-  value: number | string;
+  value?: number | string;
   precision?: number | boolean;
 };
 
@@ -21,6 +21,8 @@ const NumberFormat: React.FC<BaseProps & NumberFormatProps> = ({
   },
   ...other
 }) => {
+  if (_value === undefined) return null;
+
   const formatOptions: Record<string, any> = {};
   const value = !precision
     ? _value

@@ -1,35 +1,31 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { useRouteMatch } from 'react-router-dom';
 import { Description, NumberFormat, Panel, PoolName, Row, Space, SwitchChain, Title } from '../../../components';
-import { MarginPoolsState } from '../../../store/useMarginPools';
+import { useMarginPoolInfo } from '../../../hooks';
 import { BaseProps } from '../../../types';
 import EnableTrading from './EnableTrading';
 import TotalBalance from './TotalBalance';
 
 type MarginHeaderProps = {
-  poolInfo?: MarginPoolsState['poolInfo']['string'];
+  poolId?: string;
+  pairId?: string;
+  isPool?: boolean;
 };
 
-const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolInfo, ...other }) => {
+const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId, isPool, ...other }) => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const match = useRouteMatch<{
-    pairId: string;
-    poolId: string;
-  }>({
-    path: '/margin/:poolId/:pairId',
-    exact: true,
-  });
+
+  const poolInfo = useMarginPoolInfo(poolId);
 
   return (
     <Panel padding="0.75rem 2rem" {...other}>
       <Row justify="space-between">
-        {match && poolInfo ? (
+        {isPool && poolInfo && pairId ? (
           <Space>
             <Title type="panel" className={classes.title} style={{ marginRight: 32 }}>
-              {match.params.pairId}
+              {pairId}
             </Title>
             <Description layout="vertical" label={t('Pool')}>
               <PoolName value={poolInfo.poolId} type="margin" />

@@ -1,9 +1,11 @@
-import React, { useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import {
+  Amount,
   AmountInput,
   DefaultButton,
+  Description,
   OraclePrice,
   Panel,
   RadioButton,
@@ -12,21 +14,82 @@ import {
   Select,
   Space,
   Text,
-  Description,
-  Amount,
 } from '../../components';
 import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
-import { MarginPoolsState } from '../../store/useMarginPools';
+import { TraderInfo, TraderPairOptions } from '../../services';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnable from './hooks/useMarginEnable';
-import useMarginPools from '../../store/useMarginPools';
 
-type RenderTradeProps = {
-  poolInfo: MarginPoolsState['poolInfo']['string'];
-  pairId: string;
+type TradeDataProps = {
+  type: 'price' | 'cost' | 'max';
+  data?: TraderPairOptions;
+  direction: 'ask' | 'bid';
+  extra: {
+    leverage?: string;
+    amount?: string;
+    freeMargin?: string;
+  };
 };
 
-const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
+const TradeInfoItem: React.FC<TradeDataProps> = ({
+  direction,
+  type,
+  data,
+  extra: { leverage, freeMargin, amount },
+}) => {
+  const { t } = useTranslation();
+
+  const spread = direction === 'ask' ? data?.askSpread : data?.bidSpread;
+
+  const render = useCallback(
+    (price: number) => {
+      if (!data) return;
+
+      if (type === 'price') {
+        return <Amount value={price} tokenId={data.pair.quote} withPrecision={true} mantissa={5} hasPostfix={true} />;
+      }
+
+      if (type === 'cost') {
+        const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
+        return <Amount value={value} tokenId={data.pair.quote} withPrecision={true} mantissa={2} hasPostfix={true} />;
+      }
+
+      if (type === 'max') {
+        const value = Math.floor(leverage && freeMargin ? Number(freeMargin) / (price / Number(leverage)) : 0);
+        return <Amount value={value} tokenId={data.pair.base} mantissa={2} hasPostfix={true} />;
+      }
+    },
+    [type, leverage, freeMargin, amount, data],
+  );
+
+  const label = useMemo(() => {
+    if (type === 'price') return t('Price');
+    if (type === 'cost') return t('Cost');
+    if (type === 'max') return t('Max');
+  }, [type]);
+
+  return (
+    <Description label={`${label}: `} space="0">
+      {data ? (
+        <OraclePrice
+          baseTokenId={data.pair.base}
+          quoteTokenId={data.pair.quote}
+          spread={spread}
+          direction={direction}
+          render={render}
+        />
+      ) : null}
+    </Description>
+  );
+};
+
+type RenderTradeProps = {
+  poolId: string;
+  pairId: string;
+  data?: TraderInfo;
+};
+
+const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId, data }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -37,15 +100,12 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const [actionLoading, setActionLoading] = useState('');
   const api = useApi();
   const account = useCurrentAccount();
-  const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
+  const pairInfo = useTradingPair(poolId, pairId);
   const allowanceEnable = useMarginEnable();
-  const traderInfo = useMarginPools(state => state.traderInfo);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
   }, [pairInfo]);
-
-  console.log(leverage);
 
   // set default leverage
   useLayoutEffect(() => {
@@ -75,14 +135,13 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   }, [allowanceEnable, leverages, leverage]);
 
   const openPosition = async (direction: 'ask' | 'bid') => {
-    if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
-      return;
+    if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
       await notificationHelper(
         api.margin.openPosition(
           account.address,
-          poolInfo.poolId,
+          poolId,
           pairInfo.pair,
           leverages[leverage][direction] as any,
           toPrecision(amount),
@@ -93,6 +152,12 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
     } finally {
       setActionLoading('');
     }
+  };
+
+  const tradeInfoExtra = {
+    leverage,
+    amount,
+    freeMargin: data?.freeMargin,
   };
 
   return (
@@ -131,25 +196,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
         />
         <div className={classes.actions}>
           <div className={classes.actionItem}>
-            <Description label={`${t('Price')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.askSpread}
-                  direction="ask"
-                  render={(price: number) => (
-                    <Amount
-                      value={price}
-                      tokenId={pairInfo.pair.quote}
-                      withPrecision={true}
-                      mantissa={5}
-                      hasPostfix={true}
-                    />
-                  )}
-                />
-              ) : null}
-            </Description>
+            <TradeInfoItem data={pairInfo} direction="ask" type="price" extra={tradeInfoExtra} />
             <DefaultButton
               size="large"
               loading={actionLoading === 'ask'}
@@ -160,68 +207,11 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Buy/Long')}
             </DefaultButton>
-            <Description label={`${t('Cost')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.askSpread}
-                  direction="ask"
-                  render={(price: number) => {
-                    const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
-                    return (
-                      <Amount
-                        value={value}
-                        tokenId={pairInfo.pair.quote}
-                        withPrecision={true}
-                        mantissa={2}
-                        hasPostfix={true}
-                      />
-                    );
-                  }}
-                />
-              ) : null}
-            </Description>
-            <Description label={`${t('Max')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.askSpread}
-                  direction="ask"
-                  render={(price: number) => {
-                    const value = Math.floor(
-                      leverage && traderInfo.freeMargin
-                        ? Number(traderInfo.freeMargin) / (price / Number(leverage))
-                        : 0,
-                    );
-
-                    return <Amount value={value} tokenId={pairInfo.pair.base} mantissa={2} hasPostfix={true} />;
-                  }}
-                />
-              ) : null}
-            </Description>
+            <TradeInfoItem data={pairInfo} direction="ask" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="ask" type="max" extra={tradeInfoExtra} />
           </div>
           <div className={classes.actionItem}>
-            <Description label={`${t('Price')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.bidSpread}
-                  direction="bid"
-                  render={(price: number) => (
-                    <Amount
-                      value={price}
-                      tokenId={pairInfo.pair.quote}
-                      withPrecision={true}
-                      mantissa={5}
-                      hasPostfix={true}
-                    />
-                  )}
-                />
-              ) : null}
-            </Description>
+            <TradeInfoItem data={pairInfo} direction="bid" type="price" extra={tradeInfoExtra} />
             <DefaultButton
               size="large"
               loading={actionLoading === 'bid'}
@@ -232,47 +222,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
             >
               {t('Sell/Short')}
             </DefaultButton>
-            <Description label={`${t('Cost')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.bidSpread}
-                  direction="bid"
-                  render={(price: number) => {
-                    const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
-                    return (
-                      <Amount
-                        value={value}
-                        tokenId={pairInfo.pair.quote}
-                        withPrecision={true}
-                        mantissa={2}
-                        hasPostfix={true}
-                      />
-                    );
-                  }}
-                />
-              ) : null}
-            </Description>
-            <Description label={`${t('Max')}: `} space="0">
-              {pairInfo ? (
-                <OraclePrice
-                  baseTokenId={pairInfo.pair.base}
-                  quoteTokenId={pairInfo.pair.quote}
-                  spread={pairInfo.bidSpread}
-                  direction="bid"
-                  render={(price: number) => {
-                    const value = Math.floor(
-                      leverage && traderInfo.freeMargin
-                        ? Number(traderInfo.freeMargin) / (price / Number(leverage))
-                        : 0,
-                    );
-
-                    return <Amount value={value} tokenId={pairInfo.pair.base} mantissa={2} hasPostfix={true} />;
-                  }}
-                />
-              ) : null}
-            </Description>
+            <TradeInfoItem data={pairInfo} direction="bid" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="bid" type="max" extra={tradeInfoExtra} />
           </div>
         </div>
       </Space>

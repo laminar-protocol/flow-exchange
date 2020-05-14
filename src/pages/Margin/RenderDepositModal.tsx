@@ -8,18 +8,18 @@ import { useCurrentAccount, useApi } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderDepositModalProps = {
+  poolId: string;
   visible: boolean;
   onCancel: () => void;
   onOk: () => void;
-  data?: MarginPoolsState['poolInfo']['string'];
 };
 
-export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {
+export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, poolId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
-  const account = useCurrentAccount();
+  const { address } = useCurrentAccount();
   const api = useApi();
 
   const handleCancel = useCallback(() => {
@@ -27,12 +27,10 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (data?.poolId) {
-      await notificationHelper(api.margin.deposit(account.address, data.poolId, toPrecision(amount)));
-    }
+    await notificationHelper(api.margin.deposit(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
-  }, [onOk, api, data, account.address, amount]);
+  }, [onOk, api, poolId, address, amount]);
 
   return (
     <Dialog
@@ -57,13 +55,13 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
             <span className={classes.infoLabel}>From</span>
             <SwitchChain renderEthereum={() => 'Ethereum'} renderLaminar={() => 'Polkadot'} />
             <span className={classes.infoAddress}>
-              <Address value={account.address} maxLength={20} />
+              <Address value={address} maxLength={20} />
             </span>
           </div>
           <div className={classes.infoSeparate}></div>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>To</span>
-            {data ? <PoolName value={data.poolId} type="margin" /> : null}
+            <PoolName value={poolId} type="margin" />
           </div>
         </div>
       </div>
@@ -82,12 +80,12 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   );
 };
 
-export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, data }) => {
+export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible, onCancel, onOk, poolId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const [amount, setAmount] = useState('');
-  const account = useCurrentAccount();
+  const { address } = useCurrentAccount();
   const api = useApi();
 
   const handleCancel = useCallback(() => {
@@ -95,12 +93,10 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   }, [onCancel]);
 
   const handleSubmit = useCallback(async () => {
-    if (data?.poolId) {
-      await notificationHelper(api.margin.withdraw(account.address, data.poolId, toPrecision(amount)));
-    }
+    await notificationHelper(api.margin.withdraw(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
-  }, [onOk, api, data, account.address, amount]);
+  }, [onOk, api, poolId, address, amount]);
 
   return (
     <Dialog
@@ -123,14 +119,14 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
         <div className={classes.infoRight}>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>From</span>
-            {data ? <PoolName value={data.poolId} type="margin" /> : null}
+            <PoolName value={poolId} type="margin" />
           </div>
           <div className={classes.infoSeparate}></div>
           <div className={classes.infoItem}>
             <span className={classes.infoLabel}>To</span>
             <SwitchChain renderEthereum={() => 'Ethereum'} renderLaminar={() => 'Polkadot'} />
             <span className={classes.infoAddress}>
-              <Address value={account.address} maxLength={20} />
+              <Address value={address} maxLength={20} />
             </span>
           </div>
         </div>

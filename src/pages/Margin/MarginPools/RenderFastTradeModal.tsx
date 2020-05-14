@@ -1,10 +1,9 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { Dialog, Space } from '../../../components';
-import { MarginPoolsState } from '../../../store/useMarginPools';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderTrade from '../RenderTrade';
+import { TraderInfo } from '../../../services';
 
 type RenderFastTradeModalProps = {
   visible: boolean;
@@ -12,8 +11,9 @@ type RenderFastTradeModalProps = {
   onOk: () => void;
   openDeposit: () => void;
   openWithdraw: () => void;
-  data: MarginPoolsState['poolInfo']['string'];
+  poolId: string;
   pairId: string;
+  data?: TraderInfo;
 };
 
 export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
@@ -23,6 +23,7 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
   onCancel,
   onOk,
   data,
+  poolId,
   pairId,
 }) => {
   const { t } = useTranslation();
@@ -45,8 +46,8 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
       footer={null}
     >
       <Space size={24} direction="vertical" style={{ marginBottom: 48 }}>
-        <RenderPoolDashboard poolInfo={data} openDeposit={openDeposit} openWithdraw={openWithdraw} />
-        <RenderTrade poolInfo={data} pairId={pairId} />
+        <RenderPoolDashboard data={data} poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
+        <RenderTrade data={data} poolId={poolId} pairId={pairId} />
       </Space>
     </Dialog>
   );

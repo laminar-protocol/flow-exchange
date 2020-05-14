@@ -11,7 +11,7 @@ const syntheticPoolNameMap: Record<string, string> = {
 };
 
 type PoolNameProps = {
-  value: string;
+  value?: string;
   type: 'margin' | 'synthetic';
 };
 

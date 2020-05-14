@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
-
+import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { PrimaryButton } from '../../../components';
-import { MarginPoolsState } from '../../../store/useMarginPools';
+import { useQueryTraderInfo } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderFastTradeModal from './RenderFastTradeModal';
 
 type RenderFastTradeButtonProps = {
-  data: MarginPoolsState['poolInfo']['string'];
+  poolId: string;
   pairId: string;
 };
 
-const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ data, pairId }) => {
+const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ poolId, pairId }) => {
   const [showModal, setShowModal] = useState(false);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
+
+  const hasModalShow = useMemo(() => {
+    return showModal || showWithdraw || showDeposit;
+  }, [showModal, showWithdraw, showDeposit]);
+
+  const { data: traderInfo, forceUpdate } = useQueryTraderInfo({ variables: { poolId }, lazy: true });
+
+  useLayoutEffect(() => {
+    if (hasModalShow) forceUpdate();
+  }, [hasModalShow, forceUpdate]);
 
   return (
     <div>
@@ -25,7 +34,8 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ data, pai
         Fast Buy/Sell
       </PrimaryButton>
       <RenderFastTradeModal
-        data={data}
+        data={traderInfo}
+        poolId={poolId}
         visible={showModal}
         pairId={pairId}
         openDeposit={() => {
@@ -42,14 +52,14 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ data, pai
       <RenderDepositModal
         visible={showDeposit}
         onCancel={() => setShowDeposit(false)}
-        data={data}
+        poolId={poolId}
         onOk={() => setShowDeposit(false)}
       />
 
       <RenderWithdrawModal
         visible={showWithdraw}
         onCancel={() => setShowWithdraw(false)}
-        data={data}
+        poolId={poolId}
         onOk={() => setShowWithdraw(false)}
       />
     </div>

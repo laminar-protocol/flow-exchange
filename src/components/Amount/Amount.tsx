@@ -17,7 +17,7 @@ type NumberToAmountOptions = {
 };
 
 type AmountProps = {
-  value: BN | string | number;
+  value?: BN | string | number;
   tokenId?: TokenInfo['id'];
   mantissa?: number;
   useGrouping?: boolean;
@@ -53,6 +53,7 @@ const Amount: React.FC<AmountProps> = props => {
   const token = useTokenInfo(tokenId);
 
   if (loading) return <Spinner />;
+  if (value === undefined) return null;
 
   const options: NumberToAmountOptions = {
     useGrouping,

@@ -1,17 +1,16 @@
-import React, { useLayoutEffect } from 'react';
-import { combineLatest } from 'rxjs';
+import React from 'react';
 import { NumberFormat } from '../../components';
 import { useApi } from '../../hooks';
-import useMarginPools from '../../store/useMarginPools';
+import useMarginPools, { useLoadPoolEntities } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
 import RenderPoolsCollapse from './RenderPoolsCollapse';
 
 const LiquidityMargin: React.FC = () => {
   const api = useApi();
 
-  const setState = useMarginPools(state => state.setState);
-  const allPoolIds = useMarginPools(state => state.allPoolIds);
-  const marginPoolInfo = useMarginPools(state => state.poolInfo);
+  const marginPoolInfo = useMarginPools(state => state.poolEntities.byId);
+
+  useLoadPoolEntities();
 
   const data = Object.values(marginPoolInfo).map(item => ({
     poolId: item.poolId,
@@ -44,32 +43,6 @@ const LiquidityMargin: React.FC = () => {
       bidSpread,
     })),
   }));
-
-  useLayoutEffect(() => {
-    const subscription = api.margin.allPoolIds().subscribe((result: any) => {
-      setState(state => {
-        state.allPoolIds = result;
-      });
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, setState]);
-
-  useLayoutEffect(() => {
-    const subscription = combineLatest(
-      allPoolIds.map(poolId => {
-        return api.margin.poolInfo(poolId);
-      }),
-    ).subscribe((result: any) => {
-      for (const item of result) {
-        setState(state => {
-          state.poolInfo[item.poolId] = item;
-        });
-      }
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, setState]);
 
   const handleDeposit = async (address: string, poolId: string, amount: string) => {
     await notificationHelper(api.asLaminar.margin.depositLiquidity(address, poolId, toPrecision(amount)));
