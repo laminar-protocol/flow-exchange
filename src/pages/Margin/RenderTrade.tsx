@@ -66,7 +66,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
     if (type === 'price') return t('Price');
     if (type === 'cost') return t('Cost');
     if (type === 'max') return t('Max');
-  }, [type]);
+  }, [type, t]);
 
   return (
     <Description label={`${label}: `} space="0">

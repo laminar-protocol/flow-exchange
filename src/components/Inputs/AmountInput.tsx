@@ -24,7 +24,7 @@ const Input: React.FC<AntdInputProps> = ({
 
   const suffix = useMemo(() => {
     return showSuffix ? token?.name || baseToken?.name || null : null;
-  }, [token, baseToken]);
+  }, [token, baseToken, showSuffix]);
 
   const re = useMemo(() => {
     return new RegExp(`^\\d{0,10}(\\.\\d{0,3})?$`);

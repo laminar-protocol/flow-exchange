@@ -1,10 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
-import { MarginPoolsState } from '../../store/useMarginPools';
-import { useCurrentAccount, useApi } from '../../hooks';
+import { useApi, useCurrentAccount } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderDepositModalProps = {

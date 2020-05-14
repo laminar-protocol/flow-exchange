@@ -3,15 +3,15 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
+import { useMarginPoolInfo } from '../../../hooks';
 import { LeftArrowIcon } from '../../../icons';
-import useMarginPools, { useLoadPoolInfo, useQueryTraderInfo, useLoadMarginInfo } from '../../../store/useMarginPools';
+import { useLoadMarginInfo, useLoadPoolInfo, useQueryTraderInfo } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderPositions from '../RenderPositions';
 import RenderTrade from '../RenderTrade';
 import ChartWidget from './ChartWidget';
-import { useMarginPoolInfo } from '../../../hooks';
 
 const MarginPools = () => {
   const classes = useStyles();
@@ -27,7 +27,7 @@ const MarginPools = () => {
 
   const poolInfo = useMarginPoolInfo(poolId);
 
-  const { data: traderInfo, forceUpdate } = useQueryTraderInfo({ variables: { poolId } });
+  const { data: traderInfo } = useQueryTraderInfo({ variables: { poolId } });
 
   useLoadPoolInfo({
     variables: {
