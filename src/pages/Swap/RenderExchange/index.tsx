@@ -160,8 +160,8 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
         {baseToken && exchangeToken && option?.askSpread && option?.bidSpread ? (
           <Text>
             {!isRedeem
-              ? `1 ${baseToken.name} ≈ ${(1 / Number(askRate)).toFixed(5)} ${exchangeToken.name}`
-              : `1 ${exchangeToken.name} ≈ ${Number(bidRate).toFixed(5)} ${baseToken.name}`}
+              ? `1 ${baseToken.name} ≈ ${toFixed(1 / Number(askRate), 5)} ${exchangeToken.name}`
+              : `1 ${exchangeToken.name} ≈ ${toFixed(Number(bidRate), 5)} ${baseToken.name}`}
           </Text>
         ) : (
           <Spinner />

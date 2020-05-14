@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
@@ -19,6 +19,7 @@ import {
 import { useApi, useSymbolList } from '../../../hooks';
 import { IdentityIcon } from '../../../icons';
 import useMarginPools from '../../../store/useMarginPools';
+import useMargin from '../hooks/useMargin';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';
 import RenderFastTradeButton from './RenderFastTradeButton';
@@ -27,35 +28,36 @@ const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
-  const setState = useMarginPools(state => state.setState);
+  const setMarginPoolsState = useMarginPools(state => state.setState);
 
-  const [active, setActive] = useState('');
+  const selectedPoolId = useMargin(state => state.selectedPoolId);
+  const setMarginState = useMargin(state => state.setState);
 
   const api = useApi();
-  const symbolList = useSymbolList(active);
+  const symbolList = useSymbolList(selectedPoolId);
   const marginInfo = useMarginPools(state => state.marginInfo);
   const poolInfo = useMarginPools(state => state.poolInfo);
   const allPoolIds = useMarginPools(state => state.allPoolIds);
 
   useLayoutEffect(() => {
     const subscription = api.margin?.marginInfo().subscribe((result: any) => {
-      setState(state => {
+      setMarginPoolsState(state => {
         state.marginInfo = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, setState]);
+  }, [api, setMarginPoolsState]);
 
   useLayoutEffect(() => {
     const subscription = api.margin.allPoolIds().subscribe((result: any) => {
-      setState(state => {
+      setMarginPoolsState(state => {
         state.allPoolIds = result;
       });
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, setState]);
+  }, [api, setMarginPoolsState]);
 
   useLayoutEffect(() => {
     const subscription = combineLatest(
@@ -64,14 +66,14 @@ const MarginPools = () => {
       }),
     ).subscribe((result: any) => {
       for (const item of result) {
-        setState(state => {
+        setMarginPoolsState(state => {
           state.poolInfo[item.poolId] = item;
         });
       }
     });
 
     return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, setState]);
+  }, [api, allPoolIds, setMarginPoolsState]);
 
   const columns: any[] = [
     {
@@ -157,8 +159,12 @@ const MarginPools = () => {
       <Row align="middle" className={classes.cardContainer}>
         <Col className={classes.cardItem}>
           <Panel
-            className={clsx(classes.card, classes.all, { [classes.activeCard]: active === '' })}
-            onClick={() => setActive('')}
+            className={clsx(classes.card, classes.all, { [classes.activeCard]: selectedPoolId === '' })}
+            onClick={() =>
+              setMarginState(state => {
+                state.selectedPoolId = '';
+              })
+            }
           >
             <div>
               <Text className={classes.text}>{t('All Pools')}</Text>
@@ -169,8 +175,12 @@ const MarginPools = () => {
           return (
             <Col key={poolId} className={classes.cardItem}>
               <Panel
-                className={clsx(classes.card, { [classes.activeCard]: active === poolId })}
-                onClick={() => setActive(poolId)}
+                className={clsx(classes.card, { [classes.activeCard]: selectedPoolId === poolId })}
+                onClick={() =>
+                  setMarginState(state => {
+                    state.selectedPoolId = poolId;
+                  })
+                }
               >
                 <Row style={{ height: '100%' }}>
                   <div className={classes.poolIcon}>

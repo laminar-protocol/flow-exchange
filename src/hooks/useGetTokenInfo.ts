@@ -1,12 +1,18 @@
 import { createSelector } from 'reselect';
 import { AppState, useAppSelector } from '../store/useApp';
+import { TokenInfo } from '../services/Api';
 
 export const getTokenInfoSelector = createSelector(
   (state: AppState) => state.tokens,
   tokens => {
-    return (tokenId?: string) => {
-      if (!tokenId) return null;
-      return tokens.find(({ id }) => id === tokenId) || null;
+    return (filter?: string | ((a: TokenInfo) => boolean)) => {
+      if (!filter) return null;
+      if (typeof filter === 'string') {
+        return tokens.find(({ id }) => id === filter) || null;
+      } else if (typeof filter === 'function') {
+        return tokens.find(filter) || null;
+      }
+      return null;
     };
   },
 );

@@ -64,6 +64,7 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
           size="large"
           placeholder="Amount"
           value={amount}
+          showSuffix
           onChange={e => {
             setAmount(e.target.value);
           }}
@@ -126,6 +127,7 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
           size="large"
           placeholder="Amount"
           value={amount}
+          showSuffix
           onChange={e => {
             setAmount(e.target.value);
           }}

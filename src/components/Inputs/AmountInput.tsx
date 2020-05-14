@@ -20,10 +20,11 @@ const Input: React.FC<AntdInputProps> = ({
   const classes = useStyles();
 
   const token = useTokenInfo(tokenId);
+  const baseToken = useTokenInfo(({ isBaseToken }) => isBaseToken);
 
   const suffix = useMemo(() => {
-    return token?.name || null;
-  }, [token]);
+    return token?.name || baseToken?.name || null;
+  }, [token, baseToken]);
 
   const re = useMemo(() => {
     return new RegExp(`^\\d{0,10}(\\.\\d{0,3})?$`);

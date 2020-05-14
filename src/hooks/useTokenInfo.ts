@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import useGetTokenInfo from './useGetTokenInfo';
+import { TokenInfo } from '../services/Api';
 
-export const useTokenInfo = (tokenId?: string) => {
+export const useTokenInfo = (filter?: string | ((a: TokenInfo) => boolean)): TokenInfo | null => {
   const getTokenInfo = useGetTokenInfo();
 
   return useMemo(() => {
-    return getTokenInfo(tokenId);
-  }, [getTokenInfo, tokenId]);
+    return getTokenInfo(filter);
+  }, [getTokenInfo, filter]);
 };
 
 export default useTokenInfo;
