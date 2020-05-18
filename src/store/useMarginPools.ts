@@ -191,13 +191,13 @@ export const useLoadPoolEntities = ({ lazy = false, isQuery = false }: { lazy?: 
         return api.margin.poolInfo(poolId);
       }),
     ).subscribe(result => {
-      for (const item of result) {
-        setState(state => {
+      setState(state => {
+        for (const item of result) {
           if (item) {
             state.poolEntities.byId[item.poolId] = item;
           }
-        });
-      }
+        }
+      });
     });
 
     return () => subscription?.unsubscribe();

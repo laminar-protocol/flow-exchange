@@ -1,15 +1,15 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { Balance, Panel, Separator, Spinner, Text, TextCell } from '../../components';
-import { useApp } from '../../store/useApp';
-import { useAccount } from '../../store/useAccount';
+import useAppStore from '../../store/useApp';
+import useAccountStore from '../../store/useAccount';
 import { getTokenIcon } from '../../utils';
 
 const Balances: React.FC = () => {
   const classes = useStyles();
 
-  const tokens = useApp(state => state.tokens);
-  const balances = useAccount(state => state.data);
+  const tokens = useAppStore(state => state.tokens);
+  const balances = useAccountStore(state => state.balances);
 
   return (
     <Panel className={classes.root} padding="1.5rem">

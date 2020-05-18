@@ -1,7 +1,7 @@
-import React from 'react';
-import { createUseStyles } from 'react-jss';
 import { Space as AntdSpace } from 'antd';
 import clsx from 'clsx';
+import React from 'react';
+import { createUseStyles } from 'react-jss';
 
 type AntdSpaceProps = React.ComponentProps<typeof AntdSpace>;
 
@@ -22,12 +22,12 @@ const Space: React.FC<AntdSpaceProps> = ({ direction, className, ...other }) => 
   );
 };
 
-const useStyles = createUseStyles(() => ({
+const useStyles = createUseStyles({
   vertical: {
     '&.ant-space': {
       display: 'flex',
     },
   },
-}));
+});
 
 export default Space;

@@ -11,7 +11,7 @@ type RenderPoolNameCardProps = {
   poolId: string | 'ALL_POOLS';
 };
 
-const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
+const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = React.memo(({ poolId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -21,10 +21,14 @@ const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
   const poolInfo = useMarginPoolInfo(poolId);
 
   const isALl = poolId === 'ALL_POOLS';
+  const isSelectedALl = isALl && selectedPoolId === '';
 
   return (
     <Panel
-      className={clsx(classes.card, { [classes.all]: isALl, [classes.activeCard]: selectedPoolId === poolId || isALl })}
+      className={clsx(classes.card, {
+        [classes.all]: isALl,
+        [classes.activeCard]: selectedPoolId === poolId || isSelectedALl,
+      })}
       onClick={() =>
         setState(state => {
           state.selectedPoolId = isALl ? '' : poolId;
@@ -60,7 +64,7 @@ const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
       )}
     </Panel>
   );
-};
+});
 
 const useStyles = createUseStyles(theme => ({
   text: {},

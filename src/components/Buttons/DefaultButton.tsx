@@ -1,8 +1,7 @@
 import { Button } from 'antd';
+import clsx from 'clsx';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import clsx from 'clsx';
-
 import { Tooltip } from '../Tooltip';
 
 type DefaultButtonProps = React.ComponentProps<typeof Button> & {
@@ -25,11 +24,11 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({ className, tooltip, disab
   return tooltip ? <Tooltip title={tooltip}>{inner}</Tooltip> : inner;
 };
 
-const useStyles = createUseStyles(() => ({
+const useStyles = createUseStyles({
   disabled: {
     opacity: '0.5',
     cursor: 'not-allowed',
   },
-}));
+});
 
 export default DefaultButton;
