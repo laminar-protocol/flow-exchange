@@ -17,7 +17,7 @@ type NumberToAmountOptions = {
 };
 
 type AmountProps = {
-  value?: BN | string | number;
+  value?: BN | string;
   tokenId?: TokenInfo['id'];
   mantissa?: number;
   useGrouping?: boolean;
@@ -36,7 +36,7 @@ const numberToAmount = (
   return `${prefix}${value}${postfix ? ' ' : ''}${postfix}`;
 };
 
-const Amount: React.FC<AmountProps> = props => {
+const Amount: React.FC<AmountProps> = React.memo(props => {
   const {
     value,
     tokenId,
@@ -76,6 +76,6 @@ const Amount: React.FC<AmountProps> = props => {
   const number = BN.isBN(quantity) ? (quantity as BN) : new BN(getValueFromHex(quantity));
 
   return <Component {...other}>{numberToAmount(number, options)}</Component>;
-};
+});
 
 export default Amount;

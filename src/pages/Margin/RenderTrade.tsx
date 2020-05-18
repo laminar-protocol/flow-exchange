@@ -17,9 +17,10 @@ import {
 } from '../../components';
 import { useApi, useCurrentAccount, useTraderInfo, useTradingPair } from '../../hooks';
 import { TraderPairOptions } from '../../services';
-import { useLoadTraderInfo } from '../../store/useMarginPools';
+import { useLoadTraderInfo, useLoadPoolInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
+import BN from 'bn.js';
 
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
@@ -47,16 +48,17 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
       if (!data) return;
 
       if (type === 'price') {
-        return <Amount value={price} tokenId={data.pair.quote} withPrecision={true} mantissa={5} hasPostfix={true} />;
+        return <Amount value={toPrecision(price)} tokenId={data.pair.quote} mantissa={5} hasPostfix={true} />;
       }
 
       if (type === 'cost') {
         const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
-        return <Amount value={value} tokenId={data.pair.quote} withPrecision={true} mantissa={2} hasPostfix={true} />;
+        return <Amount value={toPrecision(value)} tokenId={data.pair.quote} mantissa={2} hasPostfix={true} />;
       }
 
       if (type === 'max') {
-        const value = Math.floor(leverage && freeMargin ? Number(freeMargin) / (price / Number(leverage)) : 0);
+        const value =
+          leverage && freeMargin ? new BN(freeMargin).div(toPrecision(price / Number(leverage))) : new BN(0);
         return <Amount value={value} tokenId={data.pair.base} mantissa={2} hasPostfix={true} />;
       }
     },
@@ -102,6 +104,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   const account = useCurrentAccount();
 
   const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
+  useLoadPoolInfo({ variables: { poolId } });
 
   const allowanceEnable = useMarginEnableStore();
   const pairInfo = useTradingPair(poolId, pairId);

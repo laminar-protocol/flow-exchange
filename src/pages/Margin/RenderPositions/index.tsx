@@ -88,13 +88,13 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       title: t('AMT'),
       dataIndex: 'amt',
       align: 'right',
-      render: (value: number) => <Amount value={value} />,
+      render: (value: string) => <Amount value={value} />,
     },
     {
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} mantissa={5} />,
+      render: (value: string) => <Amount value={value} mantissa={5} />,
     },
     {
       title: t('CUR. PRICE'),
