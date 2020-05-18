@@ -24,7 +24,7 @@ const RenderPoolNameCard: React.FC<RenderPoolNameCardProps> = ({ poolId }) => {
 
   return (
     <Panel
-      className={clsx(classes.card, { [classes.all]: isALl, [classes.activeCard]: selectedPoolId === poolId })}
+      className={clsx(classes.card, { [classes.all]: isALl, [classes.activeCard]: selectedPoolId === poolId || isALl })}
       onClick={() =>
         setState(state => {
           state.selectedPoolId = isALl ? '' : poolId;
