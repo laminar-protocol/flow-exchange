@@ -15,10 +15,11 @@ import {
   Space,
   Text,
 } from '../../components';
-import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
-import { TraderInfo, TraderPairOptions } from '../../services';
+import { useApi, useCurrentAccount, useTraderInfo, useTradingPair } from '../../hooks';
+import { TraderPairOptions } from '../../services';
+import { useLoadTraderInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
-import useMarginEnable from './hooks/useMarginEnable';
+import useMarginEnableStore from './hooks/useMarginEnable';
 
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
@@ -86,10 +87,9 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
 type RenderTradeProps = {
   poolId: string;
   pairId: string;
-  data?: TraderInfo;
 };
 
-const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId, data }) => {
+const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -100,8 +100,12 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId, data }) => {
   const [actionLoading, setActionLoading] = useState('');
   const api = useApi();
   const account = useCurrentAccount();
+
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
+
+  const allowanceEnable = useMarginEnableStore();
   const pairInfo = useTradingPair(poolId, pairId);
-  const allowanceEnable = useMarginEnable();
+  const traderInfo = useTraderInfo(poolId);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -150,6 +154,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId, data }) => {
       );
       setAmount('');
     } finally {
+      updateTraderInfo();
       setActionLoading('');
     }
   };
@@ -157,7 +162,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId, data }) => {
   const tradeInfoExtra = {
     leverage,
     amount,
-    freeMargin: data?.freeMargin,
+    freeMargin: traderInfo?.freeMargin,
   };
 
   return (

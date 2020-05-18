@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Dialog, Space } from '../../../components';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderTrade from '../RenderTrade';
-import { TraderInfo } from '../../../services';
 
 type RenderFastTradeModalProps = {
   visible: boolean;
@@ -13,7 +12,6 @@ type RenderFastTradeModalProps = {
   openWithdraw: () => void;
   poolId: string;
   pairId: string;
-  data?: TraderInfo;
 };
 
 export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
@@ -22,7 +20,6 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
   openDeposit,
   onCancel,
   onOk,
-  data,
   poolId,
   pairId,
 }) => {
@@ -46,8 +43,8 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
       footer={null}
     >
       <Space size={24} direction="vertical" style={{ marginBottom: 48 }}>
-        <RenderPoolDashboard data={data} poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
-        <RenderTrade data={data} poolId={poolId} pairId={pairId} />
+        <RenderPoolDashboard poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
+        <RenderTrade poolId={poolId} pairId={pairId} />
       </Space>
     </Dialog>
   );

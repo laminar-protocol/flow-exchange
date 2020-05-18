@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
 import { useApi, useCurrentAccount } from '../../hooks';
+import { useLoadMarginBalance, useLoadTraderInfo } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
 
 type RenderDepositModalProps = {
@@ -20,6 +21,9 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   const { address } = useCurrentAccount();
   const api = useApi();
 
+  const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({ isQuery: true, lazy: true });
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
+
   const handleCancel = useCallback(() => {
     return onCancel();
   }, [onCancel]);
@@ -28,7 +32,9 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
     await notificationHelper(api.margin.deposit(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
-  }, [onOk, api, poolId, address, amount]);
+    updateMarginBalance();
+    updateTraderInfo();
+  }, [onOk, api, updateMarginBalance, updateTraderInfo, poolId, address, amount]);
 
   return (
     <Dialog
@@ -86,6 +92,9 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   const { address } = useCurrentAccount();
   const api = useApi();
 
+  const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({ isQuery: true, lazy: true });
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
+
   const handleCancel = useCallback(() => {
     return onCancel();
   }, [onCancel]);
@@ -94,7 +103,9 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
     await notificationHelper(api.margin.withdraw(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
-  }, [onOk, api, poolId, address, amount]);
+    updateMarginBalance();
+    updateTraderInfo();
+  }, [onOk, api, updateMarginBalance, updateTraderInfo, poolId, address, amount]);
 
   return (
     <Dialog

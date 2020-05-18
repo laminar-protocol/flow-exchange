@@ -11,3 +11,4 @@ export { default as useSymbolList } from './useSymbolList';
 export { default as useTokenInfo } from './useTokenInfo';
 export * from './useGetMarginPoolInfo';
 export * from './useGetTradingPair';
+export * from './useGetTraderInfo';

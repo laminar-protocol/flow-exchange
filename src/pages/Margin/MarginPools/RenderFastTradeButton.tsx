@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { PrimaryButton } from '../../../components';
-import { useQueryTraderInfo } from '../../../store/useMarginPools';
+import { useLoadTraderInfo } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderFastTradeModal from './RenderFastTradeModal';
 
@@ -18,7 +18,7 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ poolId, p
     return showModal || showWithdraw || showDeposit;
   }, [showModal, showWithdraw, showDeposit]);
 
-  const { data: traderInfo, forceUpdate } = useQueryTraderInfo({ variables: { poolId }, lazy: true });
+  const { forceUpdate } = useLoadTraderInfo({ variables: { poolId }, lazy: true });
 
   useLayoutEffect(() => {
     if (hasModalShow) forceUpdate();
@@ -33,35 +33,38 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ poolId, p
       >
         Fast Buy/Sell
       </PrimaryButton>
-      <RenderFastTradeModal
-        data={traderInfo}
-        poolId={poolId}
-        visible={showModal}
-        pairId={pairId}
-        openDeposit={() => {
-          setShowModal(false);
-          setShowDeposit(true);
-        }}
-        openWithdraw={() => {
-          setShowModal(false);
-          setShowWithdraw(true);
-        }}
-        onOk={() => setShowModal(false)}
-        onCancel={() => setShowModal(false)}
-      />
-      <RenderDepositModal
-        visible={showDeposit}
-        onCancel={() => setShowDeposit(false)}
-        poolId={poolId}
-        onOk={() => setShowDeposit(false)}
-      />
+      {hasModalShow && (
+        <>
+          <RenderFastTradeModal
+            poolId={poolId}
+            visible={showModal}
+            pairId={pairId}
+            openDeposit={() => {
+              setShowModal(false);
+              setShowDeposit(true);
+            }}
+            openWithdraw={() => {
+              setShowModal(false);
+              setShowWithdraw(true);
+            }}
+            onOk={() => setShowModal(false)}
+            onCancel={() => setShowModal(false)}
+          />
+          <RenderDepositModal
+            visible={showDeposit}
+            onCancel={() => setShowDeposit(false)}
+            poolId={poolId}
+            onOk={() => setShowDeposit(false)}
+          />
 
-      <RenderWithdrawModal
-        visible={showWithdraw}
-        onCancel={() => setShowWithdraw(false)}
-        poolId={poolId}
-        onOk={() => setShowWithdraw(false)}
-      />
+          <RenderWithdrawModal
+            visible={showWithdraw}
+            onCancel={() => setShowWithdraw(false)}
+            poolId={poolId}
+            onOk={() => setShowWithdraw(false)}
+          />
+        </>
+      )}
     </div>
   );
 };

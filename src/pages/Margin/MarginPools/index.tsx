@@ -4,7 +4,11 @@ import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { Col, Description, NumberFormat, OraclePrice, Panel, PoolName, Row, Table } from '../../../components';
 import { useSymbolList } from '../../../hooks';
-import useMarginPools, { useLoadMarginInfo, useLoadPoolEntities } from '../../../store/useMarginPools';
+import useMarginPoolsStore, {
+  useLoadMarginInfo,
+  useLoadPoolEntities,
+  useLoadMarginBalance,
+} from '../../../store/useMarginPools';
 import useMargin from '../hooks/useMargin';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';
@@ -19,11 +23,12 @@ const MarginPools = () => {
   const selectedPoolId = useMargin(state => state.selectedPoolId);
 
   const symbolList = useSymbolList(selectedPoolId);
-  const marginInfo = useMarginPools(state => state.marginInfo);
-  const allPoolIds = useMarginPools(state => state.poolEntities.allIds);
+  const marginInfo = useMarginPoolsStore(state => state.marginInfo);
+  const allPoolIds = useMarginPoolsStore(state => state.poolEntities.allIds);
 
   useLoadMarginInfo();
   useLoadPoolEntities();
+  useLoadMarginBalance();
 
   const columns: any[] = [
     {

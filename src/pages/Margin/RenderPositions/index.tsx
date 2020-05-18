@@ -9,23 +9,30 @@ import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
 import LaminarPositions from './LaminarPositions';
+import { useLoadTraderInfo } from '../../../store/useMarginPools';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
+  poolId?: string;
 };
 
-const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = x => true, ...other }) => {
+const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, filter = x => true, ...other }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
 
   const api = useApi();
   const account = useCurrentAccount();
-  const getTradingPair = useGetTradingPair();
 
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({
+    variables: { poolId: poolId || '' },
+    isQuery: true,
+    lazy: true,
+  });
+
+  const getTradingPair = useGetTradingPair();
   const [actionLoading, setActionLoading] = useState('');
   const positions = useMargin(state => state.positions);
-
   const list = useMemo(() => {
     return positions.filter(filter);
   }, [filter, positions]);
@@ -42,6 +49,9 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
         ),
       );
     } finally {
+      if (poolId) {
+        updateTraderInfo();
+      }
       setActionLoading('');
     }
   };

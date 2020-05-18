@@ -1,6 +1,7 @@
-import { useState, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { combineLatest } from 'rxjs';
-import { useApi, useForceUpdate, useCurrentAccount } from '../hooks';
+import { take } from 'rxjs/operators';
+import { useApi, useCurrentAccount, useForceUpdate } from '../hooks';
 import { MarginInfo, MarginPoolInfo, TraderInfo } from '../services';
 import create, { GetState, SetState } from './createState';
 
@@ -10,6 +11,9 @@ export interface MarginPoolsState {
   poolEntities: {
     byId: Record<string, MarginPoolInfo>;
     allIds: string[];
+  };
+  traderEntities: {
+    byId: Record<string, TraderInfo>;
   };
   setState: SetState<MarginPoolsState>;
 }
@@ -31,18 +35,35 @@ export const [useMarginPools, useMarginPoolsApi, useMarginPoolsSelector] = creat
       byId: {},
       allIds: [],
     },
+    traderEntities: {
+      byId: {},
+    },
     setState: set,
   }),
 );
 
-export const useLoadPoolInfo = ({ variables: { poolId } }: { variables: { poolId: string } }) => {
+export const useLoadPoolInfo = ({
+  variables: { poolId },
+  lazy = false,
+  isQuery = false,
+}: {
+  variables: { poolId: string };
+  lazy?: boolean;
+  isQuery?: boolean;
+}) => {
   const api = useApi();
   const setState = useMarginPools(state => state.setState);
   const [tick, forceUpdate] = useForceUpdate();
 
   useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
     if (poolId) {
-      const s = api.margin.poolInfo(poolId).subscribe(result => {
+      let $ = api.margin.poolInfo(poolId);
+
+      if (isQuery) $ = $.pipe(take(1));
+
+      const s = $.subscribe(result => {
         if (result) {
           setState(state => {
             state.poolEntities.byId[result.poolId] = result;
@@ -52,71 +73,117 @@ export const useLoadPoolInfo = ({ variables: { poolId } }: { variables: { poolId
 
       return () => s?.unsubscribe();
     }
-  }, [api, poolId, setState, tick]);
+  }, [api, poolId, setState, tick, lazy, isQuery]);
 
   return { forceUpdate };
 };
 
-export const useQueryTraderInfo = ({
+export const useLoadTraderInfo = ({
   variables: { poolId },
   lazy = false,
+  isQuery = false,
 }: {
   variables: { poolId: string };
   lazy?: boolean;
+  isQuery?: boolean;
 }) => {
   const api = useApi();
+  const setState = useMarginPools(state => state.setState);
   const { address } = useCurrentAccount();
-  const [traderInfo, setTraderInfo] = useState<TraderInfo>();
 
   const [tick, forceUpdate] = useForceUpdate();
 
   useLayoutEffect(() => {
     if (lazy && !tick) return;
     if (poolId) {
-      const s = api.margin.traderInfo(address, poolId).subscribe(result => {
-        setTraderInfo(result);
+      let $ = api.margin.traderInfo(address, poolId);
+
+      if (isQuery) $ = $.pipe(take(1));
+
+      const id = `${address}/${poolId}`;
+
+      const s = $.subscribe(result => {
+        setState(state => {
+          state.traderEntities.byId[id] = result;
+        });
       });
 
       return () => s?.unsubscribe();
     }
-  }, [api, address, poolId, tick, lazy]);
+  }, [api, setState, address, poolId, tick, lazy, isQuery]);
 
-  return { forceUpdate, data: traderInfo };
+  return { forceUpdate };
 };
 
-export const useLoadMarginInfo = () => {
+export const useLoadMarginInfo = ({ lazy = false, isQuery = false }: { lazy?: boolean; isQuery?: boolean } = {}) => {
   const api = useApi();
   const setState = useMarginPools(state => state.setState);
   const [tick, forceUpdate] = useForceUpdate();
 
   useLayoutEffect(() => {
-    const subscription = api.margin.marginInfo().subscribe(result => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.marginInfo();
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
       setState(state => {
         state.marginInfo = result;
       });
     });
 
-    return () => subscription?.unsubscribe();
-  }, [api, setState, tick]);
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery]);
 
   return { forceUpdate };
 };
 
-export const useLoadPoolEntities = () => {
+export const useLoadMarginBalance = ({ lazy = false, isQuery = false }: { lazy?: boolean; isQuery?: boolean } = {}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+  const { address } = useCurrentAccount();
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.balance(address);
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      setState(state => {
+        state.balance = result;
+      });
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery, address]);
+
+  return { forceUpdate };
+};
+
+export const useLoadPoolEntities = ({ lazy = false, isQuery = false }: { lazy?: boolean; isQuery?: boolean } = {}) => {
   const api = useApi();
   const setState = useMarginPools(state => state.setState);
   const allIds = useMarginPools(state => state.poolEntities.allIds);
   const [tick, forceUpdate] = useForceUpdate();
 
   useLayoutEffect(() => {
-    const subscription = api.margin.allPoolIds().subscribe(result => {
+    let $ = api.margin.allPoolIds();
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
       setState(state => {
         state.poolEntities.allIds = result;
       });
     });
 
-    return () => subscription?.unsubscribe();
-  }, [api, setState, tick]);
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery]);
 
   useLayoutEffect(() => {
     const subscription = combineLatest(

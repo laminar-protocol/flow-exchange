@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, Panel, PoolName, Row, Text } from '../../../components';
-import { useCurrentAccount, useMarginPoolInfo } from '../../../hooks';
+import { useMarginPoolInfo } from '../../../hooks';
 import { IdentityIcon } from '../../../icons';
 import useMargin from '../hooks/useMargin';
 

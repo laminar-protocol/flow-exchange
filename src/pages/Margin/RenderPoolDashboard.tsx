@@ -3,21 +3,20 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, NumberFormat, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
-import { useQueryTraderInfo } from '../../store/useMarginPools';
-import useMarginEnable from './hooks/useMarginEnable';
-
+import useMarginEnableStore from './hooks/useMarginEnable';
+import { useTraderInfo } from '../../hooks';
 type RenderPoolDashboardProps = {
   poolId: string;
   openDeposit: () => void;
   openWithdraw: () => void;
-  data: ReturnType<typeof useQueryTraderInfo>['data'];
 };
 
-const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ data, openDeposit, openWithdraw }) => {
+const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const allowanceEnable = useMarginEnable();
+  const allowanceEnable = useMarginEnableStore();
+  const data = useTraderInfo(poolId);
 
   const depositDisabledTip = useMemo(() => {
     if (!allowanceEnable) return 'NOT ENABLED';
@@ -26,7 +25,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ data, openDep
 
   if (!data)
     return (
-      <Panel>
+      <Panel className={classes.loadingContainer}>
         <Spinner />
       </Panel>
     );
@@ -95,6 +94,12 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ data, openDep
 };
 
 const useStyles = createUseStyles(theme => ({
+  loadingContainer: {
+    'min-height': '16.25rem',
+    display: 'flex',
+    'justify-content': 'center',
+    'align-items': 'center',
+  },
   header: {
     padding: '1rem 1.5rem',
     'border-bottom': `solid 1px ${theme.keyColorGrey}`,

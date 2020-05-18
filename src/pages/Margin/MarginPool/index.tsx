@@ -3,9 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
-import { useMarginPoolInfo } from '../../../hooks';
 import { LeftArrowIcon } from '../../../icons';
-import { useLoadMarginInfo, useLoadPoolInfo, useQueryTraderInfo } from '../../../store/useMarginPools';
+import { useLoadMarginBalance, useLoadTraderInfo } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
 import RenderPoolDashboard from '../RenderPoolDashboard';
@@ -25,16 +24,8 @@ const MarginPools = () => {
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
 
-  const poolInfo = useMarginPoolInfo(poolId);
-
-  const { data: traderInfo } = useQueryTraderInfo({ variables: { poolId } });
-
-  useLoadPoolInfo({
-    variables: {
-      poolId,
-    },
-  });
-  useLoadMarginInfo();
+  useLoadMarginBalance();
+  useLoadTraderInfo({ variables: { poolId } });
 
   return (
     <div className={classes.root}>
@@ -49,14 +40,13 @@ const MarginPools = () => {
         <Space direction="vertical" style={{ width: '27.25rem' }} size={24}>
           <RenderPoolDashboard
             poolId={poolId}
-            data={traderInfo}
             openDeposit={() => setShowDeposit(true)}
             openWithdraw={() => setShowWithdraw(true)}
           />
           <RenderTrade poolId={poolId} pairId={pairId} />
         </Space>
       </Row>
-      <RenderPositions filter={(item: any) => poolInfo?.poolId === item.poolId && pairId === item.pairId} />
+      <RenderPositions poolId={poolId} filter={(item: any) => poolId === item.poolId && pairId === item.pairId} />
 
       <RenderDepositModal
         visible={showDeposit}
