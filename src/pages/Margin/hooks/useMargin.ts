@@ -3,6 +3,7 @@ import create, { GetState, SetState, State } from '../../../store/createState';
 export interface MarginState extends State {
   setState: SetState<MarginState>;
   allowance: string;
+  selectedPoolId: string;
   positions: {
     positionId: string;
     hash: string;
@@ -25,6 +26,7 @@ export const [useMargin, useMarginApi, useMarginSelector] = create<MarginState>(
   (set: SetState<MarginState>, get: GetState<MarginState>): MarginState => ({
     setState: set,
     allowance: '',
+    selectedPoolId: '',
     positions: [],
   }),
 );

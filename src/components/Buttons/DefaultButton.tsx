@@ -14,6 +14,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({ className, tooltip, disab
 
   const inner = (
     <Button
+      disabled={disabled}
       className={clsx(className, {
         [classes.disabled]: disabled,
       })}

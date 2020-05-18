@@ -23,7 +23,7 @@ export const getLeverageEnable = (leverages: string[]) => {
     (result, curr) => {
       const [direction, leverage] = getLeverage(curr);
 
-      const label = leverage ? `x${leverage}` : '';
+      const label = leverage ? `${leverage}` : '';
 
       let option: any = {};
       if (direction === 'ask') {

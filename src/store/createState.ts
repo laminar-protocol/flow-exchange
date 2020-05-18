@@ -2,7 +2,7 @@ import produce from 'immer';
 import { useCallback, useEffect, useLayoutEffect, useReducer, useRef } from 'react';
 
 export type State = Record<string | number | symbol, any>;
-export type PartialState<T extends State> = Partial<T> | ((state: T) => Partial<T>);
+export type PartialState<T extends State> = Partial<T> | ((state: T) => void);
 export type StateCreator<T extends State> = (set: SetState<T>, get: GetState<T>, api: StoreApi<T>) => T;
 export type StateSelector<T extends State, U> = (state: T) => U;
 export type StateListener<T> = (state: T | null, error?: Error) => void;

@@ -1,9 +1,11 @@
-import React, { useLayoutEffect, useMemo, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import {
+  Amount,
   AmountInput,
   DefaultButton,
+  Description,
   OraclePrice,
   Panel,
   RadioButton,
@@ -13,17 +15,81 @@ import {
   Space,
   Text,
 } from '../../components';
-import { useApi, useCurrentAccount, useTradingPair } from '../../hooks';
-import { MarginPoolsState } from '../../store/useMarginPools';
+import { useApi, useCurrentAccount, useTraderInfo, useTradingPair } from '../../hooks';
+import { TraderPairOptions } from '../../services';
+import { useLoadTraderInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
-import useMarginEnable from './hooks/useMarginEnable';
+import useMarginEnableStore from './hooks/useMarginEnable';
+
+type TradeDataProps = {
+  type: 'price' | 'cost' | 'max';
+  data?: TraderPairOptions;
+  direction: 'ask' | 'bid';
+  extra: {
+    leverage?: string;
+    amount?: string;
+    freeMargin?: string;
+  };
+};
+
+const TradeInfoItem: React.FC<TradeDataProps> = ({
+  direction,
+  type,
+  data,
+  extra: { leverage, freeMargin, amount },
+}) => {
+  const { t } = useTranslation();
+
+  const spread = direction === 'ask' ? data?.askSpread : data?.bidSpread;
+
+  const render = useCallback(
+    (price: number) => {
+      if (!data) return;
+
+      if (type === 'price') {
+        return <Amount value={price} tokenId={data.pair.quote} withPrecision={true} mantissa={5} hasPostfix={true} />;
+      }
+
+      if (type === 'cost') {
+        const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
+        return <Amount value={value} tokenId={data.pair.quote} withPrecision={true} mantissa={2} hasPostfix={true} />;
+      }
+
+      if (type === 'max') {
+        const value = Math.floor(leverage && freeMargin ? Number(freeMargin) / (price / Number(leverage)) : 0);
+        return <Amount value={value} tokenId={data.pair.base} mantissa={2} hasPostfix={true} />;
+      }
+    },
+    [type, leverage, freeMargin, amount, data],
+  );
+
+  const label = useMemo(() => {
+    if (type === 'price') return t('Price');
+    if (type === 'cost') return t('Cost');
+    if (type === 'max') return t('Max');
+  }, [type, t]);
+
+  return (
+    <Description label={`${label}: `} space="0">
+      {data ? (
+        <OraclePrice
+          baseTokenId={data.pair.base}
+          quoteTokenId={data.pair.quote}
+          spread={spread}
+          direction={direction}
+          render={render}
+        />
+      ) : null}
+    </Description>
+  );
+};
 
 type RenderTradeProps = {
-  poolInfo: MarginPoolsState['poolInfo']['string'];
+  poolId: string;
   pairId: string;
 };
 
-const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
+const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
@@ -34,8 +100,12 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
   const [actionLoading, setActionLoading] = useState('');
   const api = useApi();
   const account = useCurrentAccount();
-  const pairInfo = useTradingPair(poolInfo?.poolId, pairId);
-  const allowanceEnable = useMarginEnable();
+
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
+
+  const allowanceEnable = useMarginEnableStore();
+  const pairInfo = useTradingPair(poolId, pairId);
+  const traderInfo = useTraderInfo(poolId);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -50,34 +120,33 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
 
   const buyDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
-      return 'NOT ENABLE';
+      return 'NOT ENABLED';
     }
     if (!leverages[leverage]?.ask) {
-      return 'NOT SUPPORT';
+      return 'NOT SUPPORTED';
     }
     return '';
   }, [allowanceEnable, leverages, leverage]);
 
   const sellDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
-      return 'NOT ENABLE';
+      return 'NOT ENABLED';
     }
     if (!leverages[leverage]?.bid) {
-      return 'NOT SUPPORT';
+      return 'NOT SUPPORTED';
     }
     return '';
   }, [allowanceEnable, leverages, leverage]);
 
   const openPosition = async (direction: 'ask' | 'bid') => {
-    if (!amount || !api.margin?.openPosition || !poolInfo.poolId || !pairInfo?.pair || !leverages[leverage][direction])
-      return;
+    if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
       await notificationHelper(
         api.margin.openPosition(
           account.address,
-          poolInfo.poolId,
-          pairInfo.pair as any,
+          poolId,
+          pairInfo.pair,
           leverages[leverage][direction] as any,
           toPrecision(amount),
           direction === 'ask' ? toPrecision('1000000000') : toPrecision('0'),
@@ -85,8 +154,15 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
       );
       setAmount('');
     } finally {
+      updateTraderInfo();
       setActionLoading('');
     }
+  };
+
+  const tradeInfoExtra = {
+    leverage,
+    amount,
+    freeMargin: traderInfo?.freeMargin,
   };
 
   return (
@@ -110,7 +186,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
           >
             {Object.keys(leverages).map(label => (
               <Select.Option value={label} key={label}>
-                {label}
+                {`x${label}`}
               </Select.Option>
             ))}
           </Select>
@@ -118,47 +194,41 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolInfo, pairId }) => {
         <AmountInput
           value={amount}
           placeholder="Amount"
+          tokenId={pairInfo?.pair.base}
+          showSuffix={true}
           className={classes.input}
           onChange={event => setAmount(event.target.value)}
         />
         <div className={classes.actions}>
           <div className={classes.actionItem}>
+            <TradeInfoItem data={pairInfo} direction="ask" type="price" extra={tradeInfoExtra} />
             <DefaultButton
+              size="large"
               loading={actionLoading === 'ask'}
               className={classes.buyButton}
               onClick={() => openPosition('ask')}
               tooltip={buyDisabledTip}
               disabled={!!buyDisabledTip}
             >
-              {t('Buy')}
+              {t('Buy/Long')}
             </DefaultButton>
-            {pairInfo ? (
-              <OraclePrice
-                baseTokenId={pairInfo.pair.base}
-                quoteTokenId={pairInfo.pair.quote}
-                spread={pairInfo.askSpread}
-                direction="ask"
-              />
-            ) : null}
+            <TradeInfoItem data={pairInfo} direction="ask" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="ask" type="max" extra={tradeInfoExtra} />
           </div>
           <div className={classes.actionItem}>
+            <TradeInfoItem data={pairInfo} direction="bid" type="price" extra={tradeInfoExtra} />
             <DefaultButton
+              size="large"
               loading={actionLoading === 'bid'}
               className={classes.sellButton}
               onClick={() => openPosition('bid')}
               tooltip={sellDisabledTip}
               disabled={!!sellDisabledTip}
             >
-              {t('Sell')}
+              {t('Sell/Short')}
             </DefaultButton>
-            {pairInfo ? (
-              <OraclePrice
-                baseTokenId={pairInfo.pair.base}
-                quoteTokenId={pairInfo.pair.quote}
-                spread={pairInfo.bidSpread}
-                direction="bid"
-              />
-            ) : null}
+            <TradeInfoItem data={pairInfo} direction="bid" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="bid" type="max" extra={tradeInfoExtra} />
           </div>
         </div>
       </Space>
@@ -172,19 +242,20 @@ const useStyles = createUseStyles(theme => ({
   },
   input: {
     width: '100%',
-    'font-size': '1rem',
   },
   buyButton: {
-    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+    '&.ant-btn, & .ant-btn': {
       border: 0,
+      width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
       background: '#10b887',
     },
   },
   sellButton: {
-    '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
+    '&.ant-btn, &.ant-btn:hover, & .ant-btn, & .ant-btn:hover': {
       border: 0,
+      width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
       background: '#fa5352',
@@ -199,6 +270,9 @@ const useStyles = createUseStyles(theme => ({
     '&:not(:last-child)': {
       'margin-right': '2rem',
     },
+    '& > *': {
+      'margin-bottom': '0.5rem',
+    },
   },
   selectLeverge: {
     width: '10rem',
@@ -210,7 +284,6 @@ const useStyles = createUseStyles(theme => ({
     width: '100%',
     '& $buyButton,& $sellButton': {
       flex: 1,
-      'margin-bottom': '0.5rem',
     },
   },
 }));

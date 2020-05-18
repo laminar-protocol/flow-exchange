@@ -6,7 +6,7 @@ import { Panel, Spinner, Text, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
-import { notificationHelper, toPrecision } from '../../../utils';
+import { notificationHelper, toPrecision, toFixed } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
@@ -64,12 +64,12 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   const predictBaseAmount = useMemo(() => {
     if (!askRate || !bidRate || !exchangeAmount) return '';
-    return (!isRedeem ? Number(exchangeAmount) * Number(askRate) : Number(exchangeAmount) * Number(bidRate)).toFixed(5);
+    return toFixed(!isRedeem ? Number(exchangeAmount) * Number(askRate) : Number(exchangeAmount) * Number(bidRate), 5);
   }, [askRate, bidRate, isRedeem, exchangeAmount]);
 
   const predictExchangeAmount = useMemo(() => {
     if (!askRate || !bidRate || !baseAmount) return '';
-    return (!isRedeem ? Number(baseAmount) / Number(askRate) : Number(baseAmount) / Number(bidRate)).toFixed(5);
+    return toFixed(!isRedeem ? Number(baseAmount) / Number(askRate) : Number(baseAmount) / Number(bidRate), 5);
   }, [askRate, bidRate, isRedeem, baseAmount]);
 
   useLayoutEffect(() => {
@@ -160,8 +160,8 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
         {baseToken && exchangeToken && option?.askSpread && option?.bidSpread ? (
           <Text>
             {!isRedeem
-              ? `1 ${baseToken.name} ≈ ${(1 / Number(askRate)).toFixed(5)} ${exchangeToken.name}`
-              : `1 ${exchangeToken.name} ≈ ${Number(bidRate).toFixed(5)} ${baseToken.name}`}
+              ? `1 ${baseToken.name} ≈ ${toFixed(1 / Number(askRate), 5)} ${exchangeToken.name}`
+              : `1 ${exchangeToken.name} ≈ ${toFixed(Number(bidRate), 5)} ${baseToken.name}`}
           </Text>
         ) : (
           <Spinner />

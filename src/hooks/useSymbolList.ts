@@ -1,26 +1,32 @@
 import { createSelector } from 'reselect';
 
 import { useMarginPoolsSelector, MarginPoolsState } from '../store/useMarginPools';
+import { getMarginPoolInfoSelector } from './useGetMarginPoolInfo';
 
 const createMarginSymbolListSelector = (key: string) => {
   return createSelector(
-    (state: MarginPoolsState) => state.poolInfo,
-    poolInfo => {
-      return Object.keys(poolInfo)
+    (state: MarginPoolsState) => state.poolEntities,
+    getMarginPoolInfoSelector,
+    (poolEntities, getMarginPoolInfo) => {
+      return Object.keys(poolEntities.allIds)
         .filter(poolId => {
           if (!key) return true;
           return key === poolId;
         })
-        .reduce((result, curr) => {
-          for (const item of poolInfo[curr].options) {
+        .reduce((result, poolId) => {
+          const poolInfo = getMarginPoolInfo(poolId);
+
+          if (!poolInfo) return result;
+
+          for (const item of poolInfo.options) {
             result.push({
-              ...poolInfo[curr],
+              ...poolInfo,
               ...item,
             });
           }
 
           return result;
-        }, [] as (typeof poolInfo['string'] & typeof poolInfo['string']['options'][number])[]);
+        }, [] as (typeof poolEntities.byId['id'] & typeof poolEntities.byId['id']['options'][number])[]);
     },
   );
 };

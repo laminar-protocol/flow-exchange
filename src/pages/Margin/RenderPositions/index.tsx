@@ -3,30 +3,36 @@ import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, TxHash } from '../../../components';
-import { useApi, useCurrentAccount } from '../../../hooks';
-import { findTradingPair } from '../../../hooks/useTradingPair';
-import useMarginPools from '../../../store/useMarginPools';
+import { useApi, useCurrentAccount, useGetTradingPair } from '../../../hooks';
 import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
 import LaminarPositions from './LaminarPositions';
+import { useLoadTraderInfo } from '../../../store/useMarginPools';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
+  poolId?: string;
 };
 
-const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = x => true, ...other }) => {
+const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, filter = x => true, ...other }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'open' | 'closed'>('open');
-  const positions = useMargin(state => state.positions);
 
   const api = useApi();
   const account = useCurrentAccount();
-  const [actionLoading, setActionLoading] = useState('');
-  const poolInfo = useMarginPools(state => state.poolInfo);
 
+  const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({
+    variables: { poolId: poolId || '' },
+    isQuery: true,
+    lazy: true,
+  });
+
+  const getTradingPair = useGetTradingPair();
+  const [actionLoading, setActionLoading] = useState('');
+  const positions = useMargin(state => state.positions);
   const list = useMemo(() => {
     return positions.filter(filter);
   }, [filter, positions]);
@@ -43,6 +49,9 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
         ),
       );
     } finally {
+      if (poolId) {
+        updateTraderInfo();
+      }
       setActionLoading('');
     }
   };
@@ -85,16 +94,16 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ filter = 
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} minDigits={5} />,
+      render: (value: number) => <Amount value={value} mantissa={5} />,
     },
     {
       title: t('CUR. PRICE'),
       dataIndex: 'pairId',
       align: 'right',
       render: (_: any, record: any) => {
-        const tradingPair = findTradingPair(poolInfo, record.poolId, record.pairId);
+        const tradingPair = getTradingPair(record.poolId, record.pairId);
 
-        return poolInfo[record.poolId] ? (
+        return tradingPair ? (
           <OraclePrice
             spread={record.direction === 'ask' ? tradingPair?.askSpread : tradingPair?.bidSpread}
             baseTokenId={record.pair.base}

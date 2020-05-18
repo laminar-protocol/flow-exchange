@@ -20,6 +20,7 @@ const Description: React.FC<BaseProps & DescriptionProps> = ({
   align,
   justify,
   layout = 'horizontal',
+
   space,
   label,
   className,
@@ -28,7 +29,7 @@ const Description: React.FC<BaseProps & DescriptionProps> = ({
   children,
   ...other
 }) => {
-  const classes = useStyles({ align, justify, width, height });
+  const classes = useStyles({ align, justify, width, height, space });
 
   return (
     <Component

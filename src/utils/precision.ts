@@ -1,8 +1,17 @@
 import BN from 'bn.js';
 import { isHex, bnFromHex } from '@polkadot/util';
+import numbro from 'numbro';
 
 const zero = new BN(0);
 const negative1 = new BN(-1);
+
+export const toFixed = (value: number, d: number) => {
+  return numbro(value).format({
+    mantissa: d,
+    // @ts-ignore
+    roundingFunction: Math.floor,
+  });
+};
 
 export const getValueFromHex = (value: string | number) => {
   if (typeof value === 'number') return String(value);
@@ -36,7 +45,7 @@ export const numberToString = (arg: string | number) => {
 export const fromPrecision = (
   _input: string | BN | number,
   precision: number,
-  options: { pad?: boolean; commify?: boolean; minDigits?: number } = {},
+  options: { pad?: boolean; commify?: boolean; mantissa?: number } = {},
 ) => {
   const input = isHex(_input) ? getValueFromHex(_input) : _input;
 
@@ -57,16 +66,16 @@ export const fromPrecision = (
     fraction = `0${fraction}`;
   }
 
-  if (!options.pad && !options.minDigits) {
+  if (!options.pad && !options.mantissa) {
     [, fraction] = fraction.match(/^([0-9]*[1-9]|0)(0*)/) as RegExpMatchArray;
   }
 
-  if (options.minDigits !== undefined) {
-    fraction = fraction.slice(0, options.minDigits);
+  if (options.mantissa !== undefined) {
+    fraction = fraction.slice(0, options.mantissa);
   }
 
   if (fraction === '0') {
-    if (options.minDigits && options.minDigits === 0) {
+    if (options.mantissa && options.mantissa === 0) {
       fraction = '';
     } else if (!options.pad) {
       fraction = '';

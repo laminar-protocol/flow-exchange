@@ -6,30 +6,32 @@ import { TokenInfo } from '../../services/Api';
 import { fromPrecision, getCurrencySymbol, getValueFromHex } from '../../utils';
 import { Spinner } from '../Spinner';
 import { BaseProps } from '../../types';
+import { toPrecision } from '../../utils';
 
 type NumberToAmountOptions = {
   postfix?: string;
   prefix?: string;
   precision?: number;
   useGrouping?: boolean;
-  minDigits?: number;
+  mantissa?: number;
 };
 
 type AmountProps = {
-  value: BN | string | number;
+  value?: BN | string | number;
   tokenId?: TokenInfo['id'];
-  minDigits?: number;
+  mantissa?: number;
   useGrouping?: boolean;
   hasPostfix?: boolean;
   hasPrefix?: boolean;
   loading?: boolean;
+  withPrecision?: boolean;
 } & BaseProps;
 
 const numberToAmount = (
   number: BN,
-  { postfix = '', prefix = '', minDigits = 3, precision = 0, useGrouping = true }: NumberToAmountOptions = {},
+  { postfix = '', prefix = '', mantissa = 3, precision = 0, useGrouping = true }: NumberToAmountOptions = {},
 ) => {
-  const value = fromPrecision(number, precision, { pad: true, minDigits, commify: useGrouping });
+  const value = fromPrecision(number, precision, { pad: true, mantissa, commify: useGrouping });
 
   return `${prefix}${value}${postfix ? ' ' : ''}${postfix}`;
 };
@@ -38,11 +40,12 @@ const Amount: React.FC<AmountProps> = props => {
   const {
     value,
     tokenId,
-    minDigits = 3,
+    mantissa = 3,
     useGrouping = true,
     hasPostfix = false,
     hasPrefix = false,
     loading = false,
+    withPrecision = false,
     component: Component = 'span',
     ...other
   } = props;
@@ -50,10 +53,11 @@ const Amount: React.FC<AmountProps> = props => {
   const token = useTokenInfo(tokenId);
 
   if (loading) return <Spinner />;
+  if (value === undefined) return null;
 
   const options: NumberToAmountOptions = {
     useGrouping,
-    minDigits,
+    mantissa,
     precision: 18,
   };
 
@@ -63,7 +67,13 @@ const Amount: React.FC<AmountProps> = props => {
     if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
   }
 
-  const number = BN.isBN(value) ? value : new BN(getValueFromHex(value));
+  let quantity = value;
+
+  if (withPrecision) {
+    quantity = toPrecision(quantity as string, 18);
+  }
+
+  const number = BN.isBN(quantity) ? (quantity as BN) : new BN(getValueFromHex(quantity));
 
   return <Component {...other}>{numberToAmount(number, options)}</Component>;
 };

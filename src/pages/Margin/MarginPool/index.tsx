@@ -1,11 +1,10 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
-import { useApi } from '../../../hooks';
 import { LeftArrowIcon } from '../../../icons';
-import useMarginPools from '../../../store/useMarginPools';
+import { useLoadMarginBalance, useLoadTraderInfo } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
 import RenderPoolDashboard from '../RenderPoolDashboard';
@@ -17,63 +16,49 @@ const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
-  const params = useParams<{
+  const { poolId, pairId } = useParams<{
     poolId: string;
     pairId: string;
   }>();
-  const setState = useMarginPools(state => state.setState);
 
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
-  const api = useApi();
 
-  const poolInfo = useMarginPools(state => state.poolInfo[params.poolId]);
-
-  useLayoutEffect(() => {
-    if (params.poolId) {
-      //@ts-ignore
-      const s = api.margin.poolInfo(params.poolId).subscribe((result: any) => {
-        setState(state => {
-          state.poolInfo[result.poolId] = result;
-        });
-      });
-
-      return () => s?.unsubscribe();
-    }
-  }, [api, params.poolId, setState]);
+  useLoadMarginBalance();
+  useLoadTraderInfo({ variables: { poolId } });
 
   return (
     <div className={classes.root}>
       <div className={classes.backButton} onClick={() => history.push('/margin')}>
         <LeftArrowIcon />
       </div>
-      <RenderHeader poolInfo={poolInfo} />
+      <RenderHeader poolId={poolId} pairId={pairId} />
       <Row className={classes.container}>
         <Panel title={t('Price Chart')} className={classes.chartContainer}>
-          <ChartWidget symbol={params.pairId} className={classes.chartWidget} />
+          <ChartWidget symbol={pairId} className={classes.chartWidget} />
         </Panel>
         <Space direction="vertical" style={{ width: '27.25rem' }} size={24}>
           <RenderPoolDashboard
-            poolInfo={poolInfo}
+            poolId={poolId}
             openDeposit={() => setShowDeposit(true)}
             openWithdraw={() => setShowWithdraw(true)}
           />
-          <RenderTrade poolInfo={poolInfo} pairId={params.pairId} />
+          <RenderTrade poolId={poolId} pairId={pairId} />
         </Space>
       </Row>
-      <RenderPositions filter={(item: any) => poolInfo?.poolId === item.poolId && params.pairId === item.pairId} />
+      <RenderPositions poolId={poolId} filter={(item: any) => poolId === item.poolId && pairId === item.pairId} />
 
       <RenderDepositModal
         visible={showDeposit}
         onCancel={() => setShowDeposit(false)}
-        data={poolInfo}
+        poolId={poolId}
         onOk={() => setShowDeposit(false)}
       />
 
       <RenderWithdrawModal
         visible={showWithdraw}
         onCancel={() => setShowWithdraw(false)}
-        data={poolInfo}
+        poolId={poolId}
         onOk={() => setShowWithdraw(false)}
       />
     </div>

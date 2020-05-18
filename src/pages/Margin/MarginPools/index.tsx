@@ -1,77 +1,34 @@
-import clsx from 'clsx';
-import React, { useLayoutEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { combineLatest } from 'rxjs';
-import {
-  Amount,
-  Col,
-  Description,
-  NumberFormat,
-  OraclePrice,
-  Panel,
-  PoolName,
-  Row,
-  Table,
-  Text,
-} from '../../../components';
-import { useApi, useSymbolList } from '../../../hooks';
-import { IdentityIcon } from '../../../icons';
-import useMarginPools from '../../../store/useMarginPools';
+import { Col, Description, NumberFormat, OraclePrice, Panel, PoolName, Row, Table } from '../../../components';
+import { useSymbolList } from '../../../hooks';
+import useMarginPoolsStore, {
+  useLoadMarginInfo,
+  useLoadPoolEntities,
+  useLoadMarginBalance,
+} from '../../../store/useMarginPools';
+import useMargin from '../hooks/useMargin';
 import RenderHeader from '../RenderHeader';
 import RenderPositions from '../RenderPositions';
 import RenderFastTradeButton from './RenderFastTradeButton';
+import RenderPoolNameCard from './RenderPoolNameCard';
 
 const MarginPools = () => {
   const classes = useStyles();
   const { t } = useTranslation();
   const history = useHistory();
-  const setState = useMarginPools(state => state.setState);
 
-  const [active, setActive] = useState('');
+  const selectedPoolId = useMargin(state => state.selectedPoolId);
 
-  const api = useApi();
-  const symbolList = useSymbolList(active);
-  const marginInfo = useMarginPools(state => state.marginInfo);
-  const poolInfo = useMarginPools(state => state.poolInfo);
-  const allPoolIds = useMarginPools(state => state.allPoolIds);
+  const symbolList = useSymbolList(selectedPoolId);
+  const marginInfo = useMarginPoolsStore(state => state.marginInfo);
+  const allPoolIds = useMarginPoolsStore(state => state.poolEntities.allIds);
 
-  useLayoutEffect(() => {
-    const subscription = api.margin?.marginInfo().subscribe((result: any) => {
-      setState(state => {
-        state.marginInfo = result;
-      });
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, setState]);
-
-  useLayoutEffect(() => {
-    const subscription = api.margin.allPoolIds().subscribe((result: any) => {
-      setState(state => {
-        state.allPoolIds = result;
-      });
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, setState]);
-
-  useLayoutEffect(() => {
-    const subscription = combineLatest(
-      allPoolIds.map(poolId => {
-        return api.margin.poolInfo(poolId);
-      }),
-    ).subscribe((result: any) => {
-      for (const item of result) {
-        setState(state => {
-          state.poolInfo[item.poolId] = item;
-        });
-      }
-    });
-
-    return () => subscription?.unsubscribe();
-  }, [api, allPoolIds, setState]);
+  useLoadMarginInfo();
+  useLoadPoolEntities();
+  useLoadMarginBalance();
 
   const columns: any[] = [
     {
@@ -86,14 +43,14 @@ const MarginPools = () => {
       dataIndex: 'bidSpread',
       align: 'right',
       render: (spread: any, record: any) => {
-        return poolInfo[record.poolId] ? (
+        return (
           <OraclePrice
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction="bid"
           />
-        ) : null;
+        );
       },
     },
     {
@@ -101,14 +58,14 @@ const MarginPools = () => {
       dataIndex: 'askSpread',
       align: 'right',
       render: (spread: any, record: any) => {
-        return poolInfo[record.poolId] ? (
+        return (
           <OraclePrice
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction="ask"
           />
-        ) : null;
+        );
       },
     },
     {
@@ -144,7 +101,7 @@ const MarginPools = () => {
               event.stopPropagation();
             }}
           >
-            <RenderFastTradeButton data={record} pairId={record.pairId} />
+            <RenderFastTradeButton poolId={record.poolId} pairId={record.pairId} />
           </div>
         );
       },
@@ -156,44 +113,12 @@ const MarginPools = () => {
       <RenderHeader />
       <Row align="middle" className={classes.cardContainer}>
         <Col className={classes.cardItem}>
-          <Panel
-            className={clsx(classes.card, classes.all, { [classes.activeCard]: active === '' })}
-            onClick={() => setActive('')}
-          >
-            <div>
-              <Text className={classes.text}>{t('All Pools')}</Text>
-            </div>
-          </Panel>
+          <RenderPoolNameCard poolId={'ALL_POOLS'} />
         </Col>
         {allPoolIds.map(poolId => {
           return (
             <Col key={poolId} className={classes.cardItem}>
-              <Panel
-                className={clsx(classes.card, { [classes.activeCard]: active === poolId })}
-                onClick={() => setActive(poolId)}
-              >
-                <Row style={{ height: '100%' }}>
-                  <div className={classes.poolIcon}>
-                    <IdentityIcon size={32} value={'5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY'} />
-                  </div>
-                  <Description
-                    layout="vertical"
-                    label={
-                      <div>
-                        <Text size="n">
-                          <PoolName value={poolId} type="margin" />
-                        </Text>
-                        <Text size="s" style={{ paddingLeft: '0.25rem' }}>
-                          AVAILABLE
-                        </Text>
-                      </div>
-                    }
-                    className={classes.pool}
-                  >
-                    <Amount value={poolInfo[poolId]?.balance} loading={!poolInfo[poolId]} />
-                  </Description>
-                </Row>
-              </Panel>
+              <RenderPoolNameCard poolId={poolId} />
             </Col>
           );
         })}
@@ -255,20 +180,6 @@ const useStyles = createUseStyles(theme => ({
     'padding-top': '0.75rem',
     'padding-bottom': '0.75rem',
   },
-  all: {},
-  text: {},
-  pool: {
-    flex: 1,
-    'margin-left': '1rem',
-    height: '100%',
-  },
-  poolIcon: {
-    height: '100%',
-    display: 'flex',
-    'align-items': 'center',
-    padding: '0.5rem',
-    borderRight: `1px solid ${theme.borderColor}`,
-  },
   separate: {
     width: 1,
     height: '2.5rem',
@@ -292,31 +203,6 @@ const useStyles = createUseStyles(theme => ({
   separateItem2: {
     height: '0.75rem',
     borderLeft: `solid 1px ${theme.textColor.greyColor1}`,
-  },
-  card: {
-    width: '13.125rem',
-    marginRight: '1rem',
-    height: '4rem',
-    background: theme.lightBackgroundColor,
-    cursor: 'pointer',
-    '&:hover': {
-      extend: '$activeCard',
-    },
-    '&$all': {
-      display: 'flex',
-      'align-items': 'center',
-      'justify-content': 'center',
-      '& $text': {
-        fontSize: '1.25rem',
-      },
-    },
-  },
-  activeCard: {
-    'box-shadow': '0 1px 20px 0 rgba(23, 65, 212, 0.18)',
-    '& $text': {
-      color: '#0155ff',
-    },
-    extend: theme.linearGradientRadiusBorder,
   },
   selectRow: {
     cursor: 'pointer',

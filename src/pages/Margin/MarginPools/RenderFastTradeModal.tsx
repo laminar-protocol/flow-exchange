@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { Dialog, Space } from '../../../components';
-import { MarginPoolsState } from '../../../store/useMarginPools';
 import RenderPoolDashboard from '../RenderPoolDashboard';
 import RenderTrade from '../RenderTrade';
 
@@ -12,7 +10,7 @@ type RenderFastTradeModalProps = {
   onOk: () => void;
   openDeposit: () => void;
   openWithdraw: () => void;
-  data: MarginPoolsState['poolInfo']['string'];
+  poolId: string;
   pairId: string;
 };
 
@@ -22,7 +20,7 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
   openDeposit,
   onCancel,
   onOk,
-  data,
+  poolId,
   pairId,
 }) => {
   const { t } = useTranslation();
@@ -45,8 +43,8 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
       footer={null}
     >
       <Space size={24} direction="vertical" style={{ marginBottom: 48 }}>
-        <RenderPoolDashboard poolInfo={data} openDeposit={openDeposit} openWithdraw={openWithdraw} />
-        <RenderTrade poolInfo={data} pairId={pairId} />
+        <RenderPoolDashboard poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
+        <RenderTrade poolId={poolId} pairId={pairId} />
       </Space>
     </Dialog>
   );

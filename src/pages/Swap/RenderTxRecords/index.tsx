@@ -30,15 +30,15 @@ const RenderTxRecords: React.FC = () => {
       render: (value: any, record: any) =>
         record.action === 'Redeemed' ? (
           <>
-            <Amount value={record.fAmount} tokenId={record.fToken} minDigits={5} hasPostfix />
+            <Amount value={record.fAmount} tokenId={record.fToken} mantissa={5} hasPostfix />
             =>
-            <Amount value={record.baseAmount} tokenId={record.baseToken} minDigits={5} hasPostfix />
+            <Amount value={record.baseAmount} tokenId={record.baseToken} mantissa={5} hasPostfix />
           </>
         ) : (
           <>
-            <Amount value={record.baseAmount} tokenId={record.baseToken} minDigits={5} hasPostfix />
+            <Amount value={record.baseAmount} tokenId={record.baseToken} mantissa={5} hasPostfix />
             =>
-            <Amount value={record.fAmount} tokenId={record.fToken} minDigits={5} hasPostfix />
+            <Amount value={record.fAmount} tokenId={record.fToken} mantissa={5} hasPostfix />
           </>
         ),
     },
