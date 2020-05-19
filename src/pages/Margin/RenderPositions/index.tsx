@@ -58,6 +58,10 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
 
   const columns: any[] = [
     {
+      title: t('#'),
+      dataIndex: 'positionId',
+    },
+    {
       title: t('TX HASH'),
       dataIndex: 'hash',
       render: (value: string) => <TxHash value={value} />,
