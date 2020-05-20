@@ -9,7 +9,7 @@ import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
 import LaminarPositions from './LaminarPositions';
-import { useLoadTraderInfo } from '../../../store/useMarginPools';
+import { useLoadTraderInfo, useLoadMarginBalance } from '../../../store/useMarginPools';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
@@ -26,6 +26,10 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
 
   const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({
     variables: { poolId: poolId || '' },
+    isQuery: true,
+    lazy: true,
+  });
+  const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({
     isQuery: true,
     lazy: true,
   });
@@ -52,6 +56,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       if (poolId) {
         updateTraderInfo();
       }
+      updateMarginBalance();
       setActionLoading('');
     }
   };
