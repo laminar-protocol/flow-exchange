@@ -8,6 +8,7 @@ import useMarginPoolsStore, {
   useLoadMarginInfo,
   useLoadPoolEntities,
   useLoadMarginBalance,
+  useLoadMarginAccumulatedSwapRates,
 } from '../../../store/useMarginPools';
 import useMargin from '../hooks/useMargin';
 import RenderHeader from '../RenderHeader';
@@ -29,6 +30,7 @@ const MarginPools = () => {
   useLoadMarginInfo();
   useLoadPoolEntities();
   useLoadMarginBalance();
+  useLoadMarginAccumulatedSwapRates();
 
   const columns: any[] = [
     {
@@ -39,7 +41,7 @@ const MarginPools = () => {
       },
     },
     {
-      title: t('BID'),
+      title: t('ASK'),
       dataIndex: 'bidSpread',
       align: 'right',
       render: (spread: any, record: any) => {
@@ -48,13 +50,13 @@ const MarginPools = () => {
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
-            direction="bid"
+            direction="short"
           />
         );
       },
     },
     {
-      title: t('ASK'),
+      title: t('BID'),
       dataIndex: 'askSpread',
       align: 'right',
       render: (spread: any, record: any) => {
@@ -63,7 +65,7 @@ const MarginPools = () => {
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
-            direction="ask"
+            direction="long"
           />
         );
       },
@@ -74,7 +76,7 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.enp - b.enp,
       showSorterTooltip: false,
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
     },
     {
       title: t('ELL'),
@@ -82,7 +84,7 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.ell - b.ell,
       showSorterTooltip: false,
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent precision />,
+      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
     },
     {
       title: t('POOL'),

@@ -8,6 +8,7 @@ import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
+import Swap from './Swap';
 import LaminarPositions from './LaminarPositions';
 import { useLoadTraderInfo, useLoadMarginBalance } from '../../../store/useMarginPools';
 
@@ -49,7 +50,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
         api.margin.closePosition(
           account.address,
           positionId,
-          direction === 'bid' ? toPrecision('1000000000') : toPrecision('0'),
+          direction === 'short' ? toPrecision('1000000000') : toPrecision('0'),
         ),
       );
     } finally {
@@ -86,7 +87,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       title: t('L/S'),
       dataIndex: 'direction',
       align: 'right',
-      render: (value: string) => (value === 'ask' ? 'L' : 'S'),
+      render: (value: string) => (value === 'long' ? 'L' : 'S'),
     },
     {
       title: t('LEVERAGE'),
@@ -114,7 +115,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
 
         return tradingPair ? (
           <OraclePrice
-            spread={record.direction === 'ask' ? tradingPair?.askSpread : tradingPair?.bidSpread}
+            spread={record.direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction={record.direction}
@@ -124,8 +125,11 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     },
     {
       title: t('SWAP'),
-      dataIndex: 'pool',
+      dataIndex: 'positionId',
       align: 'right',
+      render: (value: string, record: any) => {
+        return <Swap positionId={value} direction={record.direction} poolId={record.poolId} pairId={record.pairId} />;
+      },
     },
     {
       title: t('P&L'),

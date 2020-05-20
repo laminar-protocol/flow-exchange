@@ -4,10 +4,10 @@ import useGetOraclePrice from './useGetOraclePrice';
 import { TokenId } from '../services';
 
 export const useOraclePrice = (
-  baseTokenId: TokenId | null | undefined,
-  quoteTokenId: TokenId | null | undefined,
-  spread: number | null,
-  direction: 'ask' | 'bid',
+  baseTokenId?: TokenId,
+  quoteTokenId?: TokenId,
+  spread?: string,
+  direction?: 'long' | 'short',
 ) => {
   const getOraclePrice = useGetOraclePrice(baseTokenId, quoteTokenId);
 

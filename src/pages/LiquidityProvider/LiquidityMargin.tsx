@@ -22,11 +22,11 @@ const LiquidityMargin: React.FC = () => {
       },
       {
         label: 'ENP',
-        value: <NumberFormat value={item.enp} options={{ mantissa: 2 }} percent precision />,
+        value: <NumberFormat value={item.enp} options={{ mantissa: 2 }} percent />,
       },
       {
         label: 'ELL',
-        value: <NumberFormat value={item.ell} options={{ mantissa: 2 }} percent precision />,
+        value: <NumberFormat value={item.ell} options={{ mantissa: 2 }} percent />,
       },
       {
         label: 'Margin Level',

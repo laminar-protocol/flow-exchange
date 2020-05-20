@@ -1,7 +1,6 @@
+import { useMemo } from 'react';
 import { createSelector } from 'reselect';
 import { MarginPoolsState, useMarginPoolsSelector } from '../store/useMarginPools';
-import { TokenInfo } from '../services/Api';
-import { useMemo } from 'react';
 
 export const getTraderThresholdSelector = createSelector(
   (state: MarginPoolsState) => state.traderThresholdEntities,

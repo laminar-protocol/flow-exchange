@@ -4,7 +4,12 @@ import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
 import { Panel, Row, Space } from '../../../components';
 import { LeftArrowIcon } from '../../../icons';
-import { useLoadMarginBalance, useLoadTraderInfo, useLoadMarginTraderThreshold } from '../../../store/useMarginPools';
+import {
+  useLoadMarginBalance,
+  useLoadTraderInfo,
+  useLoadMarginTraderThreshold,
+  useLoadMarginAccumulatedSwapRates,
+} from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
 import RenderPoolDashboard from '../RenderPoolDashboard';
@@ -25,6 +30,7 @@ const MarginPools = () => {
   const [showDeposit, setShowDeposit] = useState(false);
 
   useLoadMarginBalance();
+  useLoadMarginAccumulatedSwapRates();
   useLoadMarginTraderThreshold({ variables: { pairId } });
   useLoadTraderInfo({ variables: { poolId } });
 
@@ -33,7 +39,7 @@ const MarginPools = () => {
       <div className={classes.backButton} onClick={() => history.push('/margin')}>
         <LeftArrowIcon />
       </div>
-      <RenderHeader poolId={poolId} pairId={pairId} />
+      <RenderHeader poolId={poolId} pairId={pairId} isPool={true} />
       <Row className={classes.container}>
         <Panel title={t('Price Chart')} className={classes.chartContainer}>
           <ChartWidget symbol={pairId} className={classes.chartWidget} />

@@ -47,7 +47,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          <NumberFormat value={data.marginLevel} percent precision options={{ mantissa: 2 }} />
+          <NumberFormat value={data.marginLevel} percent options={{ mantissa: 2 }} />
         </Description>
       </Space>
       <Row className={classes.detail}>
@@ -74,7 +74,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
             <Amount value={data.accumulatedSwap} />
           </Description>
           <Description label={t('Total Leveraged Position')} justify="space-between">
-            <NumberFormat value={data.totalLeveragedPosition} options={{ mantissa: 3 }} />
+            <Amount value={data.totalLeveragedPosition} />
           </Description>
         </Space>
       </Row>

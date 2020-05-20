@@ -32,11 +32,11 @@ const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId,
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ENP')}>
-              <NumberFormat value={poolInfo.enp} percent precision options={{ mantissa: 2 }} />
+              <NumberFormat value={poolInfo.enp} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={poolInfo.ell} percent precision options={{ mantissa: 2 }} />
+              <NumberFormat value={poolInfo.ell} percent options={{ mantissa: 2 }} />
             </Description>
           </Space>
         ) : (

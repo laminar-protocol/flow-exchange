@@ -25,7 +25,7 @@ import BN from 'bn.js';
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
   data?: TraderPairOptions;
-  direction: 'ask' | 'bid';
+  direction: 'long' | 'short';
   extra: {
     leverage?: string;
     amount?: string;
@@ -41,7 +41,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const spread = direction === 'ask' ? data?.askSpread : data?.bidSpread;
+  const spread = direction === 'long' ? data?.askSpread : data?.bidSpread;
 
   const render = useCallback(
     (price: number) => {
@@ -125,7 +125,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     if (!allowanceEnable) {
       return 'NOT ENABLED';
     }
-    if (!leverages[leverage]?.ask) {
+    if (!leverages[leverage]?.long) {
       return 'NOT SUPPORTED';
     }
     return '';
@@ -135,13 +135,13 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     if (!allowanceEnable) {
       return 'NOT ENABLED';
     }
-    if (!leverages[leverage]?.bid) {
+    if (!leverages[leverage]?.short) {
       return 'NOT SUPPORTED';
     }
     return '';
   }, [allowanceEnable, leverages, leverage]);
 
-  const openPosition = async (direction: 'ask' | 'bid') => {
+  const openPosition = async (direction: 'long' | 'short') => {
     if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
@@ -152,7 +152,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
           pairInfo.pair,
           leverages[leverage][direction] as any,
           toPrecision(amount),
-          direction === 'ask' ? toPrecision('1000000000') : toPrecision('0'),
+          direction === 'long' ? toPrecision('1000000000') : toPrecision('0'),
         ),
       );
       setAmount('');
@@ -204,34 +204,34 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
         />
         <div className={classes.actions}>
           <div className={classes.actionItem}>
-            <TradeInfoItem data={pairInfo} direction="ask" type="price" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="long" type="price" extra={tradeInfoExtra} />
             <DefaultButton
               size="large"
-              loading={actionLoading === 'ask'}
+              loading={actionLoading === 'long'}
               className={classes.buyButton}
-              onClick={() => openPosition('ask')}
+              onClick={() => openPosition('long')}
               tooltip={buyDisabledTip}
               disabled={!!buyDisabledTip}
             >
               {t('Buy/Long')}
             </DefaultButton>
-            <TradeInfoItem data={pairInfo} direction="ask" type="cost" extra={tradeInfoExtra} />
-            <TradeInfoItem data={pairInfo} direction="ask" type="max" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="long" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="long" type="max" extra={tradeInfoExtra} />
           </div>
           <div className={classes.actionItem}>
-            <TradeInfoItem data={pairInfo} direction="bid" type="price" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="short" type="price" extra={tradeInfoExtra} />
             <DefaultButton
               size="large"
-              loading={actionLoading === 'bid'}
+              loading={actionLoading === 'short'}
               className={classes.sellButton}
-              onClick={() => openPosition('bid')}
+              onClick={() => openPosition('short')}
               tooltip={sellDisabledTip}
               disabled={!!sellDisabledTip}
             >
               {t('Sell/Short')}
             </DefaultButton>
-            <TradeInfoItem data={pairInfo} direction="bid" type="cost" extra={tradeInfoExtra} />
-            <TradeInfoItem data={pairInfo} direction="bid" type="max" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="short" type="cost" extra={tradeInfoExtra} />
+            <TradeInfoItem data={pairInfo} direction="short" type="max" extra={tradeInfoExtra} />
           </div>
         </div>
       </Space>

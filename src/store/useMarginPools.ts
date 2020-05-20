@@ -2,7 +2,7 @@ import { useLayoutEffect } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { useApi, useCurrentAccount, useForceUpdate, useTradingPairFromPairId } from '../hooks';
-import { MarginInfo, MarginPoolInfo, TraderInfo, Threshold } from '../services';
+import { MarginInfo, MarginPoolInfo, TraderInfo, Threshold, AccumulatedSwapRate, MarginPosition } from '../services';
 import create, { GetState, SetState } from './createState';
 
 export interface MarginPoolsState {
@@ -18,6 +18,10 @@ export interface MarginPoolsState {
   traderThresholdEntities: {
     byId: Record<string, Threshold>;
   };
+  positionEntities: {
+    byId: Record<string, MarginPosition>;
+  };
+  accumulatedSwapRates: AccumulatedSwapRate[];
   setState: SetState<MarginPoolsState>;
 }
 
@@ -44,6 +48,10 @@ export const [useMarginPools, useMarginPoolsApi, useMarginPoolsSelector] = creat
     traderThresholdEntities: {
       byId: {},
     },
+    positionEntities: {
+      byId: {},
+    },
+    accumulatedSwapRates: [],
     setState: set,
   }),
 );
@@ -243,6 +251,72 @@ export const useLoadMarginTraderThreshold = ({
 
     return () => s?.unsubscribe();
   }, [api, setState, tick, lazy, isQuery, base, quote, pairId]);
+
+  return { forceUpdate };
+};
+
+export const useLoadMarginPosition = ({
+  lazy = false,
+  isQuery = false,
+  variables: { positionId },
+}: {
+  lazy?: boolean;
+  isQuery?: boolean;
+  variables: { positionId: string };
+}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.position(positionId);
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      if (result) {
+        setState(state => {
+          state.positionEntities.byId[positionId] = result;
+        });
+      }
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery, positionId]);
+
+  return { forceUpdate };
+};
+
+export const useLoadMarginAccumulatedSwapRates = ({
+  lazy = false,
+  isQuery = false,
+}: {
+  lazy?: boolean;
+  isQuery?: boolean;
+} = {}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.accumulatedSwapRates();
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      setState(state => {
+        state.accumulatedSwapRates = result;
+      });
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery]);
 
   return { forceUpdate };
 };

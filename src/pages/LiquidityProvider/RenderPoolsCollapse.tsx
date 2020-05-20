@@ -16,8 +16,8 @@ type RenderPoolsCollapseProps = {
     }[];
     options: {
       id: string;
-      askSpread: number;
-      bidSpread: number;
+      askSpread: string;
+      bidSpread: string;
     }[];
   }[];
   handleDeposit: (address: string, poolId: string, amount: string) => Promise<void>;
