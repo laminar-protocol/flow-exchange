@@ -43,7 +43,7 @@ export const RenderFastTradeModal: React.FC<RenderFastTradeModalProps> = ({
       footer={null}
     >
       <Space size={24} direction="vertical" style={{ marginBottom: 48 }}>
-        <RenderPoolDashboard poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
+        <RenderPoolDashboard pairId={pairId} poolId={poolId} openDeposit={openDeposit} openWithdraw={openWithdraw} />
         <RenderTrade poolId={poolId} pairId={pairId} />
       </Space>
     </Dialog>

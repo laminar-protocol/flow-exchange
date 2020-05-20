@@ -7,6 +7,7 @@ export { default as useGetOraclePrice } from './useGetOraclePrice';
 export { default as useGetSyntheticPoolInfo } from './useGetSyntheticPoolInfo';
 export * from './useGetTokenInfo';
 export * from './useGetTraderInfo';
+export * from './useGetTraderThreshold';
 export * from './useGetTradingPair';
 export { default as useOraclePrice } from './useOraclePrice';
 export { default as useOracleValue } from './useOracleValue';

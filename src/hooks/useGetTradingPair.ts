@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { useMarginPoolsSelector, MarginPoolsState } from '../store/useMarginPools';
+import useAppStore from '../store/useApp';
 import { getMarginPoolInfoSelector } from './useGetMarginPoolInfo';
 import { useMemo } from 'react';
 
@@ -38,4 +39,21 @@ export const useTradingPair = (poolId: string, pairId: string) => {
   return useMemo(() => {
     return getTradingPair(poolId, pairId);
   }, [getTradingPair, poolId, pairId]);
+};
+
+export const useTradingPairFromPairId = (pairId: string) => {
+  const tokens = useAppStore(state => state.tokens);
+
+  return useMemo(() => {
+    for (const token1 of tokens) {
+      for (const token2 of tokens) {
+        if (`${token1.id}${token2.id}` === pairId) {
+          return {
+            base: token1.id,
+            quote: token2.id,
+          };
+        }
+      }
+    }
+  }, [tokens, pairId]);
 };

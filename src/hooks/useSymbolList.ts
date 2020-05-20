@@ -19,10 +19,12 @@ const createMarginSymbolListSelector = (key: string) => {
           if (!poolInfo) return result;
 
           for (const item of poolInfo.options) {
-            result.push({
-              ...poolInfo,
-              ...item,
-            });
+            if (item.enabledTrades.length) {
+              result.push({
+                ...poolInfo,
+                ...item,
+              });
+            }
           }
 
           return result;
