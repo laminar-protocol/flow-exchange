@@ -4,19 +4,21 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, NumberFormat, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
 import useMarginEnableStore from './hooks/useMarginEnable';
-import { useTraderInfo } from '../../hooks';
+import { useTraderInfo, useTraderThreshold } from '../../hooks';
 type RenderPoolDashboardProps = {
   poolId: string;
+  pairId: string;
   openDeposit: () => void;
   openWithdraw: () => void;
 };
 
-const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, openDeposit, openWithdraw }) => {
+const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairId, openDeposit, openWithdraw }) => {
   const classes = useStyles();
   const { t } = useTranslation();
 
   const allowanceEnable = useMarginEnableStore();
   const data = useTraderInfo(poolId);
+  const traderThreshold = useTraderThreshold(pairId);
 
   const depositDisabledTip = useMemo(() => {
     if (!allowanceEnable) return 'NOT ENABLED';
@@ -36,21 +38,23 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, openD
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            <NumberFormat value={data.traderThreshold.marginCall} percent options={{ mantissa: 2 }} />
+            {traderThreshold && <NumberFormat value={traderThreshold.marginCall} percent options={{ mantissa: 2 }} />}
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            <NumberFormat value={data.traderThreshold.stopOut} percent options={{ mantissa: 2 }} />
+            {traderThreshold && <NumberFormat value={traderThreshold.stopOut} percent options={{ mantissa: 2 }} />}
           </Description>
         </Space>
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          <NumberFormat value={data.marginLevel} percent precision options={{ mantissa: 2 }} />
+          <NumberFormat value={data.marginLevel} percent options={{ mantissa: 2 }} />
         </Description>
       </Space>
       <Row className={classes.detail}>
         <Space direction="vertical" style={{ flex: 1, marginRight: '2rem' }}>
-          <Description label={t('Net Deposit/Withdraw')} justify="space-between"></Description>
+          <Description label={t('Balance')} justify="space-between">
+            <Amount value={data.balance} />
+          </Description>
           <Description label={t('Margin Held')} justify="space-between">
             <Amount value={data.marginHeld} />
           </Description>
@@ -66,11 +70,11 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, openD
           <Description label={t('Free Margin')} justify="space-between">
             <Amount value={data.freeMargin} />
           </Description>
-          <Description label={t('Accumulated Swap')} justify="space-between"></Description>
+          <Description label={t('Accumulated Swap')} justify="space-between">
+            <Amount value={data.accumulatedSwap} />
+          </Description>
           <Description label={t('Total Leveraged Position')} justify="space-between">
-            {data.marginLevel ? (
-              <NumberFormat value={Number(data.equity) / Number(data.marginLevel)} options={{ mantissa: 3 }} />
-            ) : null}
+            <Amount value={data.totalLeveragedPosition} />
           </Description>
         </Space>
       </Row>

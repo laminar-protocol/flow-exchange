@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
-import { useApi, useCurrentAccount } from '../../hooks';
+import { Address, Amount, AmountInput, Description, Dialog, PoolName, SwitchChain } from '../../components';
+import { useAccountBalance, useApi, useCurrentAccount, useTraderInfo, useTokenInfo } from '../../hooks';
+import { useLoadAccountBalance } from '../../store/useAccount';
 import { useLoadMarginBalance, useLoadTraderInfo } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
 
@@ -17,10 +18,14 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const [amount, setAmount] = useState('');
   const { address } = useCurrentAccount();
   const api = useApi();
 
+  const baseAmountBalance = useAccountBalance(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
+
+  const [amount, setAmount] = useState('');
+
+  const { forceUpdate: updateAccountBalance } = useLoadAccountBalance({ isQuery: true });
   const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({ isQuery: true, lazy: true });
   const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
 
@@ -32,9 +37,10 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
     await notificationHelper(api.margin.deposit(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
+    updateAccountBalance();
     updateMarginBalance();
     updateTraderInfo();
-  }, [onOk, api, updateMarginBalance, updateTraderInfo, poolId, address, amount]);
+  }, [onOk, api, updateAccountBalance, updateTraderInfo, updateMarginBalance, poolId, address, amount]);
 
   return (
     <Dialog
@@ -80,6 +86,9 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
           }}
         />
       </div>
+      <Description className={classes.inputTip} label={t('Max')}>
+        {baseAmountBalance ? <Amount value={baseAmountBalance.free} tokenId={baseAmountBalance.tokenId} /> : null}
+      </Description>
     </Dialog>
   );
 };
@@ -92,6 +101,10 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   const { address } = useCurrentAccount();
   const api = useApi();
 
+  const { freeMargin } = useTraderInfo(poolId) || {};
+  const baseToken = useTokenInfo(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
+
+  const { forceUpdate: updateAccountBalance } = useLoadAccountBalance({ isQuery: true });
   const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({ isQuery: true, lazy: true });
   const { forceUpdate: updateTraderInfo } = useLoadTraderInfo({ variables: { poolId }, isQuery: true, lazy: true });
 
@@ -103,9 +116,10 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
     await notificationHelper(api.margin.withdraw(address, poolId, toPrecision(amount)));
     setAmount('');
     onOk();
+    updateAccountBalance();
     updateMarginBalance();
     updateTraderInfo();
-  }, [onOk, api, updateMarginBalance, updateTraderInfo, poolId, address, amount]);
+  }, [onOk, api, updateMarginBalance, updateTraderInfo, updateAccountBalance, poolId, address, amount]);
 
   return (
     <Dialog
@@ -151,6 +165,9 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
           }}
         />
       </div>
+      <Description className={classes.inputTip} label={t('Max')}>
+        {baseToken && freeMargin ? <Amount value={freeMargin} tokenId={baseToken.id} /> : null}
+      </Description>
     </Dialog>
   );
 };
@@ -174,7 +191,6 @@ const useStyles = createUseStyles(theme => ({
     display: 'flex',
   },
   infoItem: {
-    // extend: theme.flexCenter,
     'font-size': '1rem',
     display: 'flex',
     padding: '0.875rem 0 0.875rem ',
@@ -211,5 +227,8 @@ const useStyles = createUseStyles(theme => ({
 
   control: {
     'margin-top': '1rem',
+  },
+  inputTip: {
+    marginTop: '0.5rem',
   },
 }));

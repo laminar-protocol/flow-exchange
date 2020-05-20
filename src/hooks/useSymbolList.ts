@@ -8,7 +8,7 @@ const createMarginSymbolListSelector = (key: string) => {
     (state: MarginPoolsState) => state.poolEntities,
     getMarginPoolInfoSelector,
     (poolEntities, getMarginPoolInfo) => {
-      return Object.keys(poolEntities.allIds)
+      return poolEntities.allIds
         .filter(poolId => {
           if (!key) return true;
           return key === poolId;
@@ -19,10 +19,12 @@ const createMarginSymbolListSelector = (key: string) => {
           if (!poolInfo) return result;
 
           for (const item of poolInfo.options) {
-            result.push({
-              ...poolInfo,
-              ...item,
-            });
+            if (item.enabledTrades.length) {
+              result.push({
+                ...poolInfo,
+                ...item,
+              });
+            }
           }
 
           return result;

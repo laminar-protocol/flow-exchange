@@ -30,13 +30,13 @@ const TxHash: React.FC<TxHashProps & BaseProps & React.HTMLProps<HTMLSpanElement
   return showTooltip ? <Tooltip title={value}>{inner}</Tooltip> : inner;
 };
 
-const useStyles = createUseStyles(() => ({
+const useStyles = createUseStyles({
   root: {
     overflow: 'hidden',
     display: 'inline-block',
     'white-space': 'nowrap',
     'text-overflow': 'ellipsis',
   },
-}));
+});
 
 export default TxHash;

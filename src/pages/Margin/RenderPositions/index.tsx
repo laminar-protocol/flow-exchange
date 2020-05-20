@@ -8,8 +8,9 @@ import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
+import Swap from './Swap';
 import LaminarPositions from './LaminarPositions';
-import { useLoadTraderInfo } from '../../../store/useMarginPools';
+import { useLoadTraderInfo, useLoadMarginBalance } from '../../../store/useMarginPools';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
@@ -29,6 +30,10 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     isQuery: true,
     lazy: true,
   });
+  const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({
+    isQuery: true,
+    lazy: true,
+  });
 
   const getTradingPair = useGetTradingPair();
   const [actionLoading, setActionLoading] = useState('');
@@ -45,18 +50,23 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
         api.margin.closePosition(
           account.address,
           positionId,
-          direction === 'bid' ? toPrecision('1000000000') : toPrecision('0'),
+          direction === 'short' ? toPrecision('1000000000') : toPrecision('0'),
         ),
       );
     } finally {
       if (poolId) {
         updateTraderInfo();
       }
+      updateMarginBalance();
       setActionLoading('');
     }
   };
 
   const columns: any[] = [
+    {
+      title: t('#'),
+      dataIndex: 'positionId',
+    },
     {
       title: t('TX HASH'),
       dataIndex: 'hash',
@@ -77,7 +87,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       title: t('L/S'),
       dataIndex: 'direction',
       align: 'right',
-      render: (value: string) => (value === 'ask' ? 'L' : 'S'),
+      render: (value: string) => (value === 'long' ? 'L' : 'S'),
     },
     {
       title: t('LEVERAGE'),
@@ -88,13 +98,13 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       title: t('AMT'),
       dataIndex: 'amt',
       align: 'right',
-      render: (value: number) => <Amount value={value} />,
+      render: (value: string) => <Amount value={value} />,
     },
     {
       title: t('OPEN PRICE'),
       dataIndex: 'openPrice',
       align: 'right',
-      render: (value: number) => <Amount value={value} mantissa={5} />,
+      render: (value: string) => <Amount value={value} mantissa={5} />,
     },
     {
       title: t('CUR. PRICE'),
@@ -105,7 +115,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
 
         return tradingPair ? (
           <OraclePrice
-            spread={record.direction === 'ask' ? tradingPair?.askSpread : tradingPair?.bidSpread}
+            spread={record.direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction={record.direction}
@@ -115,8 +125,11 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     },
     {
       title: t('SWAP'),
-      dataIndex: 'pool',
+      dataIndex: 'positionId',
       align: 'right',
+      render: (value: string, record: any) => {
+        return <Swap positionId={value} direction={record.direction} poolId={record.poolId} pairId={record.pairId} />;
+      },
     },
     {
       title: t('P&L'),

@@ -10,7 +10,7 @@ const Map = {
 export const getLeverage = (str: string) => {
   const [, direction, leverage] = str.match('^(Long|Short)(.*)$') || [];
   if (direction && Map[leverage]) {
-    return [direction === 'Long' ? 'ask' : 'bid', Map[leverage]];
+    return [direction === 'Long' ? 'long' : 'short', Map[leverage]];
   } else {
     return [];
   }
@@ -26,11 +26,11 @@ export const getLeverageEnable = (leverages: string[]) => {
       const label = leverage ? `${leverage}` : '';
 
       let option: any = {};
-      if (direction === 'ask') {
-        option.ask = curr;
+      if (direction === 'long') {
+        option.long = curr;
       }
-      if (direction === 'bid') {
-        option.bid = curr;
+      if (direction === 'short') {
+        option.short = curr;
       }
       if (label) {
         if (result[label]) {
@@ -47,8 +47,8 @@ export const getLeverageEnable = (leverages: string[]) => {
     {} as Record<
       string,
       {
-        ask?: string;
-        bid?: string;
+        long?: string;
+        short?: string;
       }
     >,
   );

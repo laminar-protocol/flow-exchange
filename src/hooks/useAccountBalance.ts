@@ -1,16 +1,10 @@
-import { createSelector } from 'reselect';
+import { TokenId, TokenInfo } from '../services';
+import useAccountStore from '../store/useAccount';
+import { useTokenInfo } from './useGetTokenInfo';
 
-import { useCurrentAccount, AccountState } from '../store/useAccount';
-import { TokenId } from '../services';
+export const useAccountBalance = (filter?: TokenId | ((a: TokenInfo) => boolean)) => {
+  const balances = useAccountStore(state => state.balances);
+  const baseToken = useTokenInfo(filter);
 
-export const createAccountBalanceSelector = (tokenId: TokenId) => {
-  return createSelector(
-    (state: AccountState) => state.data,
-    data => {
-      const info = data.find(item => item.tokenId === tokenId);
-      return info || null;
-    },
-  );
+  return balances.find(item => item.tokenId === baseToken?.id);
 };
-
-export default (tokenId: TokenId) => useCurrentAccount(createAccountBalanceSelector(tokenId), [tokenId]);

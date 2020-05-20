@@ -1,8 +1,8 @@
 import { useLayoutEffect } from 'react';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { useApi, useCurrentAccount, useForceUpdate } from '../hooks';
-import { MarginInfo, MarginPoolInfo, TraderInfo } from '../services';
+import { useApi, useCurrentAccount, useForceUpdate, useTradingPairFromPairId } from '../hooks';
+import { MarginInfo, MarginPoolInfo, TraderInfo, Threshold, AccumulatedSwapRate, MarginPosition } from '../services';
 import create, { GetState, SetState } from './createState';
 
 export interface MarginPoolsState {
@@ -15,6 +15,13 @@ export interface MarginPoolsState {
   traderEntities: {
     byId: Record<string, TraderInfo>;
   };
+  traderThresholdEntities: {
+    byId: Record<string, Threshold>;
+  };
+  positionEntities: {
+    byId: Record<string, MarginPosition>;
+  };
+  accumulatedSwapRates: AccumulatedSwapRate[];
   setState: SetState<MarginPoolsState>;
 }
 
@@ -38,6 +45,13 @@ export const [useMarginPools, useMarginPoolsApi, useMarginPoolsSelector] = creat
     traderEntities: {
       byId: {},
     },
+    traderThresholdEntities: {
+      byId: {},
+    },
+    positionEntities: {
+      byId: {},
+    },
+    accumulatedSwapRates: [],
     setState: set,
   }),
 );
@@ -191,17 +205,118 @@ export const useLoadPoolEntities = ({ lazy = false, isQuery = false }: { lazy?: 
         return api.margin.poolInfo(poolId);
       }),
     ).subscribe(result => {
-      for (const item of result) {
-        setState(state => {
+      setState(state => {
+        for (const item of result) {
           if (item) {
             state.poolEntities.byId[item.poolId] = item;
           }
-        });
-      }
+        }
+      });
     });
 
     return () => subscription?.unsubscribe();
   }, [api, allIds, setState, tick]);
+
+  return { forceUpdate };
+};
+
+export const useLoadMarginTraderThreshold = ({
+  lazy = false,
+  isQuery = false,
+  variables: { pairId },
+}: {
+  lazy?: boolean;
+  isQuery?: boolean;
+  variables: { pairId: string };
+}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+  const { base, quote } = useTradingPairFromPairId(pairId) || {};
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+    if (!base || !quote) return;
+
+    let $ = api.margin.traderThreshold(base, quote);
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      setState(state => {
+        state.traderThresholdEntities.byId[pairId] = result;
+      });
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery, base, quote, pairId]);
+
+  return { forceUpdate };
+};
+
+export const useLoadMarginPosition = ({
+  lazy = false,
+  isQuery = false,
+  variables: { positionId },
+}: {
+  lazy?: boolean;
+  isQuery?: boolean;
+  variables: { positionId: string };
+}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.position(positionId);
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      if (result) {
+        setState(state => {
+          state.positionEntities.byId[positionId] = result;
+        });
+      }
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery, positionId]);
+
+  return { forceUpdate };
+};
+
+export const useLoadMarginAccumulatedSwapRates = ({
+  lazy = false,
+  isQuery = false,
+}: {
+  lazy?: boolean;
+  isQuery?: boolean;
+} = {}) => {
+  const api = useApi();
+  const setState = useMarginPools(state => state.setState);
+
+  const [tick, forceUpdate] = useForceUpdate();
+
+  useLayoutEffect(() => {
+    if (lazy && !tick) return;
+
+    let $ = api.margin.accumulatedSwapRates();
+
+    if (isQuery) $ = $.pipe(take(1));
+
+    const s = $.subscribe(result => {
+      setState(state => {
+        state.accumulatedSwapRates = result;
+      });
+    });
+
+    return () => s?.unsubscribe();
+  }, [api, setState, tick, lazy, isQuery]);
 
   return { forceUpdate };
 };
