@@ -26,3 +26,4 @@ export * from './Tabs';
 export * from './Tooltip';
 export * from './TxHash';
 export * from './Typography';
+export * from './WebsiteTitle';

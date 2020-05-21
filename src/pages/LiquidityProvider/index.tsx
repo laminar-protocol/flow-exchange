@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
-import { RadioButton, RadioGroup, Text, Title } from '../../components';
+import { RadioButton, RadioGroup, Text, Title, WebsiteTitle } from '../../components';
 import useLiquidityProvider from './hooks/useLiquidityProvider';
 import LiquidityMargin from './LiquidityMargin';
 import LiquiditySwap from './LiquiditySwap';
@@ -27,6 +27,7 @@ const LiquidityProvider = () => {
 
   return (
     <div>
+      <WebsiteTitle value="Liquidity Provider" />
       <Title type="page">{t('Liquidity Provider')}</Title>
       <RadioGroup
         size="middle"

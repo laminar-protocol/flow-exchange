@@ -2,13 +2,23 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { Col, Description, NumberFormat, OraclePrice, Panel, PoolName, Row, Table } from '../../../components';
+import {
+  Col,
+  Description,
+  NumberFormat,
+  OraclePrice,
+  Panel,
+  PoolName,
+  Row,
+  Table,
+  WebsiteTitle,
+} from '../../../components';
 import { useSymbolList } from '../../../hooks';
 import useMarginPoolsStore, {
+  useLoadMarginAccumulatedSwapRates,
+  useLoadMarginBalance,
   useLoadMarginInfo,
   useLoadPoolEntities,
-  useLoadMarginBalance,
-  useLoadMarginAccumulatedSwapRates,
 } from '../../../store/useMarginPools';
 import useMargin from '../hooks/useMargin';
 import RenderHeader from '../RenderHeader';
@@ -112,6 +122,7 @@ const MarginPools = () => {
 
   return (
     <div className={classes.root}>
+      <WebsiteTitle value="Margin Trading" />
       <RenderHeader />
       <Row align="middle" className={classes.cardContainer}>
         <Col className={classes.cardItem}>

@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Col, PoolName, Row, Text, Title } from '../../components';
+import { Col, PoolName, Row, Text, Title, WebsiteTitle } from '../../components';
 import { useApi } from '../../hooks';
 import { useSyntheticPools } from '../../store/useSyntheticPools';
 import useSwap from './hooks/useSwap';
@@ -33,6 +33,7 @@ const Swap: React.FC = () => {
 
   return (
     <div className={classes.root}>
+      <WebsiteTitle value="Swap" />
       <Title type="page">{t('Swap')}</Title>
       <RenderExchange />
       <Text size="l">
