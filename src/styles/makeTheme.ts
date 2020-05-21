@@ -46,7 +46,7 @@ interface AppTheme {
   textHeaderSize: string;
   // Indicator
   indicatorGreenColor: string;
-  indicatorYellowColor: string;
+  indicatorRedColor: string;
   indicatorGrayColor: string;
   breakpoints: ReturnType<typeof createBreakpoints>;
 
@@ -191,13 +191,13 @@ const makeTheme = ({ mode }: { mode: themeMode }): AppTheme => ({
 
   // Indicator
   indicatorGreenColor: switchMode(mode, {
-    light: '#00cc00',
-    dark: '#00cc00',
+    light: '#10b887',
+    dark: '#10b887',
   }),
 
-  indicatorYellowColor: switchMode(mode, {
-    light: '#ffcc00',
-    dark: '#ffcc00',
+  indicatorRedColor: switchMode(mode, {
+    light: '#fa5352',
+    dark: '#fa5352',
   }),
 
   indicatorGrayColor: switchMode(mode, {

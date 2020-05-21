@@ -17,7 +17,10 @@ export const useGetOraclePrice = (baseTokenId?: TokenId, quoteTokenId?: TokenId)
 
       const _spread = Number(fromPrecision(spread, 18));
 
-      return direction === 'long' ? price + _spread : price - _spread;
+      return {
+        value: direction === 'long' ? price + _spread : price - _spread,
+        timestamp: Math.max(baseOracleValue.timestamp || 0, quoteOracleValue.timestamp || 0),
+      };
     },
     [baseOracleValue, quoteOracleValue],
   );
