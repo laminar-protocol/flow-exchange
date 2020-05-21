@@ -42,21 +42,6 @@ const MarginPools = () => {
     },
     {
       title: t('ASK'),
-      dataIndex: 'bidSpread',
-      align: 'right',
-      render: (spread: any, record: any) => {
-        return (
-          <OraclePrice
-            spread={spread}
-            baseTokenId={record.pair.base}
-            quoteTokenId={record.pair.quote}
-            direction="short"
-          />
-        );
-      },
-    },
-    {
-      title: t('BID'),
       dataIndex: 'askSpread',
       align: 'right',
       render: (spread: any, record: any) => {
@@ -66,6 +51,21 @@ const MarginPools = () => {
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
             direction="long"
+          />
+        );
+      },
+    },
+    {
+      title: t('BID'),
+      dataIndex: 'bidSpread',
+      align: 'right',
+      render: (spread: any, record: any) => {
+        return (
+          <OraclePrice
+            spread={spread}
+            baseTokenId={record.pair.base}
+            quoteTokenId={record.pair.quote}
+            direction="short"
           />
         );
       },
