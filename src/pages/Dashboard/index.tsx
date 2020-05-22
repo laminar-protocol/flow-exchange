@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Separator, Text, Title } from '../../components';
+import { Separator, Text, Title, WebsiteTitle } from '../../components';
 import Balances from './Balances';
 import ChartTicker from './ChartTicker';
 import Links from './Links';
@@ -11,6 +11,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      <WebsiteTitle value="Dashboard" />
       <Title type="page">Dashboard</Title>
       <Separator />
       <div className={classes.dashboard}>

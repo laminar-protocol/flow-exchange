@@ -19,8 +19,8 @@ const useSwapPools = () => {
         const poolInfo = getSyntheticPoolInfo(poolId);
         const option = poolInfo?.options.find(({ tokenId }) => tokenId === exchangeToken?.id);
         if (option && poolInfo && option?.askSpread && option?.bidSpread) {
-          const askRate = getOraclePrice(option.askSpread, 'long');
-          const bidRate = getOraclePrice(option.bidSpread, 'short');
+          const { value: askRate } = getOraclePrice(option.askSpread, 'long') || {};
+          const { value: bidRate } = getOraclePrice(option.bidSpread, 'short') || {};
           const swapRate = !isRedeem ? 1 / Number(askRate) : bidRate;
           const collateralRatio = 1 + Number(option.additionalCollateralRatio || null);
 

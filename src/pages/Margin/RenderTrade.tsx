@@ -252,7 +252,7 @@ const useStyles = createUseStyles(theme => ({
       width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
-      background: '#10b887',
+      background: theme.indicatorGreenColor,
     },
   },
   sellButton: {
@@ -261,7 +261,7 @@ const useStyles = createUseStyles(theme => ({
       width: '100%',
       fontWeight: theme.boldWeight,
       color: theme.alwaysWhiteForegroundColor,
-      background: '#fa5352',
+      background: theme.indicatorRedColor,
     },
   },
   actionItem: {

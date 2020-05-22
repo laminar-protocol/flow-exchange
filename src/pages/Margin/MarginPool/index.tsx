@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useParams } from 'react-router-dom';
-import { Panel, Row, Space } from '../../../components';
+import { Panel, Row, Space, WebsiteTitle } from '../../../components';
 import { LeftArrowIcon } from '../../../icons';
 import {
-  useLoadMarginBalance,
-  useLoadTraderInfo,
-  useLoadMarginTraderThreshold,
   useLoadMarginAccumulatedSwapRates,
+  useLoadMarginBalance,
+  useLoadMarginTraderThreshold,
+  useLoadTraderInfo,
 } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderHeader from '../RenderHeader';
@@ -36,6 +36,7 @@ const MarginPools = () => {
 
   return (
     <div className={classes.root}>
+      <WebsiteTitle value={pairId} />
       <div className={classes.backButton} onClick={() => history.push('/margin')}>
         <LeftArrowIcon />
       </div>

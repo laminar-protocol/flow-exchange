@@ -1,9 +1,9 @@
 import React from 'react';
-
 import { useOraclePrice } from '../../hooks';
 import { TokenId } from '../../services/Api';
 import { BaseProps } from '../../types';
 import { toFixed } from '../../utils';
+import { PriceStatus } from '../PriceStatus';
 
 type OraclePriceProps = {
   baseTokenId: TokenId;
@@ -13,20 +13,28 @@ type OraclePriceProps = {
   render?: (value: number) => React.ReactNode;
 };
 
+const defaultRender = (x: number) => toFixed(x, 5);
+
 const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
-  component: Component = 'span',
+  component: Component = PriceStatus,
   baseTokenId,
   quoteTokenId,
   spread,
   direction,
-  render = (x: number) => toFixed(x, 5),
+  render = defaultRender,
   ...other
 }) => {
-  const price = useOraclePrice(baseTokenId, quoteTokenId, spread, direction);
+  const { value: price, timestamp } = useOraclePrice(baseTokenId, quoteTokenId, spread, direction) || {};
 
   if (!price) return null;
 
-  return <Component {...other}>{render(price)}</Component>;
+  const showValue = render(price);
+
+  return (
+    <Component timestamp={timestamp} value={showValue} {...other}>
+      {showValue}
+    </Component>
+  );
 };
 
 export default OraclePrice;
