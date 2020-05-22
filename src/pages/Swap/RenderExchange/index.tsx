@@ -48,9 +48,11 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
     [tokens],
   );
 
-  const askRate = useOraclePrice(exchangeToken?.id, baseToken?.id, option?.askSpread || undefined, 'long');
+  const { value: askRate } =
+    useOraclePrice(exchangeToken?.id, baseToken?.id, option?.askSpread || undefined, 'long') || {};
 
-  const bidRate = useOraclePrice(exchangeToken?.id, baseToken?.id, option?.bidSpread || undefined, 'short');
+  const { value: bidRate } =
+    useOraclePrice(exchangeToken?.id, baseToken?.id, option?.bidSpread || undefined, 'short') || {};
 
   const predictBaseAmount = useMemo(() => {
     if (!askRate || !bidRate || !exchangeAmount) return '';
