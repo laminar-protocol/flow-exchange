@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import numbro from 'numbro';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { createUseStyles } from 'react-jss';
 import { BaseProps } from '../../types';
+import { unformatNumber } from '../../utils';
 
 type PriceStatusProps = {
   value?: string | number;
@@ -19,7 +19,7 @@ const PriceStatus: React.FC<BaseProps & PriceStatusProps> = ({
 }) => {
   const classes = useStyles();
 
-  const currentValue = numbro.unformat((value === undefined ? children : value) as string);
+  const currentValue = unformatNumber((value === undefined ? children : value) as string);
   const pre = useRef(currentValue);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const PriceStatus: React.FC<BaseProps & PriceStatusProps> = ({
   }, [currentValue]);
 
   const status = useMemo(() => {
-    if (currentValue === undefined || pre.current === undefined) return 0;
+    if (currentValue === undefined || pre.current === undefined || !timestamp) return 0;
     if (currentValue > pre.current) {
       return 1;
     } else if (currentValue < pre.current) {

@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { Amount } from '../../../components';
 import { useAccumulatedSwapRateInfo, useMarginPositionInfo } from '../../../hooks';
 import { useLoadMarginPosition } from '../../../store/useMarginPools';
-import { fromPrecision, toPrecision } from '../../../utils';
+import { toPrecision } from '../../../utils';
 
 type SwapProps = {
   positionId: string;
@@ -28,7 +28,9 @@ const Swap: React.FC<SwapProps> = React.memo(({ positionId, poolId, pairId, dire
     const openAccumulated = position.openAccumulatedSwapRate;
     const leveragedHeld = new BN(position.leveragedHeld);
 
-    return fromPrecision(toPrecision(currentAccumulated - openAccumulated).mul(leveragedHeld), 16);
+    return toPrecision(currentAccumulated - openAccumulated)
+      .mul(leveragedHeld)
+      .div(new BN(toPrecision(1)));
   }, [position, accumulatedSwapRate, direction]);
 
   if (!value) return null;

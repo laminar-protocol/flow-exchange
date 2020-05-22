@@ -75,7 +75,9 @@ const Amount: React.FC<AmountProps> = React.memo(props => {
 
   const number = BN.isBN(quantity) ? (quantity as BN) : new BN(getValueFromHex(quantity));
 
-  return <Component {...other}>{numberToAmount(number, options)}</Component>;
+  const format = numberToAmount(number, options);
+
+  return <Component {...other}>{format}</Component>;
 });
 
 export default Amount;

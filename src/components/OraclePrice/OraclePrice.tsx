@@ -1,5 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
-
+import React from 'react';
 import { useOraclePrice } from '../../hooks';
 import { TokenId } from '../../services/Api';
 import { BaseProps } from '../../types';
@@ -14,13 +13,15 @@ type OraclePriceProps = {
   render?: (value: number) => React.ReactNode;
 };
 
+const defaultRender = (x: number) => toFixed(x, 5);
+
 const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   component: Component = PriceStatus,
   baseTokenId,
   quoteTokenId,
   spread,
   direction,
-  render = (x: number) => toFixed(x, 5),
+  render = defaultRender,
   ...other
 }) => {
   const { value: price, timestamp } = useOraclePrice(baseTokenId, quoteTokenId, spread, direction) || {};
