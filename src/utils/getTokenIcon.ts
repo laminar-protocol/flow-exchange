@@ -15,6 +15,11 @@ const iconMap: Record<TokenInfo['name'], typeof faBtc> = {
   FJPY: faYenSign,
   FBTC: faBtc,
   FETH: faEthereum,
+  FAUD: faDollarSign,
+  FCAD: faDollarSign,
+  FCHF: faDollarSign,
+  FXAU: faDollarSign,
+  FOIL: faDollarSign,
 };
 
 const getTokenIcon = (tokenName: TokenInfo['name']) => {

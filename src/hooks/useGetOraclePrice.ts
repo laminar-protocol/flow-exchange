@@ -10,7 +10,7 @@ export const useGetOraclePrice = (baseTokenId?: TokenId, quoteTokenId?: TokenId)
 
   return useCallback(
     (spread?: string, direction?: 'long' | 'short') => {
-      if (!baseOracleValue || !quoteOracleValue || !spread || !direction) return null;
+      if (!baseOracleValue?.value || !quoteOracleValue?.value || !spread || !direction) return null;
 
       const price =
         Number(fromPrecision(baseOracleValue.value, 18)) / Number(fromPrecision(quoteOracleValue.value, 18));
