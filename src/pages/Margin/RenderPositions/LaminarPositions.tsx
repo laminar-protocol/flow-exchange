@@ -80,7 +80,7 @@ const LaminarPositions = () => {
         const [direction, leverage] = getLeverage(data.events[0].args[4]);
 
         return {
-          positionId,
+          positionId: `${positionId}`,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,

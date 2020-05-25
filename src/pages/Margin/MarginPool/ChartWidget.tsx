@@ -17,7 +17,11 @@ const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol
 
   const loadChart = useCallback((symbol: string, currentTheme = 'light') => {
     const tradingSymbol = [
+      ['FAUDAUSD', 'AUDUSD'],
       ['USDAAPL', 'AAPL'],
+      ['AUSDFCHF', 'USDCHF'],
+      ['AUSDFCAD', 'USDCAD'],
+      ['FXAUAUSD', 'XAUUSD'],
       ['FAAPLDAI', 'AAPL'],
       ['DAIFAAPL', 'AAPL'],
       ['USDXAU', 'XAUUSD'],
