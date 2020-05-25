@@ -28,7 +28,8 @@ const Swap: React.FC<SwapProps> = React.memo(({ positionId, poolId, pairId, dire
     const openAccumulated = position.openAccumulatedSwapRate;
     const leveragedHeld = new BN(position.leveragedHeld);
 
-    return toPrecision(currentAccumulated - openAccumulated)
+    return toPrecision(currentAccumulated)
+      .sub(toPrecision(openAccumulated))
       .mul(leveragedHeld)
       .div(new BN(toPrecision(1)));
   }, [position, accumulatedSwapRate, direction]);

@@ -51,7 +51,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
         </Description>
       </Space>
       <Row className={classes.detail}>
-        <Space direction="vertical" style={{ flex: 1, marginRight: '2rem' }}>
+        <Space direction="vertical" style={{ flex: 1, marginRight: '1rem' }}>
           <Description label={t('Balance')} justify="space-between">
             <Amount value={data.balance} />
           </Description>
