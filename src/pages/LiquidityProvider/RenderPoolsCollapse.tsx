@@ -1,14 +1,16 @@
 import clsx from 'clsx';
-import React, { useState, ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Link } from 'react-router-dom';
-import { Collapse, CollapsePanel, Description, PoolName, Text, NumberFormat, PrimaryButton } from '../../components';
+import { Collapse, CollapsePanel, Description, PoolName, PrimaryButton, Text, Tooltip } from '../../components';
+import { useCurrentAccount } from '../../hooks';
 import { RenderDepositModal, RenderWithdrawModal } from './RenderDepositModal';
 
 type RenderPoolsCollapseProps = {
   data: {
     poolId: string;
+    owner: string;
     detail: ReactNode;
     options: {
       id: string;
@@ -16,13 +18,16 @@ type RenderPoolsCollapseProps = {
       bidSpread: ReactNode;
     }[];
   }[];
+  type: 'margin' | 'synthetic';
   handleDeposit: (address: string, poolId: string, amount: string) => Promise<void>;
   handleWithdraw: (address: string, poolId: string, amount: string) => Promise<void>;
 };
 
-const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleDeposit, handleWithdraw }) => {
+const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleDeposit, handleWithdraw, type }) => {
   const classes = useStyles();
   const { t } = useTranslation();
+
+  const { address } = useCurrentAccount();
 
   const [showModal, setShowModal] = useState<{
     type: 'deposit' | 'withdraw' | '';
@@ -47,7 +52,7 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
 
   return (
     <Collapse className={classes.root}>
-      {data.map(({ poolId, detail, options }) => (
+      {data.map(({ poolId, detail, options, owner }) => (
         <CollapsePanel
           key={poolId}
           header={
@@ -58,36 +63,40 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
               <div className={classes.poolDetail}>
                 {detail}
                 <div className={clsx(classes.item, classes.action)}>
-                  <div
-                    className={classes.actionDeposit}
-                    onClick={e => {
-                      e.stopPropagation();
-                      setShowModal({
-                        type: 'deposit',
-                        data: {
-                          poolId,
-                        },
-                      });
-                    }}
-                  >
-                    {t('Deposit')}
-                  </div>
+                  <Tooltip title={address === owner ? '' : 'warning'}>
+                    <div
+                      className={classes.actionDeposit}
+                      onClick={e => {
+                        e.stopPropagation();
+                        setShowModal({
+                          type: 'deposit',
+                          data: {
+                            poolId,
+                          },
+                        });
+                      }}
+                    >
+                      {t('Deposit')}
+                    </div>
+                  </Tooltip>
                 </div>
                 <div className={clsx(classes.item, classes.action)}>
-                  <div
-                    className={classes.actionWidthdraw}
-                    onClick={e => {
-                      e.stopPropagation();
-                      setShowModal({
-                        type: 'withdraw',
-                        data: {
-                          poolId,
-                        },
-                      });
-                    }}
-                  >
-                    {t('Withdraw')}
-                  </div>
+                  {address === owner ? (
+                    <div
+                      className={classes.actionWidthdraw}
+                      onClick={e => {
+                        e.stopPropagation();
+                        setShowModal({
+                          type: 'withdraw',
+                          data: {
+                            poolId,
+                          },
+                        });
+                      }}
+                    >
+                      {t('Withdraw')}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -124,9 +133,15 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
                   <div className={classes.item}></div>
                   <div className={classes.item}></div>
                   <div className={classes.item} style={{ flex: 2 }}>
-                    <Link to={`/margin/${poolId}/${item.id}`}>
-                      <PrimaryButton>Margin Now</PrimaryButton>
-                    </Link>
+                    {type === 'margin' ? (
+                      <Link to={`/margin/${poolId}/${item.id}`}>
+                        <PrimaryButton>Margin Now</PrimaryButton>
+                      </Link>
+                    ) : (
+                      <Link to={`/swap`}>
+                        <PrimaryButton>Swap Now</PrimaryButton>
+                      </Link>
+                    )}
                   </div>
                 </div>
               );

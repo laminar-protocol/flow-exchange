@@ -3,9 +3,8 @@ import { createUseStyles } from 'react-jss';
 
 import useSwap from '../hooks/useSwap';
 import { Panel, Spinner, Text, SwitchChain } from '../../../components';
-import { useCurrentAccount, useApi, useOraclePrice } from '../../../hooks';
+import { useCurrentAccount, useApi, useOraclePrice, useSyntheticPoolInfo } from '../../../hooks';
 import useApp from '../../../store/useApp';
-import useSyntheticPools from '../../../store/useSyntheticPools';
 import { notificationHelper, toPrecision, toFixed } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
@@ -22,7 +21,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const account = useCurrentAccount();
   const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
-  const poolInfo = useSyntheticPools(state => (selectPoolId ? state.poolInfo[selectPoolId] : null));
+  const poolInfo = useSyntheticPoolInfo(selectPoolId);
 
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);

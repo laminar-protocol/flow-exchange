@@ -1,10 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { NumberFormat, Panel, PoolName, Table } from '../../components';
-import { useApi } from '../../hooks';
-import { useSyntheticPools } from '../../store/useSyntheticPools';
 import useSwap from './hooks/useSwap';
 import useSwapPools from './hooks/useSwapPools';
 
@@ -12,31 +8,10 @@ type RenderSyntheticPoolsProps = {};
 
 const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
   const classes = useStyles();
-  const api = useApi();
-  const setSyntheticState = useSyntheticPools(state => state.setState);
   const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
 
-  const ids = useSyntheticPools(state => state.ids);
   const data = useSwapPools();
-
-  useLayoutEffect(() => {
-    if (api?.synthetic?.poolInfo) {
-      const s = combineLatest(
-        ids.map((poolId: string) => {
-          return api.synthetic?.poolInfo(poolId).pipe(
-            map((result: any) => {
-              setSyntheticState(state => {
-                state.poolInfo[result.poolId] = result;
-              });
-            }),
-          );
-        }),
-      ).subscribe();
-
-      return () => s && s.unsubscribe();
-    }
-  }, [api, setSyntheticState, ids]);
 
   useLayoutEffect(() => {
     if (data.length) {

@@ -1,9 +1,8 @@
-import React, { useLayoutEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Col, PoolName, Row, Text, Title, WebsiteTitle } from '../../components';
-import { useApi } from '../../hooks';
-import { useSyntheticPools } from '../../store/useSyntheticPools';
+import { useLoadPoolEntities } from '../../store/useSyntheticPools';
 import useSwap from './hooks/useSwap';
 import RenderBalances from './RenderBalances';
 import RenderExchange from './RenderExchange';
@@ -14,22 +13,9 @@ const Swap: React.FC = () => {
   const classes = useStyles();
   const { t } = useTranslation();
 
-  const api = useApi();
-  const setState = useSyntheticPools(state => state.setState);
+  useLoadPoolEntities();
 
   const selectPoolId = useSwap(state => state.selectPoolId);
-
-  useLayoutEffect(() => {
-    if (api?.synthetic?.allPoolIds) {
-      const s = api.synthetic.allPoolIds().subscribe((result: any) => {
-        setState(state => {
-          state.ids = result;
-        });
-      });
-
-      return () => s && s.unsubscribe();
-    }
-  }, [api, setState]);
 
   return (
     <div className={classes.root}>

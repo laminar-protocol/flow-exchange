@@ -1,5 +1,5 @@
 import React from 'react';
-import { NumberFormat, OraclePrice, Amount } from '../../components';
+import { Amount, NumberFormat, OraclePrice } from '../../components';
 import { useApi, useTraderInfo } from '../../hooks';
 import { MarginPoolInfo } from '../../services';
 import useMarginPools, { useLoadPoolEntities, useLoadTraderInfo } from '../../store/useMarginPools';
@@ -45,10 +45,11 @@ const LiquidityMargin: React.FC = () => {
   const data = Object.values(marginPoolInfo).map(item => ({
     poolId: item.poolId,
     detail: <LiquidityMarginDetail data={item} />,
+    owner: item.owner,
     options: item.options.map(({ pairId, askSpread, bidSpread, pair }) => ({
       id: pairId,
-      askSpread: <OraclePrice spread={askSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="short" />,
-      bidSpread: <OraclePrice spread={bidSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="long" />,
+      bidSpread: <OraclePrice spread={bidSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="short" />,
+      askSpread: <OraclePrice spread={askSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="long" />,
     })),
   }));
 
@@ -60,7 +61,9 @@ const LiquidityMargin: React.FC = () => {
     await notificationHelper(api.asLaminar.margin.withdrawLiquidity(address, poolId, toPrecision(amount)));
   };
 
-  return <RenderPoolsCollapse data={data} handleWithdraw={handleWithdraw} handleDeposit={handleDeposit} />;
+  return (
+    <RenderPoolsCollapse data={data} handleWithdraw={handleWithdraw} handleDeposit={handleDeposit} type="margin" />
+  );
 };
 
 export default LiquidityMargin;

@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Address, AmountInput, Dialog, PoolName, SwitchChain } from '../../components';
-import { useCurrentAccount } from '../../hooks';
+import { Address, Amount, AmountInput, Description, Dialog, PoolName, SwitchChain } from '../../components';
+import { useAccountBalance, useCurrentAccount } from '../../hooks';
 
 type RenderDepositModalProps = {
   visible: boolean;
@@ -17,6 +17,8 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
 
   const [amount, setAmount] = useState('');
   const account = useCurrentAccount();
+
+  const baseAmountBalance = useAccountBalance(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
 
   const handleCancel = useCallback(() => {
     return onCancel();
@@ -70,6 +72,9 @@ export const RenderDepositModal: React.FC<RenderDepositModalProps> = ({ visible,
           }}
         />
       </div>
+      <Description className={classes.inputTip} label={t('Max')}>
+        {baseAmountBalance ? <Amount value={baseAmountBalance.free} /> : null}
+      </Description>
     </Dialog>
   );
 };
@@ -190,8 +195,10 @@ const useStyles = createUseStyles(theme => ({
     'background-color': '#0155ff',
     'border-radius': '50%',
   },
-
   control: {
     'margin-top': '1rem',
+  },
+  inputTip: {
+    marginTop: '0.5rem',
   },
 }));

@@ -6,7 +6,7 @@ export * from './useGetAccumulatedSwapRate';
 export * from './useGetMarginPoolInfo';
 export * from './useGetMarginPosition';
 export { default as useGetOraclePrice } from './useGetOraclePrice';
-export { default as useGetSyntheticPoolInfo } from './useGetSyntheticPoolInfo';
+export * from './useGetSyntheticPoolInfo';
 export * from './useGetTokenInfo';
 export * from './useGetTraderInfo';
 export * from './useGetTraderThreshold';
