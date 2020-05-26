@@ -1,5 +1,5 @@
 import React from 'react';
-import { NumberFormat } from '../../components';
+import { NumberFormat, OraclePrice } from '../../components';
 import { useApi } from '../../hooks';
 import useMarginPools, { useLoadPoolEntities } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
@@ -37,10 +37,10 @@ const LiquidityMargin: React.FC = () => {
         value: '',
       },
     ],
-    options: item.options.map(({ pairId, askSpread, bidSpread }) => ({
+    options: item.options.map(({ pairId, askSpread, bidSpread, pair }) => ({
       id: pairId,
-      askSpread,
-      bidSpread,
+      askSpread: <OraclePrice spread={askSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="short" />,
+      bidSpread: <OraclePrice spread={bidSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="long" />,
     })),
   }));
 

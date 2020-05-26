@@ -16,8 +16,8 @@ type RenderPoolsCollapseProps = {
     }[];
     options: {
       id: string;
-      askSpread: string;
-      bidSpread: string;
+      askSpread: ReactNode;
+      bidSpread: ReactNode;
     }[];
   }[];
   handleDeposit: (address: string, poolId: string, amount: string) => Promise<void>;
@@ -129,14 +129,10 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
                     <Text>{item.id}</Text>
                   </div>
                   <div className={classes.item}>
-                    <Text>
-                      <NumberFormat value={item.bidSpread} options={{ mantissa: 5 }} />
-                    </Text>
+                    <Text>{item.bidSpread}</Text>
                   </div>
                   <div className={classes.item}>
-                    <Text>
-                      <NumberFormat value={item.askSpread} options={{ mantissa: 5 }} />
-                    </Text>
+                    <Text>{item.askSpread}</Text>
                   </div>
                   <div className={classes.item}></div>
                   <div className={classes.item}></div>
