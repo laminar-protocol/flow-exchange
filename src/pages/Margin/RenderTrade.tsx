@@ -53,7 +53,9 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
 
       if (type === 'cost') {
         const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
-        return <Amount value={toPrecision(value)} tokenId={data.pair.quote} mantissa={2} hasPostfix={true} />;
+        return (
+          <Amount value={toPrecision(value.toFixed(18))} tokenId={data.pair.quote} mantissa={2} hasPostfix={true} />
+        );
       }
 
       if (type === 'max') {

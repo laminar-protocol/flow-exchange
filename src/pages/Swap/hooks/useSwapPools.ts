@@ -8,13 +8,13 @@ const useSwapPools = () => {
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
   const isRedeem = useSwap(state => state.isRedeem);
-  const ids = useSyntheticPools(state => state.ids);
+  const allIds = useSyntheticPools(state => state.poolEntities.allIds);
 
   const getOraclePrice = useGetOraclePrice(exchangeToken?.id, baseToken?.id);
   const getSyntheticPoolInfo = useGetSyntheticPoolInfo();
 
   return useMemo(() => {
-    return ids
+    return allIds
       .map(poolId => {
         const poolInfo = getSyntheticPoolInfo(poolId);
         const option = poolInfo?.options.find(({ tokenId }) => tokenId === exchangeToken?.id);
@@ -36,7 +36,7 @@ const useSwapPools = () => {
         return null;
       })
       .filter(isPresent);
-  }, [ids, getSyntheticPoolInfo, getOraclePrice, isRedeem, exchangeToken]);
+  }, [allIds, getSyntheticPoolInfo, getOraclePrice, isRedeem, exchangeToken]);
 };
 
 export default useSwapPools;

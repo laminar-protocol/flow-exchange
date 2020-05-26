@@ -1,9 +1,39 @@
 import React from 'react';
-import { NumberFormat } from '../../components';
-import { useApi } from '../../hooks';
-import useMarginPools, { useLoadPoolEntities } from '../../store/useMarginPools';
+import { Amount, NumberFormat, OraclePrice } from '../../components';
+import { useApi, useTraderInfo } from '../../hooks';
+import { MarginPoolInfo } from '../../services';
+import useMarginPools, { useLoadPoolEntities, useLoadTraderInfo } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
-import RenderPoolsCollapse from './RenderPoolsCollapse';
+import RenderPoolsCollapse, { RenderPoolsCollapseItem } from './RenderPoolsCollapse';
+
+const LiquidityMarginDetail: React.FC<{
+  data: MarginPoolInfo;
+}> = ({ data }) => {
+  useLoadTraderInfo({ variables: { poolId: data.poolId } });
+
+  const trarderInfo = useTraderInfo(data.poolId);
+
+  return (
+    <>
+      {[
+        <RenderPoolsCollapseItem label="Address" value={data.owner} width="10rem" />,
+        <RenderPoolsCollapseItem
+          label="ENP"
+          value={<NumberFormat value={data.enp} options={{ mantissa: 2 }} percent />}
+        />,
+        <RenderPoolsCollapseItem
+          label="ELL"
+          value={<NumberFormat value={data.ell} options={{ mantissa: 2 }} percent />}
+        />,
+        <RenderPoolsCollapseItem
+          label="Margin Level"
+          value={trarderInfo && <NumberFormat value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />}
+        />,
+        <RenderPoolsCollapseItem label="Equity" value={trarderInfo && <Amount value={trarderInfo.equity} />} />,
+      ]}
+    </>
+  );
+};
 
 const LiquidityMargin: React.FC = () => {
   const api = useApi();
@@ -14,33 +44,12 @@ const LiquidityMargin: React.FC = () => {
 
   const data = Object.values(marginPoolInfo).map(item => ({
     poolId: item.poolId,
-    detail: [
-      {
-        label: 'Address',
-        value: item.owner,
-        width: '10rem',
-      },
-      {
-        label: 'ENP',
-        value: <NumberFormat value={item.enp} options={{ mantissa: 2 }} percent />,
-      },
-      {
-        label: 'ELL',
-        value: <NumberFormat value={item.ell} options={{ mantissa: 2 }} percent />,
-      },
-      {
-        label: 'Margin Level',
-        value: '',
-      },
-      {
-        label: 'Equity',
-        value: '',
-      },
-    ],
-    options: item.options.map(({ pairId, askSpread, bidSpread }) => ({
+    detail: <LiquidityMarginDetail data={item} />,
+    owner: item.owner,
+    options: item.options.map(({ pairId, askSpread, bidSpread, pair }) => ({
       id: pairId,
-      askSpread,
-      bidSpread,
+      bidSpread: <OraclePrice spread={bidSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="short" />,
+      askSpread: <OraclePrice spread={askSpread} baseTokenId={pair.base} quoteTokenId={pair.quote} direction="long" />,
     })),
   }));
 
@@ -52,7 +61,9 @@ const LiquidityMargin: React.FC = () => {
     await notificationHelper(api.asLaminar.margin.withdrawLiquidity(address, poolId, toPrecision(amount)));
   };
 
-  return <RenderPoolsCollapse data={data} handleWithdraw={handleWithdraw} handleDeposit={handleDeposit} />;
+  return (
+    <RenderPoolsCollapse data={data} handleWithdraw={handleWithdraw} handleDeposit={handleDeposit} type="margin" />
+  );
 };
 
 export default LiquidityMargin;
