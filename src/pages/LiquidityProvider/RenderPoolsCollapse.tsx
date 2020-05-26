@@ -9,11 +9,7 @@ import { RenderDepositModal, RenderWithdrawModal } from './RenderDepositModal';
 type RenderPoolsCollapseProps = {
   data: {
     poolId: string;
-    detail: {
-      label: ReactNode;
-      value: ReactNode;
-      width?: string;
-    }[];
+    detail: ReactNode;
     options: {
       id: string;
       askSpread: ReactNode;
@@ -60,16 +56,7 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
                 <PoolName type="margin" value={poolId} />
               </Text>
               <div className={classes.poolDetail}>
-                {detail &&
-                  detail.map(({ label, value, width }, index) => (
-                    <div key={index} className={classes.item}>
-                      <Description label={<Text>{label}</Text>} layout="vertical">
-                        <Text color="greyColor3" ellipsisi style={{ maxWidth: width || '100%' }}>
-                          {value}
-                        </Text>
-                      </Description>
-                    </div>
-                  ))}
+                {detail}
                 <div className={clsx(classes.item, classes.action)}>
                   <div
                     className={classes.actionDeposit}
@@ -165,6 +152,26 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
         }}
       />
     </Collapse>
+  );
+};
+
+type RenderPoolsCollapseItemProps = {
+  label: ReactNode;
+  value: ReactNode;
+  width?: string;
+};
+
+export const RenderPoolsCollapseItem: React.FC<RenderPoolsCollapseItemProps> = ({ label, value, width, ...other }) => {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.item}>
+      <Description label={<Text>{label}</Text>} layout="vertical">
+        <Text color="greyColor3" ellipsisi style={{ maxWidth: width || '100%' }}>
+          {value}
+        </Text>
+      </Description>
+    </div>
   );
 };
 
