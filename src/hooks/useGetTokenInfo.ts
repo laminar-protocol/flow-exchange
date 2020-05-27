@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import { AppState, useAppSelector } from '../store/useApp';
 import { TokenInfo } from '../services/Api';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 
 export const getTokenInfoSelector = createSelector(
   (state: AppState) => state.tokens,
@@ -25,3 +25,5 @@ export const useTokenInfo = (filter?: string | ((a: TokenInfo) => boolean)) => {
 
   return useMemo(() => getTokenInfo(filter), [filter, getTokenInfo]);
 };
+
+export const useBaseTokenInfo = () => useTokenInfo(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
