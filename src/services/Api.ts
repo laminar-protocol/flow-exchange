@@ -18,9 +18,9 @@ class Api {
 
   public chainType: FlowApi['chainType'];
 
-  public currencies?: LaminarApi['currencies'] | EthereumApi['currencies'];
-  public margin?: LaminarApi['margin'] | EthereumApi['margin'];
-  public synthetic?: LaminarApi['synthetic'] | EthereumApi['synthetic'];
+  public currencies: LaminarApi['currencies'] | EthereumApi['currencies'];
+  public margin: LaminarApi['margin'] | EthereumApi['margin'];
+  public synthetic: LaminarApi['synthetic'] | EthereumApi['synthetic'];
 
   constructor({ chainType }: { chainType?: ChainType } = {}) {
     const anyWindow = window as any;

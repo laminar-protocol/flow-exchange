@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Address, Amount, AmountInput, Description, Dialog, PoolName, SwitchChain } from '../../components';
-import { useAccountBalance, useApi, useCurrentAccount, useTraderInfo, useTokenInfo } from '../../hooks';
+import { useAccountBalance, useApi, useCurrentAccount, useTraderInfo, useBaseTokenInfo } from '../../hooks';
 import { useLoadAccountBalance } from '../../store/useAccount';
 import { useLoadMarginBalance, useLoadTraderInfo } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
@@ -102,7 +102,7 @@ export const RenderWithdrawModal: React.FC<RenderDepositModalProps> = ({ visible
   const api = useApi();
 
   const { freeMargin } = useTraderInfo(poolId) || {};
-  const baseToken = useTokenInfo(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
+  const baseToken = useBaseTokenInfo();
 
   const { forceUpdate: updateAccountBalance } = useLoadAccountBalance({ isQuery: true });
   const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({ isQuery: true, lazy: true });

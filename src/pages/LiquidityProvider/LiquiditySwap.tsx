@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { OraclePrice } from '../../components';
-import { useApi, useGetTokenInfo, useTokenInfo } from '../../hooks';
+import { useApi, useBaseTokenInfo, useGetTokenInfo } from '../../hooks';
 import useSyntheticPools, { useLoadPoolEntities } from '../../store/useSyntheticPools';
 import { notificationHelper, toPrecision } from '../../utils';
 import RenderPoolsCollapse from './RenderPoolsCollapse';
@@ -11,7 +11,7 @@ const LiquiditySwap: React.FC = () => {
   useLoadPoolEntities();
 
   const syntheticPoolInfo = useSyntheticPools(state => state.poolEntities.byId);
-  const baseToken = useTokenInfo(useCallback(tokenInfo => tokenInfo.isBaseToken, []));
+  const baseToken = useBaseTokenInfo();
   const getTokenInfo = useGetTokenInfo();
 
   const data = Object.values(syntheticPoolInfo).map(item => ({
@@ -22,7 +22,7 @@ const LiquiditySwap: React.FC = () => {
       const tokenInfo = getTokenInfo(tokenId);
 
       return {
-        id: tokenInfo?.name || '',
+        id: tokenInfo?.symbol || '',
         bidSpread:
           bidSpread && baseToken ? (
             <OraclePrice spread={bidSpread} baseTokenId={tokenId} quoteTokenId={baseToken.id} direction="short" />

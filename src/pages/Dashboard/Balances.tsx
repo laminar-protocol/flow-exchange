@@ -1,35 +1,29 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { Balance, Panel, Separator, Spinner, Text, TextCell } from '../../components';
+import { Balance, Panel, Table } from '../../components';
 import useAppStore from '../../store/useApp';
-import useAccountStore from '../../store/useAccount';
-import { getTokenIcon } from '../../utils';
 
 const Balances: React.FC = () => {
   const classes = useStyles();
 
   const tokens = useAppStore(state => state.tokens);
-  const balances = useAccountStore(state => state.balances);
+
+  const columns: any[] = [
+    {
+      title: '',
+      dataIndex: 'symbol',
+    },
+    {
+      title: '',
+      dataIndex: 'id',
+      align: 'right',
+      render: (value: any) => <Balance tokenId={value} />,
+    },
+  ];
 
   return (
-    <Panel className={classes.root} padding="1.5rem">
-      <Text size="l">Balances</Text>
-      <Separator size={1} />
-      {balances.length ? (
-        tokens?.map(token => {
-          return (
-            <div className="item" key={token.name}>
-              <TextCell header={`${token.name} Balance`} accessory={getTokenIcon(token.name)}>
-                <Text weight="bold" size="l">
-                  <Balance tokenId={token.id} hasPrefix />
-                </Text>
-              </TextCell>
-            </div>
-          );
-        })
-      ) : (
-        <Spinner type="full" />
-      )}
+    <Panel title={'Balance'} className={classes.root}>
+      <Table variant="panelTable" columns={columns} dataSource={tokens} hideHeader rowKey="id" />
     </Panel>
   );
 };
@@ -39,19 +33,6 @@ const useStyles = createUseStyles(theme => ({
     width: '35%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
-    },
-
-    '& div:last-child': {
-      borderBottom: 0,
-      marginBottom: 0,
-      paddingBottom: 0,
-    },
-
-    '& .item': {
-      marginTop: '1.5rem',
-      marginBottom: '1.5rem',
-      borderBottom: `1px solid ${theme.borderColor}`,
-      paddingBottom: '1.5rem',
     },
   },
 }));

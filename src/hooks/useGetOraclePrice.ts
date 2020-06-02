@@ -1,8 +1,8 @@
+import BN from 'bn.js';
 import { useCallback } from 'react';
-
 import { TokenId } from '../services';
+import { toPrecision, fromPrecision } from '../utils';
 import useOracleValue from './useOracleValue';
-import { fromPrecision } from '../utils';
 
 export const useGetOraclePrice = (baseTokenId?: TokenId, quoteTokenId?: TokenId) => {
   const baseOracleValue = useOracleValue(baseTokenId as string);
@@ -12,13 +12,14 @@ export const useGetOraclePrice = (baseTokenId?: TokenId, quoteTokenId?: TokenId)
     (spread?: string, direction?: 'long' | 'short') => {
       if (!baseOracleValue?.value || !quoteOracleValue?.value || !spread || !direction) return null;
 
-      const price =
-        Number(fromPrecision(baseOracleValue.value, 18)) / Number(fromPrecision(quoteOracleValue.value, 18));
+      const price = new BN(baseOracleValue.value).mul(toPrecision('1')).div(new BN(quoteOracleValue.value));
 
-      const _spread = Number(fromPrecision(spread, 18));
+      const _spread = new BN(spread);
 
       return {
-        value: direction === 'long' ? price + _spread : price - _spread,
+        value: Number(
+          fromPrecision(direction === 'long' ? price.add(_spread).toString() : price.sub(_spread).toString(), 18),
+        ),
         timestamp: Math.max(baseOracleValue.timestamp || 0, quoteOracleValue.timestamp || 0),
       };
     },
