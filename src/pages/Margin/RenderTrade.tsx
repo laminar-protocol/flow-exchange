@@ -1,6 +1,7 @@
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+import { take } from 'rxjs/operators';
 import {
   Amount,
   AmountInput,
@@ -147,6 +148,18 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
     try {
       setActionLoading(direction);
+      if (api.isEthereum) {
+        const contractAddress = api.asEthereum.margin.marginFlowProtocolSafety.options.address;
+        const allowance = await api.asEthereum.margin
+          .allowance(account.address, contractAddress)
+          .pipe(take(1))
+          .toPromise();
+
+        if (!allowance || allowance === '0') {
+          await notificationHelper(api.asEthereum.margin.grant(account.address, contractAddress));
+        }
+        await notificationHelper(api.asEthereum.margin.payTraderDeposits(account.address, poolId));
+      }
       await notificationHelper(
         api.margin.openPosition(
           account.address,

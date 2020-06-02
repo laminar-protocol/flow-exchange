@@ -22,7 +22,7 @@ const LiquiditySwap: React.FC = () => {
       const tokenInfo = getTokenInfo(tokenId);
 
       return {
-        id: tokenInfo?.name || '',
+        id: tokenInfo?.symbol || '',
         bidSpread:
           bidSpread && baseToken ? (
             <OraclePrice spread={bidSpread} baseTokenId={tokenId} quoteTokenId={baseToken.id} direction="short" />

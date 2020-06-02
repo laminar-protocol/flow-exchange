@@ -23,7 +23,7 @@ const Input: React.FC<AntdInputProps> = ({
   const baseToken = useTokenInfo(({ isBaseToken }) => isBaseToken);
 
   const suffix = useMemo(() => {
-    return showSuffix ? token?.name || baseToken?.name || null : null;
+    return showSuffix ? token?.symbol || baseToken?.symbol || null : null;
   }, [token, baseToken, showSuffix]);
 
   const re = useMemo(() => {

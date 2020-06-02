@@ -63,7 +63,7 @@ const Amount: React.FC<AmountProps> = React.memo(props => {
 
   if (token) {
     options.precision = token.precision;
-    if (hasPostfix) options.postfix = token.name;
+    if (hasPostfix) options.postfix = token.symbol;
     if (hasPrefix) options.prefix = getCurrencySymbol(token.id);
   }
 

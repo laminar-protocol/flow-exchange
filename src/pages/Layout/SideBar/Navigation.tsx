@@ -64,12 +64,14 @@ const Navigation: React.FC = () => {
           <MenuItem iconComponent={MenuSwapIcon} to="/swap">
             {t('Swap')}
           </MenuItem>
-          <MenuItem iconComponent={MenuDepositIcon} to="/lending">
-            {t('Deposit & Earn')}
-          </MenuItem>
           <MenuItem iconComponent={MenuLiquidityIcon} to="/provider">
             {t('Liquidity Provider')}
           </MenuItem>
+          {networkName === 'ethereum' && (
+            <MenuItem iconComponent={MenuDepositIcon} to="/lending">
+              {t('Deposit & Earn')}
+            </MenuItem>
+          )}
         </div>
       </div>
     </div>

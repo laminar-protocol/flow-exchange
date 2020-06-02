@@ -59,7 +59,7 @@ const EthPositions = () => {
             quote: quote?.id,
           },
           poolId: data.liquidityPool,
-          pairId: `${base?.name.toUpperCase()}${quote?.name.toUpperCase()}`,
+          pairId: `${base?.symbol.toUpperCase()}${quote?.symbol.toUpperCase()}`,
           leverage: `${Math.abs(data.leverage)}`,
           direction: data.leverage > 0 ? 'long' : 'short',
         };
