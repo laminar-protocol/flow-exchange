@@ -1592,14 +1592,14 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.98":
-  version "0.2.0-beta.98"
-  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.98.tgz#89de9f616895b385d0fe541c1e44532f5b71941d"
-  integrity sha512-pKkLQG7m7qBE7NvVfqCM+mQz9PW912e0lHUrXE0NUtgnPuDejnlWX4FULAtDJcDb4CSLhMxjXpkcu+UYl7McdQ==
+"@laminar/api@^0.2.0-beta.102":
+  version "0.2.0-beta.102"
+  resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.102.tgz#78af89da0cbbaf811b593445ed68f46bd08b9683"
+  integrity sha512-S/FnBH/lqnjhfbiHS2ZxWaJn5Dl0xwRCyMh5hZRW8f2eJZ21TnEk9L9jHYIwL1j+HNBF0d2YmT1qpN297nek5A==
   dependencies:
     "@babel/runtime" "^7.8.0"
-    "@laminar/flow-protocol-ethereum" "0.0.10"
-    "@laminar/types" "^0.2.0-beta.98"
+    "@laminar/flow-protocol-ethereum" "0.0.11"
+    "@laminar/types" "^0.2.0-beta.102"
     "@open-web3/orml-api-derive" "^0.3.0-beta.9"
     "@polkadot/api" "^1.15.1"
     rxjs "^6.5.5"
@@ -1608,15 +1608,15 @@
     web3-eth-contract "1.2.6"
     web3-utils "1.2.6"
 
-"@laminar/flow-protocol-ethereum@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@laminar/flow-protocol-ethereum/-/flow-protocol-ethereum-0.0.10.tgz#6b705c4f9483f98d9cc85e7ac4c9ece6d06ee7ff"
-  integrity sha512-LCIyvZg5xD5RCY0QaEj8lNb2GJWtL9DSaL5NiAWyI34Z9wh+M6iGT/vdhl7BCwiwtX4Y4UZfXhKCaUCGS5Y1wg==
+"@laminar/flow-protocol-ethereum@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@laminar/flow-protocol-ethereum/-/flow-protocol-ethereum-0.0.11.tgz#cb7f2c33826beecce0f781199d683510257687be"
+  integrity sha512-q9Z0yKAyVaeOLdDzm2/JVhdFefhnny+QQJkNOb1c0dvMWmU0I3dplAZX44ADdri4xLLeklizugzYg/0Q/5WTBg==
 
-"@laminar/types@^0.2.0-beta.98":
-  version "0.2.0-beta.98"
-  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.98.tgz#77ca854e2f87e18330e66d714976a7ba253e3c88"
-  integrity sha512-yZnKt/Io0MmsTtGvYSuTrqTZqjYQpMMAwAs68mNiXfowcTKlYNZ9feDrwKCjUY6sFEkQPqSfMXgm0W1BDXLF1g==
+"@laminar/types@^0.2.0-beta.102":
+  version "0.2.0-beta.102"
+  resolved "https://registry.yarnpkg.com/@laminar/types/-/types-0.2.0-beta.102.tgz#c8de84a7c4327d96791e10f550581fde8fc030bf"
+  integrity sha512-eaSx7jrdbMMT8SMHPHH8z4L59jku1HeajvNhsw2kPRB/x4FRuBxpecV1QK2EyJd8fxa4ST9ImVarNLfOKjaYUg==
   dependencies:
     "@babel/runtime" "^7.8.0"
     "@open-web3/orml-types" "^0.3.0-beta.9"
