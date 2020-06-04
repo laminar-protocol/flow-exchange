@@ -12,31 +12,25 @@ type ChartWidgetProps = {
   currentTheme?: string;
 };
 
+const MAP: Record<string, string> = {
+  FEURUSD: 'FX:EURUSD',
+  USDFJPY: 'FX:USDJPY',
+  FBTCUSD: 'BITSTAMP:BTCUSD',
+  FETHUSD: 'BITSTAMP:ETHUSD',
+  FAUDUSD: 'OANDA:AUDUSD',
+  USDFCAD: 'FX:USDCAD',
+  USDFCHF: 'FX:USDCHF',
+  FXAUUSD: 'FX_IDC:XAUUSD',
+  FOILUSD: 'TVC:USOIL',
+  USDFOIL: 'TVC:USOIL',
+  FGBPUSD: 'FX:GBPUSD',
+};
+
 const ChartWidget: React.FC<ChartWidgetProps & BaseProps> = ({ className, symbol, currentTheme }) => {
   const classes = useStyles();
 
   const loadChart = useCallback((symbol: string, currentTheme = 'light') => {
-    const tradingSymbol = [
-      ['FAUDAUSD', 'AUDUSD'],
-      ['USDAAPL', 'AAPL'],
-      ['AUSDFCHF', 'USDCHF'],
-      ['AUSDFCAD', 'USDCAD'],
-      ['FXAUAUSD', 'XAUUSD'],
-      ['FAAPLDAI', 'AAPL'],
-      ['DAIFAAPL', 'AAPL'],
-      ['USDXAU', 'XAUUSD'],
-      ['DAIFXAU', 'XAUUSD'],
-      ['DAI', 'USD'],
-      ['AUSD', 'USD'],
-      ['FEUR', 'EUR'],
-      ['FJPY', 'JPY'],
-      ['FXAU', 'XAU'],
-      ['FBTC', 'BTC'],
-      ['FETH', 'ETH'],
-      ['FETH', 'ETH'],
-    ].reduce((result, curr) => {
-      return result.replace(curr[0], curr[1]);
-    }, symbol);
+    const tradingSymbol = MAP[symbol.replace(/(DAI)|(AUSD)/, 'USD')];
 
     new TradingView.widget({
       autosize: true,

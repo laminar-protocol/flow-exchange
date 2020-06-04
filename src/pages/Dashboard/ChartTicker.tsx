@@ -23,11 +23,35 @@ const ChartTicker: React.FC = () => {
           },
           {
             description: '',
-            proName: 'OANDA:XAUUSD',
+            proName: 'BITSTAMP:BTCUSD',
           },
           {
             description: '',
-            proName: 'NASDAQ:AAPL',
+            proName: 'BITSTAMP:ETHUSD',
+          },
+          {
+            description: '',
+            proName: 'OANDA:AUDUSD',
+          },
+          {
+            description: '',
+            proName: 'FX:USDCAD',
+          },
+          {
+            description: '',
+            proName: 'FX:USDCHF',
+          },
+          {
+            description: '',
+            proName: 'FX_IDC:XAUUSD',
+          },
+          {
+            description: '',
+            proName: 'TVC:USOIL',
+          },
+          {
+            description: '',
+            proName: 'FX:GBPUSD',
           },
         ],
         colorTheme: 'light',

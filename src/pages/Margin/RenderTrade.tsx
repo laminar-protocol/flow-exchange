@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
@@ -7,7 +8,6 @@ import {
   AmountInput,
   DefaultButton,
   Description,
-  OraclePrice,
   Panel,
   RadioButton,
   RadioGroup,
@@ -18,18 +18,16 @@ import {
 } from '../../components';
 import {
   useApi,
+  useBaseTokenInfo,
   useCurrentAccount,
+  useGetOraclePrice,
   useTraderInfo,
   useTradingPair,
-  useBaseTokenInfo,
-  useGetOraclePrice,
-  useOracleValue,
 } from '../../hooks';
 import { TraderPairOptions } from '../../services';
-import { useLoadTraderInfo, useLoadPoolInfo } from '../../store/useMarginPools';
+import { useLoadPoolInfo, useLoadTraderInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
-import BN from 'bn.js';
 
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
