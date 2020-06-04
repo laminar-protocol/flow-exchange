@@ -91,7 +91,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
         const value =
           leverage && freeMargin ? new BN(freeMargin).mul(toPrecision(1)).div(toPrecision(unitPrice)) : new BN(0);
 
-        return <Amount value={value} tokenId={data.pair.quote} mantissa={2} hasPostfix={true} />;
+        return <Amount value={value} tokenId={data.pair.base} mantissa={2} hasPostfix={true} />;
       }
     },
     [type, leverage, freeMargin, amount, data, baseToken, getOraclePrice],
