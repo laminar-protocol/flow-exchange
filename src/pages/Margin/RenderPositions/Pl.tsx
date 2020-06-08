@@ -45,12 +45,12 @@ const Pl: React.FC<PlProps> = React.memo(({ held, openPrice, pair, poolId, pairI
 
   if (!value) return null;
 
-  const symbol = value < 0 ? '-' : '+';
+  const symbol = value < 0 ? '' : '+';
   return (
     <div
       className={clsx({
         [classes.green]: symbol === '+',
-        [classes.red]: symbol === '-',
+        [classes.red]: symbol === '',
       })}
     >
       {symbol}
