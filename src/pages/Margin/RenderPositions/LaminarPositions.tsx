@@ -1,9 +1,12 @@
+import React from 'react';
 import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useLayoutEffect } from 'react';
 import { useCurrentAccount } from '../../../hooks';
 import { getLeverage, getValueFromHex } from '../../../utils';
 import useMargin from '../hooks/useMargin';
+import Swap from './Swap';
+import Pl from './Pl';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
@@ -70,7 +73,7 @@ const LaminarPositions = () => {
   useLayoutEffect(() => {
     if (openedList && closedList) {
       const list = openedList.Extrinsics.map((data: any) => {
-        const positionId = data.events[0].args[1];
+        const positionId = `${data.events[0].args[1]}`;
 
         const closed = !!closedList.Extrinsics.find(({ args }: any) => {
           return args.position_id === positionId;
@@ -79,18 +82,43 @@ const LaminarPositions = () => {
         const pair = data.events[0].args[3];
         const [direction, leverage] = getLeverage(data.events[0].args[4]);
 
+        const poolId = `${data.events[0].args[2]}`;
+        const pairId = `${pair.base}${pair.quote}`;
+        const openPrice = getValueFromHex(data.events[0].args[6]);
+        const amt = getValueFromHex(data.events[0].args[5]);
+
         return {
-          positionId: `${positionId}`,
+          positionId,
           hash: data.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
           amt: getValueFromHex(data.events[0].args[5]),
-          openPrice: getValueFromHex(data.events[0].args[6]),
+          openPrice,
           pair,
-          poolId: `${data.events[0].args[2]}`,
-          pairId: `${pair.base}${pair.quote}`,
+          poolId,
+          pairId,
           leverage,
           direction,
+          swap: () => (
+            <Swap
+              key={data.hash}
+              positionId={positionId}
+              direction={direction as any}
+              poolId={poolId}
+              pairId={pairId}
+            />
+          ),
+          pl: () => (
+            <Pl
+              held={amt}
+              pair={pair}
+              openPrice={openPrice}
+              positionId={positionId}
+              direction={direction as any}
+              poolId={poolId}
+              pairId={pairId}
+            />
+          ),
         };
       });
 

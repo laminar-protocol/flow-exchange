@@ -47,7 +47,7 @@ export const useTradingPairFromPairId = (pairId: string) => {
   return useMemo(() => {
     for (const token1 of tokens) {
       for (const token2 of tokens) {
-        if (`${token1.id}${token2.id}` === pairId) {
+        if (`${token1.id}${token2.id}` === pairId || `${token1.symbol}${token2.symbol}` === pairId) {
           return {
             base: token1.id,
             quote: token2.id,

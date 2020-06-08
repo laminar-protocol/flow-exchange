@@ -1,3 +1,4 @@
+import BN from 'bn.js';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
@@ -7,7 +8,6 @@ import {
   AmountInput,
   DefaultButton,
   Description,
-  OraclePrice,
   Panel,
   RadioButton,
   RadioGroup,
@@ -16,12 +16,18 @@ import {
   Space,
   Text,
 } from '../../components';
-import { useApi, useCurrentAccount, useTraderInfo, useTradingPair } from '../../hooks';
+import {
+  useApi,
+  useBaseTokenInfo,
+  useCurrentAccount,
+  useGetOraclePrice,
+  useTraderInfo,
+  useTradingPair,
+} from '../../hooks';
 import { TraderPairOptions } from '../../services';
-import { useLoadTraderInfo, useLoadPoolInfo } from '../../store/useMarginPools';
+import { useLoadPoolInfo, useLoadTraderInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
-import BN from 'bn.js';
 
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
@@ -41,8 +47,15 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
   extra: { leverage, freeMargin, amount },
 }) => {
   const { t } = useTranslation();
+  const baseToken = useBaseTokenInfo();
+  const getOraclePrice = useGetOraclePrice(data?.pair.base, data?.pair.quote);
 
   const spread = direction === 'long' ? data?.askSpread : data?.bidSpread;
+
+  const { value: price } =
+    useMemo(() => {
+      return getOraclePrice(spread, direction);
+    }, [getOraclePrice, spread, direction]) || {};
 
   const render = useCallback(
     (price: number) => {
@@ -53,19 +66,35 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
       }
 
       if (type === 'cost') {
-        const value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
-        return (
-          <Amount value={toPrecision(value.toFixed(18))} tokenId={data.pair.quote} mantissa={2} hasPostfix={true} />
-        );
+        let value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
+
+        if (baseToken?.id !== data.pair.quote) {
+          const originalPrice = getOraclePrice('0', 'long');
+          if (originalPrice) {
+            value = value / originalPrice.value;
+          }
+        }
+        return <Amount value={toPrecision(value.toFixed(18))} tokenId={baseToken?.id} mantissa={2} hasPostfix={true} />;
       }
 
       if (type === 'max') {
+        let unitPrice = 0;
+        if (baseToken?.id !== data.pair.quote) {
+          const originalPrice = getOraclePrice('0', 'long');
+          if (originalPrice) {
+            unitPrice = price / Number(leverage) / originalPrice.value;
+          }
+        } else {
+          unitPrice = price / Number(leverage);
+        }
+
         const value =
-          leverage && freeMargin ? new BN(freeMargin).div(toPrecision(price / Number(leverage))) : new BN(0);
+          leverage && freeMargin ? new BN(freeMargin).mul(toPrecision(1)).div(toPrecision(unitPrice)) : new BN(0);
+
         return <Amount value={value} tokenId={data.pair.base} mantissa={2} hasPostfix={true} />;
       }
     },
-    [type, leverage, freeMargin, amount, data],
+    [type, leverage, freeMargin, amount, data, baseToken, getOraclePrice],
   );
 
   const label = useMemo(() => {
@@ -76,15 +105,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
 
   return (
     <Description label={`${label}: `} space="0">
-      {data ? (
-        <OraclePrice
-          baseTokenId={data.pair.base}
-          quoteTokenId={data.pair.quote}
-          spread={spread}
-          direction={direction}
-          render={render}
-        />
-      ) : null}
+      {data && price ? render(price) : null}
     </Description>
   );
 };

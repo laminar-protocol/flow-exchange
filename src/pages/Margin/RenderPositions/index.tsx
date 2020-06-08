@@ -4,13 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Date, DefaultButton, OraclePrice, Panel, SwitchChain, Table, TxHash } from '../../../components';
 import { useApi, useCurrentAccount, useGetTradingPair } from '../../../hooks';
+import { useLoadMarginBalance, useLoadTraderInfo } from '../../../store/useMarginPools';
 import { BaseProps } from '../../../types';
 import { notificationHelper, toPrecision } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import EthPositions from './EthPositions';
-import Swap from './Swap';
 import LaminarPositions from './LaminarPositions';
-import { useLoadTraderInfo, useLoadMarginBalance } from '../../../store/useMarginPools';
 
 type RenderPositionsProps = {
   filter?: (data: any) => boolean;
@@ -30,6 +29,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     isQuery: true,
     lazy: true,
   });
+
   const { forceUpdate: updateMarginBalance } = useLoadMarginBalance({
     isQuery: true,
     lazy: true,
@@ -125,16 +125,19 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     },
     {
       title: t('SWAP'),
-      dataIndex: 'positionId',
+      dataIndex: 'swap',
       align: 'right',
-      render: (value: string, record: any) => {
-        return <Swap positionId={value} direction={record.direction} poolId={record.poolId} pairId={record.pairId} />;
+      render: (renderFunc: any) => {
+        return renderFunc && renderFunc();
       },
     },
     {
       title: t('P&L'),
-      dataIndex: 'pool',
+      dataIndex: 'pl',
       align: 'right',
+      render: (renderFunc: any) => {
+        return renderFunc && renderFunc();
+      },
     },
     {
       title: '',
