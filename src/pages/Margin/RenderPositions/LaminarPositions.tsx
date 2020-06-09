@@ -75,8 +75,8 @@ const LaminarPositions = () => {
       const list = openedList.Extrinsics.map((data: any) => {
         const positionId = `${data.events[0].args[1]}`;
 
-        const closed = !!closedList.Extrinsics.find(({ args }: any) => {
-          return args.position_id === positionId;
+        const closed = !!closedList.Extrinsics.find(({ events }: any) => {
+          return `${events[0].args[1]}` === positionId;
         });
 
         const pair = data.events[0].args[3];
