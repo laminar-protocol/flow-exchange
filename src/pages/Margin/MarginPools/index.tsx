@@ -128,7 +128,7 @@ const MarginPools = () => {
         <Col className={classes.cardItem}>
           <RenderPoolNameCard poolId={'ALL_POOLS'} />
         </Col>
-        {allPoolIds.map(poolId => {
+        {allPoolIds.slice(0, 3).map(poolId => {
           return (
             <Col key={poolId} className={classes.cardItem}>
               <RenderPoolNameCard poolId={poolId} />
