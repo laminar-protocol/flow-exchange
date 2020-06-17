@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { Row } from '../../../components';
 
@@ -16,10 +16,10 @@ export interface MenuItemProps {
 const MenuItem: React.FC<MenuItemProps> = ({ iconComponent: IconComponent, noRoute, to, onClick, children }) => {
   const classes = useStyles();
 
-  const Element = noRoute ? 'a' : Link;
+  const Element = noRoute ? 'a' : NavLink;
 
   return (
-    <Element to={to || ''} onClick={onClick}>
+    <Element to={to || ''} onClick={onClick} activeClassName={classes.activeNav}>
       <Row align="middle" className={classes.root}>
         {IconComponent && <IconComponent className={classes.icon} />}
         <div className={classes.content}>{children}</div>
@@ -40,7 +40,14 @@ const useStyles = createUseStyles(theme => ({
     paddingRight: '1rem',
     borderLeft: '4px solid',
     borderLeftColor: 'transparent',
-    '&:hover': {
+    // '&:hover': {
+    //   extend: theme.linearGradientBorder,
+    //   backgroundImage: 'linear-gradient(to left, #f4f7ff, #e6ebfe)',
+    //   borderLeft: '4px solid',
+    // },
+  },
+  activeNav: {
+    '& $root': {
       extend: theme.linearGradientBorder,
       backgroundImage: 'linear-gradient(to left, #f4f7ff, #e6ebfe)',
       borderLeft: '4px solid',

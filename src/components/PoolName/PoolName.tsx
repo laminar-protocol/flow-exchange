@@ -4,6 +4,8 @@ import { BaseProps } from '../../types';
 
 const marginPoolNameMap: Record<string, string> = {
   '0': 'Laminar',
+  '1': 'Crypto',
+  '2': 'FX',
 };
 
 const syntheticPoolNameMap: Record<string, string> = {
