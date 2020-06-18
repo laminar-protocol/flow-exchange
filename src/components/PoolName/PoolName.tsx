@@ -10,6 +10,8 @@ const marginPoolNameMap: Record<string, string> = {
 
 const syntheticPoolNameMap: Record<string, string> = {
   '0': 'Laminar',
+  '1': 'Crypto',
+  '2': 'FX',
 };
 
 type PoolNameProps = {
