@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory, useLocation } from 'react-router-dom';
+import { timer } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { Layout, Spinner } from '../../components';
 import { useApp } from '../../store/useApp';
@@ -23,7 +25,7 @@ const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
   const history = useHistory();
   const location = useLocation();
 
-  useEffect(() => {
+  const handleConnect = useCallback(() => {
     const availableProvider = checkAvailableProvider();
 
     if (location.pathname === '/') return;
@@ -41,6 +43,30 @@ const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
       }
     }
   }, [history, currentApi, checkAvailableProvider, setApiEnable, setting.chainType, location]);
+
+  useEffect(() => {
+    const subscription = timer(0, 100)
+      .pipe(take(5))
+      .subscribe(
+        () => {
+          const availableProvider = checkAvailableProvider();
+          if (availableProvider.includes('laminar')) {
+            subscription.unsubscribe();
+            handleConnect();
+          }
+        },
+        () => {
+          handleConnect();
+        },
+        () => {
+          handleConnect();
+        },
+      );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [checkAvailableProvider]);
 
   return (
     <Layout>
