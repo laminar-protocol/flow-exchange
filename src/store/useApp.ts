@@ -24,7 +24,6 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
     tokens: [],
     checkAvailableProvider() {
       const anyWindow = window as any;
-      console.log(anyWindow.injectedWeb3);
       const available = {
         ethereum: !!(anyWindow.ethereum || anyWindow.web3?.currentProvider),
         laminar: !!anyWindow.injectedWeb3,

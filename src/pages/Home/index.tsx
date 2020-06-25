@@ -2,6 +2,8 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
+import { timer } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import ethereum from '../../assets/ethereum.png';
 import laminachain from '../../assets/laminachain.png';
@@ -40,14 +42,18 @@ const Home = () => {
   };
 
   useEffect(() => {
-    setAvailableProvider(checkAvailableProvider());
-
-    const timeId = setTimeout(() => {
-      setAvailableProvider(checkAvailableProvider());
-    }, 100);
+    const subscription = timer(0, 100)
+      .pipe(take(10))
+      .subscribe(() => {
+        const availableProvider = checkAvailableProvider();
+        setAvailableProvider(checkAvailableProvider());
+        if (availableProvider.includes('laminar')) {
+          subscription.unsubscribe();
+        }
+      });
 
     return () => {
-      clearTimeout(timeId);
+      subscription.unsubscribe();
     };
   }, [checkAvailableProvider, setAvailableProvider]);
 

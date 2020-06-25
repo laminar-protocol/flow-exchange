@@ -73,8 +73,6 @@ class Api {
 
     this.injected = await anyWindow.injectedWeb3['polkadot-js'].enable('FLOW EXCHANGE');
 
-    console.log(this.injected);
-
     (this.provider as LaminarApi).api.setSigner(this.injected.signer);
   };
 

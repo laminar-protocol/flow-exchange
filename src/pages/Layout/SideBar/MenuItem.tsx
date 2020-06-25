@@ -16,16 +16,14 @@ export interface MenuItemProps {
 const MenuItem: React.FC<MenuItemProps> = ({ iconComponent: IconComponent, noRoute, to, onClick, children }) => {
   const classes = useStyles();
 
-  const Element = noRoute ? 'a' : NavLink;
-
   if (noRoute) {
     return (
-      <a onClick={onClick}>
+      <div onClick={onClick}>
         <Row align="middle" className={classes.root}>
           {IconComponent && <IconComponent className={classes.icon} />}
           <div className={classes.content}>{children}</div>
         </Row>
-      </a>
+      </div>
     );
   }
 

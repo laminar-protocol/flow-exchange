@@ -40,7 +40,6 @@ const LiquidityMargin: React.FC = memo(() => {
   useLoadPoolEntities();
 
   const data = useMemo(() => {
-    console.log(JSON.stringify(marginPoolInfo));
     return Object.values(marginPoolInfo).map(item => ({
       poolId: item.poolId,
       detail: <LiquidityMarginDetail data={item} key={item.poolId} />,
