@@ -66,7 +66,7 @@ const PageLayout: React.FC<LayoutProps> = ({ loading = false, children }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [checkAvailableProvider]);
+  }, [checkAvailableProvider, handleConnect]);
 
   return (
     <Layout>
