@@ -179,7 +179,6 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
         if (!allowance || allowance === '0') {
           await notificationHelper(api.asEthereum.margin.grant(account.address, contractAddress));
         }
-        await notificationHelper(api.asEthereum.margin.payTraderDeposits(account.address, poolId));
       }
       await notificationHelper(
         api.margin.openPosition(
