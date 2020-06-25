@@ -18,13 +18,24 @@ const MenuItem: React.FC<MenuItemProps> = ({ iconComponent: IconComponent, noRou
 
   const Element = noRoute ? 'a' : NavLink;
 
+  if (noRoute) {
+    return (
+      <a onClick={onClick}>
+        <Row align="middle" className={classes.root}>
+          {IconComponent && <IconComponent className={classes.icon} />}
+          <div className={classes.content}>{children}</div>
+        </Row>
+      </a>
+    );
+  }
+
   return (
-    <Element to={to || ''} onClick={onClick} activeClassName={classes.activeNav}>
+    <NavLink to={to || ''} onClick={onClick} activeClassName={classes.activeNav}>
       <Row align="middle" className={classes.root}>
         {IconComponent && <IconComponent className={classes.icon} />}
         <div className={classes.content}>{children}</div>
       </Row>
-    </Element>
+    </NavLink>
   );
 };
 
