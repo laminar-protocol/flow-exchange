@@ -14,7 +14,7 @@ Bridging On- and Off-Chain Asset Trading
 
 - [Swap](https://flow-dev.laminar.one/swap) USD token and all other tokens can be exchanged easily and quickly.
 
-- [Liquidity Provider](https://flow-dev.laminar.one/provider/margin) Here you can see an overview of Liquidity Providers and manage the Liquidity Pools you own.
+- [Liquidity Provider](https://flow-dev.laminar.one/provider/margin) Here you can view an overview of Liquidity Providers and manage the Liquidity Pools you own.
 
 # Development
 
