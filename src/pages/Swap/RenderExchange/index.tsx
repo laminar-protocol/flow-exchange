@@ -5,11 +5,13 @@ import useSwap from '../hooks/useSwap';
 import { Panel, Spinner, Text, SwitchChain } from '../../../components';
 import { useCurrentAccount, useApi, useOraclePrice, useSyntheticPoolInfo } from '../../../hooks';
 import useApp from '../../../store/useApp';
+import useSyntheticPools from '../../../store/useSyntheticPools';
 import { notificationHelper, toPrecision, toFixed } from '../../../utils';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
 import useTokenEnable from '../hooks/useTokenEnable';
+import useSwapPools from '../hooks/useSwapPools';
 import EthTokensAllowance from './EthTokensAllowance';
 
 type RenderExchangeProps = {};
@@ -22,6 +24,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
   const selectPoolId = useSwap(state => state.selectPoolId);
   const setSwapState = useSwap(state => state.setState);
   const poolInfo = useSyntheticPoolInfo(selectPoolId);
+  const poolEntities = useSyntheticPools(state => state.poolEntities.byId);
 
   const baseToken = useSwap(state => state.baseToken);
   const exchangeToken = useSwap(state => state.exchangeToken);
@@ -42,10 +45,20 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
     tokens,
   ]);
 
-  const exchangeTokens = useMemo(
-    () => tokens.filter(({ isBaseToken, isNetworkToken }) => !isNetworkToken && !isBaseToken),
-    [tokens],
-  );
+  const exchangeTokens = useMemo(() => {
+    let supportTokens: string[] = [];
+    for (const poolId of Object.keys(poolEntities)) {
+      supportTokens = supportTokens.concat(
+        poolEntities[poolId].options
+          .filter(({ bidSpread, askSpread }) => bidSpread && askSpread)
+          .map(({ tokenId }) => tokenId),
+      );
+    }
+
+    return tokens.filter(
+      ({ isBaseToken, isNetworkToken, id }) => !isNetworkToken && !isBaseToken && supportTokens.includes(id),
+    );
+  }, [tokens, poolEntities]);
 
   const { value: askRate } =
     useOraclePrice(exchangeToken?.id, baseToken?.id, option?.askSpread || undefined, 'long') || {};

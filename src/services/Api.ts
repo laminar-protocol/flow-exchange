@@ -13,7 +13,7 @@ export type AppLaminarApi = Api & LaminarApi;
 
 class Api {
   private injected: any;
-  private provider: EthereumApi | LaminarApi;
+  private apiProvider: EthereumApi | LaminarApi;
   private _eventemitter = new EventEmitter();
 
   public chainType: FlowApi['chainType'];
@@ -28,24 +28,24 @@ class Api {
     if (chainType === 'ethereum') {
       if (!anyWindow.ethereum && !anyWindow.web3) throw new Error('metamask not detect');
       this.injected = anyWindow.ethereum || anyWindow.web3.currentProvider;
-      this.provider = new EthereumApi({
+      this.apiProvider = new EthereumApi({
         provider: this.injected,
       });
     } else if (chainType === 'laminar') {
       if (!anyWindow.injectedWeb3['polkadot-js']) throw new Error('polkadot extensions not detect');
 
-      this.provider = new LaminarApi({
+      this.apiProvider = new LaminarApi({
         provider: new WsProvider('wss://testnet-node-1.laminar-chain.laminar.one/ws'),
       });
     } else {
       throw new Error('chainType is either ethereum or laminar');
     }
 
-    this.chainType = this.provider.chainType;
+    this.chainType = this.apiProvider.chainType;
 
-    this.currencies = this.provider.currencies;
-    this.margin = this.provider.margin;
-    this.synthetic = this.provider.synthetic;
+    this.currencies = this.apiProvider.currencies;
+    this.margin = this.apiProvider.margin;
+    this.synthetic = this.apiProvider.synthetic;
   }
 
   public get isLaminar() {
@@ -73,14 +73,14 @@ class Api {
 
     this.injected = await anyWindow.injectedWeb3['polkadot-js'].enable('FLOW EXCHANGE');
 
-    (this.provider as LaminarApi).api.setSigner(this.injected.signer);
+    (this.apiProvider as LaminarApi).api.setSigner(this.injected.signer);
   };
 
   public isReady = async () => {
     if (this.chainType === 'ethereum') {
-      await Promise.all([this.ethereumIsReady(), this.provider.isReady()]);
+      await Promise.all([this.ethereumIsReady(), this.apiProvider.isReady()]);
     } else if (this.chainType === 'laminar') {
-      await Promise.all([this.laminarIsReady(), this.provider.isReady()]);
+      await Promise.all([this.laminarIsReady(), this.apiProvider.isReady()]);
     }
   };
 
