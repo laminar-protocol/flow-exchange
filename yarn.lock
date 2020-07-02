@@ -1661,7 +1661,7 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^13.0.0"
 
-"@laminar/api@^0.2.0-beta.125":
+"@laminar/api@^0.2.0-beta.121":
   version "0.2.0-beta.121"
   resolved "https://registry.yarnpkg.com/@laminar/api/-/api-0.2.0-beta.121.tgz#f35df418cf09b58fc8aa924e56c97662549d55cf"
   integrity sha512-WPvPx4a12fDzreNrXYnxczgUGSRW08j4NQ4dWNuZ+TP96PvX2oq90GHcs+7N+vA9en2AfSnQkaF7IlLfn59zCg==
