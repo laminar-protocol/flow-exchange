@@ -11,7 +11,7 @@ const RenderBalances: React.FC<RenderBalancesProps> = () => {
   const columns: any[] = [
     {
       title: '',
-      dataIndex: 'name',
+      dataIndex: 'symbol',
     },
     {
       title: '',
