@@ -31,8 +31,6 @@ const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId,
 
   const poolInfo = useMarginPoolInfo(poolId);
 
-  console.log(poolInfo);
-
   const menuDisabled = poolInfo ? poolInfo.options.length <= 1 : true;
 
   const menu = (
