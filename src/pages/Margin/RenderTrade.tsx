@@ -15,6 +15,8 @@ import {
   Select,
   Space,
   Text,
+  Dropdown,
+  Menu,
 } from '../../components';
 import {
   useApi,
@@ -23,11 +25,13 @@ import {
   useGetOraclePrice,
   useTraderInfo,
   useTradingPair,
+  useMarginPoolInfo,
 } from '../../hooks';
 import { TraderPairOptions } from '../../services';
 import { useLoadPoolInfo, useLoadTraderInfo } from '../../store/useMarginPools';
 import { getLeverageEnable, notificationHelper, toPrecision } from '../../utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
+import { Link } from 'react-router-dom';
 
 type TradeDataProps = {
   type: 'price' | 'cost' | 'max';
@@ -133,6 +137,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   const allowanceEnable = useMarginEnableStore();
   const pairInfo = useTradingPair(poolId, pairId);
   const traderInfo = useTraderInfo(poolId);
+  const poolInfo = useMarginPoolInfo(poolId);
 
   const leverages = useMemo(() => {
     return pairInfo ? getLeverageEnable(pairInfo.enabledTrades) : {};
@@ -203,6 +208,22 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     freeMargin: traderInfo?.freeMargin,
   };
 
+  const menuDisabled = poolInfo ? poolInfo.options.length <= 1 : true;
+
+  const menu = (
+    <Menu>
+      {poolInfo && !menuDisabled
+        ? poolInfo.options.map(option => {
+            return (
+              <Menu.Item key={`/margin/${poolInfo.poolId}/${option.pairId}`}>
+                <Link to={`/margin/${poolInfo.poolId}/${option.pairId}`}>{option.pairId}</Link>
+              </Menu.Item>
+            );
+          })
+        : null}
+    </Menu>
+  );
+
   return (
     <Panel className={classes.container}>
       <Space direction="vertical" size={16}>
@@ -215,7 +236,19 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
           </RadioButton>
         </RadioGroup>
         <Row align="middle" justify="space-between">
-          <Text>{pairId}</Text>
+          <Dropdown overlay={menu} disabled={menuDisabled}>
+            <span style={{ cursor: 'pointer' }}>
+              <Text>{pairId}</Text>
+              {!menuDisabled && (
+                <span style={{ position: 'relative', top: 4 }}>
+                  <svg height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgb(102, 102, 102)">
+                    <path d="M16 9v2l-4 4.24L8 11V9h8z" fill="rgb(102, 102, 102)" />
+                  </svg>
+                </span>
+              )}
+            </span>
+          </Dropdown>
+
           <Select
             value={leverage}
             onSelect={value => setLeverage(value as string)}
