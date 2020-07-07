@@ -1,18 +1,16 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-
-import useSwap from '../hooks/useSwap';
-import { Panel, Spinner, Text, SwitchChain } from '../../../components';
-import { useCurrentAccount, useApi, useOraclePrice, useSyntheticPoolInfo } from '../../../hooks';
+import { Panel, Spinner, SwitchChain, Text } from '../../../components';
+import { useApi, useCurrentAccount, useOraclePrice, useSyntheticPoolInfo } from '../../../hooks';
 import useApp from '../../../store/useApp';
 import useSyntheticPools from '../../../store/useSyntheticPools';
-import { notificationHelper, toPrecision, toFixed } from '../../../utils';
+import { notificationHelper, toFixed, toPrecision } from '../../../utils';
+import useSwap from '../hooks/useSwap';
+import useTokenEnable from '../hooks/useTokenEnable';
+import EthTokensAllowance from './EthTokensAllowance';
 import SwapButton from './SwapButton';
 import SwapExchange from './SwapExchange';
 import SwapInput from './SwapInput';
-import useTokenEnable from '../hooks/useTokenEnable';
-import useSwapPools from '../hooks/useSwapPools';
-import EthTokensAllowance from './EthTokensAllowance';
 
 type RenderExchangeProps = {};
 
