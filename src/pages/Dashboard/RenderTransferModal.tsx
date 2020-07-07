@@ -11,6 +11,8 @@ type RenderTransferModalProps = {
   onOk: () => void;
 };
 
+const ACALA_ADDRESS = '5CAca1aAUSDCrossChainTransferxxxxxxxxxxxxxxxxikw';
+
 const RenderTransferModal: React.FC<RenderTransferModalProps> = ({ visible, onCancel, onOk }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -28,7 +30,7 @@ const RenderTransferModal: React.FC<RenderTransferModalProps> = ({ visible, onCa
 
   const handleSubmit = useCallback(async () => {
     if (api.isLaminar) {
-      await notificationHelper(api.asLaminar.currencies.transfer(address, address, 'AUSD', toPrecision(amount)));
+      await notificationHelper(api.asLaminar.currencies.transfer(address, ACALA_ADDRESS, 'AUSD', toPrecision(amount)));
     }
     setAmount('');
     onOk();
@@ -57,7 +59,7 @@ const RenderTransferModal: React.FC<RenderTransferModalProps> = ({ visible, onCa
           <span className={classes.infoLabel}></span>
           <SwitchChain renderLaminar={() => 'Acala Account'} />
           <span className={classes.infoAddress}>
-            <Address value={address} maxLength={20} />
+            <Address value={ACALA_ADDRESS} maxLength={42} />
           </span>
         </div>
       </div>
