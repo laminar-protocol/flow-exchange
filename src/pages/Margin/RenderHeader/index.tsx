@@ -6,14 +6,13 @@ import {
   Description,
   Dropdown,
   Menu,
-  NumberFormat,
   Panel,
   PoolName,
   Row,
   Space,
   SwitchChain,
-  Title,
   Threshold,
+  Title,
 } from '../../../components';
 import { useMarginPoolInfo } from '../../../hooks';
 import useMarginPoolsStore from '../../../store/useMarginPools';
