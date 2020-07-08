@@ -2,7 +2,7 @@ import React from 'react';
 import { useSubscription } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useLayoutEffect } from 'react';
-import { useCurrentAccount } from '../../../hooks';
+import { useCurrentAccount, useGetTokenInfo } from '../../../hooks';
 import { getLeverage, getValueFromHex } from '../../../utils';
 import useMargin from '../hooks/useMargin';
 import Swap from './Swap';
@@ -57,6 +57,7 @@ const positionsCloseQuery = gql`
 const LaminarPositions = () => {
   const { address } = useCurrentAccount();
   const setState = useMargin(state => state.setState);
+  const getTokenInfo = useGetTokenInfo();
 
   const { data: openedList } = useSubscription(positionsOpenQuery, {
     variables: {
@@ -82,8 +83,12 @@ const LaminarPositions = () => {
         const pair = data.events[0].args[3];
         const [direction, leverage] = getLeverage(data.events[0].args[4]);
 
+        const baseToken = getTokenInfo(pair.base);
+        const quoteToken = getTokenInfo(pair.quote);
+
         const poolId = `${data.events[0].args[2]}`;
-        const pairId = `${pair.base}${pair.quote}`;
+        const pairId = `${baseToken?.name}${quoteToken?.name}`;
+
         const openPrice = getValueFromHex(data.events[0].args[6]);
         const amt = getValueFromHex(data.events[0].args[5]);
 
@@ -130,7 +135,7 @@ const LaminarPositions = () => {
     }
 
     return () => {};
-  }, [openedList, closedList, setState]);
+  }, [openedList, closedList, setState, getTokenInfo]);
 
   return null;
 };
