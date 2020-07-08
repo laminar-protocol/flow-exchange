@@ -11,6 +11,7 @@ import {
   PoolName,
   Row,
   Table,
+  Threshold,
   WebsiteTitle,
 } from '../../../components';
 import { useSymbolList } from '../../../hooks';
@@ -86,7 +87,9 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.enp - b.enp,
       showSorterTooltip: false,
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
+      render: (value: number) => (
+        <Threshold low={marginInfo.enpThreshold.marginCall} high={marginInfo.enpThreshold.stopOut} value={value} />
+      ),
     },
     {
       title: t('ELL'),
@@ -94,7 +97,9 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.ell - b.ell,
       showSorterTooltip: false,
-      render: (value: string) => <NumberFormat value={value} options={{ mantissa: 2 }} percent />,
+      render: (value: number) => (
+        <Threshold low={marginInfo.ellThreshold.marginCall} high={marginInfo.ellThreshold.stopOut} value={value} />
+      ),
     },
     {
       title: t('POOL'),

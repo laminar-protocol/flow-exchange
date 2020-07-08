@@ -13,8 +13,10 @@ import {
   Space,
   SwitchChain,
   Title,
+  Threshold,
 } from '../../../components';
 import { useMarginPoolInfo } from '../../../hooks';
+import useMarginPoolsStore from '../../../store/useMarginPools';
 import { BaseProps } from '../../../types';
 import EnableTrading from './EnableTrading';
 import TotalBalance from './TotalBalance';
@@ -29,6 +31,7 @@ const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId,
   const classes = useStyles();
   const { t } = useTranslation();
 
+  const marginInfo = useMarginPoolsStore(state => state.marginInfo);
   const poolInfo = useMarginPoolInfo(poolId);
 
   const menuDisabled = poolInfo ? poolInfo.options.length <= 1 : true;
@@ -71,11 +74,19 @@ const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId,
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ENP')}>
-              <NumberFormat value={poolInfo.enp} percent options={{ mantissa: 2 }} />
+              <Threshold
+                low={marginInfo.enpThreshold.marginCall}
+                high={marginInfo.enpThreshold.stopOut}
+                value={poolInfo.enp}
+              />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={poolInfo.ell} percent options={{ mantissa: 2 }} />
+              <Threshold
+                low={marginInfo.ellThreshold.marginCall}
+                high={marginInfo.ellThreshold.stopOut}
+                value={poolInfo.ell}
+              />
             </Description>
           </Space>
         ) : (
