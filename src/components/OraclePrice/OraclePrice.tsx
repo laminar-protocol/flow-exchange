@@ -10,6 +10,7 @@ type OraclePriceProps = {
   quoteTokenId: TokenId;
   spread?: string;
   direction: 'long' | 'short';
+  variant?: 'tail';
   render?: (value: number) => React.ReactNode;
 };
 
@@ -22,6 +23,7 @@ const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   spread,
   direction,
   render = defaultRender,
+  variant,
   ...other
 }) => {
   const { value: price, timestamp } = useOraclePrice(baseTokenId, quoteTokenId, spread, direction) || {};
@@ -31,7 +33,7 @@ const OraclePrice: React.FC<BaseProps & OraclePriceProps> = ({
   const showValue = render(price);
 
   return (
-    <Component timestamp={timestamp} value={showValue} {...other}>
+    <Component timestamp={timestamp} value={showValue} variant={variant} {...other}>
       {showValue}
     </Component>
   );

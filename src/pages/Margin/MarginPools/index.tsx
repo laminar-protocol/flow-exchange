@@ -58,6 +58,7 @@ const MarginPools = () => {
       render: (spread: any, record: any) => {
         return (
           <OraclePrice
+            variant="tail"
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
@@ -73,6 +74,7 @@ const MarginPools = () => {
       render: (spread: any, record: any) => {
         return (
           <OraclePrice
+            variant="tail"
             spread={spread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}

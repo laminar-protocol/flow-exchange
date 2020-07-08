@@ -7,6 +7,7 @@ import { unformatNumber } from '../../utils';
 type PriceStatusProps = {
   value?: string | number;
   timestamp?: number;
+  variant?: 'tail';
 };
 
 const PriceStatus: React.FC<BaseProps & PriceStatusProps> = ({
@@ -15,6 +16,7 @@ const PriceStatus: React.FC<BaseProps & PriceStatusProps> = ({
   timestamp,
   children,
   className,
+  variant,
   ...other
 }) => {
   const classes = useStyles();
@@ -37,26 +39,48 @@ const PriceStatus: React.FC<BaseProps & PriceStatusProps> = ({
     }
   }, [currentValue, timestamp]);
 
+  const [integer, fraction] = `${value}`.split('.');
+  const fractionLastOne = fraction.substr(fraction.length - 1);
+  const fractionLast = fraction.substr(fraction.length - 3, 2);
+  const fractionHead = fraction.substr(0, fraction.length - 3);
+
   return (
     <Component
       className={clsx(className, {
         [classes.green]: status === 1,
         [classes.red]: status === -1,
+        [classes.tail]: variant === 'tail',
       })}
       {...other}
     >
-      {value}
+      <span>
+        {integer}.{fractionHead}
+      </span>
+      <span className={classes.last}>{fractionLast}</span>
+      <span className={classes.lastOne}>{fractionLastOne}</span>
     </Component>
   );
 };
 
 const useStyles = createUseStyles(theme => ({
   green: {
-    color: theme.indicatorGreenColor,
+    color: '#0155ff',
   },
   red: {
     color: theme.indicatorRedColor,
   },
+  tail: {
+    fontWeight: 'bold',
+    '& $last': {
+      fontSize: '1.375em',
+    },
+    '& $lastOne': {
+      position: 'relative',
+      top: '-0.25em',
+    },
+  },
+  last: {},
+  lastOne: {},
 }));
 
 export default PriceStatus;
