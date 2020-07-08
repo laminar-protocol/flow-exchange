@@ -32,6 +32,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
       </Panel>
     );
 
+  console.log(data.marginLevel);
   return (
     <Panel>
       <Space direction="vertical" className={classes.header}>
