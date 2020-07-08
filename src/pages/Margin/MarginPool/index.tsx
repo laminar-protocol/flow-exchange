@@ -7,6 +7,7 @@ import { LeftArrowIcon } from '../../../icons';
 import {
   useLoadMarginAccumulatedSwapRates,
   useLoadMarginBalance,
+  useLoadMarginInfo,
   useLoadMarginTraderThreshold,
   useLoadTraderInfo,
 } from '../../../store/useMarginPools';
@@ -30,6 +31,7 @@ const MarginPools = () => {
   const [showDeposit, setShowDeposit] = useState(false);
 
   useLoadMarginBalance();
+  useLoadMarginInfo();
   useLoadMarginAccumulatedSwapRates();
   useLoadMarginTraderThreshold({ variables: { pairId } });
   useLoadTraderInfo({ variables: { poolId } });

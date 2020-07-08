@@ -3,6 +3,14 @@ import clsx from 'clsx';
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 
+type SolidButtonProps = React.ComponentProps<typeof Button>;
+
+const SolidButton: React.FC<SolidButtonProps> = ({ className, ...other }) => {
+  const classes = useStyles();
+
+  return <Button className={clsx(className, classes.root)} {...other} />;
+};
+
 const useStyles = createUseStyles(theme => ({
   root: {
     '&.ant-btn, &.ant-btn:hover, &.ant-btn:focus, &.ant-btn:active': {
@@ -13,13 +21,5 @@ const useStyles = createUseStyles(theme => ({
     },
   },
 }));
-
-type SolidButtonProps = React.ComponentProps<typeof Button>;
-
-const SolidButton: React.FC<SolidButtonProps> = ({ className, ...other }) => {
-  const classes = useStyles();
-
-  return <Button className={clsx(className, classes.root)} {...other} />;
-};
 
 export default SolidButton;

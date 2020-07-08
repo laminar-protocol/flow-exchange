@@ -24,6 +24,7 @@ export * from './Switch';
 export * from './SwitchChain';
 export * from './Table';
 export * from './Tabs';
+export * from './Threshold';
 export * from './Tooltip';
 export * from './TxHash';
 export * from './Typography';
