@@ -31,13 +31,13 @@ const RenderTxRecords: React.FC = () => {
         record.action === 'Redeemed' ? (
           <>
             <Amount value={record.fAmount} tokenId={record.fToken} mantissa={5} hasPostfix />
-            =>
+            {`=>`}
             <Amount value={record.baseAmount} tokenId={record.baseToken} mantissa={5} hasPostfix />
           </>
         ) : (
           <>
             <Amount value={record.baseAmount} tokenId={record.baseToken} mantissa={5} hasPostfix />
-            =>
+            {`=>`}
             <Amount value={record.fAmount} tokenId={record.fToken} mantissa={5} hasPostfix />
           </>
         ),

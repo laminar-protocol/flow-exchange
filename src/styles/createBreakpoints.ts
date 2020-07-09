@@ -26,12 +26,12 @@ export default function createBreakpoints(
     step = 5,
   } = breakpoints;
 
-  function up(key: Key | number) {
+  function up(key: Key | number): any {
     const value = typeof values[key as Key] === 'number' ? values[key as Key] : (key as number);
     return `@media (min-width:${value + step / 100}${unit})`;
   }
 
-  function down(key: Key) {
+  function down(key: Key): any {
     const endIndex = keys.indexOf(key);
     const upperbound = values[keys[endIndex]];
 
@@ -44,7 +44,7 @@ export default function createBreakpoints(
     return `@media (max-width:${value}${unit})`;
   }
 
-  function between(start: any, end: any) {
+  function between(start: Key, end: Key): any {
     const endIndex = keys.indexOf(end);
 
     if (endIndex === keys.length - 1) {
@@ -61,11 +61,11 @@ export default function createBreakpoints(
     );
   }
 
-  function only(key: Key) {
+  function only(key: Key): any {
     return between(key, key);
   }
 
-  function width(key: Key) {
+  function width(key: Key): any {
     return values[key];
   }
 
