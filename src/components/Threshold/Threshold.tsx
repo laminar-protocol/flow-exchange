@@ -16,7 +16,9 @@ const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', lo
 
   let level = '';
 
-  if (value > high) {
+  if (value > high * 1.5) {
+    level = 'VS';
+  } else if (value <= high * 1.5 && value > high) {
     level = 'S';
   } else if (value <= high && value > low) {
     level = 'MC';
@@ -24,9 +26,27 @@ const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', lo
     level = 'FC';
   }
 
+  const getToolTipTitle = () => {
+    if (level === 'VS') {
+      return <span>{`Very Safe: > 120%`}</span>;
+    }
+    const dic: Record<string, string> = {
+      S: 'Safe',
+      MC: 'Margin Call',
+      FC: 'Force Closure',
+    };
+
+    return (
+      <span>
+        {dic[level]}: <NumberFormat value={value} options={{ mantissa: 2 }} percent />
+      </span>
+    );
+  };
+
   return (
     <Component
       className={clsx({
+        [classes.verySafe]: level === 'VS',
         [classes.safe]: level === 'S',
         [classes.warning]: level === 'MC',
         [classes.danger]: level === 'FC',
@@ -34,7 +54,7 @@ const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', lo
       {...other}
     >
       <span className={classes.circel} />
-      <Tooltip title={<NumberFormat value={value} options={{ mantissa: 2 }} percent />}>
+      <Tooltip title={getToolTipTitle()}>
         <span className={classes.tag}>{level}</span>
       </Tooltip>
     </Component>
@@ -58,6 +78,11 @@ const useStyles = createUseStyles(theme => ({
     'font-size': 12,
     'margin-left': 4,
     padding: '2px 4px',
+  },
+  verySafe: {
+    '& $circel, & $tag': {
+      background: '#32af88',
+    },
   },
   safe: {
     '& $circel, & $tag': {
