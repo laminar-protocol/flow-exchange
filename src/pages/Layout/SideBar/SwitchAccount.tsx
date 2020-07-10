@@ -1,9 +1,8 @@
 import clsx from 'clsx';
 import React, { useCallback, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-
-import walletPolkadot from '../../../assets/walletPolkadot.png';
 import { Dialog, Text } from '../../../components';
+import { IdentityIcon } from '../../../icons';
 import useApp from '../../../store/useApp';
 
 type SwitchAccountProps = {
@@ -55,17 +54,22 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
       style={{ top: 200 }}
     >
       <div className={classes.list}>
-        {accountList.map(({ address }) => {
+        {accountList.map(({ address, name }) => {
           return (
             <div
               className={clsx(classes.item, { [classes.selected]: selected === address })}
               key={address}
               onClick={() => setSelected(address)}
             >
-              <img src={walletPolkadot} alt="polkadot" />
-              <Text className={classes.content} size="n">
-                {address}
-              </Text>
+              <IdentityIcon size={32} value={address} />
+              <div className={classes.content}>
+                <Text size="n" className={classes.contentItem}>
+                  {name}
+                </Text>
+                <Text size="n" className={classes.contentItem}>
+                  {address}
+                </Text>
+              </div>
             </div>
           );
         })}
@@ -97,11 +101,15 @@ const useStyles = createUseStyles(theme => ({
   },
   selected: {},
   content: {
+    display: 'flex',
+    flexDirection: 'column',
     padding: '1rem',
     flex: 1,
     marginLeft: '1rem',
-    fontSize: '0.875rem',
     borderBottom: `solid 1px ${theme.borderColor}`,
+  },
+  contentItem: {
+    fontSize: '0.875rem',
   },
 }));
 
