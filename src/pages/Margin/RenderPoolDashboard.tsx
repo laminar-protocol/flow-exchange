@@ -48,8 +48,8 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          {data.marginLevel > Number.MAX_SAFE_INTEGER ? (
-            'N/A'
+          {data.marginLevel >= 100000 ? (
+            'Very Safe'
           ) : (
             <NumberFormat value={data.marginLevel} percent options={{ mantissa: 2 }} />
           )}
