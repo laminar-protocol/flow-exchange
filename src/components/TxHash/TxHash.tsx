@@ -13,7 +13,7 @@ type TxHashProps = {
 
 const TxHash: React.FC<TxHashProps & BaseProps & React.HTMLProps<HTMLSpanElement>> = ({
   component: Component = 'span',
-  width = '9.375rem',
+  width = '7.5rem',
   showTooltip = true,
   value,
   className,
