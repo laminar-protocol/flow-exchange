@@ -8,7 +8,7 @@ type TableProps = React.ComponentProps<typeof AntdTable> & {
   variant?: 'panelTable';
 };
 
-const Table: React.FC<TableProps> = ({ hideHeader, className, variant, onRow, ...other }) => {
+const Table: React.FC<TableProps> = ({ hideHeader, className, variant, onRow, size, ...other }) => {
   const classes = useStyles({
     onRow,
   });
@@ -19,6 +19,7 @@ const Table: React.FC<TableProps> = ({ hideHeader, className, variant, onRow, ..
       scroll={{ x: true }}
       className={clsx(className, classes.root, {
         [classes.hideHeader]: hideHeader,
+        [classes.small]: size === 'small',
         [classes.panelTable]: variant === 'panelTable',
       })}
       pagination={false}
@@ -53,6 +54,20 @@ const useStyles = createUseStyles(theme => ({
     '& .ant-table-container': {
       'border-top-left-radius': 0,
       'border-top-right-radius': 0,
+    },
+  },
+  small: {
+    '& .ant-table thead > tr > th': {
+      background: theme.lightBackgroundColor,
+      padding: '1rem 0.75rem',
+      'font-size': '0.875rem',
+      'border-top': `solid 1px ${theme.keyColorGrey}`,
+      'border-bottom': `solid 1px ${theme.keyColorGrey}`,
+    },
+    '& .ant-table tbody > tr > td': {
+      color: theme.textColor.greyColor3,
+      padding: '1rem 0.75rem',
+      'font-size': '0.875rem',
     },
   },
   panelTable: {
