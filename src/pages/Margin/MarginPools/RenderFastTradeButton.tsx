@@ -40,11 +40,9 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ poolId, p
             visible={showModal}
             pairId={pairId}
             openDeposit={() => {
-              setShowModal(false);
               setShowDeposit(true);
             }}
             openWithdraw={() => {
-              setShowModal(false);
               setShowWithdraw(true);
             }}
             onOk={() => setShowModal(false)}
