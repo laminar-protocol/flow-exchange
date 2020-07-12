@@ -36,6 +36,7 @@ const useStyles = createUseStyles({
     display: 'inline-block',
     'white-space': 'nowrap',
     'text-overflow': 'ellipsis',
+    'vertical-align': 'bottom',
   },
 });
 
