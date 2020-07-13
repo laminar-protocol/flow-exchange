@@ -1,8 +1,9 @@
 import React, { memo, useMemo } from 'react';
-import { Amount, NumberFormat, OraclePrice } from '../../components';
+import { Amount, NumberFormat, OraclePrice, Threshold } from '../../components';
 import { useApi, useTraderInfo } from '../../hooks';
+import useMarginPoolsStore from '../../store/useMarginPools';
 import { MarginPoolInfo } from '../../services';
-import useMarginPools, { useLoadPoolEntities, useLoadTraderInfo } from '../../store/useMarginPools';
+import useMarginPools, { useLoadPoolEntities, useLoadTraderInfo, useLoadMarginInfo } from '../../store/useMarginPools';
 import { notificationHelper, toPrecision } from '../../utils';
 import RenderPoolsCollapse, { RenderPoolsCollapseItem } from './RenderPoolsCollapse';
 
@@ -10,22 +11,36 @@ const LiquidityMarginDetail: React.FC<{
   data: MarginPoolInfo;
 }> = memo(({ data }) => {
   useLoadTraderInfo({ variables: { poolId: data.poolId } });
+  useLoadMarginInfo();
 
   const trarderInfo = useTraderInfo(data.poolId);
+  const marginInfo = useMarginPoolsStore(state => state.marginInfo);
+
   return (
     <>
       <RenderPoolsCollapseItem label="Address" value={data.owner} width="10rem" />
       <RenderPoolsCollapseItem
         label="ENP"
-        value={<NumberFormat value={data.enp} options={{ mantissa: 2 }} percent />}
+        value={
+          <Threshold low={marginInfo.enpThreshold.marginCall} high={marginInfo.enpThreshold.stopOut} value={data.enp} />
+        }
       />
       <RenderPoolsCollapseItem
         label="ELL"
-        value={<NumberFormat value={data.ell} options={{ mantissa: 2 }} percent />}
+        value={
+          <Threshold low={marginInfo.ellThreshold.marginCall} high={marginInfo.ellThreshold.stopOut} value={data.ell} />
+        }
       />
       <RenderPoolsCollapseItem
         label="Margin Level"
-        value={trarderInfo && <NumberFormat value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />}
+        value={
+          trarderInfo &&
+          (trarderInfo.marginLevel >= 100000 ? (
+            'Very Safe'
+          ) : (
+            <NumberFormat value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />
+          ))
+        }
       />
       <RenderPoolsCollapseItem label="Equity" value={trarderInfo && <Amount value={trarderInfo.equity} />} />
     </>
