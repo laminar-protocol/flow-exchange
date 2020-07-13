@@ -8,7 +8,7 @@ const AppInit: React.FC = () => {
 
   useLayoutEffect(() => {
     if (currentApi?.currencies?.tokens) {
-      const s = currentApi.currencies.tokens().subscribe((data: any) => {
+      const s = currentApi.currencies.tokens().subscribe(data => {
         setState(state => {
           state.tokens = data;
         });
@@ -21,4 +21,4 @@ const AppInit: React.FC = () => {
   return null;
 };
 
-export default AppInit;
+export default React.memo(AppInit);
