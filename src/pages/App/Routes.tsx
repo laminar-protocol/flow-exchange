@@ -16,7 +16,7 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route exact path="/">
-        <Layout>
+        <Layout isHome={true}>
           <Home />
         </Layout>
       </Route>
