@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { BaseProps } from '../../types';
-import { Text } from '../Typography';
 
 type ExternalLinkProps = {
   to: string;
@@ -10,7 +8,7 @@ type ExternalLinkProps = {
 
 const ExternalLink: React.FC<ExternalLinkProps> = ({ children, to }) => {
   return (
-    <a href={to} target="_blank">
+    <a href={to} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   );
