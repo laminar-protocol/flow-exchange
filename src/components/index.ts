@@ -7,6 +7,7 @@ export * from './Card';
 export * from './Collapse';
 export * from './Date';
 export * from './Description';
+export * from './ExternalLink';
 export { default as Icon } from './Icon';
 export * from './Inputs';
 export * from './Layouts';

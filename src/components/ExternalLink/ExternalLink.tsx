@@ -4,18 +4,14 @@ import { BaseProps } from '../../types';
 import { Text } from '../Typography';
 
 type ExternalLinkProps = {
-  value: string;
-  type?: '';
-  isLink?: boolean;
-};
+  to: string;
+} & BaseProps &
+  React.HTMLProps<HTMLLinkElement>;
 
-const ExternalLink: React.FC<ExternalLinkProps & BaseProps & React.HTMLProps<HTMLLinkElement>> = ({
-  value,
-  isLink = true,
-}) => {
+const ExternalLink: React.FC<ExternalLinkProps> = ({ children, to }) => {
   return (
-    <a href="" target="_blank">
-      <Text ellipsisi>{value}</Text>
+    <a href={to} target="_blank">
+      {children}
     </a>
   );
 };

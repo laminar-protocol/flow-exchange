@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import LaminarLogo from '../../../assets/laminar.svg';
-import { Row } from '../../../components';
+import { Row, ExternalLink, Tooltip } from '../../../components';
 import {
   ExchangeIcon,
   MenuDashboardIcon,
@@ -12,6 +12,10 @@ import {
   MenuLiquidityIcon,
   MenuDepositIcon,
   MenuMarginIcon,
+  EmailIcon,
+  FaucetIcon,
+  GuideIcon,
+  TwitterIcon,
 } from '../../../icons';
 import useApp from '../../../store/useApp';
 
@@ -73,6 +77,40 @@ const Navigation: React.FC = () => {
             </MenuItem>
           )}
         </div>
+        <div className={classes.icons}>
+          {networkName !== 'ethereum' && (
+            <Tooltip placement="topLeft" title="Discord Faucet">
+              <div className={classes.iconsItem}>
+                <ExternalLink to="https://discord.gg/VNjPcBZ">
+                  <FaucetIcon />
+                </ExternalLink>
+              </div>
+            </Tooltip>
+          )}
+          {networkName !== 'ethereum' && (
+            <Tooltip title="Wiki">
+              <div className={classes.iconsItem}>
+                <ExternalLink to="https://github.com/laminar-protocol/laminar-chain/wiki/1.-Get-Started">
+                  <GuideIcon />
+                </ExternalLink>
+              </div>
+            </Tooltip>
+          )}
+          <Tooltip title="Twitter">
+            <div className={classes.iconsItem}>
+              <ExternalLink to="https://twitter.com/LaminarProtocol">
+                <TwitterIcon />
+              </ExternalLink>
+            </div>
+          </Tooltip>
+          <Tooltip title="Email">
+            <div className={classes.iconsItem}>
+              <ExternalLink to="mailto:hello@laminar.one">
+                <EmailIcon />
+              </ExternalLink>
+            </div>
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
@@ -84,6 +122,14 @@ const useStyle = createUseStyles(theme => ({
     flexDirection: 'column',
     justifyContent: 'space-between',
     height: '100%',
+  },
+  icons: {
+    paddingTop: 16,
+    display: 'flex',
+  },
+  iconsItem: {
+    marginLeft: 8,
+    marginRight: 8,
   },
   logoContainer: {
     paddingTop: '1rem',
