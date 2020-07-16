@@ -115,10 +115,10 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
 
         return tradingPair ? (
           <OraclePrice
-            spread={record.direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread}
+            spread={record.direction === 'long' ? tradingPair?.bidSpread : tradingPair?.askSpread}
             baseTokenId={record.pair.base}
             quoteTokenId={record.pair.quote}
-            direction={record.direction}
+            direction={record.direction === 'long' ? 'short' : 'long'}
           />
         ) : null;
       },
