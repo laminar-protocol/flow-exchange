@@ -28,12 +28,9 @@ const Pl: React.FC<PlProps> = React.memo(({ held, openPrice, pair, poolId, pairI
   const value = useMemo(() => {
     const tradingPair = getTradingPair(poolId, pairId);
 
-    const currPrice = getOraclePrice(
-      direction === 'short' ? tradingPair?.askSpread : tradingPair?.bidSpread,
-      direction,
-    );
+    const currPrice = getOraclePrice(direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread, direction);
 
-    const delta = (direction === 'short' ? -1 : 1) * ((currPrice?.value || 0) - Number(fromPrecision(openPrice, 18)));
+    const delta = (direction === 'long' ? -1 : 1) * ((currPrice?.value || 0) - Number(fromPrecision(openPrice, 18)));
 
     const unrealized = Number(fromPrecision(held, 18)) * delta;
 
