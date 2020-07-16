@@ -108,7 +108,7 @@ const LaminarPositions = () => {
             <Swap
               key={data.hash}
               positionId={positionId}
-              direction={direction === 'long' ? 'short' : 'long'}
+              direction={direction as any}
               poolId={poolId}
               pairId={pairId}
             />
@@ -119,7 +119,7 @@ const LaminarPositions = () => {
               pair={pair}
               openPrice={openPrice}
               positionId={positionId}
-              direction={direction === 'long' ? 'short' : 'long'}
+              direction={direction as any}
               poolId={poolId}
               pairId={pairId}
             />
