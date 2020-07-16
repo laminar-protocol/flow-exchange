@@ -1,3 +1,4 @@
+export { default as AcalaIcon } from './AcalaIcon';
 export { default as EmailIcon } from './EmailIcon';
 export { default as ExchangeIcon } from './ExchangeIcon';
 export { default as FaucetIcon } from './FaucetIcon';

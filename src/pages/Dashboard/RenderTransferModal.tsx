@@ -1,9 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Address, Amount, AmountInput, Description, Dialog, SwitchChain } from '../../components';
+import { Amount, AmountInput, Description, Dialog, SwitchChain } from '../../components';
 import { useAccountBalance, useApi, useCurrentAccount } from '../../hooks';
 import { notificationHelper, toPrecision } from '../../utils';
+import { AcalaIcon } from '../../icons';
 
 type RenderTransferModalProps = {
   visible: boolean;
@@ -57,9 +58,11 @@ const RenderTransferModal: React.FC<RenderTransferModalProps> = ({ visible, onCa
       <div className={classes.info}>
         <div className={classes.infoItem}>
           <span className={classes.infoLabel}></span>
-          <SwitchChain renderLaminar={() => 'Acala Account'} />
-          <span className={classes.infoAddress}>
-            <Address value={ACALA_ADDRESS} maxLength={42} />
+          <span className={classes.infoContent}>
+            <SwitchChain renderLaminar={() => 'To Acala Account'} />
+          </span>
+          <span className={classes.infoIcon}>
+            <AcalaIcon />
           </span>
         </div>
       </div>
@@ -123,13 +126,18 @@ const useStyles = createUseStyles(theme => ({
     'font-size': '1rem',
     display: 'flex',
     padding: '0.875rem 0 0.875rem ',
+    width: '100%',
   },
   infoLabel: {
     'margin-left': 11,
   },
-  infoAddress: {
-    color: theme.textColor.greyColor4,
-    'margin-left': '1rem',
+  infoContent: {
+    flex: 1,
+  },
+  infoIcon: {
+    'margin-right': '1rem',
+    position: 'relative',
+    top: 2,
   },
   infoSeparate: {
     background: theme.keyColorGrey,
