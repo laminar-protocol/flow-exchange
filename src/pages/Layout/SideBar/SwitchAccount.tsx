@@ -24,6 +24,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
       setState(state => {
         const account = accountList.find(({ address }) => accountAddress === address);
         if (!account) return null;
+        localStorage.setItem('LAST_LAMINAR_ACCOUNT', account.address);
         state.currentAccount = account;
       });
     },

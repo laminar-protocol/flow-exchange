@@ -40,7 +40,14 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
 
       set(state => {
         state.api = api;
-        state.currentAccount = accounts[0];
+        const lastAccount = localStorage.getItem('LAST_LAMINAR_ACCOUNT');
+        const findAccount = accounts.find(({ address }) => lastAccount === address);
+        if (findAccount && chainType === 'laminar') {
+          state.currentAccount = findAccount;
+        } else {
+          localStorage.removeItem('LAST_LAMINAR_ACCOUNT');
+          state.currentAccount = accounts[0];
+        }
         state.accountList = accounts;
       });
 
