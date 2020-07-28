@@ -63,11 +63,12 @@ const RenderPoolsCollapse: React.FC<RenderPoolsCollapseProps> = ({ data, handleD
               <div className={classes.poolDetail}>
                 {detail}
                 <div className={clsx(classes.item, classes.action)}>
-                  <Tooltip title={address === owner ? '' : 'warning'}>
+                  <Tooltip title={address === owner ? '' : 'COMING SOON'}>
                     <div
                       className={classes.actionDeposit}
                       onClick={e => {
                         e.stopPropagation();
+                        if (address !== owner) return;
                         setShowModal({
                           type: 'deposit',
                           data: {
