@@ -14,7 +14,7 @@ const Links: React.FC = () => {
           <MenuMarginIcon className={classes.linkIcon} />
           <div className={classes.title}>
             Margin Trading
-            <div className={classes.description}>Lerverged trading up to 50×</div>
+            <div className={classes.description}>Leveraged trading up to 50×</div>
           </div>
         </div>
       </Link>
