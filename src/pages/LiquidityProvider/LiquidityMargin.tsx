@@ -4,7 +4,7 @@ import { useApi, useTraderInfo } from '../../hooks';
 import useMarginPoolsStore from '../../store/useMarginPools';
 import { MarginPoolInfo } from '../../services';
 import useMarginPools, { useLoadPoolEntities, useLoadTraderInfo, useLoadMarginInfo } from '../../store/useMarginPools';
-import { notificationHelper, toPrecision } from '../../utils';
+import { notificationHelper, toPrecision, fromPrecision } from '../../utils';
 import RenderPoolsCollapse, { RenderPoolsCollapseItem } from './RenderPoolsCollapse';
 
 const LiquidityMarginDetail: React.FC<{
@@ -35,7 +35,7 @@ const LiquidityMarginDetail: React.FC<{
         label="Margin Level"
         value={
           trarderInfo &&
-          (trarderInfo.marginLevel >= 100000 ? (
+          (Number(fromPrecision(trarderInfo.marginLevel, 18)) > 1000 ? (
             'Very Safe'
           ) : (
             <NumberFormat value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />
