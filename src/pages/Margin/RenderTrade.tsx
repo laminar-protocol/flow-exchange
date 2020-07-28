@@ -157,7 +157,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
         .marginCalledTraders(account.address, poolId)
         .subscribe((data: any) => {
           if (data.isNone) {
-            setMarginCalled(true);
+            setMarginCalled(false);
           } else {
             setMarginCalled(true);
           }
