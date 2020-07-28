@@ -3,8 +3,10 @@ import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, NumberFormat, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
-import useMarginEnableStore from './hooks/useMarginEnable';
 import { useTraderInfo, useTraderThreshold } from '../../hooks';
+import { fromPrecision } from '../../utils';
+import useMarginEnableStore from './hooks/useMarginEnable';
+
 type RenderPoolDashboardProps = {
   poolId: string;
   pairId: string;
@@ -47,10 +49,10 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          {data.marginLevel >= 100000 ? (
+          {Number(fromPrecision(data.marginLevel, 18)) > 1000 ? (
             'Very Safe'
           ) : (
-            <NumberFormat value={data.marginLevel} percent options={{ mantissa: 2 }} />
+            <NumberFormat value={fromPrecision(data.marginLevel, 18)} percent options={{ mantissa: 2 }} />
           )}
         </Description>
       </Space>

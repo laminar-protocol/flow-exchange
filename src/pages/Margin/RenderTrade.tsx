@@ -127,6 +127,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
 
   const [mode, setMode] = useState<'basic' | 'advanced'>('basic');
   const [leverage, setLeverage] = useState('');
+  const [marginCalled, setMarginCalled] = useState(false);
   const [actionLoading, setActionLoading] = useState('');
   const api = useApi();
   const account = useCurrentAccount();
@@ -150,6 +151,23 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     }
   }, [leverages, leverage]);
 
+  useLayoutEffect(() => {
+    if (api.isLaminar) {
+      const s = (api as any).apiProvider.api.query.marginProtocol
+        .marginCalledTraders(account.address, poolId)
+        .subscribe((data: any) => {
+          if (data.isNone) {
+            setMarginCalled(true);
+          } else {
+            setMarginCalled(true);
+          }
+        });
+      return () => s.unsubscribe();
+    } else {
+      setMarginCalled(false);
+    }
+  }, [api, account, poolId]);
+
   const buyDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
       return 'NOT ENABLED';
@@ -157,8 +175,11 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     if (!leverages[leverage]?.long) {
       return 'NOT SUPPORTED';
     }
+    if (marginCalled) {
+      return 'NEED TO DEPOSIT';
+    }
     return '';
-  }, [allowanceEnable, leverages, leverage]);
+  }, [allowanceEnable, leverages, leverage, marginCalled]);
 
   const sellDisabledTip = useMemo(() => {
     if (!allowanceEnable) {
@@ -167,8 +188,11 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
     if (!leverages[leverage]?.short) {
       return 'NOT SUPPORTED';
     }
+    if (marginCalled) {
+      return 'NEED TO DEPOSIT';
+    }
     return '';
-  }, [allowanceEnable, leverages, leverage]);
+  }, [allowanceEnable, leverages, leverage, marginCalled]);
 
   const openPosition = async (direction: 'long' | 'short') => {
     if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
