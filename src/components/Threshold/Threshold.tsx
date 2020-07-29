@@ -11,10 +11,12 @@ type ThresholdProps = {
   value: number;
 } & BaseProps;
 
-const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', low, high, value, ...other }) => {
+const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', low, high, value: _value, ...other }) => {
   const classes = useStyles();
 
   let level = '';
+
+  const value = _value / 10 ** 18;
 
   if (value > high * 1.5) {
     level = 'VS';

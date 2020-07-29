@@ -22,13 +22,13 @@ const LiquidityMarginDetail: React.FC<{
       <RenderPoolsCollapseItem
         label="ENP"
         value={
-          <Threshold low={marginInfo.enpThreshold.marginCall} high={marginInfo.enpThreshold.stopOut} value={data.enp} />
+          <Threshold high={marginInfo.enpThreshold.marginCall} low={marginInfo.enpThreshold.stopOut} value={data.enp} />
         }
       />
       <RenderPoolsCollapseItem
         label="ELL"
         value={
-          <Threshold low={marginInfo.ellThreshold.marginCall} high={marginInfo.ellThreshold.stopOut} value={data.ell} />
+          <Threshold high={marginInfo.ellThreshold.marginCall} low={marginInfo.ellThreshold.stopOut} value={data.ell} />
         }
       />
       <RenderPoolsCollapseItem

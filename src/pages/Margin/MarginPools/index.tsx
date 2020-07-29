@@ -90,7 +90,7 @@ const MarginPools = () => {
       sorter: (a: any, b: any) => a.enp - b.enp,
       showSorterTooltip: false,
       render: (value: number) => (
-        <Threshold low={marginInfo.enpThreshold.marginCall} high={marginInfo.enpThreshold.stopOut} value={value} />
+        <Threshold high={marginInfo.enpThreshold.marginCall} low={marginInfo.enpThreshold.stopOut} value={value} />
       ),
     },
     {
@@ -100,7 +100,7 @@ const MarginPools = () => {
       sorter: (a: any, b: any) => a.ell - b.ell,
       showSorterTooltip: false,
       render: (value: number) => (
-        <Threshold low={marginInfo.ellThreshold.marginCall} high={marginInfo.ellThreshold.stopOut} value={value} />
+        <Threshold high={marginInfo.ellThreshold.marginCall} low={marginInfo.ellThreshold.stopOut} value={value} />
       ),
     },
     {

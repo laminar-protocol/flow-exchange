@@ -74,16 +74,16 @@ const MarginHeader: React.FC<MarginHeaderProps & BaseProps> = ({ poolId, pairId,
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ENP')}>
               <Threshold
-                low={marginInfo.enpThreshold.marginCall}
-                high={marginInfo.enpThreshold.stopOut}
+                high={marginInfo.enpThreshold.marginCall}
+                low={marginInfo.enpThreshold.stopOut}
                 value={poolInfo.enp}
               />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('ELL')}>
               <Threshold
-                low={marginInfo.ellThreshold.marginCall}
-                high={marginInfo.ellThreshold.stopOut}
+                high={marginInfo.ellThreshold.marginCall}
+                low={marginInfo.ellThreshold.stopOut}
                 value={poolInfo.ell}
               />
             </Description>
