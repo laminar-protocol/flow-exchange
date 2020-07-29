@@ -11,7 +11,7 @@ import Pl from './Pl';
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
     Events(
-      order_by: { phaseIndex: asc }
+      order_by: { blockNumber: desc }
       where: {
         method: { _eq: "PositionOpened" }
         extrinsic: { result: { _eq: "ExtrinsicSuccess" }, signer: { _eq: $signer } }
@@ -31,7 +31,7 @@ const positionsOpenQuery = gql`
 const positionsCloseQuery = gql`
   subscription positionsSubscription($signer: String!) {
     Events(
-      order_by: { phaseIndex: asc }
+      order_by: { blockNumber: desc }
       where: {
         method: { _eq: "PositionClosed" }
         extrinsic: { result: { _eq: "ExtrinsicSuccess" }, signer: { _eq: $signer } }
