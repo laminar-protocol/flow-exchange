@@ -10,46 +10,40 @@ import Pl from './Pl';
 
 const positionsOpenQuery = gql`
   subscription positionsSubscription($signer: String!) {
-    Extrinsics(
+    Events(
+      order_by: { phaseIndex: asc }
       where: {
-        section: { _eq: "marginProtocol" }
-        method: { _eq: "openPosition" }
-        result: { _eq: "ExtrinsicSuccess" }
-        signer: { _eq: $signer }
+        method: { _eq: "PositionOpened" }
+        extrinsic: { result: { _eq: "ExtrinsicSuccess" }, signer: { _eq: $signer } }
       }
-      order_by: { blockNumber: desc }
     ) {
       args
-      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionOpened" } }, limit: 1) {
-        args
-      }
       block {
         timestamp
       }
-      hash
+      extrinsic {
+        hash
+      }
     }
   }
 `;
 
 const positionsCloseQuery = gql`
   subscription positionsSubscription($signer: String!) {
-    Extrinsics(
+    Events(
+      order_by: { phaseIndex: asc }
       where: {
-        section: { _eq: "marginProtocol" }
-        method: { _eq: "closePosition" }
-        result: { _eq: "ExtrinsicSuccess" }
-        signer: { _eq: $signer }
+        method: { _eq: "PositionClosed" }
+        extrinsic: { result: { _eq: "ExtrinsicSuccess" }, signer: { _eq: $signer } }
       }
-      order_by: { blockNumber: desc }
     ) {
       args
-      events(order_by: { phaseIndex: asc }, where: { method: { _eq: "PositionClosed" } }, limit: 1) {
-        args
-      }
       block {
         timestamp
       }
-      hash
+      extrinsic {
+        hash
+      }
     }
   }
 `;
@@ -73,31 +67,32 @@ const LaminarPositions = () => {
 
   useLayoutEffect(() => {
     if (openedList && closedList) {
-      const list = openedList.Extrinsics.map((data: any) => {
-        const positionId = `${data.events[0].args[1]}`;
+      console.log(openedList.Events)
+      const list = openedList.Events.map((data: any) => {
+        const positionId = `${data.args[1]}`;
 
-        const closed = !!closedList.Extrinsics.find(({ events }: any) => {
-          return `${events[0].args[1]}` === positionId;
+        const closed = !!closedList.Events.find((data: any) => {
+          return `${data.args[1]}` === positionId;
         });
 
-        const pair = data.events[0].args[3];
-        const [direction, leverage] = getLeverage(data.events[0].args[4]);
+        const pair = data.args[3];
+        const [direction, leverage] = getLeverage(data.args[4]);
 
         const baseToken = getTokenInfo(pair.base);
         const quoteToken = getTokenInfo(pair.quote);
 
-        const poolId = `${data.events[0].args[2]}`;
+        const poolId = `${data.args[2]}`;
         const pairId = `${baseToken?.name}${quoteToken?.name}`;
 
-        const openPrice = getValueFromHex(data.events[0].args[6]);
-        const amt = getValueFromHex(data.events[0].args[5]);
+        const openPrice = getValueFromHex(data.args[6]);
+        const amt = getValueFromHex(data.args[5]);
 
         return {
           positionId,
-          hash: data.hash,
+          hash: data.extrinsic.hash,
           openedTime: data.block.timestamp,
           isClosed: !!closed,
-          amt: getValueFromHex(data.events[0].args[5]),
+          amt: getValueFromHex(data.args[5]),
           openPrice,
           pair,
           poolId,
@@ -106,7 +101,7 @@ const LaminarPositions = () => {
           direction,
           swap: () => (
             <Swap
-              key={data.hash}
+              key={data.extrinsic.hash}
               positionId={positionId}
               direction={direction === 'long' ? 'short' : 'long'}
               poolId={poolId}
