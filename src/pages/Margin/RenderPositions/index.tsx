@@ -190,6 +190,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
       {activeTab === 'closed' ? (
         <Table
           variant="panelTable"
+          size="small"
           columns={columns}
           pagination={{
             pageSize: 10,
