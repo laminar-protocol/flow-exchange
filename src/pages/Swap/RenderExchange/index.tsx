@@ -85,7 +85,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   const baseInput = (
     <SwapInput
-      label={!isRedeem ? 'Send' : 'Recieve'}
+      label={!isRedeem ? 'Send' : 'Receive'}
       locked={!isRedeem && !tokenEnabled}
       tokens={baseTokens}
       amount={baseAmount}
@@ -104,7 +104,7 @@ const RenderExchange: React.FC<RenderExchangeProps> = () => {
 
   const exchangeInput = (
     <SwapInput
-      label={isRedeem ? 'Send' : 'Recieve'}
+      label={isRedeem ? 'Send' : 'Receive'}
       locked={isRedeem && !tokenEnabled}
       tokens={exchangeTokens}
       amount={exchangeAmount}
