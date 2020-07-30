@@ -34,8 +34,16 @@ class Api {
     } else if (chainType === 'laminar') {
       if (!anyWindow.injectedWeb3['polkadot-js']) throw new Error('polkadot extensions not detect');
 
+      const shuffle = (array: string[]) => array.sort(() => Math.random() - 0.5);
+
+      const endpoints = [
+        'wss://node-6685729082874970112.jm.onfinality.io/ws',
+        'wss://node-6685729080656576512.rz.onfinality.io/ws',
+        'wss://testnet-node-1.laminar-chain.laminar.one/ws',
+      ];
+
       this.apiProvider = new LaminarApi({
-        provider: new WsProvider('wss://testnet-node-1.laminar-chain.laminar.one/ws'),
+        provider: new WsProvider(shuffle(endpoints)),
       });
     } else {
       throw new Error('chainType is either ethereum or laminar');
