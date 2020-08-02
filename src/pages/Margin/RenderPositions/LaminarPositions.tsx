@@ -29,12 +29,13 @@ const positionsOpenQuery = gql`
 `;
 
 const positionsCloseQuery = gql`
-  subscription positionsSubscription($signer: String!) {
+  subscription positionsSubscription($signer: jsonb!) {
     Events(
       order_by: { blockNumber: desc }
       where: {
         method: { _eq: "PositionClosed" }
-        extrinsic: { result: { _eq: "ExtrinsicSuccess" }, signer: { _eq: $signer } }
+        args: { _contains: $signer }
+        extrinsic: { result: { _eq: "ExtrinsicSuccess" } }
       }
     ) {
       args
@@ -67,10 +68,9 @@ const LaminarPositions = () => {
 
   useLayoutEffect(() => {
     if (openedList && closedList) {
-      console.log(openedList.Events)
       const list = openedList.Events.map((data: any) => {
         const positionId = `${data.args[1]}`;
-
+        console.log(closedList);
         const closed = !!closedList.Events.find((data: any) => {
           return `${data.args[1]}` === positionId;
         });

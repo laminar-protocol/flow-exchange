@@ -29,16 +29,8 @@ const Home = () => {
   const handleConnect = async (chainType: ChainType) => {
     if (loading) return;
 
-    // setLoading(chainType);
     setChainType(chainType);
     window.location.pathname = './dashboard';
-    // try {
-    //   await setApiEnable(chainType);
-    // } finally {
-    //   setLoading('');
-    // }
-
-    // history.push('./dashboard');
   };
 
   useEffect(() => {
