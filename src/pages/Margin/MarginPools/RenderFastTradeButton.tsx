@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import { PrimaryButton } from '../../../components';
-import { useLoadTraderInfo } from '../../../store/useMarginPools';
+import { useLoadTraderInfo, useLoadMarginTraderThreshold } from '../../../store/useMarginPools';
 import { RenderDepositModal, RenderWithdrawModal } from '../RenderDepositModal';
 import RenderFastTradeModal from './RenderFastTradeModal';
 
@@ -19,6 +19,7 @@ const RenderFastTradeButton: React.FC<RenderFastTradeButtonProps> = ({ poolId, p
   }, [showModal, showWithdraw, showDeposit]);
 
   const { forceUpdate } = useLoadTraderInfo({ variables: { poolId }, lazy: true });
+  useLoadMarginTraderThreshold({ variables: { pairId } });
 
   useLayoutEffect(() => {
     if (hasModalShow) forceUpdate();
