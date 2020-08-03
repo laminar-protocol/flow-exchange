@@ -62,7 +62,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     }
   };
 
-  const columns: any[] = [
+  const openListColumns: any[] = [
     {
       title: t('#'),
       dataIndex: 'positionId',
@@ -157,6 +157,81 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
     },
   ];
 
+  const closedListColumns: any[] = [
+    {
+      title: t('#'),
+      dataIndex: 'positionId',
+    },
+    {
+      title: t('TX HASH'),
+      dataIndex: 'hash',
+      render: (value: string) => <TxHash value={value} />,
+    },
+    {
+      title: t('SYMBOL'),
+      dataIndex: 'pairId',
+      align: 'right',
+    },
+    {
+      title: t('DATETIME'),
+      dataIndex: 'openedTime',
+      align: 'right',
+      render: (value: number) => <Date value={value} />,
+    },
+    {
+      title: t('Type'),
+      dataIndex: 'closedMethod',
+      align: 'right',
+    },
+    {
+      title: t('L/S'),
+      dataIndex: 'direction',
+      align: 'right',
+      render: (value: string) => (value === 'long' ? 'L' : 'S'),
+    },
+    {
+      title: t('LEVERAGE'),
+      dataIndex: 'leverage',
+      align: 'right',
+    },
+    {
+      title: t('AMT'),
+      dataIndex: 'amt',
+      align: 'right',
+      render: (value: string) => <Amount value={value} />,
+    },
+    {
+      title: t('OPEN PRICE'),
+      dataIndex: 'openPrice',
+      align: 'right',
+      render: (value: string) => <Amount value={value} mantissa={5} />,
+    },
+    {
+      title: t('LIQUIDATION PRICE'),
+      dataIndex: 'closedPrice',
+      align: 'right',
+      render: (price: any) => {
+        return <Amount value={price} mantissa={5} />;
+      },
+    },
+    {
+      title: t('SWAP'),
+      dataIndex: 'swap',
+      align: 'right',
+      render: (renderFunc: any) => {
+        return renderFunc && renderFunc();
+      },
+    },
+    {
+      title: t('P&L'),
+      dataIndex: 'pl',
+      align: 'right',
+      render: (renderFunc: any) => {
+        return renderFunc && renderFunc();
+      },
+    },
+  ];
+
   return (
     <Panel
       title={t('My Positions / Orders')}
@@ -191,7 +266,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
         <Table
           variant="panelTable"
           size="small"
-          columns={columns}
+          columns={closedListColumns}
           pagination={{
             pageSize: 10,
           }}
@@ -202,7 +277,7 @@ const RenderPositions: React.FC<RenderPositionsProps & BaseProps> = ({ poolId, f
         <Table
           variant="panelTable"
           size="small"
-          columns={columns}
+          columns={openListColumns}
           pagination={{
             pageSize: 10,
           }}

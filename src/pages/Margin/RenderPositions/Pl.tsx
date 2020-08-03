@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { createUseStyles } from 'react-jss';
 import { NumberFormat } from '../../../components';
 import { useBaseTokenInfo, useGetOraclePrice, useGetTradingPair } from '../../../hooks';
@@ -8,6 +8,7 @@ import { fromPrecision } from '../../../utils';
 type PlProps = {
   positionId: string;
   openPrice: string;
+  closedPrice?: string;
   held: string;
   pair: {
     quote: string;
@@ -18,19 +19,22 @@ type PlProps = {
   direction: 'long' | 'short';
 };
 
-const Pl: React.FC<PlProps> = React.memo(({ held, openPrice, pair, poolId, pairId, direction }) => {
+const Pl: React.FC<PlProps> = React.memo(({ closedPrice, held, openPrice, pair, poolId, pairId, direction }) => {
   const classes = useStyles();
 
   const baseToken = useBaseTokenInfo();
   const getOraclePrice = useGetOraclePrice(pair.base, pair.quote);
   const getTradingPair = useGetTradingPair();
 
-  const value = useMemo(() => {
+  const getCurrPrice = useCallback(() => {
     const tradingPair = getTradingPair(poolId, pairId);
+    return getOraclePrice(direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread, direction)?.value;
+  }, [getTradingPair, getOraclePrice, poolId, pairId, direction]);
 
-    const currPrice = getOraclePrice(direction === 'long' ? tradingPair?.askSpread : tradingPair?.bidSpread, direction);
+  const value = useMemo(() => {
+    const currPrice = closedPrice ? Number(fromPrecision(closedPrice, 18)) : getCurrPrice();
 
-    const delta = (direction === 'long' ? -1 : 1) * ((currPrice?.value || 0) - Number(fromPrecision(openPrice, 18)));
+    const delta = (direction === 'long' ? -1 : 1) * ((currPrice || 0) - Number(fromPrecision(openPrice, 18)));
 
     const unrealized = Number(fromPrecision(held, 18)) * delta;
 
@@ -41,7 +45,7 @@ const Pl: React.FC<PlProps> = React.memo(({ held, openPrice, pair, poolId, pairI
     }
 
     return unrealized;
-  }, [held, getTradingPair, direction, poolId, pairId, getOraclePrice, baseToken, openPrice, pair]);
+  }, [held, direction, getOraclePrice, baseToken, openPrice, pair, getCurrPrice, closedPrice]);
 
   if (!value) return null;
 

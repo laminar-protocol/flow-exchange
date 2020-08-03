@@ -43,6 +43,7 @@ const positionsCloseQuery = gql`
         timestamp
       }
       extrinsic {
+        method
         hash
       }
     }
@@ -70,8 +71,8 @@ const LaminarPositions = () => {
     if (openedList && closedList) {
       const list = openedList.Events.map((data: any) => {
         const positionId = `${data.args[1]}`;
-        console.log(closedList);
-        const closed = !!closedList.Events.find((data: any) => {
+
+        const closedInfo = closedList.Events.find((data: any) => {
           return `${data.args[1]}` === positionId;
         });
 
@@ -86,14 +87,18 @@ const LaminarPositions = () => {
 
         const openPrice = getValueFromHex(data.args[6]);
         const amt = getValueFromHex(data.args[5]);
+        const closedPrice = closedInfo ? getValueFromHex(closedInfo.args[3]) : undefined;
+        const closedMethod = closedInfo ? closedInfo.extrinsic.method : undefined;
 
         return {
           positionId,
           hash: data.extrinsic.hash,
           openedTime: data.block.timestamp,
-          isClosed: !!closed,
+          isClosed: !!closedInfo,
           amt: getValueFromHex(data.args[5]),
           openPrice,
+          closedPrice,
+          closedMethod,
           pair,
           poolId,
           pairId,
@@ -113,6 +118,7 @@ const LaminarPositions = () => {
               held={amt}
               pair={pair}
               openPrice={openPrice}
+              closedPrice={closedPrice}
               positionId={positionId}
               direction={direction === 'long' ? 'short' : 'long'}
               poolId={poolId}

@@ -6,7 +6,14 @@ export const currentAccountSelector = createSelector(
   (state: AppState) => state.currentAccount,
   account => {
     if (!account) throw new Error('unexpected error');
-    return account;
+    const devAccount = sessionStorage.getItem('DEV_ACCOUNT');
+    if (devAccount) {
+      return {
+        address: devAccount,
+      };
+    } else {
+      return account;
+    }
   },
 );
 

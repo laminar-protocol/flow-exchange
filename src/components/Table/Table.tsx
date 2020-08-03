@@ -59,15 +59,15 @@ const useStyles = createUseStyles(theme => ({
   small: {
     '& .ant-table thead > tr > th': {
       background: theme.lightBackgroundColor,
-      padding: '1rem 0.75rem',
-      'font-size': '0.875rem',
+      padding: '1rem 0.5rem',
+      'font-size': '0.8125rem',
       'border-top': `solid 1px ${theme.keyColorGrey}`,
       'border-bottom': `solid 1px ${theme.keyColorGrey}`,
     },
     '& .ant-table tbody > tr > td': {
       color: theme.textColor.greyColor3,
-      padding: '1rem 0.75rem',
-      'font-size': '0.875rem',
+      padding: '1rem 0.5rem',
+      'font-size': '0.8125rem',
     },
   },
   panelTable: {
