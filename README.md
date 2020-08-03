@@ -34,3 +34,13 @@ Bridging On- and Off-Chain Asset Trading
    ```bash
    yarn start
    ```
+
+# Temporarily view any account
+
+If you do not have the private key for this account, but want to view some of the data for this account, you can do this by adding an item to the SessionStorage. like:
+
+```
+sessionStorage.setItem(‘DEV_ACCOUNT’, 5Hj6nQX....)
+```
+
+SessionStorage will be emptied when you close the web window.
