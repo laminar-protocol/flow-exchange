@@ -38,7 +38,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
       title: 'Swap Rate',
       dataIndex: 'swapRate',
       align: 'right',
-      render: (value: any) => {
+      render: (value: string) => {
         return <Fixed18 value={value} options={{ mantissa: 5 }} />;
       },
     },
@@ -46,7 +46,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
       title: 'Collateral Ratio',
       dataIndex: 'collateralRatio',
       align: 'right',
-      render: (value: any) => {
+      render: (value: string) => {
         return <Fixed18 value={value} percent options={{ mantissa: 2 }} />;
       },
     },

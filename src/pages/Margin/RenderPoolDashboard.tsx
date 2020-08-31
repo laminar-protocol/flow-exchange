@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { Amount, Description, Fixed18, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
 import { useTraderInfo, useTraderThreshold } from '../../hooks';
-import { fromPrecision } from '../../utils';
+import { fixed18toNumber } from '@laminar/api/utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
 
 type RenderPoolDashboardProps = {
@@ -49,10 +49,10 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
       </Space>
       <Space className={classes.level}>
         <Description label={t('Margin Level')}>
-          {Number(fromPrecision(data.marginLevel, 18)) > 1000 ? (
+          {fixed18toNumber(data.marginLevel) > 1000 ? (
             'Very Safe'
           ) : (
-            <Fixed18 value={fromPrecision(data.marginLevel, 18)} percent options={{ mantissa: 2 }} />
+            <Fixed18 value={data.marginLevel} percent options={{ mantissa: 2 }} />
           )}
         </Description>
       </Space>

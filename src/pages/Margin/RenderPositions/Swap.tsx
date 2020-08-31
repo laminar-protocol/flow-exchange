@@ -1,4 +1,3 @@
-import BN from 'bn.js';
 import React, { useMemo } from 'react';
 import { NumberFormat } from '../../../components';
 import { useAccumulatedSwapRateInfo, useMarginPositionInfo } from '../../../hooks';

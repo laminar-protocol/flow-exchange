@@ -3,6 +3,7 @@ import { useGetOraclePrice, useGetSyntheticPoolInfo } from '../../../hooks';
 import useSyntheticPools from '../../../store/useSyntheticPools';
 import useSwap from './useSwap';
 import { isPresent } from '../../../utils';
+import { toFixed18, fixed18toNumber } from '@laminar/api/utils';
 
 const useSwapPools = () => {
   const baseToken = useSwap(state => state.baseToken);
@@ -21,8 +22,8 @@ const useSwapPools = () => {
         if (option && poolInfo && option?.askSpread && option?.bidSpread) {
           const { value: askRate } = getOraclePrice(option.askSpread, 'long') || {};
           const { value: bidRate } = getOraclePrice(option.bidSpread, 'short') || {};
-          const swapRate = !isRedeem ? 1 / Number(askRate) : bidRate;
-          const collateralRatio = 1 + Number(option.additionalCollateralRatio || null);
+          const swapRate = toFixed18((!isRedeem ? 1 / Number(askRate) : bidRate) || 0);
+          const collateralRatio = toFixed18(1 + fixed18toNumber(option.additionalCollateralRatio || '0'));
 
           return {
             ...poolInfo,
