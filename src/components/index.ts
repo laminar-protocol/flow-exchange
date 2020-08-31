@@ -13,6 +13,7 @@ export * from './Inputs';
 export * from './Layouts';
 export * from './Modal';
 export * from './NumberFormat';
+export * from './Fixed18';
 export * from './OraclePrice';
 export * from './Panel';
 export * from './PoolName';

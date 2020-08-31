@@ -4,11 +4,12 @@ import { createUseStyles } from 'react-jss';
 import clsx from 'clsx';
 import { Tooltip } from '../Tooltip';
 import { NumberFormat } from '../NumberFormat';
+import { fixed18toNumber } from '@laminar/api/utils';
 
 type ThresholdProps = {
-  low: number;
-  high: number;
-  value: number;
+  low: string;
+  high: string;
+  value: string;
 } & BaseProps;
 
 const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', low, high, value: _value, ...other }) => {
@@ -16,13 +17,15 @@ const Threshold: React.FC<ThresholdProps> = ({ component: Component = 'span', lo
 
   let level = '';
 
-  const value = _value / 10 ** 18;
+  const value = fixed18toNumber(_value);
+  const highValue = fixed18toNumber(high);
+  const lowValue = fixed18toNumber(low);
 
-  if (value > high * 1.5) {
+  if (value > highValue * 1.5) {
     level = 'VS';
-  } else if (value <= high * 1.5 && value > high) {
+  } else if (value <= highValue * 1.5 && value > highValue) {
     level = 'S';
-  } else if (value <= high && value > low) {
+  } else if (value <= highValue && value > lowValue) {
     level = 'MC';
   } else {
     level = 'FC';

@@ -1,9 +1,9 @@
 import BN from 'bn.js';
 import React, { useMemo } from 'react';
-import { Amount } from '../../../components';
+import { NumberFormat } from '../../../components';
 import { useAccumulatedSwapRateInfo, useMarginPositionInfo } from '../../../hooks';
 import { useLoadMarginPosition } from '../../../store/useMarginPools';
-import { toPrecision } from '../../../utils';
+import { fixed18toNumber } from '@laminar/api/utils';
 
 type SwapProps = {
   positionId: string;
@@ -24,19 +24,16 @@ const Swap: React.FC<SwapProps> = React.memo(({ positionId, poolId, pairId, dire
 
   const value = useMemo(() => {
     if (!accumulatedSwapRate?.[direction] || !position?.openAccumulatedSwapRate || !position?.leveragedHeld) return;
-    const currentAccumulated = accumulatedSwapRate[direction];
-    const openAccumulated = position.openAccumulatedSwapRate;
-    const leveragedHeld = new BN(position.leveragedHeld);
+    const currentAccumulated = fixed18toNumber(accumulatedSwapRate[direction]);
+    const openAccumulated = fixed18toNumber(position.openAccumulatedSwapRate);
+    const leveragedHeld = fixed18toNumber(position.leveragedHeld);
 
-    return toPrecision(currentAccumulated)
-      .sub(toPrecision(openAccumulated))
-      .mul(leveragedHeld)
-      .div(new BN(toPrecision(1)));
+    return (currentAccumulated - openAccumulated) * leveragedHeld;
   }, [position, accumulatedSwapRate, direction]);
 
   if (!value) return null;
 
-  return <Amount value={value} />;
+  return <NumberFormat value={value} options={{ mantissa: 3 }} />;
 });
 
 export default Swap;

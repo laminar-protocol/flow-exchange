@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import {
   Col,
   Description,
-  NumberFormat,
+  Fixed18,
   OraclePrice,
   Panel,
   PoolName,
@@ -89,7 +89,7 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.enp - b.enp,
       showSorterTooltip: false,
-      render: (value: number) => (
+      render: (value: string) => (
         <Threshold high={marginInfo.enpThreshold.marginCall} low={marginInfo.enpThreshold.stopOut} value={value} />
       ),
     },
@@ -99,7 +99,7 @@ const MarginPools = () => {
       align: 'right',
       sorter: (a: any, b: any) => a.ell - b.ell,
       showSorterTooltip: false,
-      render: (value: number) => (
+      render: (value: string) => (
         <Threshold high={marginInfo.ellThreshold.marginCall} low={marginInfo.ellThreshold.stopOut} value={value} />
       ),
     },
@@ -145,25 +145,25 @@ const MarginPools = () => {
         <Col style={{ flex: 1 }}>
           <Row style={{ marginRight: '2rem', flexWrap: 'nowrap' }} justify="end" className={classes.cardItem}>
             <Description layout="vertical" label={t('Margin Call ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.marginCall} percent options={{ mantissa: 2 }} />
+              <Fixed18 value={marginInfo.enpThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.marginCall} percent options={{ mantissa: 2 }} />
+              <Fixed18 value={marginInfo.ellThreshold.marginCall} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separate} />
             <Description layout="vertical" label={t('Force Closure ENP')} align="flex-end">
-              <NumberFormat value={marginInfo.enpThreshold.stopOut} percent options={{ mantissa: 2 }} />
+              <Fixed18 value={marginInfo.enpThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
             <div className={classes.separateWrap}>
               <div className={classes.separateItem1}></div>
               <div className={classes.separateItem2}></div>
             </div>
             <Description layout="vertical" label={t('ELL')}>
-              <NumberFormat value={marginInfo.ellThreshold.stopOut} percent options={{ mantissa: 2 }} />
+              <Fixed18 value={marginInfo.ellThreshold.stopOut} percent options={{ mantissa: 2 }} />
             </Description>
           </Row>
         </Col>

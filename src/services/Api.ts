@@ -1,4 +1,4 @@
-import { ChainType, EthereumApi, FlowApi, LaminarApi, WsProvider } from '@laminar/api';
+import { ChainType, EthereumApi, LaminarApi, WsProvider } from '@laminar/api';
 import EventEmitter from 'eventemitter3';
 
 export * from '@laminar/api';
@@ -16,7 +16,7 @@ class Api {
   private apiProvider: EthereumApi | LaminarApi;
   private _eventemitter = new EventEmitter();
 
-  public chainType: FlowApi['chainType'];
+  public chainType: ChainType;
 
   public currencies: LaminarApi['currencies'] | EthereumApi['currencies'];
   public margin: LaminarApi['margin'] | EthereumApi['margin'];

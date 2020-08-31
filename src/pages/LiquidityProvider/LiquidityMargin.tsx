@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from 'react';
-import { Amount, NumberFormat, OraclePrice, Threshold } from '../../components';
+import { Amount, Fixed18, OraclePrice, Threshold } from '../../components';
 import { useApi, useTraderInfo } from '../../hooks';
 import useMarginPoolsStore from '../../store/useMarginPools';
 import { MarginPoolInfo } from '../../services';
@@ -38,7 +38,7 @@ const LiquidityMarginDetail: React.FC<{
           (Number(fromPrecision(trarderInfo.marginLevel, 18)) > 1000 ? (
             'Very Safe'
           ) : (
-            <NumberFormat value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />
+            <Fixed18 value={trarderInfo.marginLevel} percent options={{ mantissa: 2 }} />
           ))
         }
       />

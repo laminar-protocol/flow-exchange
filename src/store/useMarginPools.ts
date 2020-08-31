@@ -30,12 +30,12 @@ export const [useMarginPools, useMarginPoolsApi, useMarginPoolsSelector] = creat
     balance: '0',
     marginInfo: {
       ellThreshold: {
-        marginCall: 0,
-        stopOut: 0,
+        marginCall: '0',
+        stopOut: '0',
       },
       enpThreshold: {
-        marginCall: 0,
-        stopOut: 0,
+        marginCall: '0',
+        stopOut: '0',
       },
     },
     poolEntities: {

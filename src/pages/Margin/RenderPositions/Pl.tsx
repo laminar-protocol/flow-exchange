@@ -50,6 +50,7 @@ const Pl: React.FC<PlProps> = React.memo(({ closedPrice, held, openPrice, pair, 
   if (!value) return null;
 
   const symbol = value < 0 ? '' : '+';
+
   return (
     <div
       className={clsx({

@@ -1,6 +1,6 @@
 import React, { useLayoutEffect } from 'react';
 import { createUseStyles } from 'react-jss';
-import { NumberFormat, Panel, PoolName, Table } from '../../components';
+import { Fixed18, Panel, PoolName, Table } from '../../components';
 import useSwap from './hooks/useSwap';
 import useSwapPools from './hooks/useSwapPools';
 
@@ -39,7 +39,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
       dataIndex: 'swapRate',
       align: 'right',
       render: (value: any) => {
-        return <NumberFormat value={value} options={{ mantissa: 5 }} />;
+        return <Fixed18 value={value} options={{ mantissa: 5 }} />;
       },
     },
     {
@@ -47,7 +47,7 @@ const RenderSyntheticPools: React.FC<RenderSyntheticPoolsProps> = () => {
       dataIndex: 'collateralRatio',
       align: 'right',
       render: (value: any) => {
-        return <NumberFormat value={value} percent options={{ mantissa: 2 }} />;
+        return <Fixed18 value={value} percent options={{ mantissa: 2 }} />;
       },
     },
     {

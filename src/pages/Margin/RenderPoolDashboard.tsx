@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
-import { Amount, Description, NumberFormat, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
+import { Amount, Description, Fixed18, Panel, Row, Space, Spinner, Text, Tooltip } from '../../components';
 import { useTraderInfo, useTraderThreshold } from '../../hooks';
 import { fromPrecision } from '../../utils';
 import useMarginEnableStore from './hooks/useMarginEnable';
@@ -40,10 +40,10 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
         <Text size="s">{t('System Risk Parameters')}</Text>
         <Space size={32}>
           <Description label={t('Margin Call Threshold')}>
-            {traderThreshold && <NumberFormat value={traderThreshold.marginCall} percent options={{ mantissa: 2 }} />}
+            {traderThreshold && <Fixed18 value={traderThreshold.marginCall} percent options={{ mantissa: 2 }} />}
           </Description>
           <Description label={t('Stop Out Threshold')}>
-            {traderThreshold && <NumberFormat value={traderThreshold.stopOut} percent options={{ mantissa: 2 }} />}
+            {traderThreshold && <Fixed18 value={traderThreshold.stopOut} percent options={{ mantissa: 2 }} />}
           </Description>
         </Space>
       </Space>
@@ -52,7 +52,7 @@ const RenderPoolDashboard: React.FC<RenderPoolDashboardProps> = ({ poolId, pairI
           {Number(fromPrecision(data.marginLevel, 18)) > 1000 ? (
             'Very Safe'
           ) : (
-            <NumberFormat value={fromPrecision(data.marginLevel, 18)} percent options={{ mantissa: 2 }} />
+            <Fixed18 value={fromPrecision(data.marginLevel, 18)} percent options={{ mantissa: 2 }} />
           )}
         </Description>
       </Space>

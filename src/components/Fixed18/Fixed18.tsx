@@ -1,27 +1,29 @@
 import React from 'react';
 import numbro from 'numbro';
+import { fixed18toNumber } from '@laminar/api/utils';
 
 import { BaseProps } from '../../types';
 
-type NumberFormatProps = {
+type Fixed18Props = {
   percent?: boolean;
   options?: Record<string, any>;
-  value: number;
+  value: string;
   precision?: boolean;
 };
 
-const NumberFormat: React.FC<BaseProps & NumberFormatProps> = ({
+const Fixed18: React.FC<BaseProps & Fixed18Props> = ({
   component: Component = 'span',
-  value,
+  value: _value,
   percent = false,
   options = {
     roundingFunction: Math.floor,
   },
   ...other
 }) => {
-  if (value === undefined) return null;
+  if (_value === undefined) return null;
 
   const formatOptions: Record<string, any> = {};
+  const value = fixed18toNumber(_value);
 
   if (percent) {
     formatOptions.output = 'percent';
@@ -41,4 +43,4 @@ const NumberFormat: React.FC<BaseProps & NumberFormatProps> = ({
   return <Component {...other}>{showValue}</Component>;
 };
 
-export default NumberFormat;
+export default Fixed18;
