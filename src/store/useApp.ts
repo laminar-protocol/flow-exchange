@@ -9,7 +9,7 @@ export interface AppState extends State {
   availableProvider: ChainType[];
   connectModalShow: boolean;
   tokens: TokenInfo[];
-  setApiEnable(chainType: ChainType): Promise<AppState['api']>;
+  setApiEnable(chainType: ChainType, endpoints?: string[]): Promise<AppState['api']>;
   checkAvailableProvider(): ChainType[];
   setState: SetState<AppState>;
 }
@@ -31,8 +31,8 @@ export const [useApp, useAppApi, useAppSelector] = create<AppState>(
 
       return (Object.keys(available) as ChainType[]).filter(v => available[v]);
     },
-    async setApiEnable(chainType) {
-      const api = new Api({ chainType });
+    async setApiEnable(chainType, endpoints) {
+      const api = new Api({ chainType, endpoints });
 
       await api.isReady();
 

@@ -22,7 +22,7 @@ class Api {
   public margin: LaminarApi['margin'] | EthereumApi['margin'];
   public synthetic: LaminarApi['synthetic'] | EthereumApi['synthetic'];
 
-  constructor({ chainType }: { chainType?: ChainType } = {}) {
+  constructor({ chainType, endpoints: _endpoints }: { chainType?: ChainType; endpoints?: string[] } = {}) {
     const anyWindow = window as any;
 
     if (chainType === 'ethereum') {
@@ -36,7 +36,7 @@ class Api {
 
       const shuffle = (array: string[]) => array.sort(() => Math.random() - 0.5);
 
-      const endpoints = [
+      const endpoints = _endpoints || [
         'wss://node-6685729082874970112.jm.onfinality.io/ws',
         'wss://node-6685729080656576512.rz.onfinality.io/ws',
         'wss://testnet-node-1.laminar-chain.laminar.one/ws',

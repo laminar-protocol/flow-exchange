@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -21,6 +21,7 @@ import useApp from '../../../store/useApp';
 
 import MenuItem from './MenuItem';
 import Wallet from './Wallet';
+import SwitchChain from './SwitchChain';
 
 const Navigation: React.FC = () => {
   const classes = useStyle();
@@ -28,6 +29,8 @@ const Navigation: React.FC = () => {
 
   const api = useApp(state => state.api);
   const history = useHistory();
+
+  const [showSwitchChain, setShowSwitchChain] = useState(false);
 
   const networkName = useMemo(() => {
     if (api?.chainType === 'ethereum') {
@@ -37,6 +40,14 @@ const Navigation: React.FC = () => {
       return 'laminar';
     }
     return 'Select';
+  }, [api]);
+
+  const chainName = useMemo(() => {
+    if (api?.chainType === 'laminar') {
+      //@ts-ignore
+      return api?.asLaminar?.apiProvider.api?._runtimeChain?.toString();
+    }
+    return '';
   }, [api]);
 
   return (
@@ -111,6 +122,24 @@ const Navigation: React.FC = () => {
             </div>
           </Tooltip>
         </div>
+        {chainName && (
+          <div className={classes.switchChain}>
+            <div
+              className={classes.switchNetworkBtn}
+              onClick={() => {
+                setShowSwitchChain(true);
+              }}
+            >
+              <ExchangeIcon className={classes.switchNetworkIcon} />
+              {chainName}
+            </div>
+          </div>
+        )}
+        <SwitchChain
+          visible={showSwitchChain}
+          onCancel={() => setShowSwitchChain(false)}
+          onOk={() => setShowSwitchChain(false)}
+        />
       </div>
     </div>
   );
@@ -145,7 +174,13 @@ const useStyle = createUseStyles(theme => ({
     color: theme.foregroundColor,
   },
   switchNetwork: {
+    display: 'flex',
     marginTop: '0.75rem',
+  },
+  switchChain: {
+    display: 'flex',
+    flexDirection: 'flex-end',
+    marginTop: '16px',
   },
   switchNetworkBtn: {
     fontSize: '0.875rem',
