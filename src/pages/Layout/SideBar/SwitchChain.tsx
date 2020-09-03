@@ -26,11 +26,12 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
 
   const selectChain = useCallback(
     chainName => {
-      if (chainName === 'laminar turbulence pc1') {
-        setApiEnable('laminar', ['wss://rococo-1.laminar-chain.laminar.one']);
+      if (chainName === 'Laminar Turbulence PC1') {
+        localStorage.setItem('chain', 'Laminar Turbulence PC1');
       } else {
-        setApiEnable('laminar');
+        localStorage.setItem('chain', 'Laminar Turbulence TC1');
       }
+      window.location.reload();
     },
     [setApiEnable],
   );
@@ -57,7 +58,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
       style={{ top: 200 }}
     >
       <div className={classes.list}>
-        {['laminar turbulence tc1', 'laminar turbulence pc1'].map(name => {
+        {['Laminar Turbulence TC1', 'Laminar Turbulence PC1'].map(name => {
           return (
             <div
               className={clsx(classes.item, { [classes.selected]: selected === name })}

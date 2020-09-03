@@ -38,8 +38,14 @@ const PageLayout: React.FC<LayoutProps> = ({ isHome, loading = false, children }
       }
     } else {
       // eslint-disable-next-line
+
       if (setting.chainType && availableProvider.includes(setting.chainType)) {
-        setApiEnable(setting.chainType);
+        const specifiedChain = localStorage.getItem('chain');
+        if (specifiedChain === 'Laminar Turbulence PC1') {
+          setApiEnable('laminar', ['wss://rococo-1.laminar-chain.laminar.one']);
+        } else {
+          setApiEnable('laminar');
+        }
       } else {
         setNeedWallet(true);
       }
