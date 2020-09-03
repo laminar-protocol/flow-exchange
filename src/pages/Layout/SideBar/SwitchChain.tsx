@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import laminarLogo from '../../../assets/laminar-circle.svg';
 import { Dialog, Text } from '../../../components';
@@ -13,7 +13,6 @@ type SwitchAccountProps = {
 
 const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }) => {
   const classes = useStyles();
-  const setApiEnable = useApp(state => state.setApiEnable);
   const api = useApp(state => state.api);
   const currentChain = useMemo(() => {
     if (api?.chainType === 'laminar') {
@@ -24,17 +23,14 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
   }, [api]);
   const [selected, setSelected] = useState(currentChain);
 
-  const selectChain = useCallback(
-    chainName => {
-      if (chainName === 'Laminar Turbulence PC1') {
-        localStorage.setItem('chain', 'Laminar Turbulence PC1');
-      } else {
-        localStorage.setItem('chain', 'Laminar Turbulence TC1');
-      }
-      window.location.reload();
-    },
-    [setApiEnable],
-  );
+  const selectChain = useCallback(chainName => {
+    if (chainName === 'Laminar Turbulence PC1') {
+      localStorage.setItem('chain', 'Laminar Turbulence PC1');
+    } else {
+      localStorage.setItem('chain', 'Laminar Turbulence TC1');
+    }
+    window.location.reload();
+  }, []);
 
   const handleCancel = useCallback(() => {
     return onCancel();

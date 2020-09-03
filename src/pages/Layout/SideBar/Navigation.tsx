@@ -1,27 +1,26 @@
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createUseStyles } from 'react-jss';
 import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-
 import LaminarLogo from '../../../assets/laminar.svg';
-import { Row, ExternalLink, Tooltip } from '../../../components';
+import { ExternalLink, Row, Tooltip } from '../../../components';
 import {
-  ExchangeIcon,
-  MenuDashboardIcon,
-  MenuSwapIcon,
-  MenuLiquidityIcon,
-  MenuDepositIcon,
-  MenuMarginIcon,
   EmailIcon,
+  ExchangeIcon,
   FaucetIcon,
   GuideIcon,
+  MenuDashboardIcon,
+  MenuDepositIcon,
+  MenuLiquidityIcon,
+  MenuMarginIcon,
+  MenuSwapIcon,
   TwitterIcon,
 } from '../../../icons';
 import useApp from '../../../store/useApp';
-
 import MenuItem from './MenuItem';
-import Wallet from './Wallet';
 import SwitchChain from './SwitchChain';
+import UploadMetadata from './UploadMetadata';
+import Wallet from './Wallet';
 
 const Navigation: React.FC = () => {
   const classes = useStyle();
@@ -140,6 +139,7 @@ const Navigation: React.FC = () => {
           onCancel={() => setShowSwitchChain(false)}
           onOk={() => setShowSwitchChain(false)}
         />
+        <UploadMetadata />
       </div>
     </div>
   );

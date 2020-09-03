@@ -1285,7 +1285,7 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.10.4", "@babel/runtime@^7.11.2":
+"@babel/runtime@^7.10.4", "@babel/runtime@^7.10.5", "@babel/runtime@^7.11.2":
   version "7.11.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.11.2.tgz#f549c13c754cc40b87644b9fa9f09a6a95fe0736"
   integrity sha512-TeWkU52so0mPtDcaCTxNBI/IHiz0pZgr8VEFqXFtZWpYD08ZB6FaSwVAS8MKRQAP3bYKiVjwysOJgMFY28o6Tw==
@@ -1994,6 +1994,13 @@
     bn.js "^5.1.3"
     eventemitter3 "^4.0.6"
     rxjs "^6.6.2"
+
+"@polkadot/extension-inject@^0.32.1":
+  version "0.32.1"
+  resolved "https://registry.yarnpkg.com/@polkadot/extension-inject/-/extension-inject-0.32.1.tgz#b1957c3aaa240883aed979b0ac01664a7ad70388"
+  integrity sha512-kzrpJ1Gy0CnTXXz5PaMswFi+tnQwZkr997t1V/1xSEFiSbaltiHp2NFROywCuq7dagaTLJFGAkuuGMgTNKg9nA==
+  dependencies:
+    "@babel/runtime" "^7.10.5"
 
 "@polkadot/keyring@^3.4.0-beta.3":
   version "3.4.0-beta.3"
