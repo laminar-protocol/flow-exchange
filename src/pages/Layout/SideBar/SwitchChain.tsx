@@ -27,7 +27,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
     if (chainName === 'Laminar Turbulence PC1') {
       localStorage.setItem('chain', 'Laminar Turbulence PC1');
     } else {
-      localStorage.setItem('chain', 'Laminar Turbulence TC1');
+      localStorage.setItem('chain', 'Laminar Turbulence TC2');
     }
     window.location.reload();
   }, []);
@@ -54,7 +54,7 @@ const SwitchAccount: React.FC<SwitchAccountProps> = ({ visible, onCancel, onOk }
       style={{ top: 200 }}
     >
       <div className={classes.list}>
-        {['Laminar Turbulence TC1', 'Laminar Turbulence PC1'].map(name => {
+        {['Laminar Turbulence TC2', 'Laminar Turbulence PC1'].map(name => {
           return (
             <div
               className={clsx(classes.item, { [classes.selected]: selected === name })}

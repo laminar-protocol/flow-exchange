@@ -11,7 +11,7 @@ const OracleFeed: React.FC = () => {
 
   useLayoutEffect(() => {
     if (currentApi && baseTokenInfo) {
-      const s = currentApi.currencies.oracleValues().subscribe((data: any) => {
+      const s = currentApi.currencies.oracleValues('Aggregated').subscribe((data: any) => {
         setOracleValues(
           data.concat({
             tokenId: baseTokenInfo.id,

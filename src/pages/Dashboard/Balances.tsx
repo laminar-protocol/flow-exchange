@@ -21,11 +21,11 @@ const Balances: React.FC = () => {
       render: (value: any) => {
         return (
           <React.Fragment>
-            {value === 'AUSD' && (
+            {/* {value === 'AUSD' && ( // Disable crosschain transfer for this testnet
               <PrimaryButton onClick={() => setShowModal(true)} style={{ marginRight: 48 }}>
                 Transfer
               </PrimaryButton>
-            )}
+            )} */}
             <Balance tokenId={value} />
           </React.Fragment>
         );
