@@ -70,7 +70,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
       }
 
       if (type === 'cost') {
-        let value = leverage && amount ? (price / Number(leverage)) * Number(amount) : 0;
+        let value = leverage && !isNaN(amount as any) ? (price / Number(leverage)) * Number(amount) : 0;
 
         if (baseToken?.id !== data.pair.quote) {
           const originalPrice = getOraclePrice('0', 'long');
@@ -78,6 +78,7 @@ const TradeInfoItem: React.FC<TradeDataProps> = ({
             value = value / originalPrice.value;
           }
         }
+
         return <Amount value={toPrecision(value.toFixed(18))} tokenId={baseToken?.id} mantissa={2} hasPostfix={true} />;
       }
 
@@ -195,7 +196,8 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   }, [allowanceEnable, leverages, leverage, marginCalled]);
 
   const openPosition = async (direction: 'long' | 'short') => {
-    if (!amount || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+    if (isNaN(amount as any) || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+
     try {
       setActionLoading(direction);
       if (api.isEthereum) {

@@ -32,6 +32,7 @@ const positionsCloseQuery = gql`
   subscription positionsSubscription($signer: jsonb!) {
     Events(
       order_by: { blockNumber: desc }
+      limit: 20
       where: {
         method: { _eq: "PositionClosed" }
         args: { _contains: $signer }
