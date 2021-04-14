@@ -34,7 +34,7 @@ const Spinner: React.FC<SpinnerProps & BaseProps> = ({
   );
 };
 
-const useStyles = createUseStyles(theme => ({
+const useStyles = createUseStyles<string, SpinnerProps>(theme => ({
   root: {
     '&.ant-spin': {
       color: theme.foregroundColor,

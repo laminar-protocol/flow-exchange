@@ -11,8 +11,8 @@ type DescriptionProps = {
   width?: string | number;
   height?: string | number;
   layout?: 'horizontal' | 'vertical';
-  align?: ['center', 'flex-start', 'flex-end'][number];
-  justify?: ['start', 'end', 'center', 'space-around', 'space-between'][number];
+  align?: 'center' | 'flex-start' | 'flex-end';
+  justify?: 'start' | 'end' | 'center' | 'space-around' | 'space-between';
 };
 
 const Description: React.FC<BaseProps & DescriptionProps> = ({
@@ -29,7 +29,7 @@ const Description: React.FC<BaseProps & DescriptionProps> = ({
   children,
   ...other
 }) => {
-  const classes = useStyles({ align, justify, width, height, space });
+  const classes = useStyles({ align, justify, width, height, space, label });
 
   return (
     <Component
