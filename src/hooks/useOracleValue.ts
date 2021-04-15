@@ -14,4 +14,5 @@ export const createOracleValueSelector = (tokenId: TokenId) => {
   );
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (tokenId: TokenId) => useOracleSelector(createOracleValueSelector(tokenId), [tokenId]);

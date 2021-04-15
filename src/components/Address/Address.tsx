@@ -14,6 +14,7 @@ const Address: React.FC<AddressProps & BaseProps & React.HTMLProps<HTMLSpanEleme
   value,
   ...other
 }) => {
+  //@ts-ignore
   return <Component {...other}>{maxLength ? truncate(value, maxLength) : value}</Component>;
 };
 
