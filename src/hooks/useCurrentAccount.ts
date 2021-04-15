@@ -17,4 +17,5 @@ export const currentAccountSelector = createSelector(
   },
 );
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => useAppSelector(currentAccountSelector);

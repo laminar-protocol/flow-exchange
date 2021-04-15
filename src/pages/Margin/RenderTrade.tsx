@@ -196,7 +196,7 @@ const RenderTrade: React.FC<RenderTradeProps> = ({ poolId, pairId }) => {
   }, [allowanceEnable, leverages, leverage, marginCalled]);
 
   const openPosition = async (direction: 'long' | 'short') => {
-    if (isNaN(amount as any) || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
+    if (!amount || isNaN(amount as any) || !poolId || !pairInfo?.pair || !leverages[leverage][direction]) return;
 
     try {
       setActionLoading(direction);

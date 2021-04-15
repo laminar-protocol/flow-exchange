@@ -146,7 +146,10 @@ export function create<TState extends State>(
   };
 
   const useSelector = <U>(selector: StateSelector<TState, U>, deps: ReadonlyArray<any> = []) =>
-    useStore(useCallback(selector, deps));
+    useStore(
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      useCallback(selector, deps),
+    );
 
   const api = { setState, getState, subscribe: apiSubscribe, destroy };
   state = createState(setState, getState, api);

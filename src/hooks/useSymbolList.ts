@@ -33,4 +33,5 @@ const createMarginSymbolListSelector = (key: string) => {
   );
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (key: string) => useMarginPoolsSelector(createMarginSymbolListSelector(key), [key]);

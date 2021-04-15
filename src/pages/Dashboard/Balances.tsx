@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
-import { Balance, Panel, PrimaryButton, Table } from '../../components';
+import { Balance, Panel, Table } from '../../components';
 import useAppStore from '../../store/useApp';
 import RenderTransferModal from './RenderTransferModal';
 

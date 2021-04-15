@@ -2,8 +2,12 @@ import createBreakpoints from './createBreakpoints';
 
 type themeMode = 'light' | 'dark';
 
-declare module 'react-jss' {
-  interface DefaultTheme extends AppTheme {}
+declare global {
+  // eslint-disable-next-line
+  namespace Jss {
+    /** You can use the global `Jss.Theme` interface to define a project-wide default theme. */
+    export interface Theme extends AppTheme {}
+  }
 }
 
 interface AppTheme {

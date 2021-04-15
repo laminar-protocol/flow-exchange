@@ -37,8 +37,7 @@ class Api {
       const shuffle = (array: string[]) => array.sort(() => Math.random() - 0.5);
 
       const endpoints = _endpoints || [
-        'wss://node-6729167516986527744.jm.onfinality.io/ws',
-        'wss://node-6729167516973944832.rz.onfinality.io/ws',
+        'wss://node-6787234140909940736.jm.onfinality.io/ws',
         'wss://testnet-node-1.laminar-chain.laminar.one/ws',
       ];
 
